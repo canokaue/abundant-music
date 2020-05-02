@@ -8,7 +8,7 @@ function updateLoaderProgress(progress) {
 
 
 var useDevSources = true;
-var clientSources = ["css/style.css", "js/composeeditoronlinesource2-min.js"];
+var clientSources = ["css/style.css"];
 if (useDevSources) {
     clientSources = "css/style.css js/midi.js js/fakebytearray.js js/tween.js js/classicalnoise.js js/jquerycomponents.js js/guiproperties.js js/guipropertiescomponent.js js/valuecomponents.js js/guiobjectlistcomponent.js js/uniqueidmanager.js js/propertyinfoprovider.js js/songsettingscomponents.js js/asyncoperation.js js/noterepr.js js/audioplayer.js js/sm2player.js js/webaudioplayer.js js/frustumcullingchunks.js js/composevisualizer.js js/composemain.js".split(" ");
 }
