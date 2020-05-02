@@ -3407,184 +3407,141 @@ function createModuleGeneratorData(genInfo, sectionInfos) {
 }
 
 
-function SimpleModuleGeneratorData() {
-
-    this.baseTempo = 120;
-
-    this.indexInfos = [];
-
-    this.tempoInfos = []; // Absolute tempos
-
-//    this.globalTempoChangeInfos = [];
-    this.sequentialTempoChangeInfos = []; // Is indexed by tempoChangePatternInfos
-    this.sequentialTempoChangePatternInfos = []; // Is indexed by a property
-    this.parallelTempoChangeInfos = []; // Is indexed by tempoChangePatternInfos
-    this.parallelTempoChangePatternInfos = []; // Is indexed by a property
-
-    this.sequentialMelodyEffectChangeInfos = []; // Is indexed by tempoChangePatternInfos
-    this.sequentialMelodyEffectChangePatternInfos = []; // Is indexed by a property
-    this.sequentialInner1EffectChangeInfos = []; // Is indexed by tempoChangePatternInfos
-    this.sequentialInner1EffectChangePatternInfos = []; // Is indexed by a property
-    this.sequentialInner2EffectChangeInfos = []; // Is indexed by tempoChangePatternInfos
-    this.sequentialInner2EffectChangePatternInfos = []; // Is indexed by a property
-    this.sequentialBassEffectChangeInfos = []; // Is indexed by tempoChangePatternInfos
-    this.sequentialBassEffectChangePatternInfos = []; // Is indexed by a property
-    this.sequentialPercussionEffectChangeInfos = []; // Is indexed by tempoChangePatternInfos
-    this.sequentialPercussionEffectChangePatternInfos = []; // Is indexed by a property
-
-
-    this.renderAmountInfos = [];
-
-    this.suspendInfos = [];
-
-    this.harmonyExtraInfos = [];
-
-    this.harmonyInfos = [];
-
-    this.phraseInfos = [];
-
-    this.harmonyRythmInfos = [];
-
-    this.melodyShapeInfos = [];
-
-    this.bassShapeInfos = [];
-
-    this.melodyChannelInstruments = [];
-    this.inner1ChannelInstruments = [];
-    this.inner2ChannelInstruments = [];
-    this.bassChannelInstruments = [];
-
-    this.percussionMotifInfos = [];
-
-    this.fillStartIndex = 2;
-
-    this.percussionMotifDistributionInfos = [];
-    this.percussionFillMotifDistributionInfos = [];
-
-    this.motifInfos = [];
-
-    this.bassStartIndex = 4;
-    this.harmonyStartIndex = 8;
-
-    this.melodyChannelDistributionInfos = [];
-    this.inner1ChannelDistributionInfos = [];
-    this.inner2ChannelDistributionInfos = [];
-    this.bassChannelDistributionInfos = [];
-
-    this.melodyMotifDistributionInfos = [];
-    this.inner1MotifDistributionInfos = [];
-    this.inner2MotifDistributionInfos = [];
-    this.bassMotifDistributionInfos = [];
+class SimpleModuleGeneratorData {
+    constructor() {
+        this.baseTempo = 120;
+        this.indexInfos = [];
+        this.tempoInfos = []; // Absolute tempos
+        //    this.globalTempoChangeInfos = [];
+        this.sequentialTempoChangeInfos = []; // Is indexed by tempoChangePatternInfos
+        this.sequentialTempoChangePatternInfos = []; // Is indexed by a property
+        this.parallelTempoChangeInfos = []; // Is indexed by tempoChangePatternInfos
+        this.parallelTempoChangePatternInfos = []; // Is indexed by a property
+        this.sequentialMelodyEffectChangeInfos = []; // Is indexed by tempoChangePatternInfos
+        this.sequentialMelodyEffectChangePatternInfos = []; // Is indexed by a property
+        this.sequentialInner1EffectChangeInfos = []; // Is indexed by tempoChangePatternInfos
+        this.sequentialInner1EffectChangePatternInfos = []; // Is indexed by a property
+        this.sequentialInner2EffectChangeInfos = []; // Is indexed by tempoChangePatternInfos
+        this.sequentialInner2EffectChangePatternInfos = []; // Is indexed by a property
+        this.sequentialBassEffectChangeInfos = []; // Is indexed by tempoChangePatternInfos
+        this.sequentialBassEffectChangePatternInfos = []; // Is indexed by a property
+        this.sequentialPercussionEffectChangeInfos = []; // Is indexed by tempoChangePatternInfos
+        this.sequentialPercussionEffectChangePatternInfos = []; // Is indexed by a property
+        this.renderAmountInfos = [];
+        this.suspendInfos = [];
+        this.harmonyExtraInfos = [];
+        this.harmonyInfos = [];
+        this.phraseInfos = [];
+        this.harmonyRythmInfos = [];
+        this.melodyShapeInfos = [];
+        this.bassShapeInfos = [];
+        this.melodyChannelInstruments = [];
+        this.inner1ChannelInstruments = [];
+        this.inner2ChannelInstruments = [];
+        this.bassChannelInstruments = [];
+        this.percussionMotifInfos = [];
+        this.fillStartIndex = 2;
+        this.percussionMotifDistributionInfos = [];
+        this.percussionFillMotifDistributionInfos = [];
+        this.motifInfos = [];
+        this.bassStartIndex = 4;
+        this.harmonyStartIndex = 8;
+        this.melodyChannelDistributionInfos = [];
+        this.inner1ChannelDistributionInfos = [];
+        this.inner2ChannelDistributionInfos = [];
+        this.bassChannelDistributionInfos = [];
+        this.melodyMotifDistributionInfos = [];
+        this.inner1MotifDistributionInfos = [];
+        this.inner2MotifDistributionInfos = [];
+        this.bassMotifDistributionInfos = [];
+    }
 }
 
-
-function SimpleModuleGeneratorSectionInfo(options) {
-
-    this.index = getValueOrDefault(options, "index", 0);
-
-    // Type of harmony rythm
-    this.harmonyRythmIndex = getValueOrDefault(options, "harmonyRythmIndex", 0);
-
-    // Type of harmony
-    this.harmonyIndex = getValueOrDefault(options, "harmonyIndex", 0);
-
-    this.harmonyExtraIndex = getValueOrDefault(options, "harmonyExtraIndex", 0);
-
-    // Type of phrase
-    this.phraseIndex = getValueOrDefault(options, "phraseIndex", 0);
-
-    // Render amount
-    this.renderAmountIndex = getValueOrDefault(options, "renderAmountIndex", 0);
-
-    // Type of suspension
-    this.suspendIndex = getValueOrDefault(options, "suspendIndex", 0);
-
-    // Channel distributions
-    this.melodyChannelDistributionIndex = getValueOrDefault(options, "melodyChannelDistributionIndex", 0);
-    this.inner1ChannelDistributionIndex = getValueOrDefault(options, "inner1ChannelDistributionIndex", 0);
-    this.inner2ChannelDistributionIndex = getValueOrDefault(options, "inner2ChannelDistributionIndex", 0);
-    this.bassChannelDistributionIndex = getValueOrDefault(options, "bassChannelDistributionIndex", 0);
-
-    // Type indices for melody
-    this.melodyShapeIndex = getValueOrDefault(options, "melodyShapeIndex", 0); // A curve or something that describes the melody voice line
-    this.melodyMotifDistributionIndex = getValueOrDefault(options, "melodyMotifDistributionIndex", 0); // How motifs are distributed
-    this.melodyMotifsIndex = 0; // The actual set of motifs
-//    this.melodyOrnamentationTypeIndex = 0; // Ornamentation (grace notes etc.)
-//    this.melodyHarmonizationTypeIndex = 0; // Harmonization (adding fillers)
-
-    // Type indices for inner voice 1
-    this.inner1MotifDistributionIndex = getValueOrDefault(options, "inner1MotifDistributionIndex", 0); // How motifs are distributed
-    this.inner1MotifsIndex = 0; // The actual set of motifs
-
-    // Type indices for inner voice 2
-    this.inner2MotifDistributionIndex = getValueOrDefault(options, "inner2MotifDistributionIndex", 0); // How motifs are distributed
-    this.inner2MotifsIndex = 0; // The actual set of motifs
-
-    // Type indices for bass
-    this.bassShapeIndex = getValueOrDefault(options, "bassShapeIndex", 0);
-    this.bassMotifDistributionIndex = getValueOrDefault(options, "bassMotifDistributionIndex", 0); // How motifs are distributed
-    this.bassMotifsIndex = 0; // The actual set of motifs
-
-    // Type indices for percussion
-    this.percussionMotifDistributionIndex = getValueOrDefault(options, "percussionMotifDistributionIndex", 0); // How motifs are distributed
-    this.percussionFillMotifDistributionIndex = getValueOrDefault(options, "percussionFillMotifDistributionIndex", 0); // How motifs are distributed
-    this.percussionMotifsIndex = 0; // The actual set of motifs (including fills)
-
-    // Tempo
-    this.tempoIndex = getValueOrDefault(options, "tempoIndex", 0); // How tempos are modified per section based on the base tempo
-
-    // Effect change
-    this.sequentialMelodyEffectChangeIndex = getValueOrDefault(options, "sequentialMelodyEffectChangeIndex", 0);
-    this.sequentialInner1EffectChangeIndex = getValueOrDefault(options, "sequentialInner1EffectChangeIndex", 0);
-    this.sequentialInner2EffectChangeIndex = getValueOrDefault(options, "sequentialInner2EffectChangeIndex", 0);
-    this.sequentialBassEffectChangeIndex = getValueOrDefault(options, "sequentialBassEffectChangeIndex", 0);
-    this.sequentialPercussionEffectChangeIndex = getValueOrDefault(options, "sequentialPercussionEffectChangeIndex", 0);
-
-    // Tempo change
-    this.sequentialTempoChangeIndex = getValueOrDefault(options, "sequentialTempoChangeIndex", 0); // How tempos are modified on small scales
-    this.parallelTempoChangeIndex = getValueOrDefault(options, "parallelTempoChangeIndex", 0); // How tempos are modified on small scales
-
-    this.modifierFunctions = getValueOrDefault(options, "modifierFunctions", []); // Functions that can modify stuff in getSetVariableModifiers()
-    this.preModifierFunctions = getValueOrDefault(options, "preModifierFunctions", []); // Functions that can modify stuff in getSetVariableModifiers()
-}
-
-SimpleModuleGeneratorSectionInfo.prototype.getSetVariableModifiers = function(data) {
-
-    const melodyShapeInfo = data.melodyShapeInfos[this.melodyShapeIndex % data.melodyShapeInfos.length];
-//    logit("Mel shape index " + this.melodyShapeIndex + " " + JSON.stringify(melodyShapeInfo));
-    const bassShapeInfo = data.bassShapeInfos[this.bassShapeIndex % data.bassShapeInfos.length];
-    const phraseInfo = data.phraseInfos[this.phraseIndex % data.phraseInfos.length];
-    const harmonyInfo = data.harmonyInfos[this.harmonyIndex % data.harmonyInfos.length];
-    const harmonyExtraInfo = data.harmonyExtraInfos[this.harmonyExtraIndex % data.harmonyExtraInfos.length];
-    const harmonyRythmInfo = data.harmonyRythmInfos[this.harmonyRythmIndex % data.harmonyRythmInfos.length];
-    const melodyMotifDistributionInfo = data.melodyMotifDistributionInfos[this.melodyMotifDistributionIndex % data.melodyMotifDistributionInfos.length];
-    const bassMotifDistributionInfo = data.bassMotifDistributionInfos[this.bassMotifDistributionIndex % data.bassMotifDistributionInfos.length];
-    const inner1MotifDistributionInfo = data.inner1MotifDistributionInfos[this.inner1MotifDistributionIndex % data.inner1MotifDistributionInfos.length];
-    const inner2MotifDistributionInfo = data.inner2MotifDistributionInfos[this.inner2MotifDistributionIndex % data.inner2MotifDistributionInfos.length];
-    const percussionMotifDistributionInfo = data.percussionMotifDistributionInfos[this.percussionMotifDistributionIndex % data.percussionMotifDistributionInfos.length];
-    const percussionFillMotifDistributionInfo = data.percussionFillMotifDistributionInfos[this.percussionFillMotifDistributionIndex % data.percussionFillMotifDistributionInfos.length];
-    const melodyChannelDistributionInfo = data.melodyChannelDistributionInfos[this.melodyChannelDistributionIndex % data.melodyChannelDistributionInfos.length];
-    const bassChannelDistributionInfo = data.bassChannelDistributionInfos[this.bassChannelDistributionIndex % data.bassChannelDistributionInfos.length];
-    const inner1ChannelDistributionInfo = data.inner1ChannelDistributionInfos[this.inner1ChannelDistributionIndex % data.inner1ChannelDistributionInfos.length];
-    const inner2ChannelDistributionInfo = data.inner2ChannelDistributionInfos[this.inner2ChannelDistributionIndex % data.inner2ChannelDistributionInfos.length];
-    const suspendInfo = data.suspendInfos[this.suspendIndex % data.suspendInfos.length];
-    const renderAmountInfo = data.renderAmountInfos[this.renderAmountIndex % data.renderAmountInfos.length];
-    const tempoInfo = data.tempoInfos[this.tempoIndex % data.tempoInfos.length];
-    const sequentialMelodyEffectChangeInfo = data.sequentialMelodyEffectChangePatternInfos[this.sequentialMelodyEffectChangeIndex % data.sequentialMelodyEffectChangePatternInfos.length];
-    const sequentialInner1EffectChangeInfo = data.sequentialInner1EffectChangePatternInfos[this.sequentialInner1EffectChangeIndex % data.sequentialInner1EffectChangePatternInfos.length];
-    const sequentialInner2EffectChangeInfo = data.sequentialInner2EffectChangePatternInfos[this.sequentialInner2EffectChangeIndex % data.sequentialInner2EffectChangePatternInfos.length];
-    const sequentialBassEffectChangeInfo = data.sequentialBassEffectChangePatternInfos[this.sequentialBassEffectChangeIndex % data.sequentialBassEffectChangePatternInfos.length];
-    const sequentialPercussionEffectChangeInfo = data.sequentialPercussionEffectChangePatternInfos[this.sequentialPercussionEffectChangeIndex % data.sequentialPercussionEffectChangePatternInfos.length];
-    const sequentialTempoChangeInfo = data.sequentialTempoChangePatternInfos[this.sequentialTempoChangeIndex % data.sequentialTempoChangePatternInfos.length];
-    const parallelTempoChangeInfo = data.parallelTempoChangePatternInfos[this.parallelTempoChangeIndex % data.parallelTempoChangePatternInfos.length];
-
-    const indexInfo = data.indexInfos[this.index % data.indexInfos.length];
-
-//    logit(this.harmonyIndex);
-
-    for (let i=0; i<this.preModifierFunctions.length; i++) {
-        this.preModifierFunctions[i](
-            {
+class SimpleModuleGeneratorSectionInfo {
+    constructor(options) {
+        this.index = getValueOrDefault(options, "index", 0);
+        // Type of harmony rythm
+        this.harmonyRythmIndex = getValueOrDefault(options, "harmonyRythmIndex", 0);
+        // Type of harmony
+        this.harmonyIndex = getValueOrDefault(options, "harmonyIndex", 0);
+        this.harmonyExtraIndex = getValueOrDefault(options, "harmonyExtraIndex", 0);
+        // Type of phrase
+        this.phraseIndex = getValueOrDefault(options, "phraseIndex", 0);
+        // Render amount
+        this.renderAmountIndex = getValueOrDefault(options, "renderAmountIndex", 0);
+        // Type of suspension
+        this.suspendIndex = getValueOrDefault(options, "suspendIndex", 0);
+        // Channel distributions
+        this.melodyChannelDistributionIndex = getValueOrDefault(options, "melodyChannelDistributionIndex", 0);
+        this.inner1ChannelDistributionIndex = getValueOrDefault(options, "inner1ChannelDistributionIndex", 0);
+        this.inner2ChannelDistributionIndex = getValueOrDefault(options, "inner2ChannelDistributionIndex", 0);
+        this.bassChannelDistributionIndex = getValueOrDefault(options, "bassChannelDistributionIndex", 0);
+        // Type indices for melody
+        this.melodyShapeIndex = getValueOrDefault(options, "melodyShapeIndex", 0); // A curve or something that describes the melody voice line
+        this.melodyMotifDistributionIndex = getValueOrDefault(options, "melodyMotifDistributionIndex", 0); // How motifs are distributed
+        this.melodyMotifsIndex = 0; // The actual set of motifs
+        //    this.melodyOrnamentationTypeIndex = 0; // Ornamentation (grace notes etc.)
+        //    this.melodyHarmonizationTypeIndex = 0; // Harmonization (adding fillers)
+        // Type indices for inner voice 1
+        this.inner1MotifDistributionIndex = getValueOrDefault(options, "inner1MotifDistributionIndex", 0); // How motifs are distributed
+        this.inner1MotifsIndex = 0; // The actual set of motifs
+        // Type indices for inner voice 2
+        this.inner2MotifDistributionIndex = getValueOrDefault(options, "inner2MotifDistributionIndex", 0); // How motifs are distributed
+        this.inner2MotifsIndex = 0; // The actual set of motifs
+        // Type indices for bass
+        this.bassShapeIndex = getValueOrDefault(options, "bassShapeIndex", 0);
+        this.bassMotifDistributionIndex = getValueOrDefault(options, "bassMotifDistributionIndex", 0); // How motifs are distributed
+        this.bassMotifsIndex = 0; // The actual set of motifs
+        // Type indices for percussion
+        this.percussionMotifDistributionIndex = getValueOrDefault(options, "percussionMotifDistributionIndex", 0); // How motifs are distributed
+        this.percussionFillMotifDistributionIndex = getValueOrDefault(options, "percussionFillMotifDistributionIndex", 0); // How motifs are distributed
+        this.percussionMotifsIndex = 0; // The actual set of motifs (including fills)
+        // Tempo
+        this.tempoIndex = getValueOrDefault(options, "tempoIndex", 0); // How tempos are modified per section based on the base tempo
+        // Effect change
+        this.sequentialMelodyEffectChangeIndex = getValueOrDefault(options, "sequentialMelodyEffectChangeIndex", 0);
+        this.sequentialInner1EffectChangeIndex = getValueOrDefault(options, "sequentialInner1EffectChangeIndex", 0);
+        this.sequentialInner2EffectChangeIndex = getValueOrDefault(options, "sequentialInner2EffectChangeIndex", 0);
+        this.sequentialBassEffectChangeIndex = getValueOrDefault(options, "sequentialBassEffectChangeIndex", 0);
+        this.sequentialPercussionEffectChangeIndex = getValueOrDefault(options, "sequentialPercussionEffectChangeIndex", 0);
+        // Tempo change
+        this.sequentialTempoChangeIndex = getValueOrDefault(options, "sequentialTempoChangeIndex", 0); // How tempos are modified on small scales
+        this.parallelTempoChangeIndex = getValueOrDefault(options, "parallelTempoChangeIndex", 0); // How tempos are modified on small scales
+        this.modifierFunctions = getValueOrDefault(options, "modifierFunctions", []); // Functions that can modify stuff in getSetVariableModifiers()
+        this.preModifierFunctions = getValueOrDefault(options, "preModifierFunctions", []); // Functions that can modify stuff in getSetVariableModifiers()
+    }
+    getSetVariableModifiers(data) {
+        const melodyShapeInfo = data.melodyShapeInfos[this.melodyShapeIndex % data.melodyShapeInfos.length];
+        //    logit("Mel shape index " + this.melodyShapeIndex + " " + JSON.stringify(melodyShapeInfo));
+        const bassShapeInfo = data.bassShapeInfos[this.bassShapeIndex % data.bassShapeInfos.length];
+        const phraseInfo = data.phraseInfos[this.phraseIndex % data.phraseInfos.length];
+        const harmonyInfo = data.harmonyInfos[this.harmonyIndex % data.harmonyInfos.length];
+        const harmonyExtraInfo = data.harmonyExtraInfos[this.harmonyExtraIndex % data.harmonyExtraInfos.length];
+        const harmonyRythmInfo = data.harmonyRythmInfos[this.harmonyRythmIndex % data.harmonyRythmInfos.length];
+        const melodyMotifDistributionInfo = data.melodyMotifDistributionInfos[this.melodyMotifDistributionIndex % data.melodyMotifDistributionInfos.length];
+        const bassMotifDistributionInfo = data.bassMotifDistributionInfos[this.bassMotifDistributionIndex % data.bassMotifDistributionInfos.length];
+        const inner1MotifDistributionInfo = data.inner1MotifDistributionInfos[this.inner1MotifDistributionIndex % data.inner1MotifDistributionInfos.length];
+        const inner2MotifDistributionInfo = data.inner2MotifDistributionInfos[this.inner2MotifDistributionIndex % data.inner2MotifDistributionInfos.length];
+        const percussionMotifDistributionInfo = data.percussionMotifDistributionInfos[this.percussionMotifDistributionIndex % data.percussionMotifDistributionInfos.length];
+        const percussionFillMotifDistributionInfo = data.percussionFillMotifDistributionInfos[this.percussionFillMotifDistributionIndex % data.percussionFillMotifDistributionInfos.length];
+        const melodyChannelDistributionInfo = data.melodyChannelDistributionInfos[this.melodyChannelDistributionIndex % data.melodyChannelDistributionInfos.length];
+        const bassChannelDistributionInfo = data.bassChannelDistributionInfos[this.bassChannelDistributionIndex % data.bassChannelDistributionInfos.length];
+        const inner1ChannelDistributionInfo = data.inner1ChannelDistributionInfos[this.inner1ChannelDistributionIndex % data.inner1ChannelDistributionInfos.length];
+        const inner2ChannelDistributionInfo = data.inner2ChannelDistributionInfos[this.inner2ChannelDistributionIndex % data.inner2ChannelDistributionInfos.length];
+        const suspendInfo = data.suspendInfos[this.suspendIndex % data.suspendInfos.length];
+        const renderAmountInfo = data.renderAmountInfos[this.renderAmountIndex % data.renderAmountInfos.length];
+        const tempoInfo = data.tempoInfos[this.tempoIndex % data.tempoInfos.length];
+        const sequentialMelodyEffectChangeInfo = data.sequentialMelodyEffectChangePatternInfos[this.sequentialMelodyEffectChangeIndex % data.sequentialMelodyEffectChangePatternInfos.length];
+        const sequentialInner1EffectChangeInfo = data.sequentialInner1EffectChangePatternInfos[this.sequentialInner1EffectChangeIndex % data.sequentialInner1EffectChangePatternInfos.length];
+        const sequentialInner2EffectChangeInfo = data.sequentialInner2EffectChangePatternInfos[this.sequentialInner2EffectChangeIndex % data.sequentialInner2EffectChangePatternInfos.length];
+        const sequentialBassEffectChangeInfo = data.sequentialBassEffectChangePatternInfos[this.sequentialBassEffectChangeIndex % data.sequentialBassEffectChangePatternInfos.length];
+        const sequentialPercussionEffectChangeInfo = data.sequentialPercussionEffectChangePatternInfos[this.sequentialPercussionEffectChangeIndex % data.sequentialPercussionEffectChangePatternInfos.length];
+        const sequentialTempoChangeInfo = data.sequentialTempoChangePatternInfos[this.sequentialTempoChangeIndex % data.sequentialTempoChangePatternInfos.length];
+        const parallelTempoChangeInfo = data.parallelTempoChangePatternInfos[this.parallelTempoChangeIndex % data.parallelTempoChangePatternInfos.length];
+        const indexInfo = data.indexInfos[this.index % data.indexInfos.length];
+        //    logit(this.harmonyIndex);
+        for (let i = 0; i < this.preModifierFunctions.length; i++) {
+            this.preModifierFunctions[i]({
                 melodyShapeInfo: melodyShapeInfo,
                 bassShapeInfo: bassShapeInfo,
                 phraseInfo: phraseInfo,
@@ -3612,127 +3569,106 @@ SimpleModuleGeneratorSectionInfo.prototype.getSetVariableModifiers = function(da
                 parallelTempoChangeInfo: parallelTempoChangeInfo,
                 indexInfo: indexInfo
             });
+        }
+        const mods = [
+            // Index info
+            ["indexInfoVar", indexInfo],
+            // Render amount
+            ["melodyRenderAmountVar", "" + JSON.stringify(renderAmountInfo.melodyRenderAmount)],
+            ["inner1RenderAmountVar", "" + JSON.stringify(renderAmountInfo.inner1RenderAmount)],
+            ["inner2RenderAmountVar", "" + JSON.stringify(renderAmountInfo.inner2RenderAmount)],
+            ["bassRenderAmountVar", "" + JSON.stringify(renderAmountInfo.bassRenderAmount)],
+            ["percussionRenderAmountVar", "" + JSON.stringify(renderAmountInfo.percussionRenderAmount)],
+            // Melody voice line suspension
+            ["suspendSeedVar", "" + JSON.stringify(suspendInfo.seed)],
+            ["suspendProbabilityVar", "" + JSON.stringify(suspendInfo.probability)],
+            // Melody motif and channel distribution
+            ["melodyIndexMotifPatternVar", "" + JSON.stringify(melodyMotifDistributionInfo.indices)],
+            ["endMelodyIndexMotifPatternVar", "" + JSON.stringify(melodyMotifDistributionInfo.endIndices)],
+            ["melodyChannelIndicesVar", "" + JSON.stringify(melodyChannelDistributionInfo.channels)],
+            ["endMelodyChannelIndicesVar", "" + JSON.stringify(melodyChannelDistributionInfo.endChannels)],
+            // Bass motif distribution
+            ["bassIndexMotifPatternVar", "" + JSON.stringify(bassMotifDistributionInfo.indices)],
+            ["endBassIndexMotifPatternVar", "" + JSON.stringify(bassMotifDistributionInfo.endIndices)],
+            ["bassChannelIndicesVar", "" + JSON.stringify(bassChannelDistributionInfo.channels)],
+            ["endBassChannelIndicesVar", "" + JSON.stringify(bassChannelDistributionInfo.endChannels)],
+            // Inner 1 motif distribution
+            ["inner1IndexMotifPatternVar", "" + JSON.stringify(inner1MotifDistributionInfo.indices)],
+            ["endInner1IndexMotifPatternVar", "" + JSON.stringify(inner1MotifDistributionInfo.endIndices)],
+            ["inner1ChannelIndicesVar", "" + JSON.stringify(inner1ChannelDistributionInfo.channels)],
+            ["endInner1ChannelIndicesVar", "" + JSON.stringify(inner1ChannelDistributionInfo.endChannels)],
+            // Inner 2 motif distribution
+            ["inner2IndexMotifPatternVar", "" + JSON.stringify(inner2MotifDistributionInfo.indices)],
+            ["endInner2IndexMotifPatternVar", "" + JSON.stringify(inner2MotifDistributionInfo.endIndices)],
+            ["inner2ChannelIndicesVar", "" + JSON.stringify(inner2ChannelDistributionInfo.channels)],
+            ["endInner2ChannelIndicesVar", "" + JSON.stringify(inner2ChannelDistributionInfo.endChannels)],
+            // Percussion motif distribution
+            ["percIndexMotifPatternVar", "" + JSON.stringify(percussionMotifDistributionInfo.indices)],
+            ["endPercIndexMotifPatternVar", "" + JSON.stringify(percussionFillMotifDistributionInfo.indices)],
+            // Harmony rythm
+            ["harmonyNoteCountVar", "" + harmonyRythmInfo.count],
+            ["harmonyTotalLengthVar", "" + harmonyRythmInfo.totalLength],
+            ["harmonyRythmLengthTypeVar", "" + harmonyRythmInfo.lengthType],
+            ["harmonyRythmMeasureSplitStrategyVar", "" + harmonyRythmInfo.measureSplitStrategy],
+            ["hrDensityCurveSeedVar", "" + harmonyRythmInfo.seed],
+            ["hrDensityCurveAmpVar", "" + harmonyRythmInfo.densityAmplitude],
+            ["hrDensityCurveFreqVar", "" + harmonyRythmInfo.densityFrequency],
+            ["staticHarmonyLengthVar", "" + harmonyRythmInfo.staticLength],
+            ["dynamicHarmonyLengthVar", "" + harmonyRythmInfo.dynamicLength],
+            ["dominantCadenceHarmonyLengthVar", "" + harmonyRythmInfo.dominantCadenceLength],
+            ["tonicCadenceHarmonyLengthVar", "" + harmonyRythmInfo.tonicCadenceLength],
+            // Phrase structure
+            ["harmonyPhraseTypeVar", "" + phraseInfo.phraseType],
+            ["harmonyMajorModulationTargetVar", "" + phraseInfo.majorModulationTarget],
+            ["harmonyMinorModulationTargetVar", "" + phraseInfo.minorModulationTarget],
+            // Tempo
+            ["sectionTempoVar", "" + tempoInfo.tempo],
+            ["nextSectionTempoVar", "" + tempoInfo.nextTempo],
+            ["prevSectionTempoVar", "" + tempoInfo.prevTempo],
+            ["parallelTempoChangeIndicesVar", JSON.stringify(parallelTempoChangeInfo.indices)],
+            ["sequentialTempoChangeIndicesVar", JSON.stringify(sequentialTempoChangeInfo.indices)],
+            ["sequentialTempoChangeStartIndicesVar", JSON.stringify(sequentialTempoChangeInfo.startIndices)],
+            ["sequentialTempoChangeEndIndicesVar", JSON.stringify(sequentialTempoChangeInfo.endIndices)],
+            // Effects
+            ["sequentialMelodyEffectChangeInfoVar", sequentialMelodyEffectChangeInfo],
+            ["sequentialInner1EffectChangeInfoVar", sequentialInner1EffectChangeInfo],
+            ["sequentialInner2EffectChangeInfoVar", sequentialInner2EffectChangeInfo],
+            ["sequentialBassEffectChangeInfoVar", sequentialBassEffectChangeInfo],
+            ["sequentialPercussionEffectChangeInfoVar", sequentialPercussionEffectChangeInfo],
+            // Harmony
+            ["harmonyScaleBaseVar", "" + harmonyInfo.scaleBaseNote],
+            ["scaleTypeVar", "" + harmonyInfo.scaleType],
+            ["numeratorVar", "" + harmonyInfo.numerator],
+            ["harmonyElementIndexVar", "" + harmonyInfo.harmonyElementIndex],
+            ["harmonySeedVar", "" + harmonyExtraInfo.harmonySeed],
+            ["harmonyRaiseLeadingToneVar", "" + harmonyExtraInfo.raiseLeadingTone],
+            ["harmonySimpleMixtureLikelihoodVar", "" + harmonyExtraInfo.simpleMixtureLikelihood],
+            ["harmonySus2ChordsLikelihoodVar", "" + harmonyExtraInfo.sus2ChordsLikelihood],
+            ["harmonySus4ChordsLikelihoodVar", "" + harmonyExtraInfo.sus4ChordsLikelihood],
+            ["harmonyNeighbourChordsLikelihoodVar", "" + harmonyExtraInfo.neighbourChordsLikelihood],
+            ["harmonyPassingChordsLikelihoodVar", "" + harmonyExtraInfo.passingChordsLikelihood],
+            ["harmonyMajorDeceptiveRootVar", "" + harmonyExtraInfo.majorDeceptiveRoot],
+            ["harmonyMinorDeceptiveRootVar", "" + harmonyExtraInfo.minorDeceptiveRoot],
+            // Melody shape
+            ["melodyCurveAmplitudeVar", "" + melodyShapeInfo.amplitude],
+            ["melodyCurveBiasVar", "" + melodyShapeInfo.bias],
+            ["melodyCurveTypeVar", "" + melodyShapeInfo.curveType],
+            ["melodyCurveIdVar", "" + "\"" + melodyShapeInfo.curveId + "\""],
+            ["melodyCurveMultiplyAmpVar", "true"],
+            // Bass shape
+            ["bassCurveAmplitudeVar", "" + bassShapeInfo.amplitude],
+            ["bassCurveBiasVar", "" + bassShapeInfo.bias],
+            ["bassCurveTypeVar", "" + bassShapeInfo.curveType],
+            ["bassCurveIdVar", "" + "\"" + bassShapeInfo.curveId + "\""],
+            ["bassCurveMultiplyAmpVar", "true"]
+        ];
+        for (let i = 0; i < this.modifierFunctions.length; i++) {
+            this.modifierFunctions[i](mods);
+        }
+        //    logit(mods);
+        return mods;
     }
-
-    const mods = [
-        // Index info
-        ["indexInfoVar", indexInfo],
-
-        // Render amount
-        ["melodyRenderAmountVar", "" + JSON.stringify(renderAmountInfo.melodyRenderAmount)],
-        ["inner1RenderAmountVar", "" + JSON.stringify(renderAmountInfo.inner1RenderAmount)],
-        ["inner2RenderAmountVar", "" + JSON.stringify(renderAmountInfo.inner2RenderAmount)],
-        ["bassRenderAmountVar", "" + JSON.stringify(renderAmountInfo.bassRenderAmount)],
-        ["percussionRenderAmountVar", "" + JSON.stringify(renderAmountInfo.percussionRenderAmount)],
-
-        // Melody voice line suspension
-        ["suspendSeedVar", "" + JSON.stringify(suspendInfo.seed)],
-        ["suspendProbabilityVar", "" + JSON.stringify(suspendInfo.probability)],
-
-        // Melody motif and channel distribution
-        ["melodyIndexMotifPatternVar", "" + JSON.stringify(melodyMotifDistributionInfo.indices)],
-        ["endMelodyIndexMotifPatternVar", "" + JSON.stringify(melodyMotifDistributionInfo.endIndices)],
-        ["melodyChannelIndicesVar", "" + JSON.stringify(melodyChannelDistributionInfo.channels)],
-        ["endMelodyChannelIndicesVar", "" + JSON.stringify(melodyChannelDistributionInfo.endChannels)],
-
-        // Bass motif distribution
-        ["bassIndexMotifPatternVar", "" + JSON.stringify(bassMotifDistributionInfo.indices)],
-        ["endBassIndexMotifPatternVar", "" + JSON.stringify(bassMotifDistributionInfo.endIndices)],
-        ["bassChannelIndicesVar", "" + JSON.stringify(bassChannelDistributionInfo.channels)],
-        ["endBassChannelIndicesVar", "" + JSON.stringify(bassChannelDistributionInfo.endChannels)],
-
-        // Inner 1 motif distribution
-        ["inner1IndexMotifPatternVar", "" + JSON.stringify(inner1MotifDistributionInfo.indices)],
-        ["endInner1IndexMotifPatternVar", "" + JSON.stringify(inner1MotifDistributionInfo.endIndices)],
-        ["inner1ChannelIndicesVar", "" + JSON.stringify(inner1ChannelDistributionInfo.channels)],
-        ["endInner1ChannelIndicesVar", "" + JSON.stringify(inner1ChannelDistributionInfo.endChannels)],
-
-        // Inner 2 motif distribution
-        ["inner2IndexMotifPatternVar", "" + JSON.stringify(inner2MotifDistributionInfo.indices)],
-        ["endInner2IndexMotifPatternVar", "" + JSON.stringify(inner2MotifDistributionInfo.endIndices)],
-        ["inner2ChannelIndicesVar", "" + JSON.stringify(inner2ChannelDistributionInfo.channels)],
-        ["endInner2ChannelIndicesVar", "" + JSON.stringify(inner2ChannelDistributionInfo.endChannels)],
-
-
-        // Percussion motif distribution
-        ["percIndexMotifPatternVar", "" + JSON.stringify(percussionMotifDistributionInfo.indices)],
-        ["endPercIndexMotifPatternVar", "" + JSON.stringify(percussionFillMotifDistributionInfo.indices)],
-
-        // Harmony rythm
-        ["harmonyNoteCountVar", "" + harmonyRythmInfo.count],
-        ["harmonyTotalLengthVar", "" + harmonyRythmInfo.totalLength],
-        ["harmonyRythmLengthTypeVar", "" + harmonyRythmInfo.lengthType],
-        ["harmonyRythmMeasureSplitStrategyVar", "" + harmonyRythmInfo.measureSplitStrategy],
-        ["hrDensityCurveSeedVar", "" + harmonyRythmInfo.seed],
-        ["hrDensityCurveAmpVar", "" + harmonyRythmInfo.densityAmplitude],
-        ["hrDensityCurveFreqVar", "" + harmonyRythmInfo.densityFrequency],
-        ["staticHarmonyLengthVar", "" + harmonyRythmInfo.staticLength],
-        ["dynamicHarmonyLengthVar", "" + harmonyRythmInfo.dynamicLength],
-        ["dominantCadenceHarmonyLengthVar", "" + harmonyRythmInfo.dominantCadenceLength],
-        ["tonicCadenceHarmonyLengthVar", "" + harmonyRythmInfo.tonicCadenceLength],
-
-        // Phrase structure
-        ["harmonyPhraseTypeVar", "" + phraseInfo.phraseType],
-        ["harmonyMajorModulationTargetVar", "" + phraseInfo.majorModulationTarget],
-        ["harmonyMinorModulationTargetVar", "" + phraseInfo.minorModulationTarget],
-
-        // Tempo
-        ["sectionTempoVar", "" + tempoInfo.tempo],
-        ["nextSectionTempoVar", "" + tempoInfo.nextTempo],
-        ["prevSectionTempoVar", "" + tempoInfo.prevTempo],
-        ["parallelTempoChangeIndicesVar", JSON.stringify(parallelTempoChangeInfo.indices)],
-        ["sequentialTempoChangeIndicesVar", JSON.stringify(sequentialTempoChangeInfo.indices)],
-        ["sequentialTempoChangeStartIndicesVar", JSON.stringify(sequentialTempoChangeInfo.startIndices)],
-        ["sequentialTempoChangeEndIndicesVar", JSON.stringify(sequentialTempoChangeInfo.endIndices)],
-
-        // Effects
-        ["sequentialMelodyEffectChangeInfoVar", sequentialMelodyEffectChangeInfo],
-        ["sequentialInner1EffectChangeInfoVar", sequentialInner1EffectChangeInfo],
-        ["sequentialInner2EffectChangeInfoVar", sequentialInner2EffectChangeInfo],
-        ["sequentialBassEffectChangeInfoVar", sequentialBassEffectChangeInfo],
-        ["sequentialPercussionEffectChangeInfoVar", sequentialPercussionEffectChangeInfo],
-
-        // Harmony
-        ["harmonyScaleBaseVar", "" + harmonyInfo.scaleBaseNote],
-        ["scaleTypeVar", "" + harmonyInfo.scaleType],
-        ["numeratorVar", "" + harmonyInfo.numerator],
-        ["harmonyElementIndexVar", "" + harmonyInfo.harmonyElementIndex],
-
-
-        ["harmonySeedVar", "" + harmonyExtraInfo.harmonySeed],
-        ["harmonyRaiseLeadingToneVar", "" + harmonyExtraInfo.raiseLeadingTone],
-        ["harmonySimpleMixtureLikelihoodVar", "" + harmonyExtraInfo.simpleMixtureLikelihood],
-        ["harmonySus2ChordsLikelihoodVar", "" + harmonyExtraInfo.sus2ChordsLikelihood],
-        ["harmonySus4ChordsLikelihoodVar", "" + harmonyExtraInfo.sus4ChordsLikelihood],
-        ["harmonyNeighbourChordsLikelihoodVar", "" + harmonyExtraInfo.neighbourChordsLikelihood],
-        ["harmonyPassingChordsLikelihoodVar", "" + harmonyExtraInfo.passingChordsLikelihood],
-        ["harmonyMajorDeceptiveRootVar", "" + harmonyExtraInfo.majorDeceptiveRoot],
-        ["harmonyMinorDeceptiveRootVar", "" + harmonyExtraInfo.minorDeceptiveRoot],
-
-
-        // Melody shape
-        ["melodyCurveAmplitudeVar", "" + melodyShapeInfo.amplitude],
-        ["melodyCurveBiasVar", "" + melodyShapeInfo.bias],
-        ["melodyCurveTypeVar", "" + melodyShapeInfo.curveType],
-        ["melodyCurveIdVar", "" + "\"" + melodyShapeInfo.curveId + "\""],
-        ["melodyCurveMultiplyAmpVar", "true"],
-
-        // Bass shape
-        ["bassCurveAmplitudeVar", "" + bassShapeInfo.amplitude],
-        ["bassCurveBiasVar", "" + bassShapeInfo.bias],
-        ["bassCurveTypeVar", "" + bassShapeInfo.curveType],
-        ["bassCurveIdVar", "" + "\"" + bassShapeInfo.curveId + "\""],
-        ["bassCurveMultiplyAmpVar", "true"]
-
-    ];
-
-    for (let i=0; i<this.modifierFunctions.length; i++) {
-        this.modifierFunctions[i](mods);
-    }
-//    logit(mods);
-
-    return mods;
-};
+}
 
 function findMod(varName, mods) {
     for (let i=0; i<mods.length; i++) {
