@@ -73,7 +73,15 @@ importScripts(
     "composer/datasample.js",
     "composer/testmodule.js");
 
-importScripts("riffwave.js", "midisynthsource.js", "midisynthenvelope.js", "midisynthfilter.js", "midisynthoscillator.js", "midisynthvoice.js", "midisynthinstrument.js", "midisynth.js");
+importScripts(
+    "midisynth/riffwave.js", 
+    "midisynth/midisynthsource.js", 
+    "midisynth/midisynthenvelope.js", 
+    "midisynth/midisynthfilter.js", 
+    "midisynth/midisynthoscillator.js", 
+    "midisynth/midisynthvoice.js", 
+    "midisynth/midisynthinstrument.js", 
+    "midisynth/midisynth.js");
 
 importScripts("stacktrace.js");
 
