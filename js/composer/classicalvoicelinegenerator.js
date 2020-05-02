@@ -643,9 +643,11 @@ ClassicalVoiceLineGenerator.prototype.prepareBeforeSearch = function() {
     this.scalePitchClassesArr = [];
 
     this.changedScaleArr = [];
+    let harmonyElement;
+
 
     for (let i=0; i<harmonyElements.length; i++) {
-        var harmonyElement = harmonyElements[i];
+        harmonyElement = harmonyElements[i];
 
         this.zeroStepConstraints[i] = [];
         this.oneStepConstraints[i] = [];
