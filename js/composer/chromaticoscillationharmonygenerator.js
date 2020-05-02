@@ -1,18 +1,18 @@
 
-function ChromaticOscillationHarmonyState() {
-    this.harmony = null;
-    this.stepCost = 0;
-    this.mode = 0; // 1 means that it is in another harmony than the base
-    this._constructorName = "ChromaticOscillationHarmonyState";
+class ChromaticOscillationHarmonyState {
+    constructor() {
+        this.harmony = null;
+        this.stepCost = 0;
+        this.mode = 0; // 1 means that it is in another harmony than the base
+        this._constructorName = "ChromaticOscillationHarmonyState";
+    }
+    toString() {
+        return JSON.stringify(this);
+    }
+    copy() {
+        return copyObjectDeep(this);
+    }
 }
-
-ChromaticOscillationHarmonyState.prototype.toString = function() {
-    return JSON.stringify(this);
-};
-
-ChromaticOscillationHarmonyState.prototype.copy = function() {
-    return copyObjectDeep(this);
-};
 
 function ChromaticOscillationHarmonyGenerator(options) {
     HarmonyGenerator.call(this, options);
