@@ -16,14 +16,6 @@ if (useDevSources) {
 Modernizr.load(
     [
         {
-            test: Modernizr.webgl,
-            yep: ["js/webglonly-min.js"],
-            complete: function() {
-                console.log("Loaded webgl stuff for three.js");
-                updateLoaderProgress(40);
-            }
-        },
-        {
             both: clientSources,
             complete: function() {
                 updateLoaderProgress(50);
