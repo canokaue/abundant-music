@@ -1,16 +1,18 @@
 
 
-function MidiSynthFilter(sampleFreq, bufferLen) {
-    this.sampleFreq = sampleFreq;
-    this.bufferLen = bufferLen;
+class MidiSynthFilter {
+    constructor(sampleFreq, bufferLen) {
+        this.sampleFreq = sampleFreq;
+        this.bufferLen = bufferLen;
+    }
+    write(arr, offset, len, synth) {
+    }
 }
 
-MidiSynthFilter.prototype.write = function(arr, offset, len, synth) {
-}
 
-function SerialMidiSynthFilter(sampleFreq, bufferLen) {
-    MidiSynthFilter.call(this, sampleFreq, bufferLen);
+class SerialMidiSynthFilter extends MidiSynthFilter{
+    constructor(sampleFreq, bufferLen) {
+        super(sampleFreq, bufferLen);
+    }
 }
-
-SerialMidiSynthFilter.prototype = new MidiSynthFilter();
 
