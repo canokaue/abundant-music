@@ -32,75 +32,66 @@ const Midi = (function() {
     MessageStatus.STRING_TABLE[MessageStatus.INVALID] = "INVALID";
 
 
-    function Message(status) {
-        this.status = typeof(status) === 'undefined' ? 0 : status;
-    }
-    Message.prototype.encode = function(data) {
-    };
-    Message.prototype.toString = function() {
-        return "[Message(status=" + MessageStatus.toString(this.status) + ")]";
-    };
-
-
-
-
-    function DataMessage(status, data1, data2) {
-        Message.call(this, status);
-        this.data1 = typeof(data1) === 'undefined' ? 0 : data1;
-        this.data2 = typeof(data2) === 'undefined' ? 0 : data2;
+    class Message {
+        constructor(status) {
+            this.status = typeof (status) === 'undefined' ? 0 : status;
+        }
+        encode(data) {
+        }
+        toString() {
+            return "[Message(status=" + MessageStatus.toString(this.status) + ")]";
+        }
     }
 
-    DataMessage.prototype = new Message();
-
-    DataMessage.prototype.combinedData = function() {
-        let combined = this.data2;
-        combined <<= 7;
-        combined |= this.data1;
-        return combined;
-    };
-
-
-
-
-    function ChannelMessage(status, channel, data1, data2) {
-        DataMessage.call(this, status, data1, data2);
-        this.channel = typeof(channel) === 'undefined' ? 0 : channel;
+    class DataMessage extends Message {
+        constructor(status, data1, data2) {
+            super(status);
+            this.data1 = typeof (data1) === 'undefined' ? 0 : data1;
+            this.data2 = typeof (data2) === 'undefined' ? 0 : data2;
+        }
+        combinedData() {
+            let combined = this.data2;
+            combined <<= 7;
+            combined |= this.data1;
+            return combined;
+        }
     }
 
-    ChannelMessage.prototype = new DataMessage();
-
-    ChannelMessage.prototype.encode = function(data) {
-        data.writeByte(this.status | this.channel);
-        data.writeByte(Math.round(this.data1));
-        data.writeByte(Math.round(this.data2));
-    };
-
-    ChannelMessage.prototype.toString = function() {
-        return "[ChannelMessage(status=" + MessageStatus.toString(this.status) + " channel=" + this.channel + " data1=" + this.data1.toString(16) + " data2=" + this.data2.toString(16) + ")]";
-    };
-
-
-    function VoiceMessage(status, channel, data1, data2) {
-        ChannelMessage.call(this, status, channel, data1, data2);
+    class ChannelMessage extends DataMessage {
+        constructor(status, channel, data1, data2) {
+            super(status, data1, data2);
+            this.channel = typeof (channel) === 'undefined' ? 0 : channel;
+        }
+        encode(data) {
+            data.writeByte(this.status | this.channel);
+            data.writeByte(Math.round(this.data1));
+            data.writeByte(Math.round(this.data2));
+        }
+        toString() {
+            return "[ChannelMessage(status=" + MessageStatus.toString(this.status) + " channel=" + this.channel + " data1=" + this.data1.toString(16) + " data2=" + this.data2.toString(16) + ")]";
+        }
     }
-    VoiceMessage.prototype = new ChannelMessage();
 
-    VoiceMessage.prototype.octave = function() {
-        return Math.floor(this.data1 / 12) - 1;
-    };
-    VoiceMessage.prototype.pitch = function() {
-        return this.data1;
-    };
-    VoiceMessage.prototype.note = function() {
-        return this.pitch() % 12;
-    };
-    VoiceMessage.prototype.velocity = function() {
-        return this.data2;
-    };
-    VoiceMessage.prototype.toString = function() {
-        return "[VoiceMessage(status=" + MessageStatus.toString(this.status) + " channel=" + this.channel + " note=" + MIDINote.toString(this.note()) + " octave=" + this.octave() + " velocity=" + this.velocity() + ")]";
-    };
-
+    class VoiceMessage extends ChannelMessage{
+        constructor(status, channel, data1, data2) {
+            super(status, channel, data1, data2);
+        }
+        octave() {
+            return Math.floor(this.data1 / 12) - 1;
+        }
+        pitch() {
+            return this.data1;
+        }
+        note() {
+            return this.pitch() % 12;
+        }
+        velocity() {
+            return this.data2;
+        }
+        toString() {
+            return "[VoiceMessage(status=" + MessageStatus.toString(this.status) + " channel=" + this.channel + " note=" + MIDINote.toString(this.note()) + " octave=" + this.octave() + " velocity=" + this.velocity() + ")]";
+        }
+    }
 
     let MIDINote = {
         C: 0,
@@ -199,181 +190,142 @@ const Midi = (function() {
         }
     };
 
-
-
-    function MetaEventMessage(type) {
-        Message.call(this, SystemMessageType.SYSTEM_RESET);
-        this.type = type;
-    }
-    MetaEventMessage.prototype = new Message();
-
-
-    function EndTrackMessage(type) {
-        MetaEventMessage.call(this, type);
-    }
-
-    EndTrackMessage.prototype = new MetaEventMessage();
-
-    EndTrackMessage.prototype.END_OF_TRACK = new EndTrackMessage(MetaEventMessageType.END_OF_TRACK);
-
-    EndTrackMessage.prototype.encode = function(data) {
-        data.writeByte(0xff);
-        data.writeByte(0x2f);
-        data.writeByte(0);
-    };
-
-    function ProgramChangeMessage(channel, instrument) {
-        ChannelMessage.call(this, MessageStatus.PROGRAM_CHANGE, channel, instrument);
-    }
-    ProgramChangeMessage.prototype = new ChannelMessage();
-
-    ProgramChangeMessage.prototype.encode = function(data) {
-        data.writeByte(this.status | this.channel);
-        data.writeByte(this.data1);
-    };
-
-
-    ProgramChangeMessage.prototype.toString = function() {
-        return "[ProgramChangeMessage(channel=" + this.channel + " program=" + this.data1 + ")]";
-    };
-
-
-    function SetTempoMessage(microsPerQuarter) {
-        MetaEventMessage.call(this, MetaEventMessageType.SET_TEMPO);
-
-        this.microsPerQuarter = microsPerQuarter;
-    }
-    SetTempoMessage.prototype = new MetaEventMessage();
-
-    SetTempoMessage.prototype.encode = function(data) {
-        data.writeByte(0xff);
-        data.writeByte(0x51);
-        writeVariableLengthUInt(data, 3);
-        data.writeByte((this.microsPerQuarter >> 16) & 0xff);
-        data.writeByte((this.microsPerQuarter >> 8) & 0xff);
-        data.writeByte((this.microsPerQuarter) & 0xff);
-    };
-
-    SetTempoMessage.prototype.toString= function() {
-        return "[SetTempoMessage(microsPerQuarter=" + this.microsPerQuarter + ")]";
-    };
-
-
-
-    function MIDITrackEvent(time, message)
-    {
-        this.eventTime = time;
-        this.eventMessage = message;
-
-    }
-
-    MIDITrackEvent.prototype.encode = function(data) {
-        writeVariableLengthUInt(data, this.eventTime);
-        this.eventMessage.encode(data);
-    };
-
-    MIDITrackEvent.prototype.toString = function() {
-        return "[MIDITrackEvent(time=" + this.eventTime + " message=" + this.eventMessage + ")]";
-    };
-
-
-
-    function MIDITrack(events) {
-        this.trackEvents = events;
-    }
-    MIDITrack.prototype.toString = function() {
-        return "[MIDITrack(events=\n\t" + this.trackEvents.join("\n\t") + ")]";
-    };
-
-
-    function MIDIFile(format, division, tracks)
-    {
-        this.fileFormat = format;
-        this.midiDivision = division;
-        this.midiTracks = tracks ? tracks : [];
-
-    }
-    MIDIFile.prototype.numTracks = function() {
-        return this.midiTracks.length;
-    };
-    MIDIFile.prototype.toString = function() {
-        return "[MIDIFile(format=" + this.fileFormat + " division=" + this.midiDivision + " numTracks=" + this.midiTracks.length + " tracks=\n\t" + this.midiTracks.join("\n\t") + ")]";
-    };
-
-
-    function MIDIEncoder() {
-    }
-    MIDIEncoder.prototype.MIDI_FILE_HEADER_TAG = 0x4D546864; // MThd
-    MIDIEncoder.prototype.MIDI_FILE_HEADER_SIZE = 0x00000006;
-    MIDIEncoder.prototype.MIDI_TRACK_HEADER_TAG = 0x4D54726B; // MTrk
-
-    MIDIEncoder.prototype.encodeEvents = function(data, events) {
-        for (let i = 0; i < events.length; i++) {
-            const event = events[i];
-            event.encode(data);
+    class MetaEventMessage extends Message {
+        constructor(type) {
+            super(SystemMessageType.SYSTEM_RESET);
+            this.type = type;
         }
-    };
-
-
-    MIDIEncoder.prototype.encodeFile = function(data, file) {
-
-        data.writeInt(this.MIDI_FILE_HEADER_TAG);
-        data.writeInt(this.MIDI_FILE_HEADER_SIZE);
-
-        const format = file.fileFormat;
-        const numTracks = file.midiTracks.length;
-        const timingDivision = file.midiDivision;
-
-        if (typeof(format) === 'undefined') {
-            logit("format undef...");
-        }
-        if (typeof(numTracks) === 'undefined') {
-            logit("numtracks undef...");
-        }
-        if (typeof(timingDivision) === 'undefined') {
-            logit("divisiion undef...");
-        }
-        data.writeShort(format);
-        data.writeShort(numTracks);
-        data.writeShort(timingDivision);
-
-        const tracks = file.midiTracks;
-
-        let track;
-        let trackHeader;
-        let trackSize;
-        let trackEnd;
-        let trackTime;
-
-        let events;
-        let event;
-        let eventDelta;
-
-        let messageBytes;
-        let message;
-
-        let previousStatusByte;
-
-        for (let i = 0; i < numTracks; i++) {
-            track = tracks[i];
-
-            events = track.trackEvents;
-
-            data.writeInt(this.MIDI_TRACK_HEADER_TAG);
-
-            // Encoding all events in the track and then check and write the size
-            const trackBytes = new FakeByteArray();
-            this.encodeEvents(trackBytes, events);
-
-            data.writeInt(trackBytes.length);
-
-            // Write all the track bytes
-            data.appendByteArray(trackBytes);
-        }
-//    logit("Data length: " + data.lengths.length);
     }
 
+    class EndTrackMessage extends MetaEventMessage {
+        constructor(type) {
+            super(type);
+        }
+        encode(data) {
+            data.writeByte(0xff);
+            data.writeByte(0x2f);
+            data.writeByte(0);
+        }
 
+        END_OF_TRACK = new EndTrackMessage(MetaEventMessageType.END_OF_TRACK);
+    }
+
+    class ProgramChangeMessage extends ChannelMessage {
+        constructor(channel, instrument) {
+            super(MessageStatus.PROGRAM_CHANGE, channel, instrument, '');
+        }
+        encode(data) {
+            data.writeByte(this.status | this.channel);
+            data.writeByte(this.data1);
+        }
+        toString() {
+            return "[ProgramChangeMessage(channel=" + this.channel + " program=" + this.data1 + ")]";
+        }
+    }
+
+    class SetTempoMessage extends MetaEventMessage {
+        constructor(microsPerQuarter) {
+           super( MetaEventMessageType.SET_TEMPO);
+            this.microsPerQuarter = microsPerQuarter;
+        }
+        encode(data) {
+            data.writeByte(0xff);
+            data.writeByte(0x51);
+            writeVariableLengthUInt(data, 3);
+            data.writeByte((this.microsPerQuarter >> 16) & 0xff);
+            data.writeByte((this.microsPerQuarter >> 8) & 0xff);
+            data.writeByte((this.microsPerQuarter) & 0xff);
+        }
+        toString() {
+            return "[SetTempoMessage(microsPerQuarter=" + this.microsPerQuarter + ")]";
+        }
+    }
+
+    class MIDITrackEvent {
+        constructor(time, message) {
+            this.eventTime = time;
+            this.eventMessage = message;
+        }
+        encode(data) {
+            writeVariableLengthUInt(data, this.eventTime);
+            this.eventMessage.encode(data);
+        }
+        toString() {
+            return "[MIDITrackEvent(time=" + this.eventTime + " message=" + this.eventMessage + ")]";
+        }
+    }
+
+    class MIDITrack {
+        constructor(events) {
+            this.trackEvents = events;
+        }
+        toString() {
+            return "[MIDITrack(events=\n\t" + this.trackEvents.join("\n\t") + ")]";
+        }
+    }
+
+    class MIDIFile {
+        constructor(format, division, tracks) {
+            this.fileFormat = format;
+            this.midiDivision = division;
+            this.midiTracks = tracks ? tracks : [];
+        }
+        numTracks() {
+            return this.midiTracks.length;
+        }
+        toString() {
+            return "[MIDIFile(format=" + this.fileFormat + " division=" + this.midiDivision + " numTracks=" + this.midiTracks.length + " tracks=\n\t" + this.midiTracks.join("\n\t") + ")]";
+        }
+    }
+
+    class MIDIEncoder {
+        constructor() {
+        }
+        encodeEvents(data, events) {
+            for (let i = 0; i < events.length; i++) {
+                const event = events[i];
+                event.encode(data);
+            }
+        }
+        encodeFile(data, file) {
+            data.writeInt(this.MIDI_FILE_HEADER_TAG);
+            data.writeInt(this.MIDI_FILE_HEADER_SIZE);
+            const format = file.fileFormat;
+            const numTracks = file.midiTracks.length;
+            const timingDivision = file.midiDivision;
+            if (typeof (format) === 'undefined') {
+                logit("format undef...");
+            }
+            if (typeof (numTracks) === 'undefined') {
+                logit("numtracks undef...");
+            }
+            if (typeof (timingDivision) === 'undefined') {
+                logit("divisiion undef...");
+            }
+            data.writeShort(format);
+            data.writeShort(numTracks);
+            data.writeShort(timingDivision);
+            const tracks = file.midiTracks;
+            let track;
+            let events;
+            for (let i = 0; i < numTracks; i++) {
+                track = tracks[i];
+                events = track.trackEvents;
+                data.writeInt(this.MIDI_TRACK_HEADER_TAG);
+                // Encoding all events in the track and then check and write the size
+                const trackBytes = new FakeByteArray();
+                this.encodeEvents(trackBytes, events);
+                data.writeInt(trackBytes.length);
+                // Write all the track bytes
+                data.appendByteArray(trackBytes);
+            }
+            //    logit("Data length: " + data.lengths.length);
+        }
+    
+        MIDI_FILE_HEADER_TAG = 0x4D546864; // MThd
+        MIDI_FILE_HEADER_SIZE = 0x00000006;
+        MIDI_TRACK_HEADER_TAG = 0x4D54726B; // MTrk
+    }
 
     function writeVariableLengthUInt(data, theUInt) {
         const mask = 0xffffff7f;
@@ -393,18 +345,13 @@ const Midi = (function() {
             bytes.push(0);
         }
 
-//var str = "";
-//var hexStr = "";
-        for (i = bytes.length - 1; i >= 0; i--) {
-            byt = bytes[i];
+        for (let i = bytes.length - 1; i >= 0; i--) {
+            let byt = bytes[i];
             if (i != 0) {
                 byt = byt | 0x80;
             }
             data.writeByte(byt);
-            //str += byte.toString(2);
-            //hexStr += byte.toString(16);
         }
-//trace("Result: " + str + " or " + hexStr);
     }
 
 
@@ -434,10 +381,6 @@ const Midi = (function() {
             const track = inputMidiTracks[i];
 
             if (typeof(track.trackEvents) === 'undefined') {
-//        textArea.text += "Midi data track missing trackEvents property\n";
-//        textArea.text += JSON.stringify(track) + "\n";
-//        textArea.text += JSON.stringify(inputMidiTracks[i]) + "\n";
-//        textArea.text += JSON.stringify(inputMidiTracks) + "\n";
                 return;
             }
 
@@ -446,21 +389,18 @@ const Midi = (function() {
                 const event = events[j];
 
                 if (typeof(event.eventTime) === 'undefined') {
-//            textArea.text += "Midi data event missing eventTime property\n";
                     return;
                 }
 
                 const eventTime = event.eventTime;
 
                 if (typeof(event.eventMessage) === 'undefined') {
-//            textArea.text += "Midi data event missing eventMessage property\n";
                     return;
                 }
 
                 const eventMessage = event.eventMessage;
 
                 if (typeof(eventMessage.messageClass) === 'undefined') {
-//            textArea.text += "Midi data event message missing messageClass property\n";
                     return;
                 }
 
