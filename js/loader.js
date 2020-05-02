@@ -16,18 +16,6 @@ if (useDevSources) {
 Modernizr.load(
     [
         {
-            both: ["js/jquery-1.8.3.min.js", "js/jquery-ui-1.9.2.custom.min.js", "css/base/jquery-ui.css"],
-            complete: function() {
-                console.log("Loaded jQuery!");
-
-                $.uiBackCompat = false;
-
-                // Creating progressbar
-                $('#loader-progress').progressbar();
-                updateLoaderProgress(10);
-            }
-        },
-        {
             both: ["js/composeeditoronlinesource-min.js", "js/songsettings.js"],
             complete: function() {
                 loadSettingsFromLocalStorage();
