@@ -1,104 +1,102 @@
 
-function RenderData() {
-    this.events = [];
+class RenderData {
+    constructor() {
+        this.events = [];
+    }
+    toNetJSON() {
+        const resultArr = [];
+        resultArr.push("{");
+        const renderChannelIndices = {};
+        const renderChannelNames = [];
+        const controlChannelIndices = {};
+        const controlChannelNames = [];
+        for (let i = 0; i < this.events.length; i++) {
+            const e = this.events[i];
+            if (e.renderChannel) {
+                var index = renderChannelIndices[e.renderChannel.id];
+                if (typeof (index) === 'undefined') {
+                    renderChannelIndices[e.renderChannel.id] = renderChannelNames.length;
+                    renderChannelNames.push(e.renderChannel.id);
+                }
+            }
+            if (e.controlChannel) {
+                var index = controlChannelIndices[e.controlChannel.id];
+                if (typeof (index) === 'undefined') {
+                    controlChannelIndices[e.controlChannel.id] = controlChannelNames.length;
+                    controlChannelNames.push(e.controlChannel.id);
+                }
+            }
+        }
+        resultArr.push("\"renderChannelNames\": " + JSON.stringify(renderChannelNames) + ",");
+        resultArr.push("\"controlChannelNames\": " + JSON.stringify(controlChannelNames) + ",");
+        resultArr.push("\"events\": [");
+        const resultArr2 = [];
+        for (let i = 0; i < this.events.length; i++) {
+            resultArr2.push(this.events[i].toNetJSON(renderChannelIndices, controlChannelIndices));
+        }
+        resultArr.push(resultArr2.join(",\n"));
+        resultArr.push("]}\n");
+        return resultArr.join("");
+    }
+    sort() {
+        this.events.sort(function (a, b) {
+            const diff = a.time - b.time;
+            return diff;
+        });
+    }
+    addEvent(event) {
+        this.events.push(event);
+        return this;
+    }
+    addEvents(events) {
+        addAll(this.events, events);
+        return this;
+    }
+    getEvents() {
+        return this.events;
+    }
+    getNonOverlappingDatas() {
+        const result = [];
+        return result;
+    }
+    getTimeLimits() {
+        let minTime = this.events.length == 0 ? 0 : 99999999;
+        let maxTime = this.events.length == 0 ? 0 : -99999999;
+        for (let i = 0; i < this.events.length; i++) {
+            const e = this.events[i];
+            const t = e.getTime();
+            minTime = Math.min(minTime, t);
+            maxTime = Math.max(maxTime, t);
+        }
+        return [minTime, maxTime];
+    }
+    splitOnTime(time) {
+        const before = new RenderData();
+        const after = new RenderData();
+        for (let i = 0; i < this.events.length; i++) {
+            const e = this.events[i];
+            if (e.getTime() >= time) {
+                after.events.push(e);
+            }
+            else {
+                before.events.push(e);
+            }
+        }
+        const result = [before, after];
+        return result;
+    }
 }
 
 
-RenderData.prototype.toNetJSON = function() {
-    const resultArr = [];
-    resultArr.push("{");
-
-    const renderChannelIndices = {};
-    const renderChannelNames = [];
-    const controlChannelIndices = {};
-    const controlChannelNames = [];
-    for (let i=0; i<this.events.length; i++) {
-        const e = this.events[i];
-        if (e.renderChannel) {
-            var index = renderChannelIndices[e.renderChannel.id];
-            if (typeof(index) === 'undefined') {
-                renderChannelIndices[e.renderChannel.id] = renderChannelNames.length;
-                renderChannelNames.push(e.renderChannel.id);
-            }
-        }
-        if (e.controlChannel) {
-            var index = controlChannelIndices[e.controlChannel.id];
-            if (typeof(index) === 'undefined') {
-                controlChannelIndices[e.controlChannel.id] = controlChannelNames.length;
-                controlChannelNames.push(e.controlChannel.id);
-            }
-        }
-    }
-
-    resultArr.push("\"renderChannelNames\": " + JSON.stringify(renderChannelNames) + ",");
-    resultArr.push("\"controlChannelNames\": " + JSON.stringify(controlChannelNames) + ",");
-
-    resultArr.push("\"events\": [");
-    const resultArr2 = [];
-    for (let i=0; i<this.events.length; i++) {
-        resultArr2.push(this.events[i].toNetJSON(renderChannelIndices, controlChannelIndices));
-    }
-    resultArr.push(resultArr2.join(",\n"));
-    resultArr.push("]}\n");
-    return resultArr.join("");
-};
-
-RenderData.prototype.sort = function() {
-    this.events.sort(function(a, b) {
-        const diff = a.time - b.time;
-        return diff;
-    });
-};
 
 
 
-RenderData.prototype.addEvent = function(event) {
-    this.events.push(event);
-    return this;
-};
-RenderData.prototype.addEvents = function(events) {
-    addAll(this.events, events);
-    return this;
-};
-
-RenderData.prototype.getEvents = function() {
-    return this.events;
-};
-
-RenderData.prototype.getNonOverlappingDatas = function() {
-    const result = [];
-    
-    return result;
-};
 
 
-RenderData.prototype.getTimeLimits = function() {
-    let minTime = this.events.length == 0 ? 0 : 99999999;
-    let maxTime = this.events.length == 0 ? 0 : -99999999;
-    for (let i = 0; i<this.events.length; i++) {
-        const e = this.events[i];
-        const t = e.getTime();
-        minTime = Math.min(minTime, t);
-        maxTime = Math.max(maxTime, t);
-    }
-    return [minTime, maxTime];
-};
 
-RenderData.prototype.splitOnTime = function(time) {
-    const before = new RenderData();
-    const after = new RenderData();
-		
-    for (let i = 0; i<this.events.length; i++) {
-        const e = this.events[i];
-        if (e.getTime() >= time) {
-            after.events.push(e);
-        } else {
-            before.events.push(e);
-        }
-    }
-    const result = [before, after];
-    return result;
-};
+
+
+
 
 
 
