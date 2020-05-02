@@ -152,13 +152,9 @@ class Visualizer3D extends Visualizer {
             //        this.camera.toOrthographic();
             this.scene = new THREE.Scene();
             this.scene.fog = new THREE.FogExp2(this.clearColor, 0.008);
-            this.landscapeChunkSize = 128;
-            this.landscapeChunkDivisions = this.getLandscapeChunkDivisions();
             const rnd = new MersenneTwister(3423432);
             this.perlin = new ClassicalNoise(rnd);
             this.frustumChunks = new FrustumCullingChunks();
-            this.createLandscape();
-            //        this.scene.add(this.createLandscape());
             this.addGlobalLights();
             this.noteChunks = [];
             this.noteCollisionGrid = [];
@@ -419,99 +415,6 @@ class Visualizer3D extends Visualizer {
         // Reset the drag memory
         this.mouseCanvasDragDx = 0;
         this.mouseCanvasDragDy = 0;
-    }
-    getLandscapeNormal(x, y) {
-        const d = 0.1;
-        const h = this.randomHeight(x, y);
-        const dzdx = (this.randomHeight(x + d, y) - h) / d;
-        const dzdy = (this.randomHeight(x, y + d) - h) / d;
-        //    logit("d stuff " + dzdx + " " + dzdy);
-        const result = new THREE.Vector3(-dzdx, 1, -dzdy).normalize();
-        return result;
-    }
-    randomHeight(x, y) {
-        let freq = 3;
-        const landscapeChunkSize = this.landscapeChunkSize;
-        const perlin = this.perlin;
-        let z = 34.342352;
-        let n = perlin.noise(freq * x / landscapeChunkSize, freq * y / landscapeChunkSize, z);
-        freq *= 2;
-        z = 21.23423;
-        n += 0.5 * perlin.noise(freq * x / landscapeChunkSize, freq * y / landscapeChunkSize, z);
-        freq *= 2;
-        z = 43.24891;
-        n += 0.25 * perlin.noise(freq * x / landscapeChunkSize, freq * y / landscapeChunkSize, z);
-        //        var n = perlin.noise(x, y, 21.32124432);
-        let result = 40 + n * 20;
-        const corridorRadius = 35;
-        const corridorHeight = 15;
-        const corridorMaxInfulence = 0.5;
-        const absY = Math.abs(y);
-        if (absY < corridorRadius) {
-            let mixValue = (corridorRadius - absY) / corridorRadius;
-            mixValue = Math.min(mixValue, corridorMaxInfulence);
-            result = mixValue * corridorHeight + (1.0 - mixValue) * result;
-        }
-        return result;
-    }
-    createLandscapeChunk(cx, cz) {
-        const landscapeChunkSize = this.landscapeChunkSize;
-        const landscapeChunkDivisions = this.landscapeChunkDivisions;
-        const landscapeChunkParent = new THREE.Object3D();
-        const landscapeGeom = new THREE.PlaneGeometry(landscapeChunkSize, landscapeChunkSize, landscapeChunkDivisions - 1, landscapeChunkDivisions - 1);
-        const m2 = new THREE.Matrix4();
-        m2.rotateX(-Math.PI * 0.5);
-        const chunkOffsetX = cx * landscapeChunkSize;
-        const chunkOffsetZ = cz * landscapeChunkSize;
-        landscapeGeom.applyMatrix(m2);
-        const step = landscapeChunkSize / landscapeChunkDivisions;
-        for (var i = 0, l = landscapeGeom.vertices.length; i < l; i++) {
-            const x = i % landscapeChunkDivisions;
-            const y = ~~(i / landscapeChunkDivisions);
-            const v = landscapeGeom.vertices[i];
-            v.y = this.randomHeight(v.x + chunkOffsetX, v.z + chunkOffsetZ);
-        }
-        const vertices = landscapeGeom.vertices;
-        for (let i = 0; i < landscapeGeom.faces.length; i++) {
-            const face = landscapeGeom.faces[i];
-            const va = vertices[face.a];
-            const vb = vertices[face.b];
-            const vc = vertices[face.c];
-            const vd = vertices[face.d];
-            face.vertexNormals[0].copy(this.getLandscapeNormal(va.x + chunkOffsetX, va.z + chunkOffsetZ));
-            face.vertexNormals[1].copy(this.getLandscapeNormal(vb.x + chunkOffsetX, vb.z + chunkOffsetZ));
-            face.vertexNormals[2].copy(this.getLandscapeNormal(vc.x + chunkOffsetX, vc.z + chunkOffsetZ));
-            face.vertexNormals[3].copy(this.getLandscapeNormal(vd.x + chunkOffsetX, vd.z + chunkOffsetZ));
-        }
-        landscapeGeom.computeFaceNormals();
-        //    landscapeGeom.computeVertexNormals();
-        landscapeGeom.normalsNeedUpdate = true;
-        //    var material = this.getLandscapeMaterial(0x444444, 0x000000);
-        const material = this.getLandscapeMaterial(0x444444, 0x333333);
-        landscapeGeom.computeCentroids();
-        const mesh = new THREE.Mesh(landscapeGeom, material);
-        landscapeChunkParent.add(mesh);
-        landscapeChunkParent.position.set(chunkOffsetX, 0, chunkOffsetZ);
-        return landscapeChunkParent;
-    }
-    createLandscape() {
-        this.landscapeInfos = [];
-        //    var landscapeParent = new THREE.Object3D();
-        const minChunkIndexX = -1;
-        const maxChunkIndexX = 5;
-        const minChunkIndexZ = -1;
-        const maxChunkIndexZ = 1;
-        const chunkRad = this.landscapeChunkSize / Math.sqrt(2);
-        for (let x = minChunkIndexX; x <= maxChunkIndexX; x++) {
-            for (let z = minChunkIndexZ; z <= maxChunkIndexZ; z++) {
-                const xIndex = x;
-                const yIndex = z;
-                const lsChunk = this.createLandscapeChunk(xIndex, yIndex);
-                this.scene.add(lsChunk);
-                this.frustumChunks.addChunk(lsChunk, { radius: chunkRad });
-            }
-        }
-        //    return landscapeParent;
     }
     render() {
         this.renderer.render(this.scene, this.camera);
