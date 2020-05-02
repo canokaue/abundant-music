@@ -1,6 +1,6 @@
 // Give credit to the one who coded this!
 
-function Map(linkEntries) {
+function MapClass(linkEntries) {
     this.current = undefined;
     this.size = 0;
     this.isLinked = true;
@@ -9,8 +9,8 @@ function Map(linkEntries) {
         this.disableLinking();
 }
 
-Map.from = function(obj, foreignKeys, linkEntries) {
-    const map = new Map(linkEntries);
+MapClass.from = function(obj, foreignKeys, linkEntries) {
+    const map = new MapClass(linkEntries);
 
     for(const prop in obj) {
         if(foreignKeys || obj.hasOwnProperty(prop))
@@ -20,41 +20,41 @@ Map.from = function(obj, foreignKeys, linkEntries) {
     return map;
 };
 
-Map.noop = function() {
+MapClass.noop = function() {
     return this;
 };
 
-Map.illegal = function() {
+MapClass.illegal = function() {
     throw new Error('can\'t do this with unlinked maps');
 };
 
-Map.prototype.disableLinking = function() {
+MapClass.prototype.disableLinking = function() {
     this.isLinked = false;
-    this.link = Map.noop;
-    this.unlink = Map.noop;
-    this.disableLinking = Map.noop;
-    this.next = Map.illegal;
-    this.key = Map.illegal;
-    this.value = Map.illegal;
-    this.removeAll = Map.illegal;
-    this.each = Map.illegal;
-    this.flip = Map.illegal;
-    this.drop = Map.illegal;
-    this.listKeys = Map.illegal;
-    this.listValues = Map.illegal;
+    this.link = MapClass.noop;
+    this.unlink = MapClass.noop;
+    this.disableLinking = MapClass.noop;
+    this.next = MapClass.illegal;
+    this.key = MapClass.illegal;
+    this.value = MapClass.illegal;
+    this.removeAll = MapClass.illegal;
+    this.each = MapClass.illegal;
+    this.flip = MapClass.illegal;
+    this.drop = MapClass.illegal;
+    this.listKeys = MapClass.illegal;
+    this.listValues = MapClass.illegal;
 
     return this;
 };
 
-Map.prototype.hash = function(value) {
+MapClass.prototype.hash = function(value) {
     return value instanceof Object ? (value.__hash ||
         (value.__hash = 'object ' + ++arguments.callee.current)) :
     (typeof value) + ' ' + String(value);
 };
 
-Map.prototype.hash.current = 0;
+MapClass.prototype.hash.current = 0;
 
-Map.prototype.link = function(entry) {
+MapClass.prototype.link = function(entry) {
     if(this.size === 0) {
         entry.prev = entry;
         entry.next = entry;
@@ -68,7 +68,7 @@ Map.prototype.link = function(entry) {
     }
 };
 
-Map.prototype.unlink = function(entry) {
+MapClass.prototype.unlink = function(entry) {
     if(this.size === 0)
         this.current = undefined;
     else {
@@ -79,12 +79,12 @@ Map.prototype.unlink = function(entry) {
     }
 };
 
-Map.prototype.get = function(key) {
+MapClass.prototype.get = function(key) {
     const entry = this[this.hash(key)];
     return typeof entry === 'undefined' ? undefined : entry.value;
 };
 
-Map.prototype.put = function(key, value) {
+MapClass.prototype.put = function(key, value) {
     const hash = this.hash(key);
 
     if(this.hasOwnProperty(hash))
@@ -103,7 +103,7 @@ Map.prototype.put = function(key, value) {
     return this;
 };
 
-Map.prototype.remove = function(key) {
+MapClass.prototype.remove = function(key) {
     const hash = this.hash(key);
 
     if(this.hasOwnProperty(hash)) {
@@ -116,36 +116,36 @@ Map.prototype.remove = function(key) {
     return this;
 };
 
-Map.prototype.removeAll = function() {
+MapClass.prototype.removeAll = function() {
     while(this.size)
         this.remove(this.key());
 
     return this;
 };
 
-Map.prototype.contains = function(key) {
+MapClass.prototype.contains = function(key) {
     return this.hasOwnProperty(this.hash(key));
 };
 
-Map.prototype.isUndefined = function(key) {
+MapClass.prototype.isUndefined = function(key) {
     const hash = this.hash(key);
     return this.hasOwnProperty(hash) ?
     typeof this[hash] === 'undefined' : false;
 };
 
-Map.prototype.next = function() {
+MapClass.prototype.next = function() {
     this.current = this.current.next;
 };
 
-Map.prototype.key = function() {
+MapClass.prototype.key = function() {
     return this.current.key;
 };
 
-Map.prototype.value = function() {
+MapClass.prototype.value = function() {
     return this.current.value;
 };
 
-Map.prototype.each = function(func, thisArg) {
+MapClass.prototype.each = function(func, thisArg) {
     if(typeof thisArg === 'undefined')
         thisArg = this;
 
@@ -158,8 +158,8 @@ Map.prototype.each = function(func, thisArg) {
     return this;
 };
 
-Map.prototype.flip = function(linkEntries) {
-    const map = new Map(linkEntries);
+MapClass.prototype.flip = function(linkEntries) {
+    const map = new MapClass(linkEntries);
 
     for(let i = this.size; i--; this.next()) {
         const value = this.value(), list = map.get(value);
@@ -171,7 +171,7 @@ Map.prototype.flip = function(linkEntries) {
     return map;
 };
 
-Map.prototype.drop = function(func, thisArg) {
+MapClass.prototype.drop = function(func, thisArg) {
     if(typeof thisArg === 'undefined')
         thisArg = this;
 
@@ -186,7 +186,7 @@ Map.prototype.drop = function(func, thisArg) {
     return this;
 };
 
-Map.prototype.listValues = function() {
+MapClass.prototype.listValues = function() {
     const list = [];
 
     for(let i = this.size; i--; this.next())
@@ -195,7 +195,7 @@ Map.prototype.listValues = function() {
     return list;
 }
 
-Map.prototype.listKeys = function() {
+MapClass.prototype.listKeys = function() {
     const list = [];
 
     for(let i = this.size; i--; this.next())
@@ -204,8 +204,8 @@ Map.prototype.listKeys = function() {
     return list;
 }
 
-Map.prototype.toString = function() {
-    let string = '[object Map';
+MapClass.prototype.toString = function() {
+    let string = '[object MapClass';
 
     function addEntry(key, value, hasNext) {
         string += '    { ' + this.hash(key) + ' : ' + value + ' }' +
@@ -221,8 +221,8 @@ Map.prototype.toString = function() {
     return string;
 };
 
-Map.reverseIndexTableFrom = function(array, linkEntries) {
-    const map = new Map(linkEntries);
+MapClass.reverseIndexTableFrom = function(array, linkEntries) {
+    const map = new MapClass(linkEntries);
 
     for(let i = 0, len = array.length; i < len; ++i) {
         const entry = array[i], list = map.get(entry);
@@ -234,30 +234,30 @@ Map.reverseIndexTableFrom = function(array, linkEntries) {
     return map;
 };
 
-Map.cross = function(map1, map2, func, thisArg) {
-    let linkedMap, otherMap;
+MapClass.cross = function(map1, map2, func, thisArg) {
+    let linkedMapClass, otherMapClass;
 
     if(map1.isLinked) {
-        linkedMap = map1;
-        otherMap = map2;
+        linkedMapClass = map1;
+        otherMapClass = map2;
     }
     else if(map2.isLinked) {
-        linkedMap = map2;
-        otherMap = map1;
+        linkedMapClass = map2;
+        otherMapClass = map1;
     }
-    else Map.illegal();
+    else MapClass.illegal();
 
-    for(let i = linkedMap.size; i--; linkedMap.next()) {
-        const key = linkedMap.key();
-        if(otherMap.contains(key))
+    for(let i = linkedMapClass.size; i--; linkedMapClass.next()) {
+        const key = linkedMapClass.key();
+        if(otherMapClass.contains(key))
             func.call(thisArg, key, map1.get(key), map2.get(key));
     }
 
     return thisArg;
 };
 
-Map.uniqueArray = function(array) {
-    const map = new Map;
+MapClass.uniqueArray = function(array) {
+    const map = new MapClass;
 
     for(let i = 0, len = array.length; i < len; ++i)
         map.put(array[i]);

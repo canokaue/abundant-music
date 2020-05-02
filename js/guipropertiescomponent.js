@@ -417,9 +417,9 @@ GuiPropertiesComponent.prototype.createComponents = function() {
     const infosArr = this.propertyInfos.getAsArray();
     const components = [];
 
-    const splitComponents = new Map(true);
+    const splitComponents = new MapClass(true);
 
-    const groupCaptions = new Map(true);
+    const groupCaptions = new MapClass(true);
 
     const that = this;
     for (let i=0; i<infosArr.length; i++) {
@@ -442,7 +442,7 @@ GuiPropertiesComponent.prototype.createComponents = function() {
             if (splitInfo) {
                 let splitMap = splitComponents.get(splitInfo.splitType);
                 if (!splitMap) {
-                    splitMap = new Map(true);
+                    splitMap = new MapClass(true);
                     splitComponents.put(splitInfo.splitType, splitMap);
                 }
                 let splitArr = splitMap.get(splitInfo.group);

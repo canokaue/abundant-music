@@ -316,7 +316,7 @@ SplitZoneCollection.prototype.getSplitBeat = function(module,
     }
     let iteration = 0;
 
-    const applicationMap = new Map();
+    const applicationMap = new MapClass();
     while (true) {
         const next = this.singleSplit(module, density,
             currentBeat,

@@ -442,13 +442,13 @@ class MotifRenderElement extends PositionedRenderElement {
             return;
         }
         let harmony = state.constantHarmony;
-        const noteAbsoluteNotes = new Map(true);
+        const noteAbsoluteNotes = new MapClass(true);
         const voiceElements = [];
-        const previousVoiceElements = new Map(true);
-        const nextVoiceElements = new Map(true);
-        const voiceHarmonyElements = new Map(true);
-        const voiceVoiceLineElements = new Map(true);
-        const elementHarmonyIndices = new Map(true);
+        const previousVoiceElements = new MapClass(true);
+        const nextVoiceElements = new MapClass(true);
+        const voiceHarmonyElements = new MapClass(true);
+        const voiceVoiceLineElements = new MapClass(true);
+        const elementHarmonyIndices = new MapClass(true);
         // The voice line can either be used or a dummy will be created
         const theVoiceLine = this.getOrCreateVoiceLine(state, harmony);
         const voiceLineHarmony = state.voiceLineHarmonies[theVoiceLine.id];

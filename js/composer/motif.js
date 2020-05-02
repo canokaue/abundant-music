@@ -26,7 +26,7 @@ Motif.prototype.toString = function(options) {
 
 Motif.prototype.getConstantMotifElements = function(module, harmony, harmonyBeatOffset, visitedMotifs) {
     if (!visitedMotifs) {
-        visitedMotifs = new Map(true);
+        visitedMotifs = new MapClass(true);
     }
     let result = [];
 

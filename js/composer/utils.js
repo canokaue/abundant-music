@@ -705,7 +705,7 @@ function objectToJson(obj, arr, visited) {
     }
 
     if (!visited) {
-        visited = new Map(true);
+        visited = new MapClass(true);
     }
     const hasVisited = visited.get(obj);
     if (hasVisited) {
@@ -777,7 +777,7 @@ function traverseValue(value, visitor, visited) {
     }
 
     if (!visited) {
-        visited = new Map(true);
+        visited = new MapClass(true);
     }
 
     if (isArray(value)) {

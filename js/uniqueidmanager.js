@@ -97,7 +97,7 @@ UniqueIdManager.prototype.addUniqueId = function(owner, namespace, newId) {
 
     let idInfos = this.uniqueIdInfos[namespace];
     if (!idInfos) {
-        idInfos = new Map(true);
+        idInfos = new MapClass(true);
         this.uniqueIdInfos[namespace] = idInfos;
     }
     if (typeof idInfos.get(newId) === 'undefined') {
