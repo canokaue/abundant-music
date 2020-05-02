@@ -16,13 +16,6 @@ if (useDevSources) {
 Modernizr.load(
     [
         {
-            both: ["js/jquery.cookie.js", "js/openid-jquery.js", "js/openid-en.js", "css/openid.css", "js/three.min.js"],
-            complete: function() {
-                console.log("Loaded jQuery plugins and three.js");
-                updateLoaderProgress(30);
-            }
-        },
-        {
             test: Modernizr.webgl,
             yep: ["js/webglonly-min.js"],
             complete: function() {
