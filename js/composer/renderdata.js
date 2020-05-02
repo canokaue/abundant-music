@@ -1,4 +1,3 @@
-
 class RenderData {
     constructor() {
         this.events = [];
@@ -87,145 +86,118 @@ class RenderData {
     }
 }
 
+class RenderEvent {
+    constructor(time) {
+        this.time = time;
+    }
+    toNetJSON(renderChannelIndices, controlChannelIndices) {
+        const resultArr = [];
+        for (const prop in this.netJSONPropertiesMap) {
+            let value = this[prop];
+            const shortProp = this.netJSONPropertiesMap[prop];
+            value = this.netJSONTransformProperty(prop, value, renderChannelIndices, controlChannelIndices);
+            if (typeof (value) === 'string') {
+                resultArr.push("\"" + shortProp + "\":\"" + value + "\"");
+            }
+            else {
+                resultArr.push("\"" + shortProp + "\":" + value);
+            }
+        }
+        return "{" + resultArr.join(",") + "}";
+    }
+    netJSONTransformProperty(name, value, renderChannelIndices, controlChannelIndices) {
+        if (name == "type") {
+            return this.netJSONType;
+        }
+        return value;
+    }
+    getTime() {
+        return this.time;
+    }
+}
 
+class NoteOnEvent extends RenderEvent {
+    constructor(note, time, onVelocity, renderChannel) {
+        super(time);
+        this.type = "noteOn";
+        this.note = note;
+        this.onVelocity = onVelocity;
+        this.renderChannel = renderChannel;
+    }
+    netJSONTransformProperty(name, value, renderChannelIndices, controlChannelIndices) {
+        if (name == "renderChannel") {
+            return renderChannelIndices[value.id];
+        }
+        else {
+            return RenderEvent.prototype.netJSONTransformProperty.call(this, name, value, renderChannelIndices, controlChannelIndices);
+        }
+    }
+    toString() {
+        return "noteOn(" + this.note + ", " + this.time + ", " + this.onVelocity + ", " + this.renderChannel.id + ")";
+    }
 
+    netJSONPropertiesMap = {"time": "t", "type": "y", "note": "n", "onVelocity": "v", "renderChannel": "c"};
 
+    netJSONType = "n";
+}
 
+class NoteOffEvent extends RenderEvent {
+    constructor(note, time, offVelocity, renderChannel) {
+        super(time);
+        this.type = "noteOff";
+        this.note = note;
+        this.offVelocity = offVelocity;
+        this.renderChannel = renderChannel;
+    }
+    netJSONTransformProperty(name, value, renderChannelIndices, controlChannelIndices) {
+        if (name == "renderChannel") {
+            return renderChannelIndices[value.id];
+        }
+        else {
+            return RenderEvent.prototype.netJSONTransformProperty.call(this, name, value, renderChannelIndices, controlChannelIndices);
+        }
+    }
+    toString() {
+        return "noteOff(" + this.note + ", " + this.time + ", " + this.offVelocity + ", " + this.renderChannel.id + ")";
+    }
 
-
-
-
-
-
-
-
-
-
-function RenderEvent(time) {
-    this.time = time;
+    netJSONPropertiesMap = {"time": "t", "type": "y", "note": "n", "offVelocity": "v", "renderChannel": "c"};
+    netJSONType = "f";
 }
 
 
-RenderEvent.prototype.toNetJSON = function(renderChannelIndices, controlChannelIndices) {
-    const resultArr = [];
-
-    for (const prop in this.netJSONPropertiesMap) {
-        let value = this[prop];
-        const shortProp = this.netJSONPropertiesMap[prop];
-        value = this.netJSONTransformProperty(prop, value, renderChannelIndices, controlChannelIndices);
-        if (typeof(value) === 'string') {
-            resultArr.push("\"" + shortProp + "\":\"" + value + "\"");
-        } else {
-            resultArr.push("\"" + shortProp + "\":" + value);
+class SetControlEvent extends RenderEvent {
+    constructor(value, time, controlChannel) {
+        super(time);
+        this.type = "setControl";
+        this.value = value;
+        this.controlChannel = controlChannel;
+    }
+    netJSONTransformProperty(name, value, renderChannelIndices, controlChannelIndices) {
+        if (name == "controlChannel") {
+            return controlChannelIndices[value.id];
+        }
+        else {
+            return RenderEvent.prototype.netJSONTransformProperty.call(this, name, value, renderChannelIndices, controlChannelIndices);
         }
     }
 
-    return "{" + resultArr.join(",") + "}";
-};
+    netJSONPropertiesMap = {"time": "t", "type": "y", "value": "v", "controlChannel": "c"};
 
-RenderEvent.prototype.netJSONTransformProperty = function(name, value, renderChannelIndices, controlChannelIndices) {
-    if (name == "type") {
-        return this.netJSONType;
-    }
-    return value;
-};
-
-RenderEvent.prototype.getTime = function() {
-    return this.time;
-};
-
-
-function NoteOnEvent(note, time, onVelocity, renderChannel) {
-    RenderEvent.call(this, time);
-    this.type = "noteOn";
-    this.note = note;
-    this.onVelocity = onVelocity;
-    this.renderChannel = renderChannel;
+    netJSONType = "c";
 }
 
-NoteOnEvent.prototype = new RenderEvent();
-
-
-NoteOnEvent.prototype.netJSONPropertiesMap = {"time": "t", "type": "y", "note": "n", "onVelocity": "v", "renderChannel": "c"};
-
-NoteOnEvent.prototype.netJSONType = "n";
-
-
-NoteOnEvent.prototype.netJSONTransformProperty = function(name, value, renderChannelIndices, controlChannelIndices) {
-    if (name == "renderChannel") {
-        return renderChannelIndices[value.id];
-    } else {
-        return RenderEvent.prototype.netJSONTransformProperty.call(this, name, value, renderChannelIndices, controlChannelIndices);
+class SetTempoEvent extends RenderEvent {
+    constructor(bpm, time) {
+        super(time);
+        this.type = "setTempo";
+        this.bpm = bpm;
     }
-};
-
-
-NoteOnEvent.prototype.toString = function() {
-    return "noteOn(" + this.note + ", " + this.time + ", " + this.onVelocity + ", " + this.renderChannel.id + ")";
-};
-
-function NoteOffEvent(note, time, offVelocity, renderChannel) {
-    RenderEvent.call(this, time);
-    this.type = "noteOff";
-    this.note = note;
-    this.offVelocity = offVelocity;
-    this.renderChannel = renderChannel;
-}
-
-NoteOffEvent.prototype = new RenderEvent();
-
-NoteOffEvent.prototype.netJSONPropertiesMap = {"time": "t", "type": "y", "note": "n", "offVelocity": "v", "renderChannel": "c"};
-
-NoteOffEvent.prototype.netJSONType = "f";
-
-NoteOffEvent.prototype.netJSONTransformProperty = function(name, value, renderChannelIndices, controlChannelIndices) {
-    if (name == "renderChannel") {
-        return renderChannelIndices[value.id];
-    } else {
-        return RenderEvent.prototype.netJSONTransformProperty.call(this, name, value, renderChannelIndices, controlChannelIndices);
+    toString() {
+        return "setTempo(" + this.bpm + ", " + this.time + ")";
     }
-};
 
+    netJSONPropertiesMap = {"time": "t", "type": "y", "bpm": "b"};
 
-NoteOffEvent.prototype.toString = function() {
-    return "noteOff(" + this.note + ", " + this.time + ", " + this.offVelocity + ", " + this.renderChannel.id + ")";
-};
-
-function SetControlEvent(value, time, controlChannel) {
-    RenderEvent.call(this, time);
-    this.type = "setControl";
-    this.value = value;
-    this.controlChannel = controlChannel;
+    netJSONType = "t";
 }
-
-SetControlEvent.prototype = new RenderEvent();
-
-SetControlEvent.prototype.netJSONPropertiesMap = {"time": "t", "type": "y", "value": "v", "controlChannel": "c"};
-
-SetControlEvent.prototype.netJSONType = "c";
-
-SetControlEvent.prototype.netJSONTransformProperty = function(name, value, renderChannelIndices, controlChannelIndices) {
-    if (name == "controlChannel") {
-        return controlChannelIndices[value.id];
-    } else {
-        return RenderEvent.prototype.netJSONTransformProperty.call(this, name, value, renderChannelIndices, controlChannelIndices);
-    }
-};
-
-
-function SetTempoEvent(bpm, time) {
-    RenderEvent.call(this, time);
-    this.type = "setTempo";
-    this.bpm = bpm;
-}
-
-SetTempoEvent.prototype = new RenderEvent();
-
-SetTempoEvent.prototype.netJSONPropertiesMap = {"time": "t", "type": "y", "bpm": "b"};
-
-SetTempoEvent.prototype.netJSONType = "t";
-
-SetTempoEvent.prototype.toString = function() {
-    return "setTempo(" + this.bpm + ", " + this.time + ")";
-};
-
