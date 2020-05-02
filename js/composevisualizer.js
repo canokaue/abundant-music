@@ -1,12 +1,8 @@
-
 const VisualizerMode = {
     PLAY: 0,
     PAUSE: 1,
     STOP: 2
 };
-
-
-
 
 class Visualizer {
     constructor() {
