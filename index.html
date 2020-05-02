@@ -18,6 +18,30 @@
     <script type="text/javascript" src="js/webglonly-min.js"></script>
 
     <script type="text/javascript" src="js/modernizr.js"></script>
+
+    <!-- load the application -->
+    <link rel="stylesheet" type="text/css" href="css/style.css"></link>
+    <script type="text/javascript" src="js/midi.js"></script>
+    <script type="text/javascript" src="js/fakebytearray.js"></script>
+    <script type="text/javascript" src="js/tween.js"></script>
+    <script type="text/javascript" src="js/classicalnoise.js"></script>
+    <script type="text/javascript" src="js/jquerycomponents.js"></script>
+    <script type="text/javascript" src="js/guiproperties.js"></script>
+    <script type="text/javascript" src="js/guipropertiescomponent.js"></script>
+    <script type="text/javascript" src="js/valuecomponents.js"></script>
+    <script type="text/javascript" src="js/guiobjectlistcomponent.js"></script>
+    <script type="text/javascript" src="js/uniqueidmanager.js"></script>
+    <script type="text/javascript" src="js/propertyinfoprovider.js"></script>
+    <script type="text/javascript" src="js/songsettingscomponents.js"></script>
+    <script type="text/javascript" src="js/asyncoperation.js"></script>
+    <script type="text/javascript" src="js/noterepr.js"></script>
+    <script type="text/javascript" src="js/audioplayer.js"></script>
+    <script type="text/javascript" src="js/sm2player.js"></script>
+    <script type="text/javascript" src="js/webaudioplayer.js"></script>
+    <script type="text/javascript" src="js/frustumcullingchunks.js"></script>
+    <script type="text/javascript" src="js/composevisualizer.js"></script>
+    <script type="text/javascript" src="js/composemain.js"></script>
+
     <script type="text/javascript" src="js/loader.js"></script>
 
     <meta name="description" content="Procedural music editor" >
@@ -31,7 +55,7 @@
             // load settings
             loadSettingsFromLocalStorage();
             var theme = JQueryUITheme.toUrlString(themeSettings.theme);
-            updateLoaderProgress(20);
+            composeSetup1();
         })
     </script>
 </head>
