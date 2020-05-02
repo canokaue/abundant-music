@@ -444,7 +444,6 @@ function addAsyncOperation(op) {
 
 
 function logit(str) {
-//    console.log(printStackTrace());
     console.log(str);
 }
 

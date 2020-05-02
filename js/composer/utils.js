@@ -408,7 +408,7 @@ function investigateArrayIds(arr) {
 function getItemFromArrayWithStartEndItems(defaultWhenEmpty, items, length, index, startItems, endItems) {
     let theDefault = defaultWhenEmpty;
     if (!items) {
-        logit(printStackTrace().join("<br />"));
+        console.error("no items provided")
     }
     if (index >= 0 && items.length > 0) {
         theDefault = items[index % items.length];
@@ -441,10 +441,7 @@ function showStacktraceDialog(ex, description) {
     if (!description) {
         description = "";
     }
-    const stString = printStackTrace({
-        e: ex,
-        guess:true
-    }).join("\n");
+    const stString = ex.toString();
     const w = 1000;
     const h = 500;
     const $dialogDiv = $("<div title='Error Stacktrace " + description + "' ><textarea style='width: " + w + "px; height: " + h + "px' >" + stString + "</textarea></div>");
