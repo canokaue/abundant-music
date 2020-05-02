@@ -14,7 +14,7 @@ class IdReferenceListSelectComponent extends GuiPropertySelectListComponent {
         return itemString;
     }
     componentRemoved() {
-        GuiPropertySelectListComponent.prototype.componentRemoved.call(this);
+        super.componentRemoved();
         const manager = this.getUniqueIdManager();
         if (manager) {
             manager.removeUniqueIdListener(this.propertyInfo.uniqueIdInfo.namespace, this);
@@ -418,7 +418,7 @@ class IdReferenceSelectComponent extends GuiPropertySelectComponent {
         }
     }
     componentRemoved() {
-        GuiPropertySelectComponent.prototype.componentRemoved.call(this);
+        super.componentRemoved();
         const manager = this.getUniqueIdManager();
         if (manager) {
             manager.removeUniqueIdListener(this.propertyInfo.uniqueIdInfo.namespace, this);
@@ -460,7 +460,7 @@ class ProcedureButtonComponent extends GuiPropertyComponent {
         resultArr.push(this.propertyInfo.propertyCaption);
     }
     jQueryCreated($localRoot) {
-        GuiPropertyComponent.prototype.jQueryCreated.call(this, $localRoot);
+        super.jQueryCreated($localRoot);
         this.$component.button();
         const propertyInfo = this.propertyInfo;
         const object = this.object;
@@ -534,7 +534,7 @@ class GuiObjectComponent extends GuiPropertyComponent {
         this._constructorName = "GuiObjectComponent";
     }
     componentRemoved() {
-        GuiPropertyComponent.prototype.componentRemoved.call(this);
+        super.componentRemoved();
         if (this.detailsComponent) {
             this.detailsComponent.componentRemoved();
         }
@@ -556,7 +556,7 @@ class GuiObjectComponent extends GuiPropertyComponent {
         resultArr.push("</div>\n");
     }
     jQueryCreated($localRoot) {
-        GuiPropertyComponent.prototype.jQueryCreated.call(this, $localRoot);
+        super.jQueryCreated($localRoot);
         this.$details = this.$component.find("#" + this.detailsId);
         const objectInfo = this.propertyInfo.objectInfo;
         const comp = this;

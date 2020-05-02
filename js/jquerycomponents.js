@@ -125,7 +125,7 @@ class JQueryButton extends JQueryComponent {
         this.$component.button("disable");
     }
     jQueryCreated($localRoot) {
-        JQueryComponent.prototype.jQueryCreated.call(this, $localRoot);
+        super.jQueryCreated($localRoot);
         const buttonOptions = {};
         buttonOptions.text = this.enableText;
         if (this.primaryIcon || this.secondaryIcon) {

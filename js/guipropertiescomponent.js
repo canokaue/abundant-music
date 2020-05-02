@@ -118,7 +118,7 @@ class SplitTabsComponent extends SplitComponent {
         this.addEndHtmlString(resultArr);
     }
     jQueryCreated($localRoot) {
-        JQueryComponent.prototype.jQueryCreated.call(this, $localRoot);
+        super.jQueryCreated($localRoot);
         this.$component.tabs();
     }
 }
@@ -848,7 +848,7 @@ class GuiPropertyTextComponent extends GuiPropertyComponent {
         }
     }
     jQueryCreated($localRoot) {
-        JQueryComponent.prototype.jQueryCreated.call(this, $localRoot);
+        super.jQueryCreated($localRoot);
         //    this.createValueTypeRadioButtons($localRoot);
         this.$input = this.$component.find("#" + this.id + "-input");
         this.$label = this.$component.find("#" + this.id + "-label");
@@ -928,9 +928,6 @@ class GuiPropertySelectComponent extends GuiPropertySingleOptionComponent {
         this.$errorLabel = null;
         this.setUniqueId();
         this._constructorName = "GuiPropertySelectComponent";
-    }
-    componentRemoved() {
-        GuiPropertyComponent.prototype.componentRemoved.call(this);
     }
     gatherAlignmentInfo(info) {
         info.setVerticalOffset(0, this.$label.outerWidth());
@@ -1035,7 +1032,7 @@ class GuiPropertySelectComponent extends GuiPropertySingleOptionComponent {
         logit("GuiPropertySelectComponent must implement setValueVerifyRaw() <br />");
     }
     jQueryCreated($localRoot) {
-        JQueryComponent.prototype.jQueryCreated.call(this, $localRoot);
+        super.jQueryCreated($localRoot);
         //    this.createValueTypeRadioButtons($localRoot);
         this.$input = this.$component.find("#" + this.id + "-input");
         this.$label = this.$component.find("#" + this.id + "-label");
@@ -1130,7 +1127,7 @@ class GuiPropertyRadioButtonsComponent extends GuiPropertySingleOptionComponent 
         logit("GuiPropertySelectComponent must implement setValueVerifyRaw() <br />");
     }
     jQueryCreated($localRoot) {
-        JQueryComponent.prototype.jQueryCreated.call(this, $localRoot);
+        super.jQueryCreated($localRoot);
         const buttonArr = this.$component.find("button").filter(".radiobutton").get();
         const labelArr = this.$component.find("label").filter(".radiobutton-label").get();
         if (buttonArr.length != labelArr.length) {
@@ -1176,9 +1173,6 @@ class GuiAbstractListComponent extends GuiPropertyComponent {
         this.selectedListItems = {};
         this.listItems = {};
         this._constructorName = "GuiAbstractListComponent";
-    }
-    componentRemoved() {
-        GuiPropertyComponent.prototype.componentRemoved.call(this);
     }
     getListItemContentHtml(valueItem, resultArr, itemIndex) {
         const listInfo = this.listInfo;
@@ -1272,7 +1266,7 @@ class GuiAbstractListComponent extends GuiPropertyComponent {
         resultArr.push("</li>\n");
     }
     jQueryCreated($localRoot) {
-        GuiPropertyComponent.prototype.jQueryCreated.call(this, $localRoot);
+        super.jQueryCreated($localRoot);
         const comp = this;
         this.$details = this.$component.find("#" + this.detailsId);
         // Create the list
@@ -1505,7 +1499,7 @@ class GuiPropertySelectListComponent extends GuiAbstractListComponent {
             const value = this.propertyInfo.listInfo.possibleValues[i];
             let displayValue = value;
             const resultArr = [];
-            GuiAbstractListComponent.prototype.getListItemContentHtml.call(this, value, resultArr);
+            super.getListItemContentHtml(value, resultArr);
             displayValue = resultArr.join("");
             result.push([value, displayValue]);
         }
@@ -1523,7 +1517,7 @@ class GuiPropertySelectListComponent extends GuiAbstractListComponent {
         //    logit("the id was " + theId + "<br />");
     }
     jQueryCreated($localRoot) {
-        GuiAbstractListComponent.prototype.jQueryCreated.call(this, $localRoot);
+        super.jQueryCreated($localRoot);
         const list = this.getValue();
         const comp = this;
         for (let i = 0; i < list.length; i++) {
@@ -1628,7 +1622,7 @@ class GuiPropertySliderComponent extends GuiPropertyComponent{
         logit("GuiPropertySliderComponent must implement setValueVerifyRaw() <br />");
     }
     jQueryCreated($localRoot) {
-        JQueryComponent.prototype.jQueryCreated.call(this, $localRoot);
+        super.jQueryCreated($localRoot);
         //    this.createValueTypeRadioButtons($localRoot);
         let comp = this;
         this.$input = this.$component.find("#" + this.id + "-input");

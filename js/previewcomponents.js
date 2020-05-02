@@ -63,7 +63,7 @@ class CurvePreviewComponent extends PreviewComponent{
         resultArr.push("<button id='" + this.id + "-set-view-button' >Set View Rectangle</button>");
     }
     jQueryCreated($localRoot) {
-        JQueryComponent.prototype.jQueryCreated.call(this, $localRoot);
+        super.jQueryCreated($localRoot);
         const comp = this;
         const $canvas = this.$component.find("#" + this.id + "-canvas");
         const $updateButton = this.$component.find("#" + this.id + "-update-button");
@@ -153,7 +153,7 @@ class PianoRollPreviewComponent extends PreviewComponent {
         }
     }
     jQueryCreated($localRoot) {
-        JQueryComponent.prototype.jQueryCreated.call(this, $localRoot);
+        super.jQueryCreated($localRoot);
         const comp = this;
         this.$canvasContainer = this.$component.find(".canvas-container-div");
         if (this.addUpdateButton) {

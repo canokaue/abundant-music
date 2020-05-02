@@ -21,24 +21,30 @@ const BlobBuilder = BlobBuilder || self.WebKitBlobBuilder || self.MozBlobBuilder
       return Object.prototype.toString.call(object).match(/^\[object\s(.*)\]$/)[1];
   };
 
-    const FakeBlobBuilder = function(){
+    class FakeBlobBuilder {
+        constructor() {
             this.data = [];
-        };
+        }
+    }
 
-    const FakeBlob = function(data, type, encoding) {
+    class FakeBlob {
+        constructor(data, type, encoding) {
             this.data = data;
             this.size = data.length;
             this.type = type;
             this.encoding = encoding;
-        };
+        }
+    }
 
     const FBB_proto = FakeBlobBuilder.prototype;
     const FB_proto = FakeBlob.prototype;
     const FileReaderSync = view.FileReaderSync;
 
-    const FileException = function(type) {
+    class FileException {
+        constructor(type) {
             this.code = this[this.name = type];
-        };
+        }
+    }
 
     const file_ex_codes = (
               "NOT_FOUND_ERR SECURITY_ERR ABORT_ERR NOT_READABLE_ERR ENCODING_ERR "
@@ -83,7 +89,7 @@ const BlobBuilder = BlobBuilder || self.WebKitBlobBuilder || self.MozBlobBuilder
                 return data_URI_header + ";base64," + blob.data;
             } else if (blob.encoding === "URI") {
                 return data_URI_header + "," + decodeURIComponent(blob.data);
-            } if (btoa) {
+            } else if (btoa) {
                 return data_URI_header + ";base64," + btoa(blob.data);
             } else {
                 return data_URI_header + "," + encodeURIComponent(blob.data);
