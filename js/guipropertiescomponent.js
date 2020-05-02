@@ -6,11 +6,7 @@ function traverseObject(obj, propInfoProvider, func, parentInfo, data) {
 
             const infos = propInfoProvider.getGuiPropertyInfos(obj, parentInfo);
 
-            const arr = infos.getAsArray();
-
-            for (let i=0; i<arr.length; i++) {
-                const info = arr[i];
-
+            for (const info of infos.getIterator()) {
                 func(obj, info, data);
 
                 if (info.dataType == GuiPropertyDataType.OBJECT_LIST) {
@@ -152,10 +148,10 @@ function GuiPropertiesComponent(options) {
     this.cssClassName = "properties-component";
     this.otherCssClasses.push("ui-widget-content");
 
-
     if (this.object != null) {
         if (this.object.getGuiPropertyInfos) {
             this.propertyInfos = this.object.getGuiPropertyInfos(this.parentPropertyInfo);
+            logit("here 1")
         }
         if (!this.propertyInfos && this.propertyInfoProvider) {
             this.propertyInfos = this.propertyInfoProvider.getGuiPropertyInfos(this.object, this.parentPropertyInfo);
@@ -414,7 +410,6 @@ GuiPropertiesComponent.prototype.createComponent = function(info) {
 };
 
 GuiPropertiesComponent.prototype.createComponents = function() {
-    const infosArr = this.propertyInfos.getAsArray();
     const components = [];
 
     const splitComponents = new Map();
@@ -422,8 +417,7 @@ GuiPropertiesComponent.prototype.createComponents = function() {
     const groupCaptions = new Map();
 
     const that = this;
-    for (let i=0; i<infosArr.length; i++) {
-        const info = infosArr[i];
+    for (const info of this.propertyInfos.getIterator()) {
 
         if (this.passOnComponentRegisters && this.componentRegisters) {
             info.componentRegisters = this.componentRegisters;

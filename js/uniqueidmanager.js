@@ -141,7 +141,7 @@ UniqueIdManager.prototype.removeUniqueId = function(namespace, id) {
         if (typeof owner === 'undefined') {
             logit("owner not exist in removeUniqueId() " + namespace + " " + id + "<br />");
         } else {
-            idInfos.remove(id);
+            idInfos.delete(id);
             $.each(this.getListeners(namespace), function(key, value) {
                 value.uniqueIdRemoved(owner, namespace, id);
             });

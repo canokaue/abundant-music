@@ -17,7 +17,6 @@ importScripts(
     "composer/constants.js",
     "composer/interpolation.js",
     "composer/splineinterpolation.js",
-    "composer/map.js",
     "composer/latticenoise.js",
     "composer/perlinnoise.js",
     "composer/variables.js",

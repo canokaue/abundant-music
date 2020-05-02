@@ -316,7 +316,7 @@ SplitZoneCollection.prototype.getSplitBeat = function(module,
     }
     let iteration = 0;
 
-    const applicationMap = new LinkedMap();
+    const applicationMap = new Map();
     while (true) {
         const next = this.singleSplit(module, density,
             currentBeat,
@@ -414,7 +414,7 @@ SplitZoneCollection.prototype.singleSplit = function(module, density, input, bea
         var applications = applicationMap.get(z);
         if (typeof(applications) === 'undefined') {
             applications = 0;
-            applicationMap.put(z, applications);
+            applicationMap.set(z, applications);
         }
         const ok = applications < z.maxApplications;
 //        if (!ok) {
@@ -456,7 +456,7 @@ SplitZoneCollection.prototype.singleSplit = function(module, density, input, bea
             }
             var applications = applicationMap.get(zone);
             applications++;
-            applicationMap.put(zone, applications);
+            applicationMap.set(zone, applications);
 
             const splitStrategy = getValueOrExpressionValue(zone, "splitStrategy", module);
 

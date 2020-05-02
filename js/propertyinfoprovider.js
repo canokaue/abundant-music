@@ -1015,7 +1015,6 @@ PropertyInfoProvider.prototype.getSequenceHarmonyElementPropertyInfos = function
 
 PropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentPropertyInfo) {
     const result = new GuiPropertyInfos();
-
     let info;
 
     switch (obj._constructorName) {
@@ -1783,7 +1782,6 @@ PropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentPropert
 
 //    result.addPropertyInfo(this.createDefaultIntPropertyInfo("value", "Value", 0));
 //    result.addPropertyInfo(this.createEnumPropertyInfo("enumType", "Enum type", EnumType.POSITION_UNIT, EnumType));
-
     return result;
 };
 

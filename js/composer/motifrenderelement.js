@@ -235,7 +235,7 @@ class MotifRenderElement extends PositionedRenderElement {
                     if (typeof (solution[j]) === 'string') {
                         logit("abs note is a string!!!");
                     }
-                    noteAbsoluteNotes.put(cluster[j], solution[j]);
+                    noteAbsoluteNotes.set(cluster[j], solution[j]);
                 }
             }
             else {
@@ -303,7 +303,7 @@ class MotifRenderElement extends PositionedRenderElement {
                         }
                         if (referenceAbsNote != null) {
                             const newAbsNote = currentHarmonyElement.snapOffsetSnap(referenceAbsNote, vnme.beforeOffsetSnapType, vnme.offsetType, vnme.afterOffsetSnapType, vnme.index, currentHarmonyElement);
-                            noteAbsoluteNotes.put(vnme, newAbsNote);
+                            noteAbsoluteNotes.set(vnme, newAbsNote);
                             horizontalChanged = true;
                         }
                     }
@@ -332,7 +332,7 @@ class MotifRenderElement extends PositionedRenderElement {
             }
             if (absoluteNote != null) {
                 const absNote = harmonyElement.snapOffsetSnap(absoluteNote, vnme.beforeOffsetSnapType, vnme.offsetType, vnme.afterOffsetSnapType, vnme.index, harmonyElement);
-                noteAbsoluteNotes.put(vnme, absNote);
+                noteAbsoluteNotes.set(vnme, absNote);
             }
         }
     }
@@ -363,12 +363,12 @@ class MotifRenderElement extends PositionedRenderElement {
             if (stop) {
                 break;
             }
-            elementHarmonyIndices.put(e, harmonyIndex);
+            elementHarmonyIndices.set(e, harmonyIndex);
             const che = harmony.get(harmonyIndex);
             const voiceElement = theVoiceLine
                 .get(harmonyIndex);
-            voiceHarmonyElements.put(e, che);
-            voiceVoiceLineElements.put(e, voiceElement);
+            voiceHarmonyElements.set(e, che);
+            voiceVoiceLineElements.set(e, voiceElement);
             if (!e.rest) {
                 // Don't add rests
                 voiceElements.push(e);
@@ -394,8 +394,8 @@ class MotifRenderElement extends PositionedRenderElement {
             else {
                 // Create dummy next
             }
-            previousVoiceElements.put(vnme, prev);
-            nextVoiceElements.put(vnme, next);
+            previousVoiceElements.set(vnme, prev);
+            nextVoiceElements.set(vnme, next);
         }
     }
     getOrCreateVoiceLine(state, harmony) {
@@ -442,13 +442,13 @@ class MotifRenderElement extends PositionedRenderElement {
             return;
         }
         let harmony = state.constantHarmony;
-        const noteAbsoluteNotes = new LinkedMap(true);
+        const noteAbsoluteNotes = new Map();
         const voiceElements = [];
-        const previousVoiceElements = new LinkedMap(true);
-        const nextVoiceElements = new LinkedMap(true);
-        const voiceHarmonyElements = new LinkedMap(true);
-        const voiceVoiceLineElements = new LinkedMap(true);
-        const elementHarmonyIndices = new LinkedMap(true);
+        const previousVoiceElements = new Map();
+        const nextVoiceElements = new Map();
+        const voiceHarmonyElements = new Map();
+        const voiceVoiceLineElements = new Map();
+        const elementHarmonyIndices = new Map();
         // The voice line can either be used or a dummy will be created
         const theVoiceLine = this.getOrCreateVoiceLine(state, harmony);
         const voiceLineHarmony = state.voiceLineHarmonies[theVoiceLine.id];

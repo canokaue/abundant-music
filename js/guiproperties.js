@@ -125,22 +125,24 @@ const GuiNewMode = {
 };
 
 
-function GuiPropertyInfos(options) {
-    this.infos = getValueOrDefault(options, "infos", new LinkedMap(true));
+class GuiPropertyInfos {
+    constructor(options) {
+        this.infos = getValueOrDefault(options, "infos", new Map());
+    }
+    addPropertyInfo(info) {
+        this.infos.set(info.propertyName, info);
+        return this;
+    }
+    getPropertyInfo(propertyName) {
+        return this.infos.get(propertyName);
+    }
+    getIterator() {
+        return this.infos.values();
+    }
 }
 
-GuiPropertyInfos.prototype.addPropertyInfo = function(info) {
-    this.infos.put(info.propertyName, info);
-    return this;
-};
 
-GuiPropertyInfos.prototype.getPropertyInfo = function(propertyName) {
-    return this.infos.get(propertyName);
-};
 
-GuiPropertyInfos.prototype.getAsArray = function() {
-    return this.infos.listValues();
-};
 
 function IndentInfo() {
     this.level = 0;

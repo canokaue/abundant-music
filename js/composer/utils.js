@@ -693,7 +693,7 @@ function traverseValue(value, visitor, visited) {
     }
 
     if (!visited) {
-        visited = new LinkedMap(true);
+        visited = new Map();
     }
 
     if (isArray(value)) {
@@ -708,7 +708,7 @@ function traverseValue(value, visitor, visited) {
 //            logit("Have visited " + JSON.stringify(value));
             return;
         }
-        visited.put(value, true);
+        visited.set(value, true);
 
         for (const propName in value) {
             if (propName.indexOf("__") < 0) {

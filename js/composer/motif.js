@@ -26,7 +26,7 @@ Motif.prototype.toString = function(options) {
 
 Motif.prototype.getConstantMotifElements = function(module, harmony, harmonyBeatOffset, visitedMotifs) {
     if (!visitedMotifs) {
-        visitedMotifs = new LinkedMap(true);
+        visitedMotifs = new Map();
     }
     let result = [];
 
@@ -38,7 +38,7 @@ Motif.prototype.getConstantMotifElements = function(module, harmony, harmonyBeat
                 logit("Motif detected inherit loop...");
             } else {
                 // Make sure that we add ourself to the visited motifs
-                visitedMotifs.put(this, this);
+                visitedMotifs.set(this, this);
                 var list = motif
                     .getConstantMotifElements(module, harmony, harmonyBeatOffset, visitedMotifs);
 

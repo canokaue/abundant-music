@@ -112,9 +112,9 @@ function copyWithPropertyInfoProvider(result, settings, source) {
     if (!source) {
         source = settings;
     }
-    const infos = propertyInfoProvider.getGuiPropertyInfos(settings).getAsArray();
-    for (let i=0; i<infos.length; i++) {
-        const info = infos[i];
+    const infos = propertyInfoProvider.getGuiPropertyInfos(settings).getIterator();
+
+    for (const info of infos) {
         const value = source[info.propertyName];
         if (!isFunction(value)) {
             result[info.propertyName] = value;
