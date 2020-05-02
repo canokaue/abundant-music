@@ -434,7 +434,7 @@ const Midi = (function() {
                         message = new VoiceMessage(status, eventMessage.channel, eventMessage.data1, eventMessage.data2);
                         break;
                     case "EndTrackMessage":
-                        message = EndTrackMessage.prototype.END_OF_TRACK;
+                        message = EndTrackMessage.END_OF_TRACK;
                         break;
                     case "ProgramChangeMessage":
                         message = new ProgramChangeMessage(eventMessage.channel, eventMessage.program);
