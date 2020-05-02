@@ -58,7 +58,7 @@ DoubledVoiceLine.prototype = new VoiceLine();
 
 DoubledVoiceLine.prototype.doubleVoiceLine = function(constantLines) {
     let toDouble = null;
-    for (var i=0; i<constantLines.length; i++) {
+    for (let i=0; i<constantLines.length; i++) {
         const line = constantLines[i];
         if (line.id == this.toDouble) {
             toDouble = line;
@@ -71,7 +71,7 @@ DoubledVoiceLine.prototype.doubleVoiceLine = function(constantLines) {
 
         const result = [];
 
-        for (var i=0; i<elements.length; i++) {
+        for (let i=0; i<elements.length; i++) {
             result[i] = elements[i].copy();
         }
         return result;
@@ -279,7 +279,7 @@ ClassicalAdaptiveVoiceLine.prototype.getSingleStepVoiceLineElements = function(h
 
     }
     const fractionMultiplier = harmonyLength > 1 ? (1.0 / (harmonyLength - 1)) : 1.0;
-    for (var i=0; i<harmonyLength; i++) {
+    for (let i=0; i<harmonyLength; i++) {
         if (this.isUndefined) {
             var vle = new UndefinedVoiceLineElement();
             result.push(vle);
@@ -355,7 +355,7 @@ ClassicalAdaptiveVoiceLine.prototype.getSingleStepVoiceLineElements = function(h
     if (!this.isUndefined) {
         if (phraseSuspendPattern.length > 0 || startPhraseSuspendPattern.length > 0 || endPhraseSuspendPattern.length > 0) {
             const phraseRanges = harmony.getPhraseRanges();
-            for (var i=0; i<phraseRanges.length; i++) {
+            for (let i=0; i<phraseRanges.length; i++) {
                 const phraseRange = phraseRanges[i];
 
 

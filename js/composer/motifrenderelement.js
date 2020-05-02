@@ -188,7 +188,7 @@ MotifRenderElement.prototype.figurate = function(harmony, elements, noteAbsolute
     const searchClusters = [];
     let currentCluster = [];
 
-    for (var i = 0; i < elements.length; i++) {
+    for (let i = 0; i < elements.length; i++) {
         const ve = elements[i];
         if (!ve.rest) {
             //            logit("ve: " + ve + "<br />");
@@ -211,7 +211,7 @@ MotifRenderElement.prototype.figurate = function(harmony, elements, noteAbsolute
         searchClusters.push(currentCluster);
     }
     // Set the position fraction for all clusters
-    for (var i=0; i<searchClusters.length; i++) {
+    for (let i=0; i<searchClusters.length; i++) {
         var cluster = searchClusters[i];
         const clusterPosition = 0;
         const positions = [];
@@ -234,7 +234,7 @@ MotifRenderElement.prototype.figurate = function(harmony, elements, noteAbsolute
     const rnd = new MersenneTwister(theSeed);
 
     // Perform the search
-    for (var i=0; i<searchClusters.length; i++) {
+    for (let i=0; i<searchClusters.length; i++) {
         var cluster = searchClusters[i];
         //        logit("Searching in cluster " + i + " " + cluster + " with size " + cluster.length + "<br />");
 
@@ -367,11 +367,11 @@ MotifRenderElement.prototype.assignHorizontalRelativeMotifElements = function(ha
         }
 
         // Propagate forward
-        for (var i = 0; i < voiceElements.length; i++) {
+        for (let i = 0; i < voiceElements.length; i++) {
             propagate(i);
         }
         // Propagate backward
-        for (var i = voiceElements.length - 1; i>=0; i--) {
+        for (let i = voiceElements.length - 1; i>=0; i--) {
             propagate(i);
         }
     }
@@ -415,7 +415,7 @@ MotifRenderElement.prototype.gatherVoiceAndHarmonyInfo = function(harmony, eleme
 
     const startHarmonyIndex = harmony.getHarmonyIndexAt(currentTime);
 
-    for (var i=0; i<elements.length; i++) {
+    for (let i=0; i<elements.length; i++) {
         const e = elements[i];
         let harmonyIndex = harmony.getHarmonyIndexAt(currentTime);
 
@@ -457,7 +457,7 @@ MotifRenderElement.prototype.gatherVoiceAndHarmonyInfo = function(harmony, eleme
 
     // Make sure that every voice element has a previous and next element
     // Create dummys for initial and final
-    for (var i = 0; i < voiceElements.length; i++) {
+    for (let i = 0; i < voiceElements.length; i++) {
         const vnme = voiceElements[i];
         let prev = null;
         if (i > 0) {

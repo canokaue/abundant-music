@@ -320,7 +320,7 @@ SplitRythmElement.prototype.getNoteRythmElements = function(module, harmony, har
 
 //    if (this.verbose) {
 //        var beatLengths = [];
-//        for (var i=0; i<rythmElements.length; i++) {
+//        for (let i=0; i<rythmElements.length; i++) {
 //            var e = rythmElements[i];
 //            beatLengths[i] = positionUnitToBeats(e.length, e.lengthUnit, harmonyElement.tsNumerator, harmonyElement.tsDenominator);
 //        }

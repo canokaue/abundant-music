@@ -64,12 +64,12 @@ ChromaticTransitionHarmonyGenerator.prototype.getStartStateIterator = function()
     const costs = [];
 
 
-    for (var i=0; i<this.scaleBaseChordRootScaleModeTuples.length; i++) {
+    for (let i=0; i<this.scaleBaseChordRootScaleModeTuples.length; i++) {
         var tuple = this.scaleBaseChordRootScaleModeTuples[i];
         this.addTuple(tuple, 1, 0, result, likelihoods, costs);
     }
     // Adding the goals as well to avoid search failure
-    for (var i=0; i<this.endScaleBaseChordRootScaleModeTuples.length; i++) {
+    for (let i=0; i<this.endScaleBaseChordRootScaleModeTuples.length; i++) {
         var tuple = this.endScaleBaseChordRootScaleModeTuples[i];
         this.addTuple(tuple, 0.1, 1000, result, likelihoods, costs);
     }
@@ -109,7 +109,7 @@ ChromaticTransitionHarmonyGenerator.prototype.getSuccessors = function(state, st
     const scaleProgressionLikelihoods = [1, 0.25, 0.25, 1, 1, 1, 0.1, 1, 1, 1, 0.25, 0.25];
     const scaleProgressionCosts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-    for (var i=0; i<this.endScaleBaseChordRootScaleModeTuples.length; i++) {
+    for (let i=0; i<this.endScaleBaseChordRootScaleModeTuples.length; i++) {
         const tuple = this.endScaleBaseChordRootScaleModeTuples[i];
         this.addTuple(tuple, 0.1, 1000, states, likelihoods, costs);
     }
@@ -121,7 +121,7 @@ ChromaticTransitionHarmonyGenerator.prototype.getSuccessors = function(state, st
         cost += costs[index % costs.length];
     }
 
-    for (var i=0; i<rootProgressions.length; i++) {
+    for (let i=0; i<rootProgressions.length; i++) {
         const rp = rootProgressions[i];
         for (var j=0; j<modeProgressions.length; j++) {
             const mp = modeProgressions[j];

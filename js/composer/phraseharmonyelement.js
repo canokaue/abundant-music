@@ -144,13 +144,13 @@ PhraseHarmonyElement.prototype.getBestIndices = function(startIndices, lengthInf
     let lowestPenalty = this.getPenalty(current, lengthInfos, beatLengths, totalLength);
 
     let indexCount = 0;
-    for (var i=0; i<current.length; i++) {
+    for (let i=0; i<current.length; i++) {
         indexCount += current[i].length;
     }
 
     const fillCount = indexCount - current.length + 1;
     // Find a good start state by filling each to the max
-    for (var i=0; i<current.length; i++) {
+    for (let i=0; i<current.length; i++) {
         const temp = [];
         let currentIndex = 0;
         for (let j=0; j<current.length; j++) {
@@ -172,7 +172,7 @@ PhraseHarmonyElement.prototype.getBestIndices = function(startIndices, lengthInf
     }
 
     //    logit("_starting getting best indices: " + JSON.stringify(current) + " penalty: " + lowestPenalty + "<br />");
-    for (var i=0; i<this.maxLengthSearchSteps; i++) {
+    for (let i=0; i<this.maxLengthSearchSteps; i++) {
         const successor = this.getBestSuccessor(current, lengthInfos, beatLengths, totalLength);
         if (successor) {
             var penalty = this.getPenalty(successor, lengthInfos, beatLengths, totalLength);
@@ -251,7 +251,7 @@ PhraseHarmonyElement.prototype.getLengthInfos = function(options, module) {
     if (lu == LengthAndCountUnit.LENGTH_PERCENT || lu == LengthAndCountUnit.COUNT_PERCENT) {
         let allSame = true;
         let sum = 0;
-        for (var i=0; i<lengthInfos.length; i++) {
+        for (let i=0; i<lengthInfos.length; i++) {
             const lengthUnit = lengthInfos[i].lengthUnit;
             if (lu != lengthUnit) {
                 allSame = false;
@@ -260,7 +260,7 @@ PhraseHarmonyElement.prototype.getLengthInfos = function(options, module) {
             }
         }
         if (allSame && sum > 0) {
-            for (var i=0; i<lengthInfos.length; i++) {
+            for (let i=0; i<lengthInfos.length; i++) {
                 const lengthInfo = lengthInfos[i];
                 lengthInfo.length = 100 * (lengthInfo.length / sum);
             }
@@ -537,7 +537,7 @@ PhraseHarmonyElement.prototype.getConstantHarmonyElements = function(module, bea
 
         let indices = [];
 
-        for (var i=0; i<minCount; i++) {
+        for (let i=0; i<minCount; i++) {
             if (i == 0) {
                 indices.push(createFilledNumericIncArray(beatLengths.length - minCount + 1, 0, 1));
             } else {
@@ -554,7 +554,7 @@ PhraseHarmonyElement.prototype.getConstantHarmonyElements = function(module, bea
         }, module);
 
         let totalLength = 0;
-        for (var i=0; i<beatLengths.length; i++) {
+        for (let i=0; i<beatLengths.length; i++) {
             totalLength += beatLengths[i];
         }
 //        logit("Starting indices: " + JSON.stringify(indices) + "<br />");
@@ -674,7 +674,7 @@ PhraseHarmonyElement.prototype.getConstantHarmonyElements = function(module, bea
 //        } else {
 //            logit("static tonic had no seventh!" + i);
 //        }
-//        for (var i=0; i<staticSolution.length; i++) {
+//        for (let i=0; i<staticSolution.length; i++) {
 //            if (staticSolution[i].chordType == ChordType.SEVENTH) {
 //                logit("static tonic had seventh!" + i);
 //            }
@@ -896,7 +896,7 @@ PhraseHarmonyElement.prototype.getConstantHarmonyElements = function(module, bea
             }
 
             let beatsBeforeDominant = 0;
-            for (var i=0; i<dominantIndex - 1; i++) {
+            for (let i=0; i<dominantIndex - 1; i++) {
                 const indicesBefore = indices[i];
                 for (var j=0; j<indicesBefore.length; j++) {
                     const indexBefore = indicesBefore[j];
@@ -1014,7 +1014,7 @@ PhraseHarmonyElement.prototype.getConstantHarmonyElements = function(module, bea
         this.setLengthsAndPhraseStructure(solution, module, beatOffset);
 
         if (!this.overrideDefaultPhraseStructure) {
-            for (var i=0; i<solution.length; i++) {
+            for (let i=0; i<solution.length; i++) {
                 var he = solution[i];
                 he.startsPhrase = i == 0;
             }
@@ -1024,7 +1024,7 @@ PhraseHarmonyElement.prototype.getConstantHarmonyElements = function(module, bea
         if (thePhraseType == PhraseHarmonyElementType.ANTECEDENT_CONSEQUENT || thePhraseType == PhraseHarmonyElementType.CONSEQUENT) {
             var chr = new ConstantHarmonicRythm(solution);
             const minBeatLengths = [];
-            for (var i=0; i<this.phraseShorteningMinLengths.length; i++) {
+            for (let i=0; i<this.phraseShorteningMinLengths.length; i++) {
                 minBeatLengths[i] = positionUnitToBeats2(this.phraseShorteningMinLengths[i], this.phraseShorteningMinLengthUnit, 0, chr);
             }
 
@@ -1038,7 +1038,7 @@ PhraseHarmonyElement.prototype.getConstantHarmonyElements = function(module, bea
             rshm.endIndexLikelihoods = [[0.1, 1, 10], [0.1, 1, 10], [0.1, 1, 10], [0.1, 1, 1], []];
 
             let lengthBefore = 0;
-            for (var i=0; i<solution.length; i++) {
+            for (let i=0; i<solution.length; i++) {
                 lengthBefore += solution[i].getBeatLength();
             }
 
@@ -1047,7 +1047,7 @@ PhraseHarmonyElement.prototype.getConstantHarmonyElements = function(module, bea
             consequent = rshm.modifyConstantHarmonyElements(consequent, module);
 
             let lengthAfter = 0;
-            for (var i=0; i<consequent.length; i++) {
+            for (let i=0; i<consequent.length; i++) {
                 lengthAfter += consequent[i].getBeatLength();
             }
             //        logit("length after: " + lengthAfter + " <br />");
@@ -1072,7 +1072,7 @@ PhraseHarmonyElement.prototype.getConstantHarmonyElements = function(module, bea
                 continue;
 //                logit(this._constructorName + " could not add final tonic" + " <br />");
             }
-            for (var i=0; i<consequent.length; i++) {
+            for (let i=0; i<consequent.length; i++) {
                 var he = consequent[i];
                 he.startsPhrase = i == 0;
             }
@@ -1086,7 +1086,7 @@ PhraseHarmonyElement.prototype.getConstantHarmonyElements = function(module, bea
         }
 
         // Find uses of simple mixture
-        for (var i=0; i<solution.length-1; i++) {
+        for (let i=0; i<solution.length-1; i++) {
             var dse = solution[i];
             var nextDse = solution[i+1];
             const nextNextDse = solution[i+2];
@@ -1187,7 +1187,7 @@ PhraseHarmonyElement.prototype.getConstantHarmonyElements = function(module, bea
             var newScaleBaseNote = che.getAbsoluteNoteFromScaleIndex(modTarget + 1);
             var newScaleType = DynamicHarmonyModulationTarget.getScaleType(theScaleType, modTarget);
 
-            for (var i=1; i<solution.length; i++) {
+            for (let i=1; i<solution.length; i++) {
                 var dse = solution[i];
                 const prevDse = solution[i-1];
                 if (dse.baseNote == newScaleBaseNote) {
@@ -1241,7 +1241,7 @@ PhraseHarmonyElement.prototype.getConstantHarmonyElements = function(module, bea
 //    if (theScaleType == ScaleType.NATURAL_MINOR) {
 //        showSolution = !raiseLeadingTone || showSolution;
 //    }
-        for (var i=0; i<solution.length; i++) {
+        for (let i=0; i<solution.length; i++) {
 //        if (positiveMod(solution[i].chordRoot, 7) == 5) {
 //            showSolution = true;
 //        }
@@ -1282,7 +1282,7 @@ PhraseHarmonyElement.prototype.getConstantHarmonyElements = function(module, bea
             logit("The phrase progression: " + chr.toRomanString());
         }
 
-        for (var i=0; i<solution.length; i++) {
+        for (let i=0; i<solution.length; i++) {
             solution[i].tsNumerator = numerator;
         }
 
@@ -1314,7 +1314,7 @@ PhraseHarmonyElement.prototype.getConstantHarmonyElements = function(module, bea
                 extra.tsNumerator = numerator;
             }
             if (index < solution.length) {
-                for (var i=0; i<extraSolution.length; i++) {
+                for (let i=0; i<extraSolution.length; i++) {
                     var extra = extraSolution[i];
                     if (extra) {
                         solution.splice(index + i, 0, extra);
@@ -1322,7 +1322,7 @@ PhraseHarmonyElement.prototype.getConstantHarmonyElements = function(module, bea
 //                    logit("Splicing at " + index + " new length; " + solution.length);
                 }
             } else {
-                for (var i=0; i<extraSolution.length; i++) {
+                for (let i=0; i<extraSolution.length; i++) {
                     var extra = extraSolution[i];
                     if (extra) {
                         solution.push(extra);
@@ -1342,13 +1342,13 @@ PhraseHarmonyElement.prototype.getConstantHarmonyElements = function(module, bea
         }
 
 
-        for (var i=0; i<endVoiceConstraints.length; i++) {
+        for (let i=0; i<endVoiceConstraints.length; i++) {
             solution[solution.length - 1].voiceLineConstraints.push(endVoiceConstraints[i]);
         }
 
 
 //    logit("phrase type " + PhraseHarmonyElementType.toString(thePhraseType));
-//    for (var i=0; i<solution.length; i++) {
+//    for (let i=0; i<solution.length; i++) {
 //        logit(solution[i].length);
 //    }
 

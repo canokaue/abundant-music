@@ -359,11 +359,11 @@ DynamicHarmonyGenerator.prototype.getMajorSimpleMixtureChords = function(current
 
 
     const possibleChordRoots = [];
-    for (var i=0; i<intoMixtureRootMovements.length; i++) {
+    for (let i=0; i<intoMixtureRootMovements.length; i++) {
         possibleChordRoots.push(positiveMod(currentHarmony.chordRoot + intoMixtureRootMovements[i], 7));
     }
 
-    for (var i=0; i<majorMixtureChordTypes.length; i++) {
+    for (let i=0; i<majorMixtureChordTypes.length; i++) {
 
         const type = majorMixtureChordTypes[i];
         let chord = null;
@@ -572,7 +572,7 @@ DynamicHarmonyGenerator.prototype.getStartStateIterator = function() {
         triadCosts = triadCostArr[0];
     }
 
-    for (var i=0; i<startRoots.length; i++) {
+    for (let i=0; i<startRoots.length; i++) {
         const root = startRoots[i];
         const harmony = new ConstantHarmonyElement().setChordRoot(root);
         harmony.setBaseNote(this.scaleBaseNote).setScaleType(this.scaleType);
@@ -618,7 +618,7 @@ DynamicHarmonyGenerator.prototype.getStartStateIterator = function() {
         const veryHighCost = 100;
         const rootHarmony = new ConstantHarmonyElement().setChordRoot(0);
         rootHarmony.setBaseNote(this.scaleBaseNote).setScaleType(this.scaleType);
-        for (var i=0; i<7; i++) {
+        for (let i=0; i<7; i++) {
             var state = new DynamicHarmonyState();
             if (!arrayContains(startRoots, i)) {
                 state.harmony = new ConstantHarmonyElement().setChordRoot(i);
@@ -652,7 +652,7 @@ DynamicHarmonyGenerator.prototype.getStartStateIterator = function() {
             modHarmony.setBaseNote(modScaleBaseNote);
 
             // logit(" modScaleBase: " + modScaleBaseNote + "<br />");
-            for (var i=0; i<endRoots.length; i++) {
+            for (let i=0; i<endRoots.length; i++) {
                 const modState = new DynamicHarmonyState();
                 modState.harmony = copyObjectDeep(modHarmony).setChordRoot(endRoots[i]);
                 modState.harmony.note = "d, m";
@@ -691,7 +691,7 @@ DynamicHarmonyGenerator.prototype.isGoalState = function(state) {
             if (endRoots.length > 0) {
                 var rootPitchClass =
                     state.harmony.getAbsoluteNoteFromScaleIndex(state.harmony.getChordRootScaleIndex()) % 12;
-                for (var i=0; i<endRoots.length; i++) {
+                for (let i=0; i<endRoots.length; i++) {
                     var inversions = state.harmony.chordInversions;
                     var pitchClass = state.harmony.getAbsoluteNoteFromScaleIndex(endRoots[i]) % 12;
                     if (pitchClass == rootPitchClass && arrayContains(endRootInversions[i % endRootInversions.length], inversions)) {
@@ -718,7 +718,7 @@ DynamicHarmonyGenerator.prototype.isGoalState = function(state) {
             if (endRoots.length > 0) {
                 var rootPitchClass =
                     state.harmony.getAbsoluteNoteFromScaleIndex(state.harmony.getChordRootScaleIndex()) % 12;
-                for (var i=0; i<endRoots.length; i++) {
+                for (let i=0; i<endRoots.length; i++) {
                     var inversions = state.harmony.chordInversions;
                     var pitchClass = state.harmony.getAbsoluteNoteFromScaleIndex(endRoots[i]) % 12;
                     if (pitchClass == rootPitchClass && arrayContains(endRootInversions[i % endRootInversions.length], inversions)) {
@@ -751,7 +751,7 @@ DynamicHarmonyGenerator.prototype.getAppliedChordsAndLikelihoods = function(node
 
     const chordInfos = [];
 
-    for (var i=0; i<appliedChordTypes.length; i++) {
+    for (let i=0; i<appliedChordTypes.length; i++) {
         const type = appliedChordTypes[i];
         switch (type) {
             case AppliedChordType.V:
@@ -814,7 +814,7 @@ DynamicHarmonyGenerator.prototype.getAppliedChordsAndLikelihoods = function(node
         }
     }
 
-    for (var i=0; i<chordInfos.length; i++) {
+    for (let i=0; i<chordInfos.length; i++) {
         const info = chordInfos[i];
         const modulateState = copyObjectDeep(node.state);
         const modulateHarmony = modulateState.harmony;
@@ -1020,7 +1020,7 @@ DynamicHarmonyGenerator.prototype.getRootStatesAndLikelihoods = function(node, n
         }
 
 
-        for (var i=0; i<movements.length; i++) {
+        for (let i=0; i<movements.length; i++) {
             var newRoot = currentChordRoot + movements[i];
             var newRootMod = positiveMod(newRoot, 7);
             if (arrayContains(roots, newRootMod)) {
@@ -1068,12 +1068,12 @@ DynamicHarmonyGenerator.prototype.getRootStatesAndLikelihoods = function(node, n
             if (this.modulate && node.state.mode != DynamicHarmonyMode.ROOT_MODULATION) {
                 allModes.push(DynamicHarmonyMode.ROOT_MODULATION);
             }
-            //            for (var i=0; i<movements.length; i++) {
+            //            for (let i=0; i<movements.length; i++) {
             //                arrayDelete(allMovements, movements[i]);
             //                arrayDelete(allMovements, movements[i] - 7);
             //            }
             const oldMode = node.state.mode;
-            for (var i=0; i<allMovements.length; i++) {
+            for (let i=0; i<allMovements.length; i++) {
                 for (let j=0; j<allModes.length; j++) {
                     var state = node.state.copy();
                     state.mode = allModes[j];
@@ -1101,7 +1101,7 @@ DynamicHarmonyGenerator.prototype.getRootStatesAndLikelihoods = function(node, n
 
         if (rootLikelihoods.length > 0) {
 
-            for (var i=0; i<rootLikelihoods.length; i++) {
+            for (let i=0; i<rootLikelihoods.length; i++) {
                 nextStates.push(rootStates[i]);
                 nextLikelihoods.push(this.rootProgressionLikelihood * rootLikelihoods[i]);
                 nextCosts.push(this.rootProgressionCost + rootCosts[i]);
@@ -1125,7 +1125,7 @@ DynamicHarmonyGenerator.prototype.getRootStatesAndLikelihoods = function(node, n
 
         const appliedPitchClasses = [];
 
-        for (var i=0; i<intoAppliedMovements.length; i++) {
+        for (let i=0; i<intoAppliedMovements.length; i++) {
             var newRoot = currentChordRoot + intoAppliedMovements[i];
             var newRootMod = positiveMod(newRoot, 7);
             appliedPitchClasses.push(currentHarmony.getAbsoluteNoteFromScaleIndex(newRootMod) % 12);
@@ -1149,12 +1149,12 @@ DynamicHarmonyGenerator.prototype.getRootStatesAndLikelihoods = function(node, n
             appliedStates, appliedLikelihoods, appliedCosts);
 
 //        var toRomans = "";
-//        for (var i=0; i<rootMovementForAppliedStates.length; i++) {
+//        for (let i=0; i<rootMovementForAppliedStates.length; i++) {
 //            toRomans += rootMovementForAppliedStates[i].harmony.toRomanString() + ":" + rootMovementForAppliedLikelihoods[i] + " ";
 //        }
 
         if (appliedLikelihoods.length > 0) {
-            for (var i=0; i<appliedLikelihoods.length; i++) {
+            for (let i=0; i<appliedLikelihoods.length; i++) {
                 nextStates.push(appliedStates[i]);
                 nextLikelihoods.push(modulateLikelihood * appliedLikelihoods[i]);
                 nextCosts.push(modulateCost + appliedCosts[i]);
@@ -1185,13 +1185,13 @@ DynamicHarmonyGenerator.prototype.getRootStatesAndLikelihoods = function(node, n
 //        logit(neighbourSusChordRoots);
         const neighbourChords = this.getBassNeighbourChords(currentHarmony, neighbourChordRoots, neighbourChordInversions, neighbourSusChordRoots, neighbourMixtureChordRoots);
 
-        for (var i=0; i<neighbourChords.length; i++) {
+        for (let i=0; i<neighbourChords.length; i++) {
             harmonies.push(neighbourChords[i]);
             likelihoods.push(1);
             costs.push(0);
         }
 
-        for (var i=0; i<harmonies.length; i++) {
+        for (let i=0; i<harmonies.length; i++) {
             let neighbourSeventhLikelihoods = this.neighbourSeventhLikelihoods;
             let neighbourTriadLikelihoods = this.neighbourTriadLikelihoods;
             let neighbourSeventhCosts = this.neighbourSeventhCosts;
@@ -1236,7 +1236,7 @@ DynamicHarmonyGenerator.prototype.getRootStatesAndLikelihoods = function(node, n
         }
 //        logit("Got some mixture chords : " + new ConstantHarmonicRythm(mixtureChords).toRomanString() + " " + isMinor);
 
-        for (var i=0; i<mixtureChords.length; i++) {
+        for (let i=0; i<mixtureChords.length; i++) {
             var state = new DynamicHarmonyState();
             state.harmony = mixtureChords[i];
             state.harmony.note = "D, X" + (atRoot ? "" : "M");

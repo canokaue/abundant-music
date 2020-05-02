@@ -62,7 +62,7 @@ VersatilePercussionMotifZone.prototype.getPercussionMotifElements = function(mod
 //    logit(" Entering " + this._constructorName);
 
 
-    for (var i=0; i<noteRythmElements.length; i++) {
+    for (let i=0; i<noteRythmElements.length; i++) {
         var he = harmony.getHarmonyAt(currentBeat + harmonyBeatOffset);
 
         var nre = noteRythmElements[i];
@@ -120,7 +120,7 @@ VersatilePercussionMotifZone.prototype.getPercussionMotifElements = function(mod
     const maxRythmEndTime = currentBeat;
     let maxActiveEndTime = 0;
 
-    for (var i=0; i<activeElements.length; i++) {
+    for (let i=0; i<activeElements.length; i++) {
 
         const noteIndices = getItemFromArrayWithStartEndItems([], this.noteIndexPattern,
             activeElements.length, i, this.startNoteIndexPattern, this.endNoteIndexPattern);

@@ -55,7 +55,7 @@ SuspendHarmonyModifier.prototype.modifyConstantHarmonyElements = function(elemen
 
         const minSecondLength = 2;
 
-        for (var i=0; i<result.length-1; i++) {
+        for (let i=0; i<result.length-1; i++) {
 
             var info = {};
 
@@ -140,7 +140,7 @@ SuspendHarmonyModifier.prototype.modifyConstantHarmonyElements = function(elemen
         }
 
         const rnd = new MersenneTwister(seed);
-        for (var i=0; i<infos.length; i++) {
+        for (let i=0; i<infos.length; i++) {
             var info = infos[i];
             if (rnd.random() < probs[i % probs.length]) {
                 let maxCount = 1;
@@ -208,7 +208,7 @@ RandomShortenHarmonyModifier.prototype.modifyConstantHarmonyElements = function(
 
     if (result.length > 0) {
         const likelihoods = [];
-        for (var i=0; i<result.length; i++) {
+        for (let i=0; i<result.length; i++) {
             const likelihood = getItemFromArrayWithStartEndItems(1, this.indexLikelihoods, result.length, i,
                 this.startIndexLikelihoods, this.endIndexLikelihoods);
             likelihoods.push(likelihood);
@@ -261,7 +261,7 @@ RandomShortenHarmonyModifier.prototype.modifyConstantHarmonyElements = function(
             const beatsToTest = this.totalBeats[j];
             //            logit("Testing " + beatsToTest + " <br />");
             let success = false;
-            for (var i=0; i<this.maxAttempts; i++) {
+            for (let i=0; i<this.maxAttempts; i++) {
                 const index = sampleIndexIntegerDistribution(rnd, cumulative);
 
                 const toShorten = result[index];
@@ -442,7 +442,7 @@ ModeMixtureHarmonyModifier.prototype.modify = function(index, elements, module, 
     if (index > 0) {
         const prevElement = elements[index - 1];
         const prevRootPitchClass = prevElement.getAbsoluteNoteFromChordRootIndex(0) % 12;
-        for (var i=0; i<fromRoots.length; i++) {
+        for (let i=0; i<fromRoots.length; i++) {
             var possiblePitchClass = prevElement.getAbsoluteNoteFromScaleIndex(fromRoots[i]) % 12;
             if (possiblePitchClass == prevRootPitchClass) {
                 ok = true;
@@ -452,7 +452,7 @@ ModeMixtureHarmonyModifier.prototype.modify = function(index, elements, module, 
     }
     if (ok) {
         ok = false;
-        for (var i=0; i<roots.length; i++) {
+        for (let i=0; i<roots.length; i++) {
             var possiblePitchClass = element.getAbsoluteNoteFromScaleIndex(roots[i]) % 12;
             if (possiblePitchClass == rootPitchClass) {
                 ok = true;
@@ -487,13 +487,13 @@ ModeMixtureHarmonyModifier.prototype.modifyConstantHarmonyElements = function(el
     }
 
     const changedIndices = {};
-    for (var i=0; i<this.indexRanges.length; i++) {
+    for (let i=0; i<this.indexRanges.length; i++) {
         if (!changedIndices[i]) {
             this.modifyHarmonyElement(i, result, module);
             changedIndices[i] = true;
         }
     }
-    for (var i=0; i<elements.length; i++) {
+    for (let i=0; i<elements.length; i++) {
         const modify = getItemFromArrayWithStartEndItems(0, this.modifyPattern, elements.length, i, this.startModifyPattern, this.endModifyPattern);
         if (modify != 0 && !changedIndices[i]) {
             this.modifyHarmonyElement(i, result, module);

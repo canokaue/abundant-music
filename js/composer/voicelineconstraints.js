@@ -62,14 +62,14 @@ IndexedVoiceLinePlannerConstraintZone.prototype.applyZone = function(harmony, re
     if (constraintCount > 0) {
         const harmonyCount = harmony.getCount();
 
-        for (var i=0; i<this.globalIndices.length; i++) {
+        for (let i=0; i<this.globalIndices.length; i++) {
             var cIndex = this.globalIndices[i];
             for (let j=0; j<harmonyCount; j++) {
                 this.checkAndAddConstraint(cIndex, resultConstraints, j)
             }
         }
         if (this.indexPattern.length > 0) {
-            for (var i=0; i<harmonyCount; i++) {
+            for (let i=0; i<harmonyCount; i++) {
                 var cIndex = getItemFromArrayWithStartEndItems(0, this.indexPattern, harmonyCount, i, this.startIndexPattern, this.endIndexPattern);
                 this.checkAndAddConstraint(cIndex, resultConstraints, i);
             }

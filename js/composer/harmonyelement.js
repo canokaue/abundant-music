@@ -267,7 +267,7 @@ ConstantHarmonyElement.prototype.alterScaleCopy = function(scaleOffsets) {
     let result = scaleOffsets;
     if (this.alterations && this.alterations.length > 0) {
         const alterResult = arrayCopy(scaleOffsets);
-        for (var i=0; i<this.alterations.length; i+=2) {
+        for (let i=0; i<this.alterations.length; i+=2) {
             if (i < this.alterations.length - 1) {
                 const scaleIndex = this.alterations[i];
                 const offset = this.alterations[i + 1];
@@ -283,7 +283,7 @@ ConstantHarmonyElement.prototype.alterScaleCopy = function(scaleOffsets) {
 //    }
 
     const absScaleMode = Math.abs(scaleMode);
-    for (var i=0; i<absScaleMode; i++) {
+    for (let i=0; i<absScaleMode; i++) {
         const modeResult = arrayCopy(result);
         if (scaleMode > 0) {
             // Shift everything left

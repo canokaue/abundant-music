@@ -17,14 +17,14 @@ AbstractSection.prototype.concretizeSections = function(sections, state) {
     let done = false;
     do {
         done = true;
-        for (var i=0; i<result.length; i++) {
+        for (let i=0; i<result.length; i++) {
             if (!(result[i] instanceof Section)) {
                 done = false;
             }
         }
         if (!done) {
             const newResult = [];
-            for (var i=0; i<result.length; i++) {
+            for (let i=0; i<result.length; i++) {
                 const list = result[i].getConcreteSections(state);
                 addAll(newResult, list);
             }
@@ -178,7 +178,7 @@ Section.prototype.planVoices = function(chr, voiceLines, module) {
 
     } else {
 
-        for (var i=0; i<voiceLines.length; i++) {
+        for (let i=0; i<voiceLines.length; i++) {
             var line = voiceLines[i];
 
             if (line instanceof DoubledVoiceLine) {
@@ -203,7 +203,7 @@ Section.prototype.planVoices = function(chr, voiceLines, module) {
     }
 
     // After all the planning is done, take care of the voice lines that are derived from other lines
-    for (var i=0; i<voiceLines.length; i++) {
+    for (let i=0; i<voiceLines.length; i++) {
         var line = voiceLines[i];
         if (line instanceof DoubledVoiceLine) {
             const doubled = line.doubleVoiceLine(result);
@@ -229,7 +229,7 @@ Section.prototype.renderBatch = function(state) {
 
     state.oldSectionTime = state.sectionTime;
 
-    for (var i=0; i<this.modifiers.length; i++) {
+    for (let i=0; i<this.modifiers.length; i++) {
         var sm = this.modifiers[i];
         state.section = sm.modifySection(state.section, state);
     }
@@ -255,7 +255,7 @@ Section.prototype.renderBatch = function(state) {
 
 
 
-        for (var i=0; i<this.modifiers.length; i++) {
+        for (let i=0; i<this.modifiers.length; i++) {
             var sm = this.modifiers[i];
             state.constantHarmony = sm.modifyConstantHarmony(state.constantHarmony, state);
         }
@@ -266,12 +266,12 @@ Section.prototype.renderBatch = function(state) {
         // Plan the voices
         state.plannedVoiceLines = this.planVoices(state.constantHarmony, state.voiceLines, state.module);
 
-        for (var i=0; i<this.modifiers.length; i++) {
+        for (let i=0; i<this.modifiers.length; i++) {
             var sm = this.modifiers[i];
             state.plannedVoiceLines = sm.modifyPlannedVoiceLines(state.plannedVoiceLines, state);
         }
 
-        for (var i=0; i<state.constantHarmony.getCount(); i++) {
+        for (let i=0; i<state.constantHarmony.getCount(); i++) {
             var che = state.constantHarmony.get(i);
             for (var j=0; j<che.sectionModifiers.length; j++) {
                 var sm = che.sectionModifiers[j];
@@ -286,7 +286,7 @@ Section.prototype.renderBatch = function(state) {
         state.controlLines = state.section.controlLines;
         // Add section tempo
         // logit("Setting tempo event " + state.sectionTempo + " <br />");
-        for (var i=0; i<state.renderLines.length; i++) {
+        for (let i=0; i<state.renderLines.length; i++) {
             //            logit("Rendering line " + i);
             var line = state.renderLines[i];
             line.renderBatch(state);
@@ -300,7 +300,7 @@ Section.prototype.renderBatch = function(state) {
         perfTimer2.start();
 
 //        logit("fsdf " + state.controlLines.length);
-        for (var i=0; i<state.controlLines.length; i++) {
+        for (let i=0; i<state.controlLines.length; i++) {
             var line = state.controlLines[i];
             line.renderBatch(state);
         }
@@ -326,7 +326,7 @@ Section.prototype.renderBatch = function(state) {
                         const sectionLength = state.constantHarmony.getBeatLength();
                         const slotBeatFraction = 1.0 / tempoCh.slotsPerBeat;
                         let oldTempo = 0;
-                        for (var i=0; i<sectionLength; i++) {
+                        for (let i=0; i<sectionLength; i++) {
                             for (var j=0; j<tempoCh.slotsPerBeat; j++) {
                                 const slot = i * tempoCh.slotsPerBeat + j;
                                 var tempoValue = tempoCh.readDouble(slot, slotData);
@@ -355,7 +355,7 @@ Section.prototype.renderBatch = function(state) {
         }
 
         const beatLength = state.constantHarmony.getBeatLength();
-        for (var i=0; i<state.module.controlChannels.length; i++) {
+        for (let i=0; i<state.module.controlChannels.length; i++) {
             const ch = state.module.controlChannels[i];
             var slotData = state.controlSlotDatas[ch.id];
             if (!slotData) {
@@ -373,13 +373,13 @@ Section.prototype.renderBatch = function(state) {
             addAll(state.data.addEvents(ctrlEvents));
         }
 
-        for (var i=0; i<this.modifiers.length; i++) {
+        for (let i=0; i<this.modifiers.length; i++) {
             var sm = this.modifiers[i];
             sm.beforeSectionFinalized(state.section, state);
         }
 
 
-        for (var i=0; i<this.modifiers.length; i++) {
+        for (let i=0; i<this.modifiers.length; i++) {
             var sm = this.modifiers[i];
             sm.sectionRendered(state.section, state);
         }

@@ -12,7 +12,7 @@ RenderData.prototype.toNetJSON = function() {
     const renderChannelNames = [];
     const controlChannelIndices = {};
     const controlChannelNames = [];
-    for (var i=0; i<this.events.length; i++) {
+    for (let i=0; i<this.events.length; i++) {
         const e = this.events[i];
         if (e.renderChannel) {
             var index = renderChannelIndices[e.renderChannel.id];
@@ -35,7 +35,7 @@ RenderData.prototype.toNetJSON = function() {
 
     resultArr.push("\"events\": [");
     const resultArr2 = [];
-    for (var i=0; i<this.events.length; i++) {
+    for (let i=0; i<this.events.length; i++) {
         resultArr2.push(this.events[i].toNetJSON(renderChannelIndices, controlChannelIndices));
     }
     resultArr.push(resultArr2.join(",\n"));

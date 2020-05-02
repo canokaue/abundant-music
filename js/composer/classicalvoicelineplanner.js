@@ -25,7 +25,7 @@ ClassicalVoiceLinePlanner.prototype = new VoiceLinePlanner();
 ClassicalVoiceLinePlanner.prototype.planVoices = function(voiceLines, chr, module, result) {
 
     const constraints = [];
-    for (var i=0; i<this.constraintZones.length; i++) {
+    for (let i=0; i<this.constraintZones.length; i++) {
         const zone = this.constraintZones[i];
         zone.applyZone(chr, constraints);
     }
@@ -44,7 +44,7 @@ ClassicalVoiceLinePlanner.prototype.planVoices = function(voiceLines, chr, modul
     const suspensions = [];
     const anticipations = [];
 
-    for (var i=0; i<voiceLines.length; i++) {
+    for (let i=0; i<voiceLines.length; i++) {
         const line = voiceLines[i];
 
         if (line instanceof DoubledVoiceLine) {
@@ -192,7 +192,7 @@ ClassicalVoiceLinePlanner.prototype.planVoices = function(voiceLines, chr, modul
 
 
     if (plannedVoiceLines) {
-        for (var i=0; i<plannedVoiceLines.length; i++) {
+        for (let i=0; i<plannedVoiceLines.length; i++) {
             plannedVoiceLines[i].id = voiceLines[i].id;
         }
     } else {

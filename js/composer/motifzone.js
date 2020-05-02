@@ -382,7 +382,7 @@ AdaptiveEmbellishMotifZone.prototype.applyMotifZone = function(elements, module)
     const result = [];
 
     const nonRestElements = [];
-    for (var i=0; i<elements.length; i++) {
+    for (let i=0; i<elements.length; i++) {
         var e = elements[i];
         if (!e.rest) {
             nonRestElements.push(e);
@@ -395,7 +395,7 @@ AdaptiveEmbellishMotifZone.prototype.applyMotifZone = function(elements, module)
     const theVerticalIndices = getValueOrExpressionValue(this, "verticalIndices", module);
     const theStartVerticalIndices = getValueOrExpressionValue(this, "startVerticalIndices", module);
     const theEndVerticalIndices = getValueOrExpressionValue(this, "endVerticalIndices", module);
-    for (var i=0; i<elements.length; i++) {
+    for (let i=0; i<elements.length; i++) {
         var e = elements[i];
 
         const me = new AdaptiveMotifElement();

@@ -51,12 +51,12 @@ ChromaticOscillationHarmonyGenerator.prototype.addTuple = function(tuple, lik, c
 };
 
 ChromaticOscillationHarmonyGenerator.prototype.getStartStates = function(result, likelihoods, costs) {
-    for (var i=0; i<this.startScaleBaseChordRootScaleModeTuples.length; i++) {
+    for (let i=0; i<this.startScaleBaseChordRootScaleModeTuples.length; i++) {
         var tuple = this.startScaleBaseChordRootScaleModeTuples[i];
         this.addTuple(tuple, 1, 0, 0, result, likelihoods, costs);
     }
     // Adding the goals as well to avoid search failure
-    for (var i=0; i<this.endScaleBaseChordRootScaleModeTuples.length; i++) {
+    for (let i=0; i<this.endScaleBaseChordRootScaleModeTuples.length; i++) {
         var tuple = this.endScaleBaseChordRootScaleModeTuples[i];
         this.addTuple(tuple, 0.1, 1000, 0, result, likelihoods, costs);
     }
@@ -126,7 +126,7 @@ ChromaticOscillationHarmonyGenerator.prototype.getSuccessors = function(state, s
         cost += costs[index % costs.length];
     }
 
-//    for (var i=0; i<rootProgressions.length; i++) {
+//    for (let i=0; i<rootProgressions.length; i++) {
 //        var rp = rootProgressions[i];
     const rp = 0;
     for (var j=0; j<modeProgressions.length; j++) {
@@ -187,12 +187,12 @@ ChromaticOscillationHarmonyGenerator.prototype.getSuccessors = function(state, s
     }
 
 //    }
-//    for (var i=0; i<likelihoods.length; i++) {
+//    for (let i=0; i<likelihoods.length; i++) {
 //        if (typeof(likelihoods[i]) == "undefined") {
 //            logit("undef like");
 //        }
 //    }
-//    for (var i=0; i<costs.length; i++) {
+//    for (let i=0; i<costs.length; i++) {
 //        if (typeof(costs[i]) == "undefined") {
 //            logit("undef cost");
 //        }

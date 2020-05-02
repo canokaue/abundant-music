@@ -24,7 +24,7 @@ RenderLine.prototype.renderBatch = function(state) {
                 continue;
             }
             const elements = renderLine.getPositionedRenderElements(state.module, state.constantHarmony, 0, state);
-            for (var i=0; i<elements.length; i++) {
+            for (let i=0; i<elements.length; i++) {
                 allChannels.push(renderChannel);
             }
             addAll(allElements, elements);
@@ -32,7 +32,7 @@ RenderLine.prototype.renderBatch = function(state) {
 
         // Insert render element planning here...
 
-        for (var i=0; i<allElements.length; i++) {
+        for (let i=0; i<allElements.length; i++) {
             const e = allElements[i];
             state.renderChannel = allChannels[i];
             e.renderBatch(state);
@@ -214,7 +214,7 @@ ZonesRenderElement.prototype.getPositionedRenderElements = function(module, harm
         const renderedMutexes = {};
 
         let renderedSomething = false;
-        for (var i=0; i<this.zones.length; i++) {
+        for (let i=0; i<this.zones.length; i++) {
             var z = this.zones[i];
             const mut = renderedMutexes[z.mutexClassIndex];
             if (!mut && z.applicable(module, harmony)) {
@@ -226,7 +226,7 @@ ZonesRenderElement.prototype.getPositionedRenderElements = function(module, harm
             }
         }
         if (!renderedSomething && this.useDefaultIfNoneApplicable && this.zones.length > 0) {
-            for (var i=0; i<this.defaultZoneIndices.length; i++) {
+            for (let i=0; i<this.defaultZoneIndices.length; i++) {
                 const defaultZoneIndex = this.defaultZoneIndices[i];
                 var z = this.zones[defaultZoneIndex % this.zones.length];
                 var list = z.getPositionedRenderElements(module, harmony, beatOffset, state);
@@ -267,14 +267,14 @@ HarmonyCountRenderElementZone.prototype = new RenderElementZone();
 HarmonyCountRenderElementZone.prototype.applicable = function(module, harmony) {
     const harmonyCount = harmony.getCount();
 
-    for (var i=0; i<this.harmonyCounts.length; i++) {
+    for (let i=0; i<this.harmonyCounts.length; i++) {
         const count = this.harmonyCounts[i];
         if (count == harmonyCount) {
             return true;
         }
     }
 
-    for (var i=0; i<this.harmonyCountDividers.length; i++) {
+    for (let i=0; i<this.harmonyCountDividers.length; i++) {
         const divider = this.harmonyCountDividers[i];
         if ((harmonyCount % divider) == 0) {
             return true;
@@ -526,7 +526,7 @@ HarmonyIndexIndexPatternMotifRenderElement.prototype.getMotifIdsAtIndex = functi
 
 
     const result = [];
-    for (var i=0; i<indices.length; i++) {
+    for (let i=0; i<indices.length; i++) {
         const index = indices[i];
         if (index >= 0 && this.motifs.length > 0) {
             const motifId = this.motifs[index % this.motifs.length];
@@ -559,7 +559,7 @@ HarmonyIndexIndexPatternMotifRenderElement.prototype.getRenderChannelIdsAtIndex 
 
 
     const result = [];
-    for (var i=0; i<indices.length; i++) {
+    for (let i=0; i<indices.length; i++) {
         const index = indices[i];
         if (index >= 0 && this.channels.length > 0) {
             const channelId = this.channels[index % this.channels.length];
@@ -850,12 +850,12 @@ FlexiblePercussionMotifRenderElement.prototype.renderBatch = function(state) {
         const clampCount = 64;
 
         const clampedMotifs = [];
-        for (var i=0; i<this.startMotifs.length; i++) {
+        for (let i=0; i<this.startMotifs.length; i++) {
             var motifId = this.startMotifs[i];
             clampedMotifs.push(motifId);
         }
         if (this.motifs.length > 0) {
-            for (var i=0; i<clampCount; i++) {
+            for (let i=0; i<clampCount; i++) {
                 var motifId = this.motifs[i % this.motifs.length];
                 clampedMotifs.push(motifId);
             }
@@ -867,13 +867,13 @@ FlexiblePercussionMotifRenderElement.prototype.renderBatch = function(state) {
         const theEndMotifIndices = getValueOrExpressionValue(this, "endMotifIndices", state.module);
 
         const clampedMotifIndices = [];
-        for (var i=0; i<theStartMotifIndices.length; i++) {
+        for (let i=0; i<theStartMotifIndices.length; i++) {
             var motifIndex = theStartMotifIndices[i];
             clampedMotifIndices.push(motifIndex);
         }
 
         if (theMotifIndices.length > 0) {
-            for (var i=0; i<clampCount; i++) {
+            for (let i=0; i<clampCount; i++) {
                 var motifIndex = theMotifIndices[i % theMotifIndices.length];
                 clampedMotifIndices.push(motifIndex);
             }

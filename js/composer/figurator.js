@@ -72,13 +72,13 @@ Figurator.prototype.getHorizontalOffsets = function(e, j, likelihoodArr) {
         case AdaptiveHorizontalDomainType.ENUMERABLE:
             offsets = e.horizontalDomainOffsetElements[j];
             if (likelihoodArr) {
-                for (var i=0; i<offsets.length; i++) {
+                for (let i=0; i<offsets.length; i++) {
                     likelihoodArr[i] = e.horizontalDomainOffsetLikelihoods[j][i % e.horizontalDomainOffsetLikelihoods[j].length];
                 }
             }
             break;
         case AdaptiveHorizontalDomainType.RANGE:
-            for (var i=e.horizontalDomainOffsetRanges[j][0]; i<= e.horizontalDomainOffsetRanges[j][1]; i++) {
+            for (let i=e.horizontalDomainOffsetRanges[j][0]; i<= e.horizontalDomainOffsetRanges[j][1]; i++) {
                 offsets.push(i);
                 if (likelihoodArr) {
                     likelihoodArr.push(1);
@@ -95,13 +95,13 @@ Figurator.prototype.getVerticalOffsets = function(e, likelihoodArr) {
     switch (e.verticalDomainType) {
         case AdaptiveVerticalDomainType.ENUMERABLE:
             offsets = e.verticalDomainOffsetElements;
-            for (var i=0; i<offsets.length; i++) {
+            for (let i=0; i<offsets.length; i++) {
                 const l = e.verticalDomainOffsetElementLikelihoods[i % e.verticalDomainOffsetElementLikelihoods.length];
                 likelihoodArr.push(l);
             }
             break;
         case AdaptiveVerticalDomainType.RANGE:
-            for (var i=e.verticalDomainOffsetRange[0]; i<= e.verticalDomainOffsetRange[1]; i++) {
+            for (let i=e.verticalDomainOffsetRange[0]; i<= e.verticalDomainOffsetRange[1]; i++) {
                 offsets.push(i);
                 likelihoodArr.push(1);
             }
@@ -118,7 +118,7 @@ Figurator.prototype.getVerticalOffsets = function(e, likelihoodArr) {
 
                 let curveValue = theCurve.getValue(this.module, fraction);
                 curveValue = SnapMetrics.snap(curveValue, SnapMetrics.ROUND);
-                for (var i=offsetRange[0]; i<= offsetRange[1]; i++) {
+                for (let i=offsetRange[0]; i<= offsetRange[1]; i++) {
                     offsets.push(curveValue + i);
                     let lik = 1;
                     if (i != 0) {
@@ -265,7 +265,7 @@ Figurator.prototype.getDomain = function(index, previousAbsNote, nextAbsNote, re
     var offsets = this.getVerticalOffsets(currentElement, verticalLikelihoodArr);
     //        logit("Vertical Offsets: " + JSON.stringify(offsets) + "<br />");
 
-    for (var i=0; i<offsets.length; i++) {
+    for (let i=0; i<offsets.length; i++) {
         const offset = offsets[i];
         var absNote = harmonyElement.offset(baseAbsNote, currentElement.verticalDomainOffsetType, offset, harmonyElement);
 
@@ -304,7 +304,7 @@ Figurator.prototype.getDomain = function(index, previousAbsNote, nextAbsNote, re
                     var likelihoodArr = [];
                     var offsets = this.getHorizontalOffsets(prevElement, j, likelihoodArr);
 
-                    for (var i=0; i<offsets.length; i++) {
+                    for (let i=0; i<offsets.length; i++) {
                         var absNote = prevElementHarmonyElement.offset(previousAbsNote,
                             prevElement.horizontalDomainOffsetTypes[j], offsets[i], prevElementHarmonyElement);
                         // Reinterpret this absolute note in the current harmony
@@ -364,7 +364,7 @@ Figurator.prototype.getDomain = function(index, previousAbsNote, nextAbsNote, re
                     referenceAbsNote = prevHarmonyElement.getAbsoluteNoteConstantVoiceLineElement(prevVoiceLineElement);
                 }
 
-                for (var i=0; i<offsets.length; i++) {
+                for (let i=0; i<offsets.length; i++) {
                     var absNote = harmonyElement.offset(referenceAbsNote,
                         currentElement.horizontalDomainOffsetTypes[j], offsets[i], harmonyElement);
                     //                        logit("______offset " + offsets[i] + " gave abs note " + absNote + "<br />");
@@ -426,7 +426,7 @@ Figurator.prototype.getDomain = function(index, previousAbsNote, nextAbsNote, re
                     if (currentToNextHorizontalDomain == null) {
                         currentToNextHorizontalDomain = {};
                     }
-                    for (var i=0; i<offsets.length; i++) {
+                    for (let i=0; i<offsets.length; i++) {
                         var absNote = harmonyElement.offset(referenceAbsNote,
                             currentElement.horizontalDomainOffsetTypes[j], offsets[i], harmonyElement);
                         //                        logit("______offset " + offsets[i] + " gave abs note " + absNote + "<br />");

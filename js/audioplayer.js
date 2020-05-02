@@ -99,14 +99,14 @@ AudioPlayer.prototype.step = function() {
             const newTempoEvents = tempoBeforeAfter[0];
             this.tempoEvents = tempoBeforeAfter[1];
             // Digest the tempo events by setting the tempo
-            for (var i=0; i<newTempoEvents.length; i++) {
+            for (let i=0; i<newTempoEvents.length; i++) {
                 this.currentTempo = newTempoEvents[i].b;
             }
 
             const controlBeforeAfter = this.splitSortedEvents(this.controlEvents, this.playSeconds + dSeconds);
             const newControlEvents = controlBeforeAfter[0];
             this.controlEvents = controlBeforeAfter[1];
-            for (var i=0; i<newControlEvents.length; i++) {
+            for (let i=0; i<newControlEvents.length; i++) {
                 const cEvent = newControlEvents[i];
                 this.scheduleControl(cEvent);
             }
@@ -120,7 +120,7 @@ AudioPlayer.prototype.step = function() {
             const notesToSchedule = notesBeforeAfter[0];
             for (const ch in notesToSchedule) {
                 const arr = notesToSchedule[ch];
-                for (var i=0; i<arr.length; i++) {
+                for (let i=0; i<arr.length; i++) {
                     const noteData = arr[i];
                     if (noteData.onTime > this.playSeconds + lookaheadSeconds) {
                         logit("  stupid note should not play yet ")
@@ -220,7 +220,7 @@ AudioPlayer.prototype.splitSortedEvents = function(events, seconds) {
     const after = [];
 
     let splitIndex = events.length;
-    for (var i=0; i<events.length; i++) {
+    for (let i=0; i<events.length; i++) {
         const e = events[i];
         if (e.seconds < seconds) {
             before.push(e);
@@ -229,7 +229,7 @@ AudioPlayer.prototype.splitSortedEvents = function(events, seconds) {
             break;
         }
     }
-    for (var i=splitIndex; i<events.length; i++) {
+    for (let i=splitIndex; i<events.length; i++) {
         after.push(events[i]);
     }
     return [before, after];
@@ -247,7 +247,7 @@ AudioPlayer.prototype.splitSortedNotes = function(notes, seconds, maxCount) {
 
         let beforeArr = null;
         let splitIndex = arr.length;
-        for (var i=0; i<arr.length; i++) {
+        for (let i=0; i<arr.length; i++) {
             const noteData = arr[i];
 //            var onEvent = noteData.onEvent;
             const onTime = noteData.onTime;

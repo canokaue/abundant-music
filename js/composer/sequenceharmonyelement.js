@@ -56,7 +56,7 @@ SequenceHarmonyElement.prototype.getBeatLengths = function(module) {
 
 
             let rythmBeatLength = 0.0;
-            for (var i=0; i<Math.max(1, theCount); i++) {
+            for (let i=0; i<Math.max(1, theCount); i++) {
                 tsNumerator = getItemFromArrayWithStartEndItems(4, tsNumerators, theCount, i, this.startTsNumerators, this.endTsNumerators);
                 tsDenominator = getItemFromArrayWithStartEndItems(4, tsDenominators, theCount, i, this.startTsDenominators, this.endTsDenominators);
                 var beatLength = Math.max(1.0, tsDenominator);
@@ -76,7 +76,7 @@ SequenceHarmonyElement.prototype.getBeatLengths = function(module) {
             const totalBeatLength = positionUnitToBeats(theTotalLength, this.totalLengthUnit, tsNumerator, tsDenominator, rythmHarmony);
 
             const scaleFactor = totalBeatLength / rythmBeatLength;
-            for (var i=0; i<result.length; i++) {
+            for (let i=0; i<result.length; i++) {
                 result[i] = result[i] * scaleFactor;
             }
 //            logit("    corrected Beatlengths in element: " + result.join(", "));
@@ -86,7 +86,7 @@ SequenceHarmonyElement.prototype.getBeatLengths = function(module) {
             const theLengthPattern = getValueOrExpressionValue(this, "lengthPattern", module);
             const theStartLengthPattern = getValueOrExpressionValue(this, "startLengthPattern", module);
             const theEndLengthPattern = getValueOrExpressionValue(this, "endLengthPattern", module);
-            for (var i=0; i<Math.max(1, theCount); i++) {
+            for (let i=0; i<Math.max(1, theCount); i++) {
                 tsNumerator = getItemFromArrayWithStartEndItems(4, tsNumerators, theCount, i, this.startTsNumerators, this.endTsNumerators);
                 tsDenominator = getItemFromArrayWithStartEndItems(4, tsDenominators, theCount, i, this.startTsDenominators, this.endTsDenominators);
                 var length = getItemFromArrayWithStartEndItems(1.0, theLengthPattern, theCount, i, theStartLengthPattern, theEndLengthPattern);
@@ -97,7 +97,7 @@ SequenceHarmonyElement.prototype.getBeatLengths = function(module) {
             break;
     }
     const origLength = result.length;
-    for (var i=0; i<this.lengthRepeats; i++) {
+    for (let i=0; i<this.lengthRepeats; i++) {
         for (let j=0; j<origLength; j++) {
             result.push(result[j]);
         }
@@ -193,7 +193,7 @@ SequenceHarmonyElement.prototype.getBeatLengths = function(module) {
             }
             return temp;
         }
-        for (var i=0; i<result.length; i++) {
+        for (let i=0; i<result.length; i++) {
             const beats = result[i];
             addAll(newResult, splitOrKeep(beats));
         }
@@ -218,7 +218,7 @@ SequenceHarmonyElement.prototype.setLengthsAndPhraseStructure = function(solutio
         const lengths = this.getBeatLengths(module);
 
         const startBeatStrengths = this.getStartBeatStrengths(module, lengths, beatOffset);
-        for (var i=0; i<solution.length; i++) {
+        for (let i=0; i<solution.length; i++) {
             const che = solution[i];
             che.length = lengths[i % lengths.length];
             che.lengthUnit = PositionUnit.BEATS;
@@ -232,7 +232,7 @@ SequenceHarmonyElement.prototype.setLengthsAndPhraseStructure = function(solutio
         }
 
         let currentIndex = 0;
-        for (var i=0; i<thePhraseStructureCounts.length; i++) {
+        for (let i=0; i<thePhraseStructureCounts.length; i++) {
             if (currentIndex < solution.length) {
                 solution[currentIndex].startsPhrase = true;
             }

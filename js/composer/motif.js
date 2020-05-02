@@ -72,7 +72,7 @@ Motif.prototype.getConstantMotifElements = function(module, harmony, harmonyBeat
                 const harmonyIndex = harmony.getHarmonyIndexAt(currentPosition + harmonyBeatOffset);
                 const harmonyElement = harmony.get(harmonyIndex);
 
-                for (var i=0; i<this.motifZones.length; i++) {
+                for (let i=0; i<this.motifZones.length; i++) {
                     if (!zoneElements[i]) {
                         zoneElements[i] = [];
                     }
@@ -84,7 +84,7 @@ Motif.prototype.getConstantMotifElements = function(module, harmony, harmonyBeat
                         rangeZoneElements[i].push(j);
                     }
                 }
-                for (var i=0; i<this.motifZones.length; i++) {
+                for (let i=0; i<this.motifZones.length; i++) {
                     var zone = this.motifZones[i];
                     if (zone.containsPosition(currentPosition, harmony, harmonyBeatOffset)) {
                         zoneElements[i].push(j);
@@ -96,7 +96,7 @@ Motif.prototype.getConstantMotifElements = function(module, harmony, harmonyBeat
             }
 
             // Check if the zone can't be empty
-            for (var i=0; i<this.motifZones.length; i++) {
+            for (let i=0; i<this.motifZones.length; i++) {
                 var zone = this.motifZones[i];
                 if (zone.useNoteRangeIfEmpty && zoneElements[i].length == 0) {
                     // Get the rythm elements that haven't been taken yet
@@ -153,7 +153,7 @@ Motif.prototype.getConstantMotifElements = function(module, harmony, harmonyBeat
         }
 
     } else {
-        for (var i=0; i<this.motifElements.length; i++) {
+        for (let i=0; i<this.motifElements.length; i++) {
             const e = this.motifElements[i];
             var list = e.getConstantMotifElements(module, harmony, harmonyBeatOffset, visitedMotifs);
             addAll(result, list);
@@ -161,7 +161,7 @@ Motif.prototype.getConstantMotifElements = function(module, harmony, harmonyBeat
     }
 
     // Apply the modifiers
-    for (var i=0; i<this.modifiers.length; i++) {
+    for (let i=0; i<this.modifiers.length; i++) {
         const m = this.modifiers[i];
         result = m.apply(module, result);
     }

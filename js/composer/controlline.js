@@ -27,7 +27,7 @@ ControlLine.prototype.renderBatch = function(state) {
             continue;
         }
         const elements = controlLine.getPrimitiveControlElements(state.module, state.constantHarmony);
-        for (var i=0; i<elements.length; i++) {
+        for (let i=0; i<elements.length; i++) {
             allChannels.push(controlChannel);
         }
 
@@ -36,7 +36,7 @@ ControlLine.prototype.renderBatch = function(state) {
 
     const beatLength = state.constantHarmony.getBeatLength();
 
-    for (var i=0; i<allElements.length; i++) {
+    for (let i=0; i<allElements.length; i++) {
         const e = allElements[i];
         state.controlChannel = allChannels[i];
         state.controlSlotData = state.controlSlotDatas[state.controlChannel.id];
@@ -347,14 +347,14 @@ PrimitiveControlElement.prototype.renderBatch = function(state) {
     if (this.batched) {
         const slotIndices = [];
         const slotFractions = [];
-        for (var i=startSlot; i<=endSlot; i++) {
+        for (let i=startSlot; i<=endSlot; i++) {
             var slotFraction = (i - startSlot) / slotCount;
             slotFractions.push(slotFraction);
             slotIndices.push(i);
         }
         this.renderAtSlots(slotIndices, startSlot, endSlot, slotFractions, startBeatTime, endBeatTime, state, slotData);
     } else {
-        for (var i=startSlot; i<=endSlot; i++) {
+        for (let i=startSlot; i<=endSlot; i++) {
             var slotFraction = (i - startSlot) / slotCount;
             this.renderAtSlot(i, startSlot, endSlot, slotFraction, startBeatTime, endBeatTime, state, slotData);
         }

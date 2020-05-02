@@ -351,7 +351,7 @@ StaticHarmonyGenerator.prototype.getPassingTowardsTargetStatesAndLikelihoods = f
     const absLikelihoods = [];
     const absCosts = [];
     const diff = targetBass - currentBass;
-    for (var i=0; i<increments.length; i++) {
+    for (let i=0; i<increments.length; i++) {
         const inc = increments[i];
         const l = passingIncrementLikelihoods[i % passingIncrementLikelihoods.length];
         const c = passingIncrementCosts[i % passingIncrementCosts.length];
@@ -414,7 +414,7 @@ StaticHarmonyGenerator.prototype.getPassingTowardsTargetStatesAndLikelihoods = f
 //    index, state, likelihood, seventhLikelihoodArr, triadLikelihoodArr,
 //        resultStates, resultLikelihoods
 
-    for (var i=0; i<harmonies.length; i++) {
+    for (let i=0; i<harmonies.length; i++) {
         const state = new StaticHarmonyState();
         state.harmony = harmonies[i];
         state.targetHarmony = targetHarmony; // Not used if mode is AUXILIARY
@@ -457,7 +457,7 @@ StaticHarmonyGenerator.prototype.getBaseStatesAndLikelihoods = function(node, ne
         const auxLikelihoods = [];
         const auxCosts = [];
         const auxStates = [];
-        for (var i=0; i<this.auxiliaryChordRoots.length; i++) {
+        for (let i=0; i<this.auxiliaryChordRoots.length; i++) {
             var auxRoot = this.auxiliaryChordRoots[i];
             var auxLikelihood = this.auxiliaryChordRootLikelihoods[i % this.auxiliaryChordRootLikelihoods.length];
             var auxCost = this.auxiliaryChordRootCosts[i % this.auxiliaryChordRootCosts.length];
@@ -469,7 +469,7 @@ StaticHarmonyGenerator.prototype.getBaseStatesAndLikelihoods = function(node, ne
                 auxStates, auxLikelihoods, auxCosts);
         }
         if (auxLikelihoods.length > 0) {
-            for (var i=0; i<auxLikelihoods.length; i++) {
+            for (let i=0; i<auxLikelihoods.length; i++) {
                 nextStates.push(auxStates[i]);
                 auxStates[i].harmony.note = "S, A";
                 nextLikelihoods.push(this.baseToAuxiliaryLikelihood * auxLikelihoods[i]);
@@ -497,13 +497,13 @@ StaticHarmonyGenerator.prototype.getBaseStatesAndLikelihoods = function(node, ne
 
         const neighbourChords = this.getBassNeighbourChords(this.baseHarmony, neighbourChordRoots, neighbourChordInversions, neighbourSusChordRoots, neighbourMixtureChordRoots);
 
-        for (var i=0; i<neighbourChords.length; i++) {
+        for (let i=0; i<neighbourChords.length; i++) {
             harmonies.push(neighbourChords[i]);
             likelihoods.push(1);
             costs.push(0);
         }
 
-        for (var i=0; i<harmonies.length; i++) {
+        for (let i=0; i<harmonies.length; i++) {
             let neighbourSeventhLikelihoods = this.neighbourSeventhLikelihoods;
             let neighbourTriadLikelihoods = this.neighbourTriadLikelihoods;
             let neighbourSeventhCosts = this.neighbourSeventhCosts;
@@ -541,7 +541,7 @@ StaticHarmonyGenerator.prototype.getBaseStatesAndLikelihoods = function(node, ne
         const targetHarmonies = [];
 
         const scale = node.state.harmony.getScale();
-        for (var i=0; i<this.auxiliaryChordRoots.length; i++) {
+        for (let i=0; i<this.auxiliaryChordRoots.length; i++) {
             var auxRoot = this.auxiliaryChordRoots[i];
             var auxLikelihood = this.auxiliaryChordRootLikelihoods[i % this.auxiliaryChordRootLikelihoods.length];
             var auxCost = this.auxiliaryChordRootCosts[i % this.auxiliaryChordRootCosts.length];
@@ -574,7 +574,7 @@ StaticHarmonyGenerator.prototype.getBaseStatesAndLikelihoods = function(node, ne
 
         const sizeBefore = nextStates.length;
 
-        for (var i=0; i<harmonies.length; i++) {
+        for (let i=0; i<harmonies.length; i++) {
             var state = new StaticHarmonyState();
             state.harmony = harmonies[i];
             state.harmony.note = "S, PA";
@@ -645,12 +645,12 @@ StaticHarmonyGenerator.prototype.getAuxiliaryStatesAndLikelihoods = function(nod
         const neighbours = this.getBassNeighbourChords(node.state.harmony.copy(), neighbourChordRoots, neighbourChordInversions, neighbourSusChordRoots, neighbourMixtureChordRoots);
         const likelihoods = [];
         const costs = [];
-        for (var i=0; i<neighbours.length; i++) {
+        for (let i=0; i<neighbours.length; i++) {
             likelihoods.push(1);
             costs.push(0);
         }
 
-        for (var i=0; i<neighbours.length; i++) {
+        for (let i=0; i<neighbours.length; i++) {
             const state = new StaticHarmonyState();
             state.harmony = neighbours[i];
             state.harmony.note = "S, AN";

@@ -179,7 +179,7 @@ SplitZoneCollection.prototype.addSplitZone = function(zone) {
 
 SplitZoneCollection.prototype.splitAndCopy = function(minLengthTicks, bestSplitIndex, current, velocityMultipliers,
     notes, numerator, denominator) {
-    for (var i = 0; i < notes.length; i++) {
+    for (let i = 0; i < notes.length; i++) {
         const ticks = positionUnitToBeats(notes[i].length, notes[i].lengthUnit, numerator, denominator);
         if (ticks < minLengthTicks) {
             return null;
@@ -187,7 +187,7 @@ SplitZoneCollection.prototype.splitAndCopy = function(minLengthTicks, bestSplitI
     }
     const result = [];
 
-    for (var i = 0; i < current.length; i++) {
+    for (let i = 0; i < current.length; i++) {
         const currentNote = current[i];
         const velocity = currentNote.strength;
         if (i == bestSplitIndex) {
@@ -349,7 +349,7 @@ SplitZoneCollection.prototype.getBestSplitIndex = function(module, input, densit
 
     // Mean note length = 1 / beatIntensity
     let totalTicksLength = 0.0;
-    for (var i=0; i<input.length; i++) {
+    for (let i=0; i<input.length; i++) {
         const noteRythmElement = input[i];
         totalTicksLength += positionUnitToBeats(noteRythmElement.length, noteRythmElement.lengthUnit, numerator, denominator);
     }
@@ -365,7 +365,7 @@ SplitZoneCollection.prototype.getBestSplitIndex = function(module, input, densit
     let bestIndex = 0;
 
     let currentPosition = 0;
-    for (var i = 0; i < input.length; i++) {
+    for (let i = 0; i < input.length; i++) {
         const note = input[i];
         const beatLength = positionUnitToBeats(note.length, note.lengthUnit, numerator, denominator);
 
@@ -402,14 +402,14 @@ SplitZoneCollection.prototype.singleSplit = function(module, density, input, bea
 
     let beatPosition = 0.0;
     // We also want to know what tick that note is
-    for (var i = 0; i < bestSplitIndex; i++) {
+    for (let i = 0; i < bestSplitIndex; i++) {
         beatPosition += positionUnitToBeats(input[i].length, input[i].lengthUnit, numerator, denominator);
     }
     // Use the center tick
     beatPosition += 0.5 * positionUnitToBeats(input[bestSplitIndex].length, input[bestSplitIndex].lengthUnit, numerator, denominator);
 
     const applicable = [];
-    for (var i=0; i<this.zones.length; i++) {
+    for (let i=0; i<this.zones.length; i++) {
         const z = this.zones[i];
         var applications = applicationMap.get(z);
         if (typeof(applications) === 'undefined') {
@@ -441,7 +441,7 @@ SplitZoneCollection.prototype.singleSplit = function(module, density, input, bea
             let zone = null;
             if (applicable.length > 1) {
                 const likelihoods = [];
-                for (var i = 0; i < likelihoods.length; i++) {
+                for (let i = 0; i < likelihoods.length; i++) {
                     likelihoods[i] = applicable[i].likelihood;
                 }
                 if (this.rnd == null) {

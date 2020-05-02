@@ -77,20 +77,20 @@ MidiRenderer.prototype.getMidiData = function(renderData, module, options) {
     const emptyChannels = {};
 
     const controlChannelMaps = {};
-    for (var i=0; i<this.controlChannelMaps.length; i++) {
+    for (let i=0; i<this.controlChannelMaps.length; i++) {
         var map = this.controlChannelMaps[i];
         controlChannelMaps[map.controlChannel] = map;
 //        logit("Adding control channel map " + map.controlChannel);
     }
     const channelMaps = {};
-    for (var i=0; i<this.channelMaps.length; i++) {
+    for (let i=0; i<this.channelMaps.length; i++) {
         var map = this.channelMaps[i];
         channelMaps[map.renderChannel] = map;
         emptyChannels[map.channel] = true;
     }
 
     // Avoid adding events to channels that have no notes
-    for (var i=0; i<events.length; i++) {
+    for (let i=0; i<events.length; i++) {
         var event = events[i];
         if (event.type == "noteOn" || event.type == "noteOff") {
             var channelMap = channelMaps[event.renderChannel.id];
@@ -103,7 +103,7 @@ MidiRenderer.prototype.getMidiData = function(renderData, module, options) {
     const sentProgramChanges = {};
 
     // Set all initial programs
-    for (var i=0; i<this.channelMaps.length; i++) {
+    for (let i=0; i<this.channelMaps.length; i++) {
         var map = this.channelMaps[i];
         if (!emptyChannels[map.channel]) {
 
@@ -150,7 +150,7 @@ MidiRenderer.prototype.getMidiData = function(renderData, module, options) {
 
 
     let ticks = 0;
-    for (var i=0; i<events.length; i++) {
+    for (let i=0; i<events.length; i++) {
         var event = events[i];
 
         const deltaTime = event.time - time;

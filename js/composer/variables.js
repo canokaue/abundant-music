@@ -450,7 +450,7 @@ MarkovRandomIntegerArrayEditorVariable.prototype.getValue = function(module, par
     if (theStateDomains.length == 0) {
         theStateDomains = [[0]];
     }
-    for (var i=0; i<theStateDomains.length; i++) {
+    for (let i=0; i<theStateDomains.length; i++) {
         const dom = theStateDomains[i];
         if (dom.length == 0) {
             theStateDomains[i] = [0];
@@ -458,14 +458,14 @@ MarkovRandomIntegerArrayEditorVariable.prototype.getValue = function(module, par
     }
 
     const stateDomainDistributions = [];
-    for (var i=0; i<this.stateDomainLikelihoods.length; i++) {
+    for (let i=0; i<this.stateDomainLikelihoods.length; i++) {
         var lik = this.stateDomainLikelihoods[i];
         var dist = getProbabilityDistribution(lik);
         stateDomainDistributions[i] = dist;
     }
 
     const stateTransitionDistributions = [];
-    for (var i=0; i<this.stateTransitionLikelihoods.length; i++) {
+    for (let i=0; i<this.stateTransitionLikelihoods.length; i++) {
         var lik = this.stateTransitionLikelihoods[i];
         var dist = getProbabilityDistribution(lik);
         stateTransitionDistributions[i] = dist;
@@ -477,7 +477,7 @@ MarkovRandomIntegerArrayEditorVariable.prototype.getValue = function(module, par
     let currentState = sampleIndexIntegerDistribution(rnd, startStateDistribution);
 
     const result = [];
-    for (var i=0; i<theCount; i++) {
+    for (let i=0; i<theCount; i++) {
         // Sample from the domain
         const domain = theStateDomains[currentState % theStateDomains.length];
 

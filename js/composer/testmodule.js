@@ -531,7 +531,7 @@ function setHarmonyMotif(motifInfo, genData, genInfo, sectionInfos, renderAmount
     const rangeFractions = [0];
     const meanStep = 1.0 / fractionCount;
     let currentFraction = 0;
-    for (var i=0; i<fractionCount-1; i++) {
+    for (let i=0; i<fractionCount-1; i++) {
         currentFraction += meanStep * 0.5 + motifRnd.random() * meanStep;
         if (currentFraction >= 1) {
             currentFraction = 1;
@@ -544,7 +544,7 @@ function setHarmonyMotif(motifInfo, genData, genInfo, sectionInfos, renderAmount
 
     const ranges = [];
 
-    for (var i=0; i<rangeStarts.length-1; i++) {
+    for (let i=0; i<rangeStarts.length-1; i++) {
         ranges[i] = [];
 
         const rangeStart = rangeStarts[i];
@@ -620,10 +620,10 @@ function setHarmonyMotif(motifInfo, genData, genInfo, sectionInfos, renderAmount
     function getIndicesStringForLevels(levels, possible, maxVerticalCount) {
         const result = [];
         const possibleRndInfos = [];
-        for (var i=0; i<possible.length; i++) {
+        for (let i=0; i<possible.length; i++) {
             possibleRndInfos.push({likelihood: 1, data: possible[i]});
         }
-        for (var i=0; i<levels; i++) {
+        for (let i=0; i<levels; i++) {
             const count = Math.floor(motifRnd.random() * 10 + 1);
             const arr = [];
             for (let j=0; j<count; j++) {
@@ -1082,7 +1082,7 @@ function createPercussionMotifInfos(grooveCount, fillCount, result, genData, gen
         return def;
     }
 
-    for (var i=0; i<grooveCount; i++) {
+    for (let i=0; i<grooveCount; i++) {
         var info = {};
 //        var infos = sampleData(typeInfos, rnd);
 //        info.predefinedType = sampleData(infos, rnd);
@@ -1274,7 +1274,7 @@ function createPercussionMotifInfos(grooveCount, fillCount, result, genData, gen
     fillNoteRndInfos.push({data: bassDrumNote, likelihood: 1});
     fillNoteRndInfos.push({data: crashNote, likelihood: 1});
     fillNoteRndInfos.push({data: snareDrumNote, likelihood: 5});
-    for (var i=0; i<rideNotes.length; i++) {
+    for (let i=0; i<rideNotes.length; i++) {
         fillNoteRndInfos.push({data: rideNotes[i], likelihood: 1});
     }
 
@@ -1285,7 +1285,7 @@ function createPercussionMotifInfos(grooveCount, fillCount, result, genData, gen
     }
 
 
-    for (var i=0; i<fillCount; i++) {
+    for (let i=0; i<fillCount; i++) {
         var info = {};
 
 
@@ -1418,7 +1418,7 @@ function createMotifInfos(genData, genInfo, sectionInfos) {
 
     const percussionFillMotifCount = 4;
 
-    for (var i=0; i<melodyMotifCount; i++) {
+    for (let i=0; i<melodyMotifCount; i++) {
         var motifInfo = createMelodyMotifInfo(i, genData, genInfo, sectionInfos);
         // logit("Created motif info: " + JSON.stringify(motifInfo) + "<br />");
         genData.motifInfos[i] = motifInfo;
@@ -1431,15 +1431,15 @@ function createMotifInfos(genData, genInfo, sectionInfos) {
     }
 
     // Copy the melody motifs to inner 1 and inner 2
-    for (var i=0; i<melodyMotifCount; i++) {
+    for (let i=0; i<melodyMotifCount; i++) {
         genData.motifInfos[i + inner1StartIndex] = copyMotifInfoWithChanges(genData.motifInfos[i], "inner1");
     }
-    for (var i=0; i<melodyMotifCount; i++) {
+    for (let i=0; i<melodyMotifCount; i++) {
         genData.motifInfos[i + inner2StartIndex] = copyMotifInfoWithChanges(genData.motifInfos[i], "inner2");
     }
 
 
-    for (var i=0; i<bassMotifCount; i++) {
+    for (let i=0; i<bassMotifCount; i++) {
         var motifInfo = createBassMotifInfo(i, genData, genInfo, sectionInfos);
         // logit("Created motif info: " + JSON.stringify(motifInfo) + "<br />");
         genData.motifInfos[i + bassStartIndex] = motifInfo;
@@ -1450,7 +1450,7 @@ function createMotifInfos(genData, genInfo, sectionInfos) {
     const rythmDensityMultipliers = [1, 1, 0.25];
 
     for (let j=0; j<propNames.length; j++) {
-        for (var i=0; i<harmonyMotifCount; i++) {
+        for (let i=0; i<harmonyMotifCount; i++) {
             var motifInfo = createHarmonyMotifInfo(propNames[j] + "RenderAmountVar", genData, genInfo, sectionInfos,
                 {rythmDensityMultiplier: rythmDensityMultipliers[j]});
             const index = i + harmonyStartIndex + j * harmonyMotifCount;
@@ -1740,7 +1740,7 @@ function getRandomCurveInfos(options, rnd) {
             let ok = arrayContains(endLevels, currentLevel);
 
             let leaps = 0;
-            for (var i=1; i<currentResult.length; i++) {
+            for (let i=1; i<currentResult.length; i++) {
                 var step = currentResult[i] - currentResult[i-1];
                 if (Math.abs(step) > 5) {
                     leaps++;
@@ -1785,7 +1785,7 @@ function getRandomCurveInfos(options, rnd) {
                 possibleSteps.push(-15);
             }
         }
-        for (var i=0; i<possibleSteps.length; i++) {
+        for (let i=0; i<possibleSteps.length; i++) {
             var step = possibleSteps[i];
             const resultCopy = copyValueDeep(currentResult);
             getPossible(currentLevel + step, step, prevStep, depth + 1, resultCopy, allResults, maxDepth);
@@ -1793,7 +1793,7 @@ function getRandomCurveInfos(options, rnd) {
     }
 
     const allResults = [];
-    for (var i=0; i<startLevels.length; i++) {
+    for (let i=0; i<startLevels.length; i++) {
         for (var j=0; j<depths.length; j++) {
             getPossible(startLevels[i], 0, 0, 0, [], allResults, depths[j]);
         }
@@ -1803,7 +1803,7 @@ function getRandomCurveInfos(options, rnd) {
 
     const rndInfos = [];
 
-    for (var i=0; i<allResults.length; i++) {
+    for (let i=0; i<allResults.length; i++) {
         const profile = allResults[i];
 
         const xValues = [];
@@ -1859,7 +1859,7 @@ function createMelodyShapeInfos(genData, genInfo, sectionInfos) {
         return result;
     }
 
-    function getLevels(arr2d, def) {
+    function getLevels(i, arr2d, def) {
         let result = def;
         if (arr2d.length > 0) {
             const arr = arr2d[i % arr2d.length];
@@ -1870,11 +1870,11 @@ function createMelodyShapeInfos(genData, genInfo, sectionInfos) {
         return convertLevels(result);
     }
 
-    for (var i=0; i<melodyShapeCount; i++) {
+    for (let i=0; i<melodyShapeCount; i++) {
         const melodyRndInfos = copyValueDeep(rndInfos);
 
-        const startLevels = getLevels(genInfo.melodyStartLevels, [-2, -1, 0, 1, 2]);
-        const endLevels = getLevels(genInfo.melodyEndLevels, [-2, -1, 0, 1, 2]);
+        const startLevels = getLevels(i, genInfo.melodyStartLevels, [-2, -1, 0, 1, 2]);
+        const endLevels = getLevels(i, genInfo.melodyEndLevels, [-2, -1, 0, 1, 2]);
 
         var ampRange = [6, 12];
         var biasRange = [68, 76];
@@ -1893,7 +1893,7 @@ function createMelodyShapeInfos(genData, genInfo, sectionInfos) {
 
     const bassShapeCount = genInfo.bassShapeCount;
 
-    for (var i=0; i<bassShapeCount; i++) {
+    for (let i=0; i<bassShapeCount; i++) {
         const bassRndInfos = copyValueDeep(rndInfos);
         var ampRange = [2, 4];
         var biasRange = [35, 45];
@@ -2061,7 +2061,7 @@ function createMotifDistributionInfos(genData, genInfo, sectionInfos) {
 //        {data: [0, 1], likelihood: 1}
     ];
 
-    for (var i=0; i<motifDistributionCount; i++) {
+    for (let i=0; i<motifDistributionCount; i++) {
         const grooveMap = {};
         var indices = sampleData(grooveRndInfos, percussionRnd);
 
@@ -2084,7 +2084,7 @@ function createMotifDistributionInfos(genData, genInfo, sectionInfos) {
 
 
     // Fill distributions
-    for (var i=0; i<motifDistributionCount; i++) {
+    for (let i=0; i<motifDistributionCount; i++) {
         var info = {
             indices: []
         };
@@ -2126,7 +2126,7 @@ function createMotifDistributionInfos(genData, genInfo, sectionInfos) {
         const melodyRythmIntensity = 1; // melodyIntensities[j];
 
         var possibleEndIndices = [];
-        for (var i=1; i<motifCount; i++) {
+        for (let i=1; i<motifCount; i++) {
             possibleEndIndices[i-1] = {data: i, likelihood: 1};
         }
 
@@ -2162,7 +2162,7 @@ function createMotifDistributionInfos(genData, genInfo, sectionInfos) {
         addHarmonyPunctation(info.endIndices, 0);
 
         var possibleIndices = [];
-        for (var i=1; i<motifCount; i++) {
+        for (let i=1; i<motifCount; i++) {
             possibleIndices[i-1] = {data: i, likelihood: 1};
         }
 
@@ -2174,7 +2174,7 @@ function createMotifDistributionInfos(genData, genInfo, sectionInfos) {
 
         const melodyMotifIndices = [];
         melodyMotifIndices[0] = 0;
-        for (var i=1; i<motifCount; i++) {
+        for (let i=1; i<motifCount; i++) {
             var index = sampleDataIndex(possibleIndices, melodyRnd); // Sampling index because we need it for removing it for further sampling
             melodyMotifIndices[i] = possibleIndices[index].data;
             possibleIndices.splice(index, 1);
@@ -2183,7 +2183,7 @@ function createMotifDistributionInfos(genData, genInfo, sectionInfos) {
         var indicesPhrase = sampleData(melodyMotifIndexPatternInfos, melodyRnd);
 
         var indices = [];
-        for (var i=0; i<indicesPhrase.length; i++) {
+        for (let i=0; i<indicesPhrase.length; i++) {
             var arr = indicesPhrase[i];
             indices[i] = [melodyMotifIndices[arr[0]]]
         }
@@ -2264,7 +2264,7 @@ function createMotifDistributionInfos(genData, genInfo, sectionInfos) {
         const bassRythmIntensity = 1; // melodyIntensities[j];
 
         var possibleEndIndices = [];
-        for (var i=0; i<motifCount; i++) {
+        for (let i=0; i<motifCount; i++) {
             possibleEndIndices[i] = {data: i, likelihood: 1};
         }
 
@@ -2278,7 +2278,7 @@ function createMotifDistributionInfos(genData, genInfo, sectionInfos) {
         info.endIndices = [[endIndex + bassStartIndex]];
 
         var possibleIndices = [];
-        for (var i=0; i<motifCount; i++) {
+        for (let i=0; i<motifCount; i++) {
             possibleIndices[i] = {data: i, likelihood: 1};
         }
 
@@ -2289,7 +2289,7 @@ function createMotifDistributionInfos(genData, genInfo, sectionInfos) {
         }
 
         const bassMotifIndices = [];
-        for (var i=0; i<motifCount; i++) {
+        for (let i=0; i<motifCount; i++) {
             var index = sampleDataIndex(possibleIndices, bassRnd); // Sampling index because we need it for removing it for further sampling
             bassMotifIndices[i] = possibleIndices[index].data;
             possibleIndices.splice(index, 1);
@@ -2298,7 +2298,7 @@ function createMotifDistributionInfos(genData, genInfo, sectionInfos) {
         var indicesPhrase = sampleData(bassMotifIndexPatternInfos, melodyRnd);
 
         var indices = [];
-        for (var i=0; i<indicesPhrase.length; i++) {
+        for (let i=0; i<indicesPhrase.length; i++) {
             var arr = indicesPhrase[i];
             indices[i] = [bassMotifIndices[arr[0]] + bassStartIndex];
         }
@@ -2344,7 +2344,7 @@ function createMotifDistributionInfos(genData, genInfo, sectionInfos) {
 
             const onOffPattern1 = sampleData(onOffPatterns, innerHarmPuncRnd);
 
-            for (var i=0; i<innerDistInfo.indices.length; i++) {
+            for (let i=0; i<innerDistInfo.indices.length; i++) {
                 const on = onOffPattern1[i % onOffPattern1.length];
                 if (on) {
                     var index = harmonyStartIndex + (k + 1) * harmonyMotifCount + Math.floor(innerHarmPuncRnd.random() * harmonyMotifCount);
@@ -2837,7 +2837,7 @@ function createEffectChangeInfos(genData, genInfo, sectionInfos) {
         [MidiProgram.WARM_PAD, [InstrumentCapabilityProperty.FILTER_BW_CHANGE,InstrumentCapabilityProperty.FILTER_FREQ_CHANGE, InstrumentCapabilityProperty.PAN_CHANGE], [0.35, 0.35, 0.25]]
     ];
 
-    for (var i=0; i<instrumentEffectCapabilitiesArr.length; i++) {
+    for (let i=0; i<instrumentEffectCapabilitiesArr.length; i++) {
         var arr = instrumentEffectCapabilitiesArr[i];
         const caps = arr[1];
         const probs = arr[2];
@@ -2860,12 +2860,12 @@ function createEffectChangeInfos(genData, genInfo, sectionInfos) {
     }
 
     const instrumentEffectCapabilities = {};
-    for (var i=0; i<instrumentEffectCapabilitiesArr.length; i++) {
+    for (let i=0; i<instrumentEffectCapabilitiesArr.length; i++) {
         var arr = instrumentEffectCapabilitiesArr[i];
         instrumentEffectCapabilities[arr[0]] = arr[1];
     }
     const instrumentEffectProbs = {};
-    for (var i=0; i<instrumentEffectCapabilitiesArr.length; i++) {
+    for (let i=0; i<instrumentEffectCapabilitiesArr.length; i++) {
         var arr = instrumentEffectCapabilitiesArr[i];
         instrumentEffectProbs[arr[0]] = arr[2];
     }
@@ -3108,7 +3108,7 @@ function createEffectChangeInfos(genData, genInfo, sectionInfos) {
 
     const effects = ["FilterF", "FilterQ", "Pan"];
 
-    for (var i=0; i<datas.length; i++) {
+    for (let i=0; i<datas.length; i++) {
         const prefix = datas[i].prefix;
         const capName = prefix.substr(0, 1).toUpperCase() + prefix.substr(1);
         const propName = "sequential" + capName + "EffectChangeInfos";
@@ -3192,7 +3192,7 @@ function createTempoChangeInfos(genData, genInfo, sectionInfos) {
     genData.sequentialTempoChangeInfos = [getNoChangeEffectDescription({prefixId: "sequentialTempo"})];
 
     const sequentialInfoPatternCount = genInfo.tempoChangeCount;
-    for (var i=0; i<sequentialInfoPatternCount; i++) {
+    for (let i=0; i<sequentialInfoPatternCount; i++) {
         var info = {};
         info.indices = [0];
         info.startIndices = [];
@@ -3247,7 +3247,7 @@ function createTempoChangeInfos(genData, genInfo, sectionInfos) {
     ];
 
     const parallelInfoPatternCount = genInfo.tempoChangeCount;
-    for (var i=0; i<parallelInfoPatternCount; i++) {
+    for (let i=0; i<parallelInfoPatternCount; i++) {
         var info = {};
         info.indices = [];
         const slowDownAtGroupEnd = rnd.random() < genInfo.endPhraseGroupTempoChangeProbabilities[i % genInfo.endPhraseGroupTempoChangeProbabilities.length];
@@ -3582,7 +3582,7 @@ SimpleModuleGeneratorSectionInfo.prototype.getSetVariableModifiers = function(da
 
 //    logit(this.harmonyIndex);
 
-    for (var i=0; i<this.preModifierFunctions.length; i++) {
+    for (let i=0; i<this.preModifierFunctions.length; i++) {
         this.preModifierFunctions[i](
             {
                 melodyShapeInfo: melodyShapeInfo,
@@ -3726,7 +3726,7 @@ SimpleModuleGeneratorSectionInfo.prototype.getSetVariableModifiers = function(da
 
     ];
 
-    for (var i=0; i<this.modifierFunctions.length; i++) {
+    for (let i=0; i<this.modifierFunctions.length; i++) {
         this.modifierFunctions[i](mods);
     }
 //    logit(mods);
@@ -3809,7 +3809,7 @@ function createPhraseGroupInfo(rnd, genInfo, module) {
         ["sequentialBassEffectChangeIndices", effectChangeCount], // 23
         ["sequentialPercussionEffectChangeIndices", effectChangeCount] // 24
     ];
-    for (var i=0; i<propertyNameCounts.length; i++) {
+    for (let i=0; i<propertyNameCounts.length; i++) {
         const arr = propertyNameCounts[i];
         arr[2] = createOrGetRandom(genInfo, arr[0] + "Seed");
     }
@@ -4210,7 +4210,7 @@ function createPhraseGroupInfo(rnd, genInfo, module) {
 
     // Rearange when SongPartStructureInfo is used as input
     const extraSongPartStructureRndInfos = copyValueDeep(genInfo.songPartStructureRndInfos);
-    for (var i=0; i<extraSongPartStructureRndInfos.length; i++) {
+    for (let i=0; i<extraSongPartStructureRndInfos.length; i++) {
         const espsri = extraSongPartStructureRndInfos[i];
         var data = espsri.data;
         convertSongPartStructureInfos(data);
@@ -4229,7 +4229,7 @@ function createPhraseGroupInfo(rnd, genInfo, module) {
 
     const songPartStructureRndInfosCopy = copyValueDeep(songPartStructureRndInfos);
 
-    for (var i=0; i<songPartStructureRndInfosCopy.length; i++) {
+    for (let i=0; i<songPartStructureRndInfosCopy.length; i++) {
 
         var info = songPartStructureRndInfosCopy[i];
 
@@ -4331,7 +4331,7 @@ function createPhraseGroupInfo(rnd, genInfo, module) {
     const glueRnd = createOrGetRandom(genInfo, "glueSeed");
 
     const songFormStructureGroups = {};
-    for (var i=0; i<songPartStructure.length; i++) {
+    for (let i=0; i<songPartStructure.length; i++) {
 
         const songPart = songPartStructure[i][0];
         const partInfo = songPartStructure[i][1];
@@ -4740,7 +4740,7 @@ function createPhraseGroupInfo(rnd, genInfo, module) {
     const tonicizationRnd = createOrGetRandom(genInfo, "tonicizationSeed");
     const phraseGroupSimilarityRnd = createOrGetRandom(genInfo, "phraseGroupSimilaritySeed");
 
-    for (var i=0; i<groupPattern.length; i++) {
+    for (let i=0; i<groupPattern.length; i++) {
         var index = groupPattern[i];
         var groupType = groupTypeMap[index];
 
@@ -5093,7 +5093,7 @@ function createPhraseGroupInfo(rnd, genInfo, module) {
                     genInfo.differentPhraseGroupIndexDifferentRandomFraction * groupDifferenceRnd.random()));
                 const diffs = sampleNDataWithoutReplacement(rndInfosCopy, diffCount, groupDifferenceRnd, true);
 
-                for (var i=0; i<sameGroupTypeIndices1.length; i++) {
+                for (let i=0; i<sameGroupTypeIndices1.length; i++) {
                     for (var j=0; j<sameGroupTypeIndices2.length; j++) {
                         var info = {
                             groupIndices: [sameGroupTypeIndices1[i], sameGroupTypeIndices2[j]],
@@ -5175,7 +5175,7 @@ function checkConstraints(propIndex, ssInfo, pgInfo, domains, depth, groupSameAr
 
             // Only check the constraints when we are at the end of the group, then we know that all values have been set in both groups
             if (lastInGroup) {
-                for (var i=0; i<groupSames.length; i++) {
+                for (let i=0; i<groupSames.length; i++) {
                     var otherGroupIndex = groupSames[i];
                     if (otherGroupIndex < currentGroupIndex) {
                         var otherIndicesForGroup = ssInfo.indicesForGroups[otherGroupIndex];
@@ -5203,7 +5203,7 @@ function checkConstraints(propIndex, ssInfo, pgInfo, domains, depth, groupSameAr
 
             // Only check the constraints when we are at the end of the group, then we know that all values have been set in both groups
             if (lastInGroup) {
-                for (var i=0; i<groupDifferents.length; i++) {
+                for (let i=0; i<groupDifferents.length; i++) {
                     var otherGroupIndex = groupDifferents[i];
                     if (otherGroupIndex < currentGroupIndex) {
                         var otherIndicesForGroup = ssInfo.indicesForGroups[otherGroupIndex];
@@ -5233,7 +5233,7 @@ function checkConstraints(propIndex, ssInfo, pgInfo, domains, depth, groupSameAr
             // The group should have the same
             var startIndex = currentIndicesForGroup[0];
             var value = domains[startIndex][0];
-            for (var i=1; i<currentIndicesForGroup.length; i++) {
+            for (let i=1; i<currentIndicesForGroup.length; i++) {
                 if (domains[currentIndicesForGroup[i]][0] != value) {
 //                    logit("Need to backtrack because not same within group " + currentIndicesForGroup.join(", "));
                     wrongCount++; // Not all same within group
@@ -5245,7 +5245,7 @@ function checkConstraints(propIndex, ssInfo, pgInfo, domains, depth, groupSameAr
             var startIndex = currentIndicesForGroup[0];
             var value = domains[startIndex][0];
             var allSame = true;
-            for (var i=1; i<currentIndicesForGroup.length; i++) {
+            for (let i=1; i<currentIndicesForGroup.length; i++) {
                 if (domains[currentIndicesForGroup[i]][0] != value) {
                     allSame = false; // Not all same within group
                     break;
@@ -5323,14 +5323,14 @@ function assignPropertyIndexArray(propIndex, ssInfo, pgInfo, rnd) {
         // logit("assigning array for " + propName + " domain size: " + domainSize);
         const domains = [];
 
-        for (var i=0; i<ssInfo.phraseTypes.length; i++) {
+        for (let i=0; i<ssInfo.phraseTypes.length; i++) {
             const domain = createFilledNumericIncArray(domainSize, 0, 1);
             arrayShuffle(domain, rnd);
             domains.push(domain);
         }
 
         const groupSames = [];
-        for (var i=0; i<pgInfo.groupSameInfos.length; i++) {
+        for (let i=0; i<pgInfo.groupSameInfos.length; i++) {
             const groupSameInfo = pgInfo.groupSameInfos[i];
             var arr = [];
             if (arrayContains(groupSameInfo.properties, propIndex)) {
@@ -5339,7 +5339,7 @@ function assignPropertyIndexArray(propIndex, ssInfo, pgInfo, rnd) {
             }
         }
         const groupDifferents = [];
-        for (var i=0; i<pgInfo.groupDifferentInfos.length; i++) {
+        for (let i=0; i<pgInfo.groupDifferentInfos.length; i++) {
             const groupDifferentInfo = pgInfo.groupDifferentInfos[i];
             var arr = [];
             if (arrayContains(groupDifferentInfo.properties, propIndex)) {
@@ -5348,14 +5348,14 @@ function assignPropertyIndexArray(propIndex, ssInfo, pgInfo, rnd) {
             }
         }
         const withinSameGroupIndices = [];
-        for (var i=0; i<pgInfo.withinGroupSameInfos.length; i++) {
+        for (let i=0; i<pgInfo.withinGroupSameInfos.length; i++) {
             const withinSameArr = pgInfo.withinGroupSameInfos[i];
             if (arrayContains(withinSameArr, propIndex)) {
                 withinSameGroupIndices.push(i);
             }
         }
         const withinDifferentGroupIndices = [];
-        for (var i=0; i<pgInfo.withinGroupDifferentInfos.length; i++) {
+        for (let i=0; i<pgInfo.withinGroupDifferentInfos.length; i++) {
             const withinDifferentArr = pgInfo.withinGroupDifferentInfos[i];
             if (arrayContains(withinDifferentArr, propIndex)) {
                 withinDifferentGroupIndices.push(i);
@@ -5369,7 +5369,7 @@ function assignPropertyIndexArray(propIndex, ssInfo, pgInfo, rnd) {
             withinSameGroupIndices, withinDifferentGroupIndices, searchInfo);
         if (searchInfo.bestSolution) {
 //            logit("Found solution for " + propName + " " + searchInfo.bestSolutionCost + " expansions: " + searchInfo.expansions);
-            for (var i=0; i<resultDomains.length; i++) {
+            for (let i=0; i<resultDomains.length; i++) {
                 const value = resultDomains[i][0];
                 ssInfo[propName][i] = value;
             }
@@ -5382,7 +5382,7 @@ function assignPropertyIndexArray(propIndex, ssInfo, pgInfo, rnd) {
     }
     if (!found) {
         logit("Unable to find solution for " + propName);
-        for (var i=0; i<ssInfo.phraseTypes.length; i++) {
+        for (let i=0; i<ssInfo.phraseTypes.length; i++) {
             const groupIndex = ssInfo.songPartTypes[i % ssInfo.songPartTypes.length];
             ssInfo[propName][i] = groupIndex % ssInfo.phraseTypes.length;
         }
@@ -5395,7 +5395,7 @@ function assignPropertyIndexArrays(ssInfo, pgInfo, rnd, genInfo) {
 
     const done = [];
 
-    for (var i=0; i<pgInfo.propertyNameCounts.length; i++) {
+    for (let i=0; i<pgInfo.propertyNameCounts.length; i++) {
         if (!done[i]) {
 
             const propRnd = pgInfo.propertyNameCounts[i][2];
@@ -5426,7 +5426,7 @@ function assignPropertyIndexArrays(ssInfo, pgInfo, rnd, genInfo) {
 //    logit(JSON.stringify(ssInfo.songPartTypes) + " and " + JSON.stringify(ssInfo.phraseTypes));
 
     // Overriding indices
-    for (var i=0; i<pgInfo.propertyNameCounts.length; i++) {
+    for (let i=0; i<pgInfo.propertyNameCounts.length; i++) {
         var propCount = pgInfo.propertyNameCounts[i];
         var propName = propCount[0];
         const indexOverridePropName = propName.substring(0, propName.indexOf("Indices")) + "IndexOverride";
@@ -5462,7 +5462,7 @@ function assignPropertyIndexArrays(ssInfo, pgInfo, rnd, genInfo) {
 
 
     ssInfo.phraseTypeIndices = [];
-    for (var i=0; i<ssInfo.phraseTypes.length; i++) {
+    for (let i=0; i<ssInfo.phraseTypes.length; i++) {
         ssInfo.phraseTypeIndices[i] = i;
         ssInfo.harmonyIndices[i] = i;
         ssInfo.tempoIndices[i] = i;
@@ -6142,7 +6142,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
     const allPercMotifs = [];
 
 
-    for (var i=0; i<genData.percussionMotifInfos.length; i++) {
+    for (let i=0; i<genData.percussionMotifInfos.length; i++) {
 
         var info = genData.percussionMotifInfos[i];
 
@@ -6422,7 +6422,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
 
 
     const harmonies = [phe];
-    for (var i=0; i<genInfo.harmonyElements.length; i++) {
+    for (let i=0; i<genInfo.harmonyElements.length; i++) {
         const he = copyValueDeep(genInfo.harmonyElements[i]);
         if (he instanceof SequenceHarmonyElement) {
             he.lengthRythm = he.lengthRythm ? he.lengthRythm : hrRythm.id;
@@ -6526,7 +6526,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
         cme.length = 1;
         cme.lengthUnit = PositionUnit.HARMONY_INDEX;
 
-        for (var i=1; i<4; i++) {
+        for (let i=1; i<4; i++) {
             const filler = new FillerNote();
             filler.offset = i;
             filler.lengthMode = FillerNoteLengthMode.MATCH;
@@ -6611,13 +6611,13 @@ function createTestModule(seed, inputGenInfo, resultObj) {
         const indices = getValueOrDefault(desc, "indices", []);
         const indicesExpression = getValueOrDefault(desc, "indicesExpression", "");
 
-        for (var i=0; i<curves.length; i++) {
+        for (let i=0; i<curves.length; i++) {
             module.addCurve(curves[i]);
         }
 
         const elementsCopy = arrayCopyWithCopy(elements);
         if (elementsVerbose) {
-            for (var i=0; i<elementsCopy.length; i++) {
+            for (let i=0; i<elementsCopy.length; i++) {
                 elementsCopy[i].verbose = true;
             }
         }
@@ -6723,7 +6723,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
         sequentialEffectChangeInfoVar.id = "sequential" + capName + "EffectChangeInfoVar";
         module.addVariable(sequentialEffectChangeInfoVar);
 
-        for (var i=0; i<3; i++) {
+        for (let i=0; i<3; i++) {
 
             const noteVelocitiesChannel = new DoubleControlChannel();
             noteVelocitiesChannel.id = name + "NoteVelocitiesChannel" + (i+1);
@@ -6927,7 +6927,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
         // Add activation formulas for all extra render elements
         const extraRenderElements = genInfo["extra" + capName + "RenderElements"];
         if (extraRenderElements && extraRenderElements.length > 0) {
-            for (var i=0; i<extraRenderElements.length; i++) {
+            for (let i=0; i<extraRenderElements.length; i++) {
                 const extra = extraRenderElements[i];
                 extra.activatedUseExpression = true;
                 const varId = extraRenderElementIndicesVar.id;
@@ -7090,7 +7090,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
 
     var allMotifIds = [];
 
-    for (var i=0; i<genData.motifInfos.length; i++) {
+    for (let i=0; i<genData.motifInfos.length; i++) {
         const prefix = "melody";
         const motifInfo = genData.motifInfos[i];
         const motif = createMotifFromMotifInfo(motifInfo, prefix, "" + (i + 1));
@@ -7190,7 +7190,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
     // Tempo patterns
     const sequentialTempoElements = [];
     const sequentialTempoCurves = [];
-    for (var i=0; i<genData.sequentialTempoChangeInfos.length; i++) {
+    for (let i=0; i<genData.sequentialTempoChangeInfos.length; i++) {
         var info = genData.sequentialTempoChangeInfos[i];
         sequentialTempoElements.push(info.element);
         sequentialTempoCurves.push(info.curve);
@@ -7216,7 +7216,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
 
     const parallelTempoElements = [];
     const parallelTempoCurves = [];
-    for (var i=0; i<genData.parallelTempoChangeInfos.length; i++) {
+    for (let i=0; i<genData.parallelTempoChangeInfos.length; i++) {
         var info = genData.parallelTempoChangeInfos[i];
         parallelTempoElements.push(info.element);
         parallelTempoCurves.push(info.curve);
@@ -7280,7 +7280,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
 
 
     function createSectionModifiers(mods, arr, index) {
-        for (var i=0; i<mods.length; i++) {
+        for (let i=0; i<mods.length; i++) {
             const modInfo = mods[i];
 
             const sm = new SetVariableValueSectionModifier().setVariable(modInfo[0]);
@@ -7303,7 +7303,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
 
         const prefixes = ["melody", "inner1", "inner2", "bass", "percussion"];
         const counts = [3, 3, 3, 1];
-        for (var i=0; i<prefixes.length; i++) {
+        for (let i=0; i<prefixes.length; i++) {
             for (let j=0; j<counts[i]; j++) {
                 const nvsm = new NoteVelocitiesSectionModifier();
                 nvsm.curveGlobalTime = false;
@@ -7319,7 +7319,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
     }
 
 
-    for (var i=0; i<sectionInfos.length; i++) {
+    for (let i=0; i<sectionInfos.length; i++) {
         const sectionInfo = sectionInfos[i];
         const sectionRef = new SectionReference(section.id);
         const mods = sectionInfo.getSetVariableModifiers(genData);
@@ -7329,7 +7329,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
 
     module.addStructure(structure);
 
-//    for (var i=0; i<module.controlChannels.length; i++) {
+//    for (let i=0; i<module.controlChannels.length; i++) {
 //        var cch = module.controlChannels[i];
 //        logit("cch.id: " + cch.id);
 //    }
@@ -7499,7 +7499,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
             midiRenderer.channelMaps.push(midiMap);
         }
 
-        for (var i=0; i<melodyRenderChannels.length; i++) {
+        for (let i=0; i<melodyRenderChannels.length; i++) {
             var mergeIndex = genInfo.mergeChannels ? 0 : i;
             var chId = melodyRenderChannels[i];
             var midiMap = new MidiChannelMap();
@@ -7523,7 +7523,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
         }
         if (!genInfo.mergeChannels) {
 
-            for (var i=0; i<controlChannels.length; i++) {
+            for (let i=0; i<controlChannels.length; i++) {
                 var chId = controlChannels[i];
                 const controlMap = new MidiControlChannelMap();
                 controlMap.amplitude = 127.0;
@@ -7567,7 +7567,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
             }
         }
 
-        for (var i=0; i<inner1RenderChannels.length; i++) {
+        for (let i=0; i<inner1RenderChannels.length; i++) {
             var mergeIndex = genInfo.mergeChannels ? 3 : i + 3;
             var chId = inner1RenderChannels[i];
             var midiMap = new MidiChannelMap();
@@ -7598,7 +7598,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
             midiRenderer.channelMaps.push(midiMap);
         }
 
-        for (var i=0; i<inner2RenderChannels.length; i++) {
+        for (let i=0; i<inner2RenderChannels.length; i++) {
             var mergeIndex = genInfo.mergeChannels ? 6 : i + 6;
 
             var chId = inner2RenderChannels[i];
@@ -7631,7 +7631,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
             midiRenderer.channelMaps.push(midiMap);
         }
 
-        for (var i=0; i<bassRenderChannels.length; i++) {
+        for (let i=0; i<bassRenderChannels.length; i++) {
             var mergeIndex = genInfo.mergeChannels ? 11 : i + 11;
 
             var chId = bassRenderChannels[i];

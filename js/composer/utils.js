@@ -206,22 +206,22 @@ function getProbabilityDistribution(likelihoods) {
     const length = likelihoods.length;
 
     let sum = 0.0;
-    for (var i = 0; i < length; i++) {
+    for (let i = 0; i < length; i++) {
         sum += parseFloat(likelihoods[i]);
     }
 
     result[0] = likelihoods[0];
-    for (var i = 1; i < length; i++) {
+    for (let i = 1; i < length; i++) {
         result[i] = (result[i - 1] + likelihoods[i]);
     }
     if (sum > 0.000000001) {
-        for (var i = 0; i < length; i++) {
+        for (let i = 0; i < length; i++) {
             result[i] /= sum;
         }
     } else {
         // Setting all to the same person
         const increment = 1.0 / length;
-        for (var i = 0; i < length; i++) {
+        for (let i = 0; i < length; i++) {
             result[i] = (i+1) * increment;;
         }
     }
@@ -235,17 +235,17 @@ function getProbabilityFractions(likelihoods) {
     const length = likelihoods.length;
 
     let sum = 0.0;
-    for (var i = 0; i < length; i++) {
+    for (let i = 0; i < length; i++) {
         sum += parseFloat(likelihoods[i]);
     }
 
     if (sum > 0.000000001) {
-        for (var i = 0; i < length; i++) {
+        for (let i = 0; i < length; i++) {
             result[i] = likelihoods[i] / sum;
         }
     } else {
         // Setting all to the same person
-        for (var i = 0; i < length; i++) {
+        for (let i = 0; i < length; i++) {
             result[i] = 1.0 / length;
         }
     }
@@ -294,11 +294,11 @@ function sampleNDataWithoutReplacement(rndInfos, n, rnd, replace) {
     }
     n = Math.min(rndInfos.length, n);
     if (n == rndInfos.length) {
-        for (var i=0; i<rndInfos.length; i++) {
+        for (let i=0; i<rndInfos.length; i++) {
             result.push(rndInfos[i].data);
         }
     } else {
-        for (var i=0; i<n; i++) {
+        for (let i=0; i<n; i++) {
             const index = sampleDataIndex(rndInfos, rnd);
             const rndInfo = rndInfos[index];
             const data = rndInfo.data;
@@ -583,11 +583,11 @@ function copyValueDeep(value, parentObject, options) {
         if (options && options.propertyInfo &&
             options.propertyInfo.dataType == GuiPropertyDataType.ID_REFERENCE_LIST) {
             var uiInfo = options.propertyInfo.uniqueIdInfo;
-            for (var i=0; i<value.length; i++) {
+            for (let i=0; i<value.length; i++) {
                 result[i] = getValue2LevelsOrDefault(options.oldToNewIdMap, uiInfo.namespace, value[i], value[i]);
             }
         } else {
-            for (var i=0; i<value.length; i++) {
+            for (let i=0; i<value.length; i++) {
                 result[i] = copyValueDeep(value[i], parentObject, options);
             }
         }
@@ -848,7 +848,7 @@ function getExpressionValue(expression, module, extraVars, verbose, object, prop
     do {
         myArray = /([a-z][a-z0-9]*Var)/gi.exec(replacedExpression);
         if (myArray) {
-            for (var i=0; i<myArray.length; i++) {
+            for (let i=0; i<myArray.length; i++) {
                 var varName = myArray[i];
                 var variable = module.getVariable(varName);
                 if (variable) {
@@ -909,11 +909,11 @@ function getExpressionValue(expression, module, extraVars, verbose, object, prop
         pub[v.id] = prop(v.id, v.getValue(module));
     }
 //    var variables = module.getVariables();
-//    for (var i=0; i<variables.length; i++) {
+//    for (let i=0; i<variables.length; i++) {
 //        var v = variables[i];
 //        pub[v.id] = prop(v.id, v.getValue(module));
 //    }
-    for (var i=0; i<module.procedures.length; i++) {
+    for (let i=0; i<module.procedures.length; i++) {
         var v = module.procedures[i];
         pub[v.id] = prop(v.id, v.getProcedure(module));
     }
@@ -960,7 +960,7 @@ function getValueOrExpressionValue(object, propName, module, extraVars, verbose)
 
 function strcmp(a, b) {
     // a = a.toString(), b = b.toString();
-    for (var i = 0,n = Math.max(a.length, b.length); i<n && a.charAt(i) === b.charAt(i); ++i);
+    for (let i = 0,n = Math.max(a.length, b.length); i<n && a.charAt(i) === b.charAt(i); ++i);
     if (i === n) {
         return 0;
     }
@@ -1075,7 +1075,7 @@ function sortEnumAlphabetically(obj) {
 
     const values = obj.getPossibleValues();
     const descriptionValues = [];
-    for (var i=0; i<values.length; i++) {
+    for (let i=0; i<values.length; i++) {
         const desc = obj.toString(values[i]);
         var propName = valuePropNames[values[i]];
         descriptionValues.push({
@@ -1088,7 +1088,7 @@ function sortEnumAlphabetically(obj) {
         return strcmp(v2.description, v1.description);
     });
 
-    for (var i=0; i<descriptionValues.length; i++) {
+    for (let i=0; i<descriptionValues.length; i++) {
         const dv = descriptionValues[i];
         values[i] = dv.value;
         obj[dv.propName] = values[i];

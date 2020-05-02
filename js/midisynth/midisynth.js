@@ -30,7 +30,7 @@ MidiSynth.prototype.synthesizeBatch = function(midiData, progressFunc) {
     const channelBuffers = [];
     const dirtyChannelBuffers = [];
     const midiChannelCount = 32;
-    for (var i=0; i<midiChannelCount; i++) {
+    for (let i=0; i<midiChannelCount; i++) {
         channelBuffers[i] = [];
         dirtyChannelBuffers[i] = false;
     }
@@ -41,7 +41,7 @@ MidiSynth.prototype.synthesizeBatch = function(midiData, progressFunc) {
     let tempMicrosPerQuarter = currentMicrosPerQuarter; // Use a temp for calculating song length
     let tempTick = 0;
     let tempSeconds = 0;
-    for (var i=0; i<events.length; i++) {
+    for (let i=0; i<events.length; i++) {
         var e = events[i];
         var eventMessage = e.eventMessage;
         if (eventMessage.messageClass == "SetTempoMessage") {
@@ -68,7 +68,7 @@ MidiSynth.prototype.synthesizeBatch = function(midiData, progressFunc) {
     const mixerBuffer = [];
 
     const result = [];
-    for (var i=0; i<this.channels; i++) {
+    for (let i=0; i<this.channels; i++) {
         result[i] = [];
         mixerBuffer[i] = createFilledArray(bufferLen, 0);
     }
@@ -103,7 +103,7 @@ MidiSynth.prototype.synthesizeBatch = function(midiData, progressFunc) {
 
         let nextMicrosPerQuarter = currentMicrosPerQuarter;
         // Take care of midi messages
-        for (var i=midiDataIndex; i<events.length; i++) {
+        for (let i=midiDataIndex; i<events.length; i++) {
             var e = events[i];
             const eventTime = e.eventTime;
             const stepSeconds = secondsPerMidiTick * eventTime;
@@ -193,7 +193,7 @@ MidiSynth.prototype.synthesizeBatch = function(midiData, progressFunc) {
 
         const newVoices = [];
         // Gather everything from the voices
-        for (var i=0; i<this.voices.length; i++) {
+        for (let i=0; i<this.voices.length; i++) {
             const voice = this.voices[i];
 
             const voiceBufArr = channelBuffers[voice.channel];
@@ -217,11 +217,11 @@ MidiSynth.prototype.synthesizeBatch = function(midiData, progressFunc) {
         // Apply channel filters
 
         // Mixer
-        for (var i=0; i<this.channels; i++) {
+        for (let i=0; i<this.channels; i++) {
             fillArray(mixerBuffer[i], bufferLen, 0);
         }
 
-        for (var i=0; i<channelBuffers.length; i++) {
+        for (let i=0; i<channelBuffers.length; i++) {
             if (dirtyChannelBuffers[i]) {
                 const cBuf = channelBuffers[i];
                 for (var j=0; j<this.channels; j++) {
@@ -239,7 +239,7 @@ MidiSynth.prototype.synthesizeBatch = function(midiData, progressFunc) {
         // Write to result buffer
 
         const toWriteLen = Math.min(bufferLen, bufferLenLeft);
-        for (var i=0; i<this.channels; i++) {
+        for (let i=0; i<this.channels; i++) {
             var buf = mixerBuffer[i];
             const resultBuf = result[i];
             for (var j=0; j<toWriteLen; j++) {
@@ -266,7 +266,7 @@ MidiSynth.prototype.synthesizeBatch = function(midiData, progressFunc) {
     if (this.voices.length > 0) {
         logit("Voice count after finish: " + this.voices.length);
 
-        for (var i=0; i<this.voices.length; i++) {
+        for (let i=0; i<this.voices.length; i++) {
             var v = this.voices[i];
             logit(" voice " + i + ": " + v.mode);
         }
@@ -317,7 +317,7 @@ MidiSynth.prototype.synthesizeBatch = function(midiData, progressFunc) {
 //
 //    for (var j=0; j<this.channels; j++) {
 //        var arr = result[j];
-//        for (var i=0; i<sampleCount; i++) {
+//        for (let i=0; i<sampleCount; i++) {
 //            arr[i] = Math.sin(freqFactor * i * 440 * (j + 1));
 //        }
 //    }

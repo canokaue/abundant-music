@@ -73,7 +73,7 @@ MidiSynthADSREnvelope.prototype.writeEnvelope = function(arr, offset, len, synth
     if (this.releaseBufferIndex > 0) {
         const releaseBufferIndex = this.releaseBufferIndex;
         const releaseValue = this.releaseValue;
-        for (var i=0; i<len; i++) {
+        for (let i=0; i<len; i++) {
             const diffT = bufferIndex - releaseBufferIndex;
 
             var k = -releaseValue / releaseBufLen;
@@ -87,7 +87,7 @@ MidiSynthADSREnvelope.prototype.writeEnvelope = function(arr, offset, len, synth
             bufferIndex++;
         }
     } else {
-        for (var i=0; i<len; i++) {
+        for (let i=0; i<len; i++) {
             var value = 0;
             if (bufferIndex < attackBufLen) {
                 value = bufferIndex / attackBufLen;

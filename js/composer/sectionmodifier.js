@@ -97,7 +97,7 @@ ConditionalSuspendSectionModifier.prototype.modifyPlannedVoiceLines = function(v
         const pitchClasses = [];
         const prevPitchClasses = [];
 
-        for (var i=0; i<voiceLines.length; i++) {
+        for (let i=0; i<voiceLines.length; i++) {
             const vl = voiceLines[i];
             const prevVle = vl.get(this.harmonyIndex);
             const prevAbsNote = state.constantHarmony.get(this.harmonyIndex).getAbsoluteNoteConstantVoiceLineElement(prevVle);
@@ -117,7 +117,7 @@ ConditionalSuspendSectionModifier.prototype.modifyPlannedVoiceLines = function(v
 
         for (let j=0; j<this.suspendPitchClassPairs.length; j++) {
             const pair = this.suspendPitchClassPairs[j];
-            for (var i=0; i<absNotes.length; i++) {
+            for (let i=0; i<absNotes.length; i++) {
                 const prevAbs = prevAbsNotes[i];
                 const prevPc = prevAbs % 12;
                 const toAbs = absNotes[i];
