@@ -15,7 +15,7 @@ function gatherEventsWithType(events, type) {
 
 function beatsToSeconds(beats, tempo) {
     return 60.0 * (beats / tempo);
-};
+}
 
 
 function secondsToBeats(seconds, tempo) {
@@ -27,13 +27,10 @@ function predictBeat(tempoEvents, time) {
     let currentTempo = 120;
 
     let currentSeconds = 0;
-    let prevSeconds = 0;
 
     let currentBeat = 0;
 
     for (let i=0; i<tempoEvents.length; i++) {
-        prevSeconds = currentSeconds;
-
         const e = tempoEvents[i];
 
         const beatStep = e.t - currentBeat;
@@ -60,13 +57,10 @@ function predictBeat(tempoEvents, time) {
     return currentBeat;
 }
 
-
-
 // Events must be sorted
 function gatherNotesFromEvents(events) {
     const notes = {};
     const notesDone = {};
-    const allNotes = [];
 
     let currentTempo = 120;
 
@@ -123,7 +117,6 @@ function gatherNotesFromEvents(events) {
                             notesDone[e.c] = doneArr;
                         }
                         doneArr.push(minTimeData);
-                        allNotes.push(minTimeData);
                         arrayDelete(current, minTimeData);
 //                    current.indexOf(minTimeData)
                     }
