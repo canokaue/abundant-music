@@ -1,7 +1,3 @@
-
-
-
-
 const DynamicHarmonyMode = {
     ROOT: 0,
     NEIGHBOUR: 1,
@@ -12,7 +8,6 @@ const DynamicHarmonyMode = {
     ROOT_MIXTURE: 6,
     ROOT_MIXTURE_MODULATION: 7
 };
-
 
 class DynamicHarmonyState {
     constructor() {
