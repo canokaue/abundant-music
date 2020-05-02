@@ -16,7 +16,7 @@ if (useDevSources) {
 Modernizr.load(
     [
         {
-            both: ["js/composeeditoronlinesource-min.js", "js/songsettings.js"],
+            both: ["js/composeeditoronlinesource.js", "js/songsettings.js"],
             complete: function() {
                 loadSettingsFromLocalStorage();
                 var theme = JQueryUITheme.toUrlString(themeSettings.theme);
