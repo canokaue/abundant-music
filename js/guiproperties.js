@@ -327,30 +327,6 @@ function GuiObjectInfo(options) {
     this.canUnset = getValueOrDefault(options, "canUnset", true);
 }
 
-
-//var uniqueIdManager = {
-//    addUniqueIdListener: function(namespaces, listener) {
-//        // Adding the listener to
-//    },
-//    removeUniqueIdListener: function(namespaces, listener) {
-//        //
-//    },
-//    uniqueIdAvailable: function(namespace, testId) {
-//        //
-//    },
-//    getUniqueIds: function(namespace) {
-//        //
-//    },
-//    changeUniqueId: function(namespace, oldId, newId) {
-//        // Make sure that all listeners of that namespace know about this
-//    },
-//    removeUniqueId: function(namespace, oldId, newId) {
-//        // Make sure that all listeners of that namespace know about this
-//    }
-//}
-//
-
-
 function GuiUniqueIdInfo(options) {
     this.manager = getValueOrDefault(options, "manager", null);
     this.namespace = getValueOrDefault(options, "namespace", "ns");
