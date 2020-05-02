@@ -528,7 +528,7 @@ SionRenderer.prototype.processNoteOnOrOffEvent = function(event, noteOnMaps, tra
     }
 
     let theMapping = null;
-    for (var i=0; i<this.mappings.length; i++) {
+    for (let i=0; i<this.mappings.length; i++) {
         const mapping = this.mappings[i];
         if (mapping.renderChannel == event.renderChannel.id) {
             if (mapping.instrument.isPercussion) {
@@ -549,7 +549,7 @@ SionRenderer.prototype.processNoteOnOrOffEvent = function(event, noteOnMaps, tra
         noteArr.push(event);
     } else { // Note off
         let onEvent = null;
-        for (var i=0; i<noteArr.length; i++) {
+        for (let i=0; i<noteArr.length; i++) {
             const otherEvent = noteArr[i];
             onEvent = otherEvent;
             break;
@@ -590,13 +590,13 @@ SionRenderer.prototype.getMML = function(renderData, module) {
     const tracks = [];
     const noteOnMaps = {
     };
-    for (var i=0; i<renderData.events.length; i++) {
+    for (let i=0; i<renderData.events.length; i++) {
         const event = renderData.events[i];
         this.processEvent(event, noteOnMaps, tracks, module);
     }
 
     let masterEffectString = "";
-    for (var i=0; i<this.masterEffects.length; i++) {
+    for (let i=0; i<this.masterEffects.length; i++) {
         var effect = this.masterEffects[i];
         masterEffectString += effect.getMML();
     }
@@ -606,13 +606,13 @@ SionRenderer.prototype.getMML = function(renderData, module) {
         resultArr.push(masterEffectString);
     }
 
-    for (var i=0; i<this.effects.length; i++) {
+    for (let i=0; i<this.effects.length; i++) {
         var effect = this.effects[i];
         const effectString = "#EFFECT" + (i + 1) + "{" + effect.getMML() + "}";
         resultArr.push(effectString);
     }
 
-    for (var i=0; i<this.mappings.length; i++) {
+    for (let i=0; i<this.mappings.length; i++) {
         const mapping = this.mappings[i];
         mapping.instrument.index = i;
         const spec = mapping.instrument.getMMLSpec();
@@ -621,7 +621,7 @@ SionRenderer.prototype.getMML = function(renderData, module) {
         }
     }
 
-    for (var i=0; i<tracks.length; i++) {
+    for (let i=0; i<tracks.length; i++) {
         const track = tracks[i];
         const onOffs = track.noteOnOffs;
 

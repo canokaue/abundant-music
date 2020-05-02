@@ -257,7 +257,7 @@ Visualizer3D.prototype.highlightNotes = function(beat) {
 //            logit("Checking beat " + beat + " " + arr.length);
 
 
-            for (var i=0; i<arr.length; i++) {
+            for (let i=0; i<arr.length; i++) {
                 const dat = arr[i];
                 const onEvent = dat.onEvent;
                 const channel = onEvent.c;
@@ -299,7 +299,7 @@ Visualizer3D.prototype.highlightNotes = function(beat) {
         }
     }
 
-    for (var i=0; i<lightDatas.length; i++) {
+    for (let i=0; i<lightDatas.length; i++) {
         var lightData = lightDatas[i];
         if (lightData.count > 0) {
             lightData.pos.divideScalar(lightData.count);
@@ -591,7 +591,7 @@ Visualizer3D.prototype.createLandscapeChunk = function(cx, cz) {
     }
 
     const vertices = landscapeGeom.vertices;
-    for (var i=0; i<landscapeGeom.faces.length; i++) {
+    for (let i=0; i<landscapeGeom.faces.length; i++) {
         const face = landscapeGeom.faces[i];
         const va = vertices[face.a];
         const vb = vertices[face.b];

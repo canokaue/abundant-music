@@ -194,13 +194,13 @@ GuiPropertiesComponent.prototype.setAlignment = function(info) {
 
 GuiPropertiesComponent.prototype.alignComponents = function() {
     const info = new ComponentAlignmentInfo();
-    for (var i=0; i<this.children.length; i++) {
+    for (let i=0; i<this.children.length; i++) {
         var c = this.children[i];
         //        logit(" " + c._constructorName + " <br />");
         c.gatherAlignmentInfo(info);
     }
 
-    for (var i=0; i<this.children.length; i++) {
+    for (let i=0; i<this.children.length; i++) {
         var c = this.children[i];
         c.setAlignment(info);
     }
@@ -422,7 +422,7 @@ GuiPropertiesComponent.prototype.createComponents = function() {
     const groupCaptions = new Map(true);
 
     const that = this;
-    for (var i=0; i<infosArr.length; i++) {
+    for (let i=0; i<infosArr.length; i++) {
         const info = infosArr[i];
 
         if (this.passOnComponentRegisters && this.componentRegisters) {
@@ -467,7 +467,7 @@ GuiPropertiesComponent.prototype.createComponents = function() {
             logit("Could not create a component for data type " + info.dataType + "<br />");
         }
     }
-    for (var i=0; i<components.length; i++) {
+    for (let i=0; i<components.length; i++) {
         this.addChild(components[i]);
     }
 
@@ -565,7 +565,7 @@ GuiPropertyComponent.prototype.createNewValue = function(constrInfo, parentPropI
 
 GuiPropertyComponent.prototype.getConstructorsHtml = function(resultArr, constructorInfos, newMode) {
     if (newMode == GuiNewMode.BUTTONS) {
-        for (var i=0; i<constructorInfos.length; i++) {
+        for (let i=0; i<constructorInfos.length; i++) {
             var constrInfo = constructorInfos[i];
             resultArr.push("<button ");
             resultArr.push("id='" + (this.newButtonIdPrefix + "-" + i) + "' ");
@@ -575,7 +575,7 @@ GuiPropertyComponent.prototype.getConstructorsHtml = function(resultArr, constru
         }
     } else {
         logit("select new not supported yet...");
-        for (var i=0; i<constructorInfos.length; i++) {
+        for (let i=0; i<constructorInfos.length; i++) {
             var constrInfo = constructorInfos[i];
         }
     }
@@ -722,7 +722,7 @@ GuiPropertyComponent.prototype.setValueVerify = function(newValue) {
             }
         }
         if (wasValid && this.propertyInfo.constraints) {
-            for (var i=0; i<this.propertyInfo.constraints.length; i++) {
+            for (let i=0; i<this.propertyInfo.constraints.length; i++) {
                 const c = this.propertyInfo.constraints[i];
                 if (c.isValid && !c.isValid(this.object, this.propertyInfo.propertyName, newValue)) {
                     const desc = c.getInvalidDescription(this.object, this.propertyInfo.propertyName, newValue);
@@ -745,7 +745,7 @@ GuiPropertyComponent.prototype.setValueVerify = function(newValue) {
             // Todo: check if this.object[this.propertyInfo.propertyName] is a function.
             // Then it is treated as a setter function
             this.object[this.propertyInfo.propertyName] = newValue;
-            for (var i=0; i<this.changeListeners.length; i++) {
+            for (let i=0; i<this.changeListeners.length; i++) {
                 this.changeListeners[i](this, oldValue, newValue);
             }
         } else {

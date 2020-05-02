@@ -98,7 +98,7 @@ VerticalLayoutManager.prototype.layout = function() {
             break;
         case "even":
             let sum = 0;
-            for (var i=0; i<components.length; i++) {
+            for (let i=0; i<components.length; i++) {
                 var c = components[i];
                 sum += c.height;
             }
@@ -108,7 +108,7 @@ VerticalLayoutManager.prototype.layout = function() {
             }
             break;
     }
-    for (var i=0; i<components.length; i++) {
+    for (let i=0; i<components.length; i++) {
         var c = components[i];
         c.y = currentY;
         currentY += c.height + step;
@@ -148,7 +148,7 @@ HorizontalLayoutManager.prototype.layout = function() {
         case "even":
         case "even2": // also adds space at start and end
             let sum = 0;
-            for (var i=0; i<components.length; i++) {
+            for (let i=0; i<components.length; i++) {
                 var c = components[i];
                 sum += c.width;
             }
@@ -163,7 +163,7 @@ HorizontalLayoutManager.prototype.layout = function() {
             }
             break;
     }
-    for (var i=0; i<components.length; i++) {
+    for (let i=0; i<components.length; i++) {
         var c = components[i];
         if (stepBefore) {
             currentX += step;
@@ -443,7 +443,7 @@ Button.prototype.step = function(offsetX, offsetY) {
                 this.setToggled();
             }
         }
-        for (var i=0; i<this.clickHandlers.length; i++) {
+        for (let i=0; i<this.clickHandlers.length; i++) {
             var h = this.clickHandlers[i];
             h(this);
         }
@@ -459,13 +459,13 @@ Button.prototype.step = function(offsetX, offsetY) {
     this.over = rectContains(rect, [Input.mouseX, Input.mouseY]);
     if (!overBefore && this.over) {
         Sound.play(Sound.MOUSE_OVER_ID);
-        for (var i=0; i<this.enterHandlers.length; i++) {
+        for (let i=0; i<this.enterHandlers.length; i++) {
             var h = this.enterHandlers[i];
             h(this);
         }
     }
     if (overBefore && !this.over) {
-        for (var i=0; i<this.leaveHandlers.length; i++) {
+        for (let i=0; i<this.leaveHandlers.length; i++) {
             var h = this.leaveHandlers[i];
             h(this);
         }

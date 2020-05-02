@@ -497,7 +497,7 @@ StructurePreviewComponent.prototype.getPianoRollOptions = function() {
     const maxWidth = 800;
     let beatWidth = 50;
 
-    for (var i=0; i<structure.references.length; i++) {
+    for (let i=0; i<structure.references.length; i++) {
         const ref = structure.references[i];
         if (!ref.active) {
             continue;
@@ -517,7 +517,7 @@ StructurePreviewComponent.prototype.getPianoRollOptions = function() {
         beatWidth = Math.min(beatWidth, Math.round(Math.min(50, maxWidth / maxTime)));
     }
 
-    for (var i=0; i<renderDatas.length; i++) {
+    for (let i=0; i<renderDatas.length; i++) {
         const options = {
             renderData: renderDatas[i],
             harmony: harmonies[i],

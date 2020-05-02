@@ -574,7 +574,7 @@ function updateSongInfoPanel() {
             var rowClass = rowClasses[rowIndex % rowClasses.length];
             htmlArr.push('<tr class="' + rowClass + '">');
             htmlArr.push('<td>Type</td>')
-            for (var i=0; i<indexInfos.length; i++) {
+            for (let i=0; i<indexInfos.length; i++) {
                 const text = getSongPartName(i, songStructureInfo);
                 htmlArr.push('<td>' + text + '</td>');
             }
@@ -609,7 +609,7 @@ function updateSongInfoPanel() {
     if (channelMaps) {
         var htmlArr = [];
         htmlArr.push('<table class="songInfoInstrumentsTable">');
-        for (var i=0; i<channelMaps.length-1; i++) {
+        for (let i=0; i<channelMaps.length-1; i++) {
             var rowClass = rowClasses[i % rowClasses.length];
             htmlArr.push('<tr class="' + rowClass + '">');
             const chMap = channelMaps[i];
@@ -900,7 +900,7 @@ function createSongList(info, $targetDiv, urlPrefix, idPrefix, namePrefix, creat
     content += '<ol id="' + idPrefix + '-song-list" class="song-list" >';
 
     const linkStyle = "margin-right: 0.5em;";
-    for (var i=0; i<songs.length; i++) {
+    for (let i=0; i<songs.length; i++) {
         var songInfo = songs[i];
 
         let songName = songInfo.name;
@@ -1000,7 +1000,7 @@ function createSongList(info, $targetDiv, urlPrefix, idPrefix, namePrefix, creat
 
     $targetDiv.append($list);
 
-    for (var i=0; i<songs.length; i++) {
+    for (let i=0; i<songs.length; i++) {
         var songInfo = songs[i];
         if (createLoad) {
             var buttonId = idPrefix + "-load-song-button-" + i;

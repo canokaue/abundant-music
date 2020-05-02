@@ -52,7 +52,7 @@ FrustumCullingChunks.prototype.updateScene = function(scene, m) {
 
     const newSceneObjects = [];
     const newNotInSceneObjects = [];
-    for (var i=0; i<this.objectsInScene.length; i++) {
+    for (let i=0; i<this.objectsInScene.length; i++) {
         var index = this.objectsInScene[i];
         var object = this.objects[index];
         var sphere = this.boundingSpheres[index];
@@ -63,7 +63,7 @@ FrustumCullingChunks.prototype.updateScene = function(scene, m) {
             newSceneObjects.push(index);
         }
     }
-    for (var i=0; i<this.objectsNotInScene.length; i++) {
+    for (let i=0; i<this.objectsNotInScene.length; i++) {
         var index = this.objectsNotInScene[i];
         var object = this.objects[index];
         var sphere = this.boundingSpheres[index];
@@ -77,11 +77,11 @@ FrustumCullingChunks.prototype.updateScene = function(scene, m) {
     this.objectsNotInScene = newNotInSceneObjects;
     this.objectsInScene = newSceneObjects;
 
-    for (var i=0; i<sceneObjectsToAdd.length; i++) {
+    for (let i=0; i<sceneObjectsToAdd.length; i++) {
         scene.add(sceneObjectsToAdd[i]);
 //        logit("Adding chunk..." + i + " " + this.objectsInScene.length + " " + this.objectsNotInScene.length);
     }
-    for (var i=0; i<sceneObjectsToRemove.length; i++) {
+    for (let i=0; i<sceneObjectsToRemove.length; i++) {
         scene.remove(sceneObjectsToRemove[i]);
 //        logit("Removing chunk... " + i + " " + this.objectsInScene.length + " " + this.objectsNotInScene.length);
     }

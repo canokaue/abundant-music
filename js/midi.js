@@ -380,7 +380,7 @@ const Midi = (function() {
 
         const bytes = [];
 
-        for (var i = 0; i < 4; i++) {
+        for (let i = 0; i < 4; i++) {
             const masked = theUInt & mask;
             var byt = masked & 0x7f;
             //trace("current: " + theUInt.toString(2) + " masked: " + masked.toString(2) + " the byte: " + byte.toString(2));

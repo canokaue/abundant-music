@@ -88,7 +88,7 @@ ControlRoll.prototype.paintRows = function(x, y, context) {
 
     const range = endNote - startNote + 1;
     const w = this.getNoteRowsWidth();
-    for (var i=0; i<range; i++) {
+    for (let i=0; i<range; i++) {
         if (i % 2 == 0) {
             context.fillStyle = "#aaaaaa";
         } else {
@@ -101,7 +101,7 @@ ControlRoll.prototype.paintRows = function(x, y, context) {
     var beats = w / this.beatWidth;
     let currentX = x;
     context.beginPath();
-    for (var i=0; i<beats; i++) {
+    for (let i=0; i<beats; i++) {
         currentX = x + i * this.beatWidth;
         context.moveTo(currentX, y);
         context.lineTo(currentX, y + range * this.noteRowHeight);
@@ -117,7 +117,7 @@ ControlRoll.prototype.paintRows = function(x, y, context) {
     if (this.highlightScales || this.highlightChords) {
 
         currentX = x;
-        for (var i=0; i<ches.length; i++) {
+        for (let i=0; i<ches.length; i++) {
             var e = ches[i];
             var beats = positionUnitToBeats(e.getLength(), e.getLengthUnit(), e.tsNumerator, e.tsDenominator);
             const scalePitchClasses = e.getPitchClassesFromAbsoluteNotes(e.getScaleAbsoluteNotes());
@@ -142,7 +142,7 @@ ControlRoll.prototype.paintRows = function(x, y, context) {
     // Paint the harmony lines
     currentX = x;
     context.beginPath();
-    for (var i=0; i<ches.length; i++) {
+    for (let i=0; i<ches.length; i++) {
         var e = ches[i];
         var beats = positionUnitToBeats(e.getLength(), e.getLengthUnit(), e.tsNumerator, e.tsDenominator);
         currentX += beats * this.beatWidth;

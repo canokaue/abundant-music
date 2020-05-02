@@ -267,7 +267,7 @@ AudioPlayer.prototype.splitSortedNotes = function(notes, seconds, maxCount) {
         if (splitIndex < arr.length) {
             const afterArr = [];
             after[ch] = afterArr;
-            for (var i=splitIndex; i<arr.length; i++) {
+            for (let i=splitIndex; i<arr.length; i++) {
                 afterArr.push(arr[i]);
             }
         }
@@ -379,7 +379,7 @@ AudioPlayer.prototype.getBufferInfoId = function(noteData) {
 
 //    var bestLength = lengths[0];
 //    // Find the best length
-//    for (var i=0; i<lengths.length; i++) {
+//    for (let i=0; i<lengths.length; i++) {
 //        var length = lengths[i];
 //        if (length <= lengthMillis) {
 //            bestLength = length;

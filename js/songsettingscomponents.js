@@ -286,7 +286,7 @@ const SongSettingsComponent = (function() {
         const contentArrs = [];
 
         tabsArr.push('<ul class="' + tabsClass + '-ul">');
-        for (var i=0; i<tabCaptions.length; i++) {
+        for (let i=0; i<tabCaptions.length; i++) {
             tabsArr.push("<li><a href=\"#" + (tabsId + i) + "\" >" + tabCaptions[i] + "</a></li>");
         }
         tabsArr.push("</ul>");
@@ -295,7 +295,7 @@ const SongSettingsComponent = (function() {
         const hasLikelihoods = [];
 
         if (presets) {
-            for (var i=0; i<presets.length; i++) {
+            for (let i=0; i<presets.length; i++) {
                 const preset = presets[i];
                 for (let j=0; j<preset.items.length; j++) {
                     const item = preset.items[j];
@@ -316,7 +316,7 @@ const SongSettingsComponent = (function() {
             const buttonStyle = "style=\"height: 3em; font-size: 50%\"";
             const headerArr = [
                 "<div " +
-                    "id=\"" + (tabsId + "_header_" + i) + "\" " +
+                    "id=\"" + (tabsId + "_header_" + index) + "\" " +
                     "class=\"" + tabsClass + "\" " +
                     " >",
                 (presets ? "<button  style=\"" + buttonStyle + "\" id=\"" + defaultButtonId + "\" title=\"All settings to default values\"  >Set Default</button>" : ""),
@@ -531,7 +531,7 @@ const SongSettingsComponent = (function() {
 
 
 
-        for (var i=0; i<tabCaptions.length; i++) {
+        for (let i=0; i<tabCaptions.length; i++) {
             const obj = tabObjects[i];
 
             const headerArr = [];
@@ -565,19 +565,19 @@ const SongSettingsComponent = (function() {
         const $tabs = $(tabsArr.join(""));
         $parent.append($tabs);
 
-        for (var i=0; i<tabCaptions.length; i++) {
+        for (let i=0; i<tabCaptions.length; i++) {
             const $tab = $("#" + tabsId + i);
         }
 
 
-        for (var i=0; i<createdComps.length; i++) {
+        for (let i=0; i<createdComps.length; i++) {
             var comp = createdComps[i];
             comp.jQueryCreated($tabs);
             addChangeListener(i, createdComps, changeListener);
             createHeaderComponents(i);
         }
 
-        for (var i=0; i<createdComps.length; i++) {
+        for (let i=0; i<createdComps.length; i++) {
             var comp = createdComps[i];
             comp.alignComponents();
             addSideButtons(comp);

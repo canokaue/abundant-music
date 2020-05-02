@@ -120,7 +120,7 @@ PianoRoll.prototype.paintKeys = function(x, y, context) {
     const border = 2;
     // Paint all white keys first
     const whiteSize = this.noteRowHeight * (12.0 / 7.0);
-    for (var i=startNote-1; i<=endNote+1; i++) {
+    for (let i=startNote-1; i<=endNote+1; i++) {
         var pitchClass = i % 12;
 
         if (whites[pitchClass]) {
@@ -141,7 +141,7 @@ PianoRoll.prototype.paintKeys = function(x, y, context) {
     }
 
     // Paint all black keys
-    for (var i=startNote; i<=endNote; i++) {
+    for (let i=startNote; i<=endNote; i++) {
         var pitchClass = i % 12;
         if (!whites[pitchClass]) {
             var keyX = x;
@@ -213,7 +213,7 @@ PianoRoll.prototype.paintRows = function(x, y, context) {
 
     const range = endNote - startNote + 1;
     const w = this.getNoteRowsWidth();
-    for (var i=0; i<range; i++) {
+    for (let i=0; i<range; i++) {
         if (i % 2 == 0) {
             context.fillStyle = "#aaaaaa";
         } else {
@@ -226,7 +226,7 @@ PianoRoll.prototype.paintRows = function(x, y, context) {
     var beats = w / this.beatWidth;
     let currentX = x;
     context.beginPath();
-    for (var i=0; i<beats; i++) {
+    for (let i=0; i<beats; i++) {
         currentX = x + i * this.beatWidth;
         context.moveTo(currentX, y);
         context.lineTo(currentX, y + range * this.noteRowHeight);
@@ -242,7 +242,7 @@ PianoRoll.prototype.paintRows = function(x, y, context) {
     if (this.highlightScales || this.highlightChords) {
 
         currentX = x;
-        for (var i=0; i<ches.length; i++) {
+        for (let i=0; i<ches.length; i++) {
             var e = ches[i];
             var beats = positionUnitToBeats(e.getLength(), e.getLengthUnit(), e.tsNumerator, e.tsDenominator);
             const scalePitchClasses = e.getPitchClassesFromAbsoluteNotes(e.getScaleAbsoluteNotes());
@@ -267,7 +267,7 @@ PianoRoll.prototype.paintRows = function(x, y, context) {
     // Paint the harmony lines
     currentX = x;
     context.beginPath();
-    for (var i=0; i<ches.length; i++) {
+    for (let i=0; i<ches.length; i++) {
         var e = ches[i];
         var beats = positionUnitToBeats(e.getLength(), e.getLengthUnit(), e.tsNumerator, e.tsDenominator);
         currentX += beats * this.beatWidth;
