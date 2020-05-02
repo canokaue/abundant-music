@@ -686,15 +686,6 @@ function copyObjectDeep(obj, options) {
     return copy;
 }
 
-
-function objectFromJson(jsonStr) {
-    const jsonObj = $.parseJSON(jsonStr);
-    if (!jsonObj._constructorName) {
-        logit("Missing _constructorName " + jsonObj.id + " in objectFromJson()<br />");
-    }
-    return copyObjectDeep(jsonObj);
-}
-
 function isFunction(obj) {
     return typeof(obj) === 'function';
 }
