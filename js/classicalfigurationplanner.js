@@ -1,25 +1,24 @@
 
-function FigurationPlanner() {
-    this.id = "";
-    this._constructorName = "FigurationPlanner";
+class FigurationPlanner {
+    constructor() {
+        this.id = "";
+        this._constructorName = "FigurationPlanner";
+    }
+    getFigurator(options) {
+        return new Figurator(options);
+    }
 }
 
-FigurationPlanner.prototype.getFigurator = function(options) {
-    return new Figurator(options);
-};
-
-
-function ClassicalFigurationPlanner() {
-    FigurationPlanner.call(this);
-    this.maxMLSolutions = 10;
-    this.maxSearchSteps = 1000;
-    this._constructorName = "ClassicalFigurationPlanner";
+class ClassicalFigurationPlanner extends FigurationPlanner{
+    constructor() {
+        super()
+        this.maxMLSolutions = 10;
+        this.maxSearchSteps = 1000;
+        this._constructorName = "ClassicalFigurationPlanner";
+    }
+    getFigurator(options) {
+        options.maxMLSolutions = this.maxMLSolutions;
+        options.maxSearchSteps = this.maxSearchSteps;
+        return new Figurator(options);
+    }
 }
-
-ClassicalFigurationPlanner.prototype = new FigurationPlanner();
-
-ClassicalFigurationPlanner.prototype.getFigurator = function(options) {
-    options.maxMLSolutions = this.maxMLSolutions;
-    options.maxSearchSteps = this.maxSearchSteps;
-    return new Figurator(options);
-};
