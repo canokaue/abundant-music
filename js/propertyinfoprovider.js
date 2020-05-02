@@ -176,19 +176,6 @@ class PropertyInfoProvider {
             displayHint: StringPropertyDisplayHint.TEXT,
             shortDescription: shortDescription,
             longDescription: longDescription
-            //            constraints: [
-            //                {
-            //                    isValid: function(object, propertyName, value) {
-            //                        return value == "" || !isNaN(parseInt(value));
-            //                    },
-            //                    getInvalidDescription: function(object, propertyName, value) {
-            //                        if (value != "" && isNaN(parseInt(value))) {
-            //                            return "Not a valid seed";
-            //                        }
-            //                        return "";
-            //                    }
-            //                }
-            //            ]
         });
         return info;
     }
