@@ -65,12 +65,12 @@ ChromaticTransitionHarmonyGenerator.prototype.getStartStateIterator = function()
 
 
     for (let i=0; i<this.scaleBaseChordRootScaleModeTuples.length; i++) {
-        var tuple = this.scaleBaseChordRootScaleModeTuples[i];
+        const tuple = this.scaleBaseChordRootScaleModeTuples[i];
         this.addTuple(tuple, 1, 0, result, likelihoods, costs);
     }
     // Adding the goals as well to avoid search failure
     for (let i=0; i<this.endScaleBaseChordRootScaleModeTuples.length; i++) {
-        var tuple = this.endScaleBaseChordRootScaleModeTuples[i];
+        const tuple = this.endScaleBaseChordRootScaleModeTuples[i];
         this.addTuple(tuple, 0.1, 1000, result, likelihoods, costs);
     }
     return new RandomDfsStateIterator2(result, likelihoods, costs, this.rnd);
@@ -123,12 +123,10 @@ ChromaticTransitionHarmonyGenerator.prototype.getSuccessors = function(state, st
 
     for (let i=0; i<rootProgressions.length; i++) {
         const rp = rootProgressions[i];
-        for (var j=0; j<modeProgressions.length; j++) {
+        for (let j=0; j<modeProgressions.length; j++) {
             const mp = modeProgressions[j];
-            var newState = state.copy();
-            var harmony = newState.harmony;
-            var oldChordRoot = harmony.chordRoot;
-            const oldScaleMode = harmony.scaleMode;
+            const newState = state.copy();
+            const harmony = newState.harmony;
             harmony.chordRoot = positiveMod(harmony.chordRoot + rp, 7);
             harmony.scaleMode = positiveMod(harmony.scaleMode + mp, 7);
             states.push(newState);
@@ -163,12 +161,10 @@ ChromaticTransitionHarmonyGenerator.prototype.getSuccessors = function(state, st
             costs.push(cost);
         }
 
-        for (var j=0; j<scaleProgressions.length; j++) {
+        for (let j=0; j<scaleProgressions.length; j++) {
             const sp = scaleProgressions[j];
-            var newState = state.copy();
-            var harmony = newState.harmony;
-            var oldChordRoot = harmony.chordRoot;
-            const oldBaseNote = harmony.baseNote;
+            const newState = state.copy();
+            const harmony = newState.harmony;
             harmony.chordRoot = positiveMod(harmony.chordRoot + rp, 7);
             harmony.baseNote = ((harmony.baseNote + sp) % 12) + 60;;
             states.push(newState);
