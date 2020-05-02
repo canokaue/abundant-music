@@ -695,80 +695,8 @@ function objectFromJson(jsonStr) {
     return copyObjectDeep(jsonObj);
 }
 
-
-function objectToJson(obj, arr, visited) {
-    if (!obj._constructorName) {
-        logit("Missing _constructorName " + obj.id + " in objectToJson()<br />");
-    }
-    if (!arr) {
-        arr = [];
-    }
-
-    if (!visited) {
-        visited = new MapClass(true);
-    }
-    const hasVisited = visited.get(obj);
-    if (hasVisited) {
-        logit("Have visited " + JSON.stringify(obj));
-        return;
-    }
-    visited.put(obj, true);
-
-    arr.push("{\n");
-
-    const propNames = [];
-    for (var propName in obj) {
-        if (propName.indexOf("__") < 0) {
-            var value = obj[propName];
-            if (value != null) {
-                if (!(typeof(value) === 'object') || value._constructorName || isArray(value)) {
-                    if (! (typeof(value) === 'function')) {
-                        propNames.push(propName);
-                    }
-                }
-            }
-        }
-    }
-
-    for (let i=0; i<propNames.length; i++) {
-        var propName = propNames[i];
-        var value = obj[propName];
-        arr.push("\"" + propName + "\": ");
-        valueToJson(value, arr, visited);
-        if (i != propNames.length - 1) {
-            arr.push(", ");
-        }
-    }
-    arr.push("}");
-    return arr;
-}
-
 function isFunction(obj) {
     return typeof(obj) === 'function';
-}
-
-function valueToJson(value, arr, visited) {
-    if (!arr) {
-        arr = [];
-    }
-    if (isArray(value)) {
-        arr.push("[");
-        for (let i=0; i<value.length; i++) {
-            valueToJson(value[i], arr, visited);
-            if (i != value.length - 1) {
-                arr.push(", ");
-            }
-        }
-        arr.push("]");
-    } else if (isFunction(value)) {
-    } else if (typeof(value) === 'object') {
-        objectToJson(value, arr, visited);
-    } else if (typeof(value) === 'string') {
-        arr.push("\"" + value + "\"");
-    } else {
-        arr.push(value);
-    }
-    return arr;
 }
 
 function traverseValue(value, visitor, visited) {

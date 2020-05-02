@@ -2470,7 +2470,7 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
         }
         result.addPropertyInfo(this.createPreviewPropertyInfo("CurvePreviewComponent"));
     } else {
-        logit("Unable to create proeprty info for " + obj + " constructor: " + obj._constructorName + " json: " + objectToJson(obj).join("") + " <br />");
+        logit("Unable to create proeprty info for " + obj + " constructor: " + obj._constructorName + " json: " + JSON.stringify(obj, "", " ") + " <br />");
     }
     return result;
 };
