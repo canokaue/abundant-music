@@ -8,19 +8,15 @@ class GuiObjectListComponent extends GuiAbstractListComponent {
         this.setIds();
         this._constructorName = "GuiObjectListComponent";
         this.currentDetailComponent = null;
-        const uiInfo = propertyInfo.uniqueIdInfo;
-        //    uiInfo.manager.addUniqueIdListener(uiInfo.namespace, this);
     }
     componentRemoved() {
-        GuiAbstractListComponent.prototype.componentRemoved.call(this);
-        const uiInfo = this.propertyInfo.uniqueIdInfo;
-        //    uiInfo.manager.removeUniqueIdListener(uiInfo.namespace, this);
+        suepr.componentRemoved();
         if (this.currentDetailComponent) {
             this.currentDetailComponent.componentRemoved();
         }
     }
     getHtmlContentBeforeChildren(resultArr) {
-        GuiAbstractListComponent.prototype.getHtmlContentBeforeChildren.call(this, resultArr);
+        super.getHtmlContentBeforeChildren(resultArr);
         // Details panel
         resultArr.push("<div ");
         resultArr.push("id=\"" + this.detailsId + "\" ");
@@ -28,28 +24,26 @@ class GuiObjectListComponent extends GuiAbstractListComponent {
         resultArr.push("</div>\n");
     }
     jQueryCreated($localRoot) {
-        GuiAbstractListComponent.prototype.jQueryCreated.call(this, $localRoot);
+        super.jQueryCreated($localRoot);
         this.$details = this.$component.find("#" + this.detailsId);
     }
     itemAppended($newItem, newValue) {
-        GuiAbstractListComponent.prototype.itemAppended.call(this, $newItem, newValue);
+        super.itemAppended($newItem, newValue);
         this.callChangeListeners();
     }
     deleteSelectedItems() {
-        GuiAbstractListComponent.prototype.deleteSelectedItems.call(this);
+        super.deleteSelectedItems(this);
         this.updateDetailsPanel();
         this.callChangeListeners();
     }
     removeDetailComponent() {
         if (this.currentDetailComponent) {
-            //        this.propertyInfo.
             this.currentDetailComponent.componentRemoved();
             this.currentDetailComponent = null;
         }
     }
     updateDetailsPanel() {
         const selectedArr = this.getSelectedItems();
-        const comp = this;
         const propInfo = this.propertyInfo;
         if (selectedArr.length == 1) {
             const item = selectedArr[0];
@@ -107,11 +101,11 @@ class GuiObjectListComponent extends GuiAbstractListComponent {
         }
     }
     listItemSelected(event, ui) {
-        GuiAbstractListComponent.prototype.listItemSelected.call(this, event, ui);
+        super.listItemSelected(event, ui);
         this.updateDetailsPanel();
     }
     listItemUnselected(event, ui) {
-        GuiAbstractListComponent.prototype.listItemUnselected.call(this, event, ui);
+        super.listItemUnselected(event, ui);
         this.updateDetailsPanel();
     }
 }
