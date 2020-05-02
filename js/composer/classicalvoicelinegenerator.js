@@ -244,8 +244,8 @@ ClassicalVoiceLineGenerator.prototype.getOneStepCost = function(harmonyIndex, pr
 
                 let foundSmoothInUpper = false;
                 for (let i=0; i<maxUpperIndex; i++) {
-                    var prevAbsNote = prevAbsoluteNotes[i];
-                    var curAbsNote = absoluteNotes[i];
+                    const prevAbsNote = prevAbsoluteNotes[i];
+                    const curAbsNote = absoluteNotes[i];
                     if ((curAbsNote % 12) == bassPitchClass && Math.abs(curAbsNote - prevAbsNote) <= 2) {
                         // Enters smoothly in the upper voice, no problemo
                         foundSmoothInUpper = true;
@@ -259,24 +259,17 @@ ClassicalVoiceLineGenerator.prototype.getOneStepCost = function(harmonyIndex, pr
                 }
             }
         }
-//        if (!wasCrossRelation) {
-//            stepCost += 10;
-//        }
     }
 
 
     // Iterator through all voices
     for (let i=0; i<absoluteNotes.length; i++) {
-        var prevAbsNote = prevAbsoluteNotes[i];
-        var curAbsNote = absoluteNotes[i];
+        const prevAbsNote = prevAbsoluteNotes[i];
+        const curAbsNote = absoluteNotes[i];
 
         // Check preparation and resolution of of sevenths
         // Moving within a seventh chord with same root is OK
         const seventhExpanded = hasSeventh && prevHasSeventh && rootPitchClass == prevRootPitchClass;
-
-//        if (seventhExpanded) {
-//            logit("Seventh expanded!");
-//        }
 
         if (hasSeventh && !seventhExpanded) {
             const prepareSeventhFactor = this.unpreparedSeventhPenalties[harmonyIndex % this.unpreparedSeventhPenalties.length];
@@ -284,12 +277,9 @@ ClassicalVoiceLineGenerator.prototype.getOneStepCost = function(harmonyIndex, pr
         }
         if (prevHasSeventh && !seventhExpanded) {
             const resolveSeventhFactor = this.unresolvedSeventhPenalties[harmonyIndex % this.unresolvedSeventhPenalties.length];
-//            stepCost += resolveSeventhFactor * this.getlargeLeapFromPitchClassPenaltyCount(prevAbsNote, curAbsNote, 1, prevSeventhPitchClass);
             const seventhResolveCost = resolveSeventhFactor * this.getLeapRangeFromPitchClassPenaltyCount(prevAbsNote, curAbsNote, -2, -1, prevSeventhPitchClass);
             stepCost += seventhResolveCost;
-//            if (seventhResolveCost == 0 && (prevAbsNote % 12) == prevSeventhPitchClass) {
-//                logit(" 7th resolve cost " + seventhResolveCost + " " + prevAbsNote + " " + curAbsNote);
-//            }
+
         }
         // Check preparation and resolution of of the fourths in 64 chords
         if (is64) {
@@ -298,7 +288,6 @@ ClassicalVoiceLineGenerator.prototype.getOneStepCost = function(harmonyIndex, pr
         }
         if (prevIs64) {
             const resolve64Factor = this.unresolved64FourthPenalties[harmonyIndex % this.unresolved64FourthPenalties.length];
-//            stepCost += resolve64Factor * this.getlargeLeapFromPitchClassPenaltyCount(prevAbsNote, curAbsNote, 1, prev64PitchClass);
             const resolve64Cost = resolve64Factor * this.getLeapRangeFromPitchClassPenaltyCount(prevAbsNote, curAbsNote, -2, -1, prev64PitchClass);
             stepCost += resolve64Cost;
         }
@@ -318,14 +307,12 @@ ClassicalVoiceLineGenerator.prototype.getOneStepCost = function(harmonyIndex, pr
 
                 if (!curAbsNotePartOfPreviousScale || !prevAbsNotePartOfCurrentScale) {
                     wasAug2nd = true;
-//                    logit("Found aug2nd " + scalePitchClasses.join(", ") + "  " + prevScalePitchClasses.join(", ") + " " + curAbsNote + " " + prevAbsNote);
                 }
             } else if (Math.abs(prevScaleIndex - scaleIndex) == 1) {
                 // Moved within same scale a single index and this resulted in a minor third/aug 2nd
                 wasAug2nd = true;
             }
             if (wasAug2nd) {
-//                logit("Found aug2nd!!");
                 stepCost += this.augmentedSecondPenalties[harmonyIndex % this.augmentedSecondPenalties.length];
             }
         }
@@ -403,14 +390,14 @@ ClassicalVoiceLineGenerator.prototype.getZeroStepCost = function(harmonyIndex, s
     // Check spacing penalty
     for (let i=0; i<absoluteNotes.length; i++) {
         if (i > 0) {
-            var dist = Math.abs(absoluteNotes[i] - absoluteNotes[i-1]);
+            const dist = Math.abs(absoluteNotes[i] - absoluteNotes[i-1]);
             const spacingsArr = this.penaltyMaxSpacings[i % this.penaltyMaxSpacings.length];
 
             const penaltyMaxSpacing = spacingsArr[harmonyIndex % spacingsArr.length];
 
             //            logitRnd("pms: " + penaltyMaxSpacing + " dist: " + dist + " <br />", 0.01);
             if (dist > penaltyMaxSpacing) {
-                var wrongCount = dist - penaltyMaxSpacing;
+                const wrongCount = dist - penaltyMaxSpacing;
                 const arr = this.spacingPenalties[i % this.spacingPenalties.length];
                 stepCost += wrongCount * arr[harmonyIndex % arr.length];
             }
@@ -422,42 +409,36 @@ ClassicalVoiceLineGenerator.prototype.getZeroStepCost = function(harmonyIndex, s
 
     // Check note range penalty
     for (let i=0; i<absoluteNotes.length; i++) {
-        var note = absoluteNotes[i];
+        const note = absoluteNotes[i];
         const penaltyRange = this.penaltyAbsoluteNoteRanges[i][harmonyIndex];
-        var wrongCount = 0;
+        let wrongCount = 0;
         if (note < penaltyRange[0]) {
             wrongCount = penaltyRange[0] - note;
         } else if (note > penaltyRange[1]) {
             wrongCount = note - penaltyRange[1];
         }
-        var penaltyArr = this.noteRangePenalties[i % this.noteRangePenalties.length];
+        const penaltyArr = this.noteRangePenalties[i % this.noteRangePenalties.length];
         stepCost += penaltyArr[harmonyIndex % penaltyArr.length] * wrongCount;
     }
 
-
-
     // Check note hint penalty
     for (let i=0; i<absoluteNotes.length; i++) {
-        var note = absoluteNotes[i];
+        const note = absoluteNotes[i];
         const hintDistance = this.penaltyMaxAbsoluteHintDistances[i][harmonyIndex];
         const hint = this.absoluteNoteHints[i][harmonyIndex];
 
         if (hint === null) {
             continue;
         }
-        var dist = Math.abs(hint - note);
+        const dist = Math.abs(hint - note);
 
-        var wrongCount = 0;
+        let wrongCount = 0;
         if (dist > hintDistance) {
             wrongCount = dist - hintDistance;
         }
-        var penaltyArr = this.hintDistancePenalties[i % this.hintDistancePenalties.length];
+        const penaltyArr = this.hintDistancePenalties[i % this.hintDistancePenalties.length];
         const penalty = penaltyArr[harmonyIndex % penaltyArr.length] * wrongCount;
         stepCost += penalty;
-
-//        if (i == 0) {
-//            logit("hint: " + hint + " note: " + note + " wrongCount: " + wrongCount + " dist: " + dist + " penalty: " + penalty)
-//        }
     }
 
     const pitchClassMap = this.getPitchClassMap(absoluteNotes);
@@ -597,38 +578,11 @@ ClassicalVoiceLineGenerator.prototype.getStates = function(node) {
 
     const domainIndices = this.zeroStepDomainIndices[index];
 
-//    if (index > 0) {
-//        var domainLength = domainIndices.length;
-//
-//        var prevState = this.resultStates[index - 1];
-//        domainIndices = this.oneStepDomainIndices[index][prevState.stateIndex];
-//
-//        if (!domainIndices) {
-//            var that = this;
-//            // Create sorted domains for each possible previous state index
-//            var j = prevState.stateIndex;
-//            domainIndices = createFilledNumericIncArray(domainLength, 0, 1);
-//            this.oneStepDomainIndices[index][j] = domainIndices;
-//
-//            domainIndices.sort(function(a, b) {
-//                return (that.zeroStepCosts[index][a] + that.oneStepHeuristicCosts[index][j][a]) -
-//                    (that.zeroStepCosts[index][b] + that.oneStepHeuristicCosts[index][j][b]);
-//            });
-//        }
-//    }
-
     for (let i=0; i<domainIndices.length; i++) {
         const newState = new ClassicalVoiceLineState();
         newState.stateIndex = domainIndices[i];
         result.push(newState);
-
-//        if (newState.stateIndex > 49) {
-//            logit("state index " + newState.stateIndex);
-//        }
     }
-
-//    logit("Getting states at index " + index);
-//    logit("  Result: " + JSON.stringify(result));
 
     return result;
 };
@@ -680,10 +634,10 @@ ClassicalVoiceLineGenerator.prototype.prepareBeforeSearch = function() {
 
     for (let i=0; i<this.constraints.length; i++) {
         const constraintArr = this.constraints[i];
-        for (var j=0; j<constraintArr.length; j++) {
+        for (let j=0; j<constraintArr.length; j++) {
             const constraint = constraintArr[j];
             const steps = constraint.getCheckCostSteps();
-            for (var k=0; k<steps.length; k++) {
+            for (let k=0; k<steps.length; k++) {
                 const step = steps[k];
                 let cArr = null;
                 switch (step) {
@@ -707,7 +661,7 @@ ClassicalVoiceLineGenerator.prototype.prepareBeforeSearch = function() {
 
 
     for (let i=0; i<this.voiceCount; i++) {
-        for (var j=i+1; j<this.voiceCount; j++) {
+        for (let j=i+1; j<this.voiceCount; j++) {
             this.allPairs.push([i, j]);
         }
     }
@@ -747,7 +701,7 @@ ClassicalVoiceLineGenerator.prototype.prepareBeforeSearch = function() {
 
         if (isConstant) {
 
-            var scaleIndex = harmonyElement.getScaleIndexAndChromaticOffsetForAbsoluteNote(absRange[0])[0];
+            const scaleIndex = harmonyElement.getScaleIndexAndChromaticOffsetForAbsoluteNote(absRange[0])[0];
             possibleScaleIndices[scaleIndex] = absRange[0];
 
         } else {
@@ -755,7 +709,6 @@ ClassicalVoiceLineGenerator.prototype.prepareBeforeSearch = function() {
             let chordPitchClasses = chordPitchClassesArr[harmonyIndex];
 
             let currentAbsNote = previousAbsNote;
-            var currentScaleIndex = previousScaleIndex;
 
             if (!absRange) {
                 logit("Could not find absolute note range for voice " + voiceIndex + "<br />");
@@ -779,10 +732,9 @@ ClassicalVoiceLineGenerator.prototype.prepareBeforeSearch = function() {
             const hintDistances = maxAbsoluteHintDistances[voiceIndex];
             if (hints && hintDistances && hints.length > 0 && hintDistances.length > 0) {
                 const hintMiddle = hints[harmonyIndex % hints.length];
-                if (hintMiddle === null) {
-                } else {
+                if (hintMiddle !== null) {
                     const hintDistance = hintDistances[harmonyIndex % hintDistances.length];
-                    if (hintMiddle === null || hintDistance === null) {
+                    if (hintDistance === null) {
                         // The hint was not valid
                     } else {
                         const upperHint = hintMiddle + hintDistance;
@@ -801,7 +753,7 @@ ClassicalVoiceLineGenerator.prototype.prepareBeforeSearch = function() {
                 if (bassIndices && bassIndices.length > 0) {
                     chordPitchClasses = [];
                     for (let i=0; i<bassIndices.length; i++) {
-                        var pitchClass = harmonyElement.getAbsoluteNoteFromChordBassIndex(bassIndices[i]) % 12;
+                        const pitchClass = harmonyElement.getAbsoluteNoteFromChordBassIndex(bassIndices[i]) % 12;
                         chordPitchClasses.push(pitchClass);
                     }
                 }
@@ -813,7 +765,7 @@ ClassicalVoiceLineGenerator.prototype.prepareBeforeSearch = function() {
                 if (rootIndices && rootIndices.length > 0) {
                     chordPitchClasses = [];
                     for (let i=0; i<rootIndices.length; i++) {
-                        var pitchClass = harmonyElement.getAbsoluteNoteFromChordRootIndex(rootIndices[i]) % 12;
+                        const pitchClass = harmonyElement.getAbsoluteNoteFromChordRootIndex(rootIndices[i]) % 12;
                         chordPitchClasses.push(pitchClass);
                         //                    logit("settign croot ppitch cklad " + pitchClass + "<br />");
                     }
@@ -823,7 +775,7 @@ ClassicalVoiceLineGenerator.prototype.prepareBeforeSearch = function() {
 
             while (currentAbsNote >= currentLowerAbsNote) {
                 if (arrayContains(chordPitchClasses, currentAbsNote % 12)) {
-                    var currentScaleIndex = harmonyElement.getScaleIndexAndChromaticOffsetForAbsoluteNote(currentAbsNote)[0];
+                    const currentScaleIndex = harmonyElement.getScaleIndexAndChromaticOffsetForAbsoluteNote(currentAbsNote)[0];
                     possibleScaleIndices[currentScaleIndex] = currentAbsNote;
                 }
                 //            currentScaleIndex--;
@@ -832,7 +784,7 @@ ClassicalVoiceLineGenerator.prototype.prepareBeforeSearch = function() {
         }
 
         // Go through all the possible scale indices and gather domain recursively
-        for (var scaleIndex in possibleScaleIndices) {
+        for (const scaleIndex in possibleScaleIndices) {
             const absTuple = arrayCopy(currentAbsTuple);
             const scaleIndexTuple = arrayCopy(currentScaleIndexTuple);
 
@@ -857,23 +809,6 @@ ClassicalVoiceLineGenerator.prototype.prepareBeforeSearch = function() {
     const resultAbsoluteNoteTuples = [];
     const resultScaleIndexTuples = [];
 
-
-//    voiceLeadingPrepareTimer.start();
-
-    // Calculate all the possible state combinations without any concerns for
-    // horizontal stuff like maximum leaps etc.
-
-//    logit("Calculating index ");
-//    var reusableIndex = JSON.stringify([absoluteNoteRanges, harmonyElements, voiceCount, maxSpacings, absoluteNoteHints, maxAbsoluteHintDistances,
-//        chordRootPitchClassConstraints, chordBassPitchClassConstraints, chordPitchClassesArr, constants]);
-////    logit("Done Calculating index " + reusableIndex);
-//    var toReuse = this.reusables[reusableIndex];
-//    if (toReuse) {
-//        logit("REusing domain for voice leading");
-//        resultAbsoluteNoteTuples = copyValueDeep(toReuse[0]);
-//        resultScaleIndexTuples = copyValueDeep(toReuse[1]);
-//    } else {
-
     for (let i=0; i<harmonyElements.length; i++) {
         const voiceAbsoluteRanges = this.absoluteNoteRanges[0];
         const upperMaxAbsNote = voiceAbsoluteRanges[i % voiceAbsoluteRanges.length][1];
@@ -881,30 +816,20 @@ ClassicalVoiceLineGenerator.prototype.prepareBeforeSearch = function() {
         resultAbsoluteNoteTuples[i] = [];
         resultScaleIndexTuples[i] = [];
         gatherDomain(i, 0, upperMaxAbsNote, upperMaxScaleIndex, [], [], resultAbsoluteNoteTuples, resultScaleIndexTuples);
-        //        logit("Domain for harmony " + i + ": " + JSON.stringify(resultAbsoluteNoteTuples[i]) + "<br />");
     }
-//        this.reusables[reusableIndex] = copyValueDeep([resultAbsoluteNoteTuples, resultScaleIndexTuples]);
-//    }
-
-//    voiceLeadingPrepareTimer.pause();
-
 
     this.possibleAbsoluteNoteTuples = resultAbsoluteNoteTuples;
     this.possibleScaleIndexTuples = resultScaleIndexTuples;
 
 
     for (let i=0; i<harmonyElements.length; i++) {
-        var domain = this.possibleAbsoluteNoteTuples[i];
-        var scaleDomain = this.possibleScaleIndexTuples[i];
+        const scaleDomain = this.possibleScaleIndexTuples[i];
 //        logit(scaleDomain);
-        for (var j=0; j<scaleDomain.length; j++) {
-            for (var k=0; k<scaleDomain[j].length; k++) {
+        for (let j=0; j<scaleDomain.length; j++) {
+            for (let k=0; k<scaleDomain[j].length; k++) {
                 scaleDomain[j][k] = parseInt(scaleDomain[j][k]);
             }
         }
-//        logit(scaleDomain);
-        // logit("Domain size for index " + i + ": " + domain.length + "<br />");
-        //        logit("Domain for index " + i + ": " + domain.join(", ") + "<br />");
     }
 
 
@@ -920,15 +845,15 @@ ClassicalVoiceLineGenerator.prototype.prepareBeforeSearch = function() {
 
 
     for (let i=0; i<harmonyElements.length; i++) {
-        var domain = this.possibleAbsoluteNoteTuples[i];
-        var scaleDomain = this.possibleScaleIndexTuples[i];
+        const domain = this.possibleAbsoluteNoteTuples[i];
+        const scaleDomain = this.possibleScaleIndexTuples[i];
 
 
         const costs = createFilledArray(domain.length, 0);
         const zeroStepIndices = createFilledNumericIncArray(domain.length, 0, 1);
 
 
-        for (var j=0; j<domain.length; j++) {
+        for (let j=0; j<domain.length; j++) {
             costs[j] = this.getZeroStepCost(i, j);
             if (isNaN(costs[j])) {
                 logit("NaN cost for domain " + domain[j].join(",") + " verbose follows:<br />");
@@ -947,7 +872,7 @@ ClassicalVoiceLineGenerator.prototype.prepareBeforeSearch = function() {
         const newDomain = [];
         const newScaleDomain = [];
         const newCosts = [];
-        for (var j=0; j<Math.min(maxDomainSize, zeroStepIndices.length); j++) {
+        for (let j=0; j<Math.min(maxDomainSize, zeroStepIndices.length); j++) {
             const index = zeroStepIndices[j];
             newDomain[j] = domain[index];
             newScaleDomain[j] = scaleDomain[index];
@@ -974,44 +899,12 @@ ClassicalVoiceLineGenerator.prototype.prepareBeforeSearch = function() {
 
             const prevDomain = this.possibleAbsoluteNoteTuples[i - 1];
 
-            for (var j=0; j<prevDomain.length; j++) {
+            for (let j=0; j<prevDomain.length; j++) {
                 this.oneStepCosts[i][j] = [];
                 this.oneStepHeuristicCosts[i][j] = [];
-//                var fromAbsNotes = prevDomain[j];
-//                for (var k=0; k<newDomain.length; k++) {
-//                    var toAbsNotes = newDomain[k];
-//
-//                    var heurCost = 0;
-//                    for (var l=0; l<fromAbsNotes.length; l++) {
-//                        var from = fromAbsNotes[l];
-//                        var to = toAbsNotes[l];
-//                        heurCost += 0.25 * Math.abs(from - to);
-//                    }
-//                    this.oneStepHeuristicCosts[i][j][k] = heurCost; // this.getOneStepCost(i, j, k);
-//                }
             }
-
-            //            var that = this;
-            //            for (var j=0; j<prevDomain.length; j++) {
-            //                this.oneStepDomainIndices[i][j] = createFilledNumericIncArray(domain.length, 0, 1);
-            //
-            //                this.oneStepDomainIndices[i][j].sort(function(a, b) {
-            //                    return (that.zeroStepCosts[i][a] + that.oneStepCosts[i][j][a]) -
-            //                    (that.zeroStepCosts[i][b] + that.oneStepCosts[i][j][b]);
-            //                });
-            //            }
         }
-
-
     }
-
-
-//    logit("maxSpacings: " + JSON.stringify(this.maxSpacings) + " <br />");
-//    logit("absoluteNoteRanges: " + JSON.stringify(this.absoluteNoteRanges) + " <br />");
-//    logit("penaltyMaxSpacings: " + JSON.stringify(this.penaltyMaxSpacings) + " <br />");
-//    logit("penaltyMaxAbsoluteHintDistances: " + JSON.stringify(this.penaltyMaxAbsoluteHintDistances) + " <br />");
-//    logit("penaltyAbsoluteNoteRanges: " + JSON.stringify(this.penaltyAbsoluteNoteRanges) + " <br />");
-//    logit("absoluteNoteHints: " + JSON.stringify(this.absoluteNoteHints) + " <br />");
 
 };
 
@@ -1022,8 +915,6 @@ ClassicalVoiceLineGenerator.prototype.createInitialState = function() {
 
 ClassicalVoiceLineGenerator.prototype.extractSolution = function(state, harmonyIndex) {
     const result = [];
-    //    var absoluteNotes = this.possibleAbsoluteNoteTuples[harmonyIndex][state.stateIndex];
-//    logit("state index: " + state.stateIndex + " harmonyIndex: " + harmonyIndex);
     const scaleIndices = this.possibleScaleIndexTuples[harmonyIndex][state.stateIndex];
     for (let i=0; i<scaleIndices.length; i++) {
         let undef = false;
@@ -1037,8 +928,6 @@ ClassicalVoiceLineGenerator.prototype.extractSolution = function(state, harmonyI
             result.push(new UndefinedVoiceLineElement());
         } else {
             const vle = new ConstantVoiceLineElement();
-            //            var theState = this.resultStates[harmonyIndex];
-            //    var preCalcScaleIndexTuples = this.possibleScaleIndexTuples[index];
             vle.setIndexType(IndexType.SCALE);
             vle.setSnapType(SnapType.NONE);
             vle.setIndex(scaleIndices[i]);
