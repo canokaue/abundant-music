@@ -121,8 +121,6 @@ class Visualizer3D extends Visualizer {
             //        this.camera.toOrthographic();
             this.scene = new THREE.Scene();
             this.scene.fog = new THREE.FogExp2(this.clearColor, 0.008);
-            const rnd = new MersenneTwister(3423432);
-            this.perlin = new ClassicalNoise(rnd);
             this.frustumChunks = new FrustumCullingChunks();
             this.addGlobalLights();
             this.noteChunks = [];
