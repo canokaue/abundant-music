@@ -81,8 +81,6 @@ importScripts(
     "midisynth/midisynthinstrument.js", 
     "midisynth/midisynth.js");
 
-importScripts("stacktrace.js");
-
 function inputOk(genInfo, correct) {
     let valid = true;
     try {
@@ -251,7 +249,7 @@ self.addEventListener('message', function(e) {
 //        self.close();
     } catch (exc) {
         logit("Exception in worker " + exc + " ");
-        logit(printStackTrace({e: exc}).join("\n"));
+        console.error(exc);
 
         self.postMessage({type: "error", data: exc.toString()});
 //        self.close();
