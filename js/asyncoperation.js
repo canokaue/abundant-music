@@ -346,7 +346,7 @@ class AsyncServerChildTask extends AsyncOperation {
         this.taskName = null; // Received from server
     }
     cancel() {
-        AsyncOperation.prototype.cancel.call(this);
+        super.cancel()
         const message = {
             type: "cancelTask",
             taskName: this.taskName
@@ -673,7 +673,7 @@ class AsyncWorkerTask extends AsyncOperation{
         this.worker.addEventListener('message', onWorkerMessage, false);
     }
     cancel() {
-        AsyncOperation.prototype.cancel.call(this);
+        super.cancel()
         const message = {
             type: "cancelTask"
         };
