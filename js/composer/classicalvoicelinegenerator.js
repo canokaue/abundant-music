@@ -2,24 +2,16 @@
 
 function ClassicalVoiceLineState() {
     this.stateIndex = 0;
-//    this.absoluteNotes = [];
-//    this.scaleIndices = [];
 }
 
 ClassicalVoiceLineState.prototype.copy = function() {
     const result = new ClassicalVoiceLineState();
     result.stateIndex = this.stateIndex;
-    //    result.absoluteNotes = arrayCopy(this.absoluteNotes);
-    //    result.scaleIndices = arrayCopy(this.scaleIndices);
     return result;
 };
 
 ClassicalVoiceLineState.prototype.toString = function() {
-    return "CVLS{" +
-        "stateIndex: " + this.stateIndex +
-        //    "absoluteNotes: " + this.absoluteNotes +
-        //    "scaleIndices: " + this.scaleIndices +
-        "}";
+    return `CVLS{stateIndex: ${this.stateIndex}}`;
 };
 
 
