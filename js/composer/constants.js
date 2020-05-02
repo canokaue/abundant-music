@@ -100,7 +100,6 @@ const ScaleType = {
             default:
                 return ScaleType.MAJOR_SCALE_STEPS;
         }
-        return ScaleType.MAJOR_SCALE_STEPS;
     },
 
     toString: function(type) {
@@ -127,8 +126,6 @@ const ScaleType = {
 };
 addPossibleValuesFunction(ScaleType, ScaleType.CUSTOM, ScaleType.WHOLE_NOTE);
 
-
-
 const IndexType = {
     MIDI_NOTE: 0,
     SCALE: 1,
@@ -150,8 +147,6 @@ const IndexType = {
     }
 };
 addPossibleValuesFunction(IndexType, IndexType.MIDI_NOTE, IndexType.CHORD_ROOT);
-
-
 
 // Snap types
 const SnapType = {
@@ -188,7 +183,6 @@ const FrequencyUnit = {
     }
 };
 addPossibleValuesFunction(FrequencyUnit, FrequencyUnit.HERTZ, FrequencyUnit.MIDI_NOTE);
-
 
 const CyclesUnit = {
     CYCLES_PER_PERIOD: 0,
@@ -229,7 +223,6 @@ const CyclesUnit = {
     }
 };
 addPossibleValuesFunction(CyclesUnit, CyclesUnit.CYCLES_PER_PERIOD, CyclesUnit.CYCLES_PER_HARMONY);
-
 
 function frequencyUnitToHertz(freq, unit) {
     switch (unit) {
