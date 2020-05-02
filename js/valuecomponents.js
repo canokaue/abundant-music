@@ -305,7 +305,7 @@ FloatTextComponent.prototype.setValueVerifyRaw = function() {
     let error = false;
     const textValue = this.$input.val();
     if (!error) {
-        var floatValue = parseFloat(textValue);
+        let floatValue = parseFloat(textValue);
         error = isNaN(floatValue);
     }
     if (!error) {
@@ -459,11 +459,11 @@ StringLengthConstraint.prototype.isValid = function(object, propName, value) {
 
 StringLengthConstraint.prototype.getInvalidDescription = function(object, propName, value) {
     if (value.length < this.minLength) {
-        var charStr = this.minLength == 1 ? "character" : "characters";
+        let charStr = this.minLength == 1 ? "character" : "characters";
         return "Must have at least " + this.minLength + " " + charStr;
     }
     if (value.length > this.maxLength) {
-        var charStr = this.maxLength == 1 ? "character" : "characters";
+        let charStr = this.maxLength == 1 ? "character" : "characters";
         return "Must have at most " + this.maxLength + " " + charStr;
     }
     return "";
@@ -598,8 +598,8 @@ UniqueIdTextComponent.prototype.setValueVerifyRaw = function() {
     }
     const oldValue = this.getValue();
     if (!error && oldValue != textValue) {
-        var manager = this.getUniqueIdManager();
-        var namespace = this.getUniqueIdNamespace();
+        let manager = this.getUniqueIdManager();
+        let namespace = this.getUniqueIdNamespace();
         error = !manager.uniqueIdAvailable(this.object, namespace, textValue);
         if (error) {
             errorText = "ID already exists";

@@ -1060,59 +1060,59 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
 
     if (obj instanceof GenMusicModule) {
 
-        var info = this.createObjectListInTabPropertyInfo("renderers", "Renderers", this.renderersUidInfo,
+        let info = this.createObjectListInTabPropertyInfo("renderers", "Renderers", this.renderersUidInfo,
             [["WebAudioRenderer", "WebAudio"], ["MidiRenderer", "Midi"], ["WaveRenderer", "Wav"],
             ["JsonRenderer", "JSON"], ["PianoRollRenderer", "Piano Roll"], ["SionRenderer", "Sion"]]);
         result.addPropertyInfo(info);
 
-        var info = this.createObjectListInTabPropertyInfo("structures", "Structures", this.structuresUidInfo,
+        let info = this.createObjectListInTabPropertyInfo("structures", "Structures", this.structuresUidInfo,
             [["Structure", "Structure"]]);
         result.addPropertyInfo(info);
 
-        var info = this.createObjectListInTabPropertyInfo("sections", "Sections", this.sectionsUidInfo,
+        let info = this.createObjectListInTabPropertyInfo("sections", "Sections", this.sectionsUidInfo,
             [["Section", "Section"]]);
         result.addPropertyInfo(info);
 
-        var info = this.createObjectListInTabPropertyInfo("harmony", "Harmony", this.harmonyUidInfo,
+        let info = this.createObjectListInTabPropertyInfo("harmony", "Harmony", this.harmonyUidInfo,
             [["ConstantHarmonicRythm", "Harmonic Rythm"]]);
         result.addPropertyInfo(info);
 
-        var info = this.createObjectListInTabPropertyInfo("motifs", "Motifs", this.motifsUidInfo,
+        let info = this.createObjectListInTabPropertyInfo("motifs", "Motifs", this.motifsUidInfo,
             [["Motif", "Motif"]], "motifs", "Motifs");
         result.addPropertyInfo(info);
 
-        var info = this.createObjectListInTabPropertyInfo("namedNotes", "Named Notes", this.namedNotesUidInfo,
+        let info = this.createObjectListInTabPropertyInfo("namedNotes", "Named Notes", this.namedNotesUidInfo,
             [["SimpleNamedNote", "Simple"], ["MidiDrumNamedNote", "Midi Drum"]], "motifs", "Motifs");
         result.addPropertyInfo(info);
 
-        var info = this.createObjectListInTabPropertyInfo("percussionMotifs", "Percussion Motifs", this.percussionMotifsUidInfo,
+        let info = this.createObjectListInTabPropertyInfo("percussionMotifs", "Percussion Motifs", this.percussionMotifsUidInfo,
             [
             ["PercussionMotif", "Motif"],
             ["SingleElementPercussionMotif", "Single Element Motif"],
             ], "motifs", "Motifs");
         result.addPropertyInfo(info);
 
-        var info = this.createObjectListInTabPropertyInfo("rythms", "Rythms", this.rythmsUidInfo,
+        let info = this.createObjectListInTabPropertyInfo("rythms", "Rythms", this.rythmsUidInfo,
             [["Rythm", "Rythm"]]);
         result.addPropertyInfo(info);
 
-        var info = this.createObjectListInTabPropertyInfo("curves", "Curves", this.curvesUidInfo,
+        let info = this.createObjectListInTabPropertyInfo("curves", "Curves", this.curvesUidInfo,
             this.getCurveConstructorTexts());
         result.addPropertyInfo(info);
 
-        var info = this.createObjectListInTabPropertyInfo("voiceLinePlanners", "Voice Line Planners", this.voiceLinePlannersUidInfo,
+        let info = this.createObjectListInTabPropertyInfo("voiceLinePlanners", "Voice Line Planners", this.voiceLinePlannersUidInfo,
             [["ClassicalVoiceLinePlanner", "Classical"]], "planners", "Planners");
         result.addPropertyInfo(info);
-        var info = this.createObjectListInTabPropertyInfo("figurationPlanners", "Figuration Planners", this.figurationPlannersUidInfo,
+        let info = this.createObjectListInTabPropertyInfo("figurationPlanners", "Figuration Planners", this.figurationPlannersUidInfo,
             [["ClassicalFigurationPlanner", "Classical"]], "planners", "Planners");
         result.addPropertyInfo(info);
 
-        var info = this.createObjectListInTabPropertyInfo("renderChannels", "Render Channels", this.renderChannelsUidInfo,
+        let info = this.createObjectListInTabPropertyInfo("renderChannels", "Render Channels", this.renderChannelsUidInfo,
             [["RenderChannel", "Render Channel"]], "channels", "Channels");
         result.addPropertyInfo(info);
 
 
-        var info = this.createObjectListInTabPropertyInfo("controlChannels", "Control Channels", this.controlChannelsUidInfo,
+        let info = this.createObjectListInTabPropertyInfo("controlChannels", "Control Channels", this.controlChannelsUidInfo,
             [
             ["DoubleControlChannel", "Double Channel"],
             ["IntegerControlChannel", "Integer Channel"],
@@ -1120,7 +1120,7 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
             ], "channels", "Channels");
         result.addPropertyInfo(info);
 
-        var info = this.createObjectListInTabPropertyInfo("variables", "Variables and Value Functions", this.variablesUidInfo,
+        let info = this.createObjectListInTabPropertyInfo("variables", "Variables and Value Functions", this.variablesUidInfo,
             [
             ["SimpleIntegerEditorVariable", "Integer Variable"],
             ["SimpleDoubleEditorVariable", "Double Variable"],
@@ -1138,7 +1138,7 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
             ],
             "variables", "Variables/Procedures");
         result.addPropertyInfo(info);
-        var info = this.createObjectListInTabPropertyInfo("procedures", "Procedures", this.proceduresUidInfo,
+        let info = this.createObjectListInTabPropertyInfo("procedures", "Procedures", this.proceduresUidInfo,
             [
             ["CustomEditorProcedure", "Custom"]
             ],
@@ -1266,7 +1266,7 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
     } else if (obj instanceof WebAudioRenderChannelInfo) {
         result.addPropertyInfo(this.createUniqueIdPropertyInfo("channelinfo", this.webAudioChannelInfosUidInfo));
 
-        var info = this.createObjectListPropertyInfo("nodes", "Nodes", this.webAudioNodesUidInfo, [["WebAudioNodeSpec", "Node"]]);
+        let info = this.createObjectListPropertyInfo("nodes", "Nodes", this.webAudioNodesUidInfo, [["WebAudioNodeSpec", "Node"]]);
         result.addPropertyInfo(info);
     } else if (obj instanceof WebAudioNodeSpec) {
         result.addPropertyInfo(this.createUniqueIdPropertyInfo("node", this.webAudioNodesUidInfo));
@@ -1300,23 +1300,23 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
         result.addPropertyInfo(this.createIdReferencePropertyInfo("structure", "Structure", this.structuresUidInfo));
         result.addPropertyInfo(this.createProcedureButtonPropertyInfo("Open Player", "openWebAudioStructurePlayer", this.moduleEditor, [obj]));
 
-        var info = this.createObjectListPropertyInfo("sources", "Sources", this.webAudioSourcesUidInfo,
+        let info = this.createObjectListPropertyInfo("sources", "Sources", this.webAudioSourcesUidInfo,
             [["WebAudioCurveBufferSource", "Curve Buffer Source"]]);
         result.addPropertyInfo(info);
-        var info = this.createObjectListPropertyInfo("envelopes", "Envelopes", this.webAudioEnvelopesUidInfo,
+        let info = this.createObjectListPropertyInfo("envelopes", "Envelopes", this.webAudioEnvelopesUidInfo,
             [["WebAudioADSREnvelope", "ADSR"]]);
         result.addPropertyInfo(info);
-        var info = this.createObjectListPropertyInfo("instruments", "Instruments", this.webAudioInstrumentsUidInfo,
+        let info = this.createObjectListPropertyInfo("instruments", "Instruments", this.webAudioInstrumentsUidInfo,
             [["WebAudioInstrument", "Instrument"]]);
         result.addPropertyInfo(info);
-        var info = this.createObjectListPropertyInfo("channelInfos", "Channel infos", this.webAudioChannelInfosUidInfo,
+        let info = this.createObjectListPropertyInfo("channelInfos", "Channel infos", this.webAudioChannelInfosUidInfo,
             [["WebAudioRenderChannelInfo", "Render Channel Info"]]);
         result.addPropertyInfo(info);
-        var info = this.createObjectListPropertyInfo("beforeDestinationNodes", "Nodes before destination",
+        let info = this.createObjectListPropertyInfo("beforeDestinationNodes", "Nodes before destination",
             this.webAudioNodesUidInfo,
             [["WebAudioNodeSpec", "Node"]]);
         result.addPropertyInfo(info);
-        var info = this.createObjectListPropertyInfo("internalCurves", "Internal curves",
+        let info = this.createObjectListPropertyInfo("internalCurves", "Internal curves",
             this.webAudioCurvesUidInfo,
             this.getCurveConstructorTexts());
         result.addPropertyInfo(info);
@@ -1324,7 +1324,7 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
         result.addPropertyInfo(this.createUniqueIdPropertyInfo("effect", this.sionEffectsUidInfo));
 
         if (obj instanceof SionSerialEffect) {
-            var info = this.createObjectListPropertyInfo("effects", "Effects", this.sionEffectsUidInfo, effectStuff);
+            let info = this.createObjectListPropertyInfo("effects", "Effects", this.sionEffectsUidInfo, effectStuff);
             result.addPropertyInfo(info);
         } else if (obj instanceof SionDelayEffect) {
             result.addPropertyInfo(this.createDefaultIntPropertyInfo("time", "Time (ms)", 200));
@@ -1405,7 +1405,7 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
 
         result.addPropertyInfo(this.createDefaultIntPropertyInfo("masterVolume", "Master volume", 64));
 
-        var info = this.createObjectListPropertyInfo("effectSends", "Effect sends", this.sionEffectSendsUidInfo,
+        let info = this.createObjectListPropertyInfo("effectSends", "Effect sends", this.sionEffectSendsUidInfo,
             [["SionEffectSend", "Effect send"]]);
         result.addPropertyInfo(info);
 
@@ -1416,18 +1416,18 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
 
         result.addPropertyInfo(this.createProcedureButtonPropertyInfo("Open Renderer", "openSionRenderer", this.moduleEditor, [obj]));
 
-        var info = this.createObjectListPropertyInfo("mappings", "Instrument mappings", this.sionInstrumentMapsUidInfo,
+        let info = this.createObjectListPropertyInfo("mappings", "Instrument mappings", this.sionInstrumentMapsUidInfo,
             [["SionInstrumentChannelMap", "Map"]]);
         result.addPropertyInfo(info);
 
-        var effectStuff = [["SionDelayEffect", "Delay"], ["SionReverbEffect", "Reverb"], ["Sion3BandEqualizerEffect", "Equalizer"],
+        let effectStuff = [["SionDelayEffect", "Delay"], ["SionReverbEffect", "Reverb"], ["Sion3BandEqualizerEffect", "Equalizer"],
         ["SionChorusEffect", "Chorus"], ["SionDistortionEffect", "Distortion"], ["SionCompressorEffect", "Compressor"],
         ["SionWaveShaperEffect", "Wave shape"], ["SionSerialEffect", "Serial"]
         ];
-        var info = this.createObjectListPropertyInfo("effects", "Effects", this.sionEffectsUidInfo, effectStuff);
+        let info = this.createObjectListPropertyInfo("effects", "Effects", this.sionEffectsUidInfo, effectStuff);
         result.addPropertyInfo(info);
 
-        var info = this.createObjectListPropertyInfo("masterEffects", "Master effects", this.sionMasterEffectsUidInfo, effectStuff);
+        let info = this.createObjectListPropertyInfo("masterEffects", "Master effects", this.sionMasterEffectsUidInfo, effectStuff);
         result.addPropertyInfo(info);
 
     } else if (obj instanceof InitialMidiControllerMessage) {
@@ -1441,7 +1441,7 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
         result.addPropertyInfo(this.createEnumPropertyInfo("program", "Program", MidiProgram.ACOUSTIC_GRAND_PIANO, MidiProgram));
         result.addPropertyInfo(this.createDefaultIntPropertyInfo("channel", "Midi channel", 0));
 
-        var info = this.createObjectListPropertyInfo("initialControllerMessages", "Initial controller messages", this.midiControllerMessagesUidInfo,
+        let info = this.createObjectListPropertyInfo("initialControllerMessages", "Initial controller messages", this.midiControllerMessagesUidInfo,
             [["InitialMidiControllerMessage", "Controller Message"]]);
         result.addPropertyInfo(info);
 
@@ -1451,7 +1451,7 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
 
         result.addPropertyInfo(this.createProcedureButtonPropertyInfo("Open Renderer", "openMidiRenderer", this.moduleEditor, [obj]));
 
-        var info = this.createObjectListPropertyInfo("channelMaps", "Channel maps", this.midiChannelMapsUidInfo,
+        let info = this.createObjectListPropertyInfo("channelMaps", "Channel maps", this.midiChannelMapsUidInfo,
             [["MidiChannelMap", "Channel Map"]]);
         result.addPropertyInfo(info);
 
@@ -1482,7 +1482,7 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
         result.addPropertyInfo(this.createDefaultBooleanPropertyInfo("tryHalveIfStrategyFails", "Halve on fail", true));
         result.addPropertyInfo(this.createDefaultIntPropertyInfo("seed", "Seed", 12345));
 
-        var info = this.createObjectListPropertyInfo("zones", "Split Zones", this.splitZonesUidInfo,
+        let info = this.createObjectListPropertyInfo("zones", "Split Zones", this.splitZonesUidInfo,
             [["SplitZone", "Split Zone"]]);
         result.addPropertyInfo(info);
 
@@ -1505,7 +1505,7 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
 
         result.addPropertyInfo(this.createPreviewPropertyInfo("StructurePreviewComponent"));
 
-        var info = this.createObjectListPropertyInfo("references", "Sections", this.sectionReferencesUidInfo,
+        let info = this.createObjectListPropertyInfo("references", "Sections", this.sectionReferencesUidInfo,
             [["SectionReference", "Section Reference"]]);
         result.addPropertyInfo(info);
 
@@ -1647,7 +1647,7 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
 
         if (obj instanceof ConstantVoiceLine) {
             // Only constant stuff is allowed
-            var info = this.createObjectListPropertyInfo("lineElements", "Voice Elements", this.voiceElementsUidInfo,
+            let info = this.createObjectListPropertyInfo("lineElements", "Voice Elements", this.voiceElementsUidInfo,
                 [["ConstantVoiceLineElement", "Simple"],
                 ["ConstantSequenceVoiceLineElement", "Simple Sequence"]
                 ]);
@@ -1714,7 +1714,7 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
 
         } else {
             // A voice line that can have adaptive elements as well
-            var info = this.createObjectListPropertyInfo("lineElements", "Voice Elements", this.voiceElementsUidInfo,
+            let info = this.createObjectListPropertyInfo("lineElements", "Voice Elements", this.voiceElementsUidInfo,
                 [["ConstantVoiceLineElement", "Simple"],
                 ["ClassicalAdaptiveVoiceLineElement", "Classical Adaptive"],
                 ["ConstantSequenceVoiceLineElement", "Simple Sequence"],
@@ -1890,7 +1890,7 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
         if (obj instanceof PrimitiveRenderLine) {
             result.addPropertyInfo(this.createIdReferencePropertyInfo("channel", "Render Channel", this.renderChannelsUidInfo));
 
-            var info = this.createObjectListPropertyInfo("renderElements", "Render Elements", this.renderElementsUidInfo,
+            let info = this.createObjectListPropertyInfo("renderElements", "Render Elements", this.renderElementsUidInfo,
                 this.getRenderElementConstructorTexts());
             result.addPropertyInfo(info);
         }
@@ -1900,7 +1900,7 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
         if (obj instanceof PrimitiveControlLine) {
             result.addPropertyInfo(this.createIdReferencePropertyInfo("channel", "Control Channel", this.controlChannelsUidInfo));
 
-            var info = this.createObjectListPropertyInfo("controlElements", "Control Elements", this.controlElementsUidInfo,
+            let info = this.createObjectListPropertyInfo("controlElements", "Control Elements", this.controlElementsUidInfo,
                 [["CurveControlElement", "Curve Control"]]);
             result.addPropertyInfo(info);
         }
@@ -1917,22 +1917,22 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
             result.addPropertyInfo(this.createIdReferencePropertyInfo("figurationPlanner", "Default Figuration Planner", this.figurationPlannersUidInfo));
             result.addPropertyInfo(this.createDefaultFloatPropertyInfo("tempo", "Tempo (BPM)", 80.0));
 
-            var info = this.createObjectListPropertyInfo("voiceLines", "Voice Lines", this.voiceLinesUidInfo,
+            let info = this.createObjectListPropertyInfo("voiceLines", "Voice Lines", this.voiceLinesUidInfo,
                 [["ConstantVoiceLine", "Simple Line"],
                 ["SimpleBassVoiceLine", "Simple Bass Line"],
                 ["ClassicalAdaptiveVoiceLine", "Classical Adaptive Line"]
                 ]);
             result.addPropertyInfo(info);
 
-            var info = this.createObjectListPropertyInfo("renderLines", "Render Lines", this.renderLinesUidInfo,
+            let info = this.createObjectListPropertyInfo("renderLines", "Render Lines", this.renderLinesUidInfo,
                 [["PrimitiveRenderLine", "Simple Render Line"]]);
             result.addPropertyInfo(info);
 
-            var info = this.createObjectListPropertyInfo("suspAntStrategies", "Suspension/Anticipation Strategies", this.suspAntStrategiesUidInfo,
+            let info = this.createObjectListPropertyInfo("suspAntStrategies", "Suspension/Anticipation Strategies", this.suspAntStrategiesUidInfo,
                 [["SimpleSuspAntStrategy", "Simple Strategy"]]);
             result.addPropertyInfo(info);
 
-            var info = this.createObjectListPropertyInfo("controlLines", "Control Lines", this.controlLinesUidInfo,
+            let info = this.createObjectListPropertyInfo("controlLines", "Control Lines", this.controlLinesUidInfo,
                 [["PrimitiveControlLine", "Simple"]]);
             result.addPropertyInfo(info);
             
@@ -1946,7 +1946,7 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
             
             result.addPropertyInfo(this.createIdReferenceNotSelfPropertyInfo("section", "Section", this.sectionsUidInfo));
 
-            var info = this.createObjectListPropertyInfo("modifiers", "Section Modifiers", this.sectionReferenceModifiersUidInfo,
+            let info = this.createObjectListPropertyInfo("modifiers", "Section Modifiers", this.sectionReferenceModifiersUidInfo,
                 this.getSectionModifierConstructorTexts());
             result.addPropertyInfo(info);
         }
@@ -1975,7 +1975,7 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
             result.addPropertyInfo(this.createEnumListPropertyInfo("minorNewScaleTypes", "Minor new scale types", [ScaleType.MELODIC_MINOR], ScaleType));
             
         } else if (obj instanceof AppendHarmonyModifier) {
-            var info = this.createObjectListPropertyInfo("elements", "Elements", this.harmonyElementsUidInfo,
+            let info = this.createObjectListPropertyInfo("elements", "Elements", this.harmonyElementsUidInfo,
                 this.getHarmonyElementConstructorTexts());
             result.addPropertyInfo(info);
         }
@@ -1985,11 +1985,11 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
 
         result.addPropertyInfo(this.createPreviewPropertyInfo("HarmonyPreviewComponent"));
 
-        var info = this.createObjectListPropertyInfo("harmonyElements", "Harmony Elements", this.harmonyElementsUidInfo,
+        let info = this.createObjectListPropertyInfo("harmonyElements", "Harmony Elements", this.harmonyElementsUidInfo,
             this.getHarmonyElementConstructorTexts());
         result.addPropertyInfo(info);
 
-        var info = this.createObjectListPropertyInfo("modifiers", "Modifiers", this.harmonyModifiersUidInfo,
+        let info = this.createObjectListPropertyInfo("modifiers", "Modifiers", this.harmonyModifiersUidInfo,
             this.getHarmonyModifierConstructorTexts());
         result.addPropertyInfo(info);
 
@@ -2136,7 +2136,7 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
             }
         }
 
-        var info = this.createObjectListPropertyInfo("modifiers", "Modifiers", this.harmonyModifiersUidInfo,
+        let info = this.createObjectListPropertyInfo("modifiers", "Modifiers", this.harmonyModifiersUidInfo,
             this.getHarmonyModifierConstructorTexts());
         result.addPropertyInfo(info);
 
@@ -2147,7 +2147,7 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
 
         result.addPropertyInfo(this.createPreviewPropertyInfo("RythmPreviewComponent"));
 
-        var info = this.createObjectListPropertyInfo("rythmElements", "Rythm Elements", this.rythmElementsUidInfo,
+        let info = this.createObjectListPropertyInfo("rythmElements", "Rythm Elements", this.rythmElementsUidInfo,
             [["NoteRythmElement", "Simple"], ["SequenceRythmElement", "Simple sequence"], ["SplitRythmElement", "Split"]]);
         result.addPropertyInfo(info);
 
@@ -2259,13 +2259,13 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
             result.addPropertyInfo(this.createDefaultIntPropertyInfo("seed", "Seed", 12345));
             result.addPropertyInfo(this.createDefaultBooleanPropertyInfo("useExternalSeed", "Use external seed", false));
 
-            var info = this.createObjectListPropertyInfo("zones", "Zones", this.percussionMotifZonesUidInfo,
+            let info = this.createObjectListPropertyInfo("zones", "Zones", this.percussionMotifZonesUidInfo,
                 [
                 ["VersatilePercussionMotifZone", "Versatile"]
                 ]);
             result.addPropertyInfo(info);
 
-            var info = this.createObjectListPropertyInfo("elements", "Elements", this.percussionMotifElementsUidInfo,
+            let info = this.createObjectListPropertyInfo("elements", "Elements", this.percussionMotifElementsUidInfo,
                 [
                 ["PrimitivePercussionMotifElement", "Primitive"],
                 ["PredefinedPercussionMotifElement", "Predefined"]
@@ -2273,7 +2273,7 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
             result.addPropertyInfo(info);
         } else if (obj instanceof SingleElementPercussionMotif) {
             result.addPropertyInfo(this.createPreviewPropertyInfo("PercussionMotifPreviewComponent"));
-            var info = this.createObjectPropertyInfo("element", "Element", this.percussionMotifElementsUidInfo, [
+            let info = this.createObjectPropertyInfo("element", "Element", this.percussionMotifElementsUidInfo, [
                 ["PrimitivePercussionMotifElement", "Primitive"],
                 ["PredefinedPercussionMotifElement", "Predefined"]
                 ]);
@@ -2294,7 +2294,7 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
         result.addPropertyInfo(this.createDefaultBooleanPropertyInfo("useExternalSeed", "Use external seed", false));
 
         // Motif elements
-        var info = this.createObjectListPropertyInfo("motifElements", "Motif Elements", this.motifElementsUidInfo,
+        let info = this.createObjectListPropertyInfo("motifElements", "Motif Elements", this.motifElementsUidInfo,
             [
             ["SimpleSequenceMotifElement", "Simple sequence"],
             ["VerticalRelativeMotifElement", "Simple Vertical"],
@@ -2304,7 +2304,7 @@ ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentP
         result.addPropertyInfo(info);
 
         // Motif zones
-        var info = this.createObjectListPropertyInfo("motifZones", "Motif Zones", this.motifZonesUidInfo,
+        let info = this.createObjectListPropertyInfo("motifZones", "Motif Zones", this.motifZonesUidInfo,
             [["SimpleVerticalRelativeMotifZone", "Simple Vertical Zone"],
             ["SimpleHorizontalRelativeMotifZone", "Simple Horizontal Zone"],
             ["AdaptiveConnectMotifZone", "Adaptive Connect"],

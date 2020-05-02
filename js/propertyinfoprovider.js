@@ -1016,6 +1016,7 @@ PropertyInfoProvider.prototype.getSequenceHarmonyElementPropertyInfos = function
 PropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentPropertyInfo) {
     const result = new GuiPropertyInfos();
 
+    let info;
 
     switch (obj._constructorName) {
         case "UserInfo":
@@ -1105,7 +1106,7 @@ PropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentPropert
 
             this.getSequenceHarmonyElementPropertyInfos(result);
 
-            var info = this.createObjectListPropertyInfo("voiceLineConstraints", "Voice line constraints", this.phraseGroupTypesUidInfo,
+            info = this.createObjectListPropertyInfo("voiceLineConstraints", "Voice line constraints", this.phraseGroupTypesUidInfo,
                 [
                     ["VoiceChordNotesVoiceLinePlannerConstraint", "Voice chord notes constraint"]
                 ]);
@@ -1201,7 +1202,7 @@ PropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentPropert
             result.addPropertyInfo(this.createEnumPropertyInfo("type", "Type", PrimitiveWebAudioPlayerInstrumentType.SAW, PrimitiveWebAudioPlayerInstrumentType));
             break;
         case "WebAudioPlayerSettings":
-            var info = this.createObjectListPropertyInfo("melodyInstruments", "Melody instruments", this.phraseGroupTypesUidInfo,
+            info = this.createObjectListPropertyInfo("melodyInstruments", "Melody instruments", this.phraseGroupTypesUidInfo,
                 [
                     ["PrimitiveWebAudioPlayerInstrument", "Primitive"]
                 ]);
@@ -1210,7 +1211,7 @@ PropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentPropert
             };
             result.addPropertyInfo(info);
 
-            var info = this.createObjectListPropertyInfo("inner1Instruments", "Inner 1 instruments", this.phraseGroupTypesUidInfo,
+            info = this.createObjectListPropertyInfo("inner1Instruments", "Inner 1 instruments", this.phraseGroupTypesUidInfo,
                 [
                     ["PrimitiveWebAudioPlayerInstrument", "Primitive"]
                 ]);
@@ -1219,7 +1220,7 @@ PropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentPropert
             };
             result.addPropertyInfo(info);
 
-            var info = this.createObjectListPropertyInfo("inner2Instruments", "Inner 2 instruments", this.phraseGroupTypesUidInfo,
+            info = this.createObjectListPropertyInfo("inner2Instruments", "Inner 2 instruments", this.phraseGroupTypesUidInfo,
                 [
                     ["PrimitiveWebAudioPlayerInstrument", "Primitive"]
                 ]);
@@ -1228,7 +1229,7 @@ PropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentPropert
             };
             result.addPropertyInfo(info);
 
-            var info = this.createObjectListPropertyInfo("bassInstruments", "Bass instruments", this.phraseGroupTypesUidInfo,
+            info = this.createObjectListPropertyInfo("bassInstruments", "Bass instruments", this.phraseGroupTypesUidInfo,
                 [
                     ["PrimitiveWebAudioPlayerInstrument", "Primitive"]
                 ]);
@@ -1550,7 +1551,7 @@ PropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentPropert
             result.addPropertyInfo(this.createDefaultBooleanPropertyInfo("overwriteSongPartStructure", "Overwrite Song Structure", false));
             result.addPropertyInfo(this.createSongPartStructureInfoListPropertyInfo("songPartStructure", "Song Structure", this.spsidsUidInfo));
 
-            var info = this.createObjectListPropertyInfo("songPartTypeOverrideInfos", "Song part type override infos", this.phraseGroupTypesUidInfo,
+            info = this.createObjectListPropertyInfo("songPartTypeOverrideInfos", "Song part type override infos", this.phraseGroupTypesUidInfo,
                 [
                     ["SongPartTypeOverrideInfo", "Song part type override info"]
                 ]);
@@ -1592,7 +1593,7 @@ PropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentPropert
             result.addPropertyInfo(this.createDefaultBooleanPropertyInfo("overrideRideDrumNotes", "Override ride notes", false));
             result.addPropertyInfo(this.createEnumListPropertyInfo("rideDrumNotes", "Ride Drums", MidiDrum.RIDE_BELL, MidiDrum));
 
-            var info = this.createObjectListPropertyInfo("harmonyElements", "Harmony elements", this.phraseGroupTypesUidInfo,
+            info = this.createObjectListPropertyInfo("harmonyElements", "Harmony elements", this.phraseGroupTypesUidInfo,
                 [
                     ["SimpleSequenceHarmonyElement", "Simple Harmony Sequence"],
                     ["PhraseHarmonyElement", "Phrase Harmony"]
@@ -1604,7 +1605,7 @@ PropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentPropert
             result.addPropertyInfo(info);
 
 
-            var info = this.createObjectListPropertyInfo("customMelodyCurveInfos", "Melody curve infos", this.phraseGroupTypesUidInfo,
+            info = this.createObjectListPropertyInfo("customMelodyCurveInfos", "Melody curve infos", this.phraseGroupTypesUidInfo,
                 [
                     ["LinearInterpolatedCustomVoiceLineCurveInfo", "Linear Interpolation"]
                 ]);
@@ -1614,7 +1615,7 @@ PropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentPropert
             };
             result.addPropertyInfo(info);
 
-            var info = this.createObjectListPropertyInfo("customBassCurveInfos", "Bass curve infos", this.phraseGroupTypesUidInfo,
+            info = this.createObjectListPropertyInfo("customBassCurveInfos", "Bass curve infos", this.phraseGroupTypesUidInfo,
                 [
                     ["LinearInterpolatedCustomVoiceLineCurveInfo", "Linear Interpolation"]
                 ]);
@@ -1651,7 +1652,7 @@ PropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentPropert
 
 
 
-            var info = this.createObjectListPropertyInfo("majorModulationTargetInfos", "Major modulation/tonicization targets", this.phraseGroupTypesUidInfo,
+            info = this.createObjectListPropertyInfo("majorModulationTargetInfos", "Major modulation/tonicization targets", this.phraseGroupTypesUidInfo,
                 [
                     ["ModulationTargetDataSample", "Major modulation/tonicization target likelihood"]
                 ]);
@@ -1660,7 +1661,7 @@ PropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentPropert
             };
             result.addPropertyInfo(info);
 
-            var info = this.createObjectListPropertyInfo("minorModulationTargetInfos", "Minor modulation/tonicization targets", this.phraseGroupTypesUidInfo,
+            info = this.createObjectListPropertyInfo("minorModulationTargetInfos", "Minor modulation/tonicization targets", this.phraseGroupTypesUidInfo,
                 [
                     ["ModulationTargetDataSample", "Minor modulation/tonicization target likelihood"]
                 ]);

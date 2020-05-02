@@ -102,7 +102,7 @@ const Midi = (function() {
     };
 
 
-    var MIDINote = {
+    let MIDINote = {
         C: 0,
         C_SHARP: 1,
         D: 2,
@@ -382,7 +382,7 @@ const Midi = (function() {
 
         for (let i = 0; i < 4; i++) {
             const masked = theUInt & mask;
-            var byt = masked & 0x7f;
+            let byt = masked & 0x7f;
             //trace("current: " + theUInt.toString(2) + " masked: " + masked.toString(2) + " the byte: " + byte.toString(2));
             if (masked) {
                 bytes.push(byt);

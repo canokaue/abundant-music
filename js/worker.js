@@ -174,10 +174,10 @@ self.addEventListener('message', function(e) {
             case "startTask":
                 const taskType = data.taskType;
                 switch (taskType) {
-                    case 0:
+                    case 0: {
 //                        logit("Worker is composing...");
 
-                        var result = render(data, 1);
+                        let result = render(data, 1);
                         if (result) {
                             delete result.origRenderData; // No use to us
                             delete result.module; // No use to us
@@ -187,14 +187,14 @@ self.addEventListener('message', function(e) {
                             self.postMessage({type: "error", data: "No result from render"});
                         }
                         break;
+                    }
                     case 1: // Midi
-                    case 2: // Wav
+                    case 2: { // Wav
 //                        logit("Worker is exporting midi...");
-
 
                         const progMult = taskType == 1 ? 1 : 0.5;
 
-                        var result = render(data, progMult);
+                        let result = render(data, progMult);
                         if (result) {
                             const midiRenderer = result.module.getSynthRenderer("midiRenderer");
                             const midiData = midiRenderer.getMidiData(result.origRenderData, result.module, data.content.genInfo);
@@ -221,9 +221,9 @@ self.addEventListener('message', function(e) {
                                 const dataView = new DataView(new ArrayBuffer(len * 4));
 
                                 for (let i=0; i<len; i++) {
-                                    var value = floatResult[0][i];
+                                    let value = floatResult[0][i];
                                     dataView.setInt16(i * 4, Math.round(maxShort * value), true);
-                                    var value = floatResult[1][i];
+                                    value = floatResult[1][i];
                                     dataView.setInt16(i * 4 + 2, Math.round(maxShort * value), true);
                                 }
 
@@ -244,6 +244,7 @@ self.addEventListener('message', function(e) {
                             self.postMessage({type: "error", data: "No result from render"});
                         }
                         break;
+                    }
                 }
                 break;
             case "cancelTask":

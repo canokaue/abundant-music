@@ -14,7 +14,7 @@ function traverseObject(obj, propInfoProvider, func, parentInfo, data) {
                 func(obj, info, data);
 
                 if (info.dataType == GuiPropertyDataType.OBJECT_LIST) {
-                    var value = obj[info.propertyName];
+                    let value = obj[info.propertyName];
                     if (value) {
                         for (let j=0; j<value.length; j++) {
                             traverseObject(value[j], propInfoProvider, func, info, data);
@@ -24,7 +24,7 @@ function traverseObject(obj, propInfoProvider, func, parentInfo, data) {
                     }
                 }
                 else if (info.dataType == GuiPropertyDataType.OBJECT) {
-                    var value = obj[info.propertyName];
+                    let value = obj[info.propertyName];
                     traverseObject(value, propInfoProvider, func, parentInfo, data);
                 }
             }
@@ -195,13 +195,13 @@ GuiPropertiesComponent.prototype.setAlignment = function(info) {
 GuiPropertiesComponent.prototype.alignComponents = function() {
     const info = new ComponentAlignmentInfo();
     for (let i=0; i<this.children.length; i++) {
-        var c = this.children[i];
+        let c = this.children[i];
         //        logit(" " + c._constructorName + " <br />");
         c.gatherAlignmentInfo(info);
     }
 
     for (let i=0; i<this.children.length; i++) {
-        var c = this.children[i];
+        let c = this.children[i];
         c.setAlignment(info);
     }
 };
@@ -566,7 +566,7 @@ GuiPropertyComponent.prototype.createNewValue = function(constrInfo, parentPropI
 GuiPropertyComponent.prototype.getConstructorsHtml = function(resultArr, constructorInfos, newMode) {
     if (newMode == GuiNewMode.BUTTONS) {
         for (let i=0; i<constructorInfos.length; i++) {
-            var constrInfo = constructorInfos[i];
+            let constrInfo = constructorInfos[i];
             resultArr.push("<button ");
             resultArr.push("id='" + (this.newButtonIdPrefix + "-" + i) + "' ");
             resultArr.push(">");
@@ -576,7 +576,7 @@ GuiPropertyComponent.prototype.getConstructorsHtml = function(resultArr, constru
     } else {
         logit("select new not supported yet...");
         for (let i=0; i<constructorInfos.length; i++) {
-            var constrInfo = constructorInfos[i];
+            let constrInfo = constructorInfos[i];
         }
     }
 };
@@ -978,8 +978,6 @@ GuiPropertyTextComponent.prototype.jQueryCreated = function($localRoot) {
 
 //    this.createValueTypeRadioButtons($localRoot);
 
-    var comp = this;
-
     this.$input = this.$component.find("#" + this.id + "-input");
     this.$label = this.$component.find("#" + this.id + "-label");
     this.$errorLabel = this.$component.find("#" + this.id + "-error-label");
@@ -1003,7 +1001,7 @@ GuiPropertyTextComponent.prototype.jQueryCreated = function($localRoot) {
     //    logit("label width: " + comp.$label.outerWidth() + " id: " + this.$label.get(0).id + "<br />");
     //    }, 1);
 
-    var comp = this;
+    let comp = this;
     this.$input.on("keydown keypress keyup change", function() {
         comp.setValueVerifyRaw();
     });
@@ -1573,7 +1571,7 @@ GuiAbstractListComponent.prototype.jQueryCreated = function($localRoot) {
     //    }
 
     this.$deleteButton = this.$component.find("#" + this.deleteButtonId);
-    var buttonOptions = {};
+    let buttonOptions = {};
     buttonOptions.label = "Delete";
     buttonOptions.text = false;
     buttonOptions.icons = {};
@@ -1586,7 +1584,7 @@ GuiAbstractListComponent.prototype.jQueryCreated = function($localRoot) {
     });
 
     this.$copyButton = this.$component.find("#" + this.copyButtonId);
-    var buttonOptions = {};
+    buttonOptions = {};
     buttonOptions.label = "Copy";
     buttonOptions.text = false;
     buttonOptions.icons = {};
@@ -1981,7 +1979,7 @@ GuiPropertySliderComponent.prototype.jQueryCreated = function($localRoot) {
 
 //    this.createValueTypeRadioButtons($localRoot);
 
-    var comp = this;
+    let comp = this;
 
     this.$input = this.$component.find("#" + this.id + "-input");
     this.$label = this.$component.find("#" + this.id + "-label");
@@ -1999,11 +1997,5 @@ GuiPropertySliderComponent.prototype.jQueryCreated = function($localRoot) {
 
     this.$label.css("padding-right", "0.7em");
     this.$input.css("width", "13em");
-
-    var comp = this;
-
-//    this.$input.on("keydown keypress keyup change", function() {
-//        comp.setValueVerifyRaw();
-//    });
 
 };

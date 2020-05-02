@@ -255,13 +255,13 @@ WebAudioPlayer.prototype.scheduleNoteOnOff = function(noteData) {
             buffer = this.percussionBuffers[onEvent.n];
 
             if (!buffer) {
-                var bufferFunc = this.snareBufferFunc;
+                let bufferFunc = this.snareBufferFunc;
                 buffer = this.createBuffer(bufferFunc, 1);
                 this.percussionBuffers[onEvent.n] = buffer;
             }
 
-            var ampEnvNode = this.context.createGain();
-            var ampEnvGainParam = ampEnvNode.gain;
+            let ampEnvNode = this.context.createGain();
+            let ampEnvGainParam = ampEnvNode.gain;
             ampEnvGainParam.setValueAtTime(0, onTime);
             ampEnvGainParam.exponentialRampToValueAtTime(1, onTime + 0.01);
             ampEnvGainParam.exponentialRampToValueAtTime(0, onTime + 0.25);
@@ -280,7 +280,7 @@ WebAudioPlayer.prototype.scheduleNoteOnOff = function(noteData) {
         const freqMult = 22;
         buffer = this.melodicBuffers[instrType];
         if (!buffer) {
-            var bufferFunc = this.sineBufferFunc;
+            let bufferFunc = this.sineBufferFunc;
             switch (instrType) {
                 case PrimitiveWebAudioPlayerInstrumentType.SAW:
                     bufferFunc = this.sawBufferFunc;
@@ -307,8 +307,8 @@ WebAudioPlayer.prototype.scheduleNoteOnOff = function(noteData) {
         const sustainValue = 0.25;
         const releaseTime = 0.25;
 
-        var ampEnvNode = this.context.createGain();
-        var ampEnvGainParam = ampEnvNode.gain;
+        let ampEnvNode = this.context.createGain();
+        let ampEnvGainParam = ampEnvNode.gain;
         ampEnvGainParam.setValueAtTime(0, onTime);
         ampEnvGainParam.linearRampToValueAtTime(1, onTime + attackTime);
         ampEnvGainParam.linearRampToValueAtTime(sustainValue, onTime + attackTime + decayTime);

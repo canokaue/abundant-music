@@ -60,7 +60,7 @@ ControlRoll.prototype.getControlRowsWidth = function() {
 ControlRoll.prototype.updateSize = function() {
     this.updateControlLimits();
     if (this.autoWidth) {
-        var sum = 0;
+        let sum = 0;
         if (this.showKeys) {
             sum += this.keysWidth;
         }
@@ -69,7 +69,7 @@ ControlRoll.prototype.updateSize = function() {
         this.width = sum;
     }
     if (this.autoHeight) {
-        var sum = 0;
+        let sum = 0;
 
         // Calculate header height
 
@@ -98,7 +98,7 @@ ControlRoll.prototype.paintRows = function(x, y, context) {
     }
 
     // Paint the beat lines
-    var beats = w / this.beatWidth;
+    let beats = w / this.beatWidth;
     let currentX = x;
     context.beginPath();
     for (let i=0; i<beats; i++) {
@@ -118,8 +118,8 @@ ControlRoll.prototype.paintRows = function(x, y, context) {
 
         currentX = x;
         for (let i=0; i<ches.length; i++) {
-            var e = ches[i];
-            var beats = positionUnitToBeats(e.getLength(), e.getLengthUnit(), e.tsNumerator, e.tsDenominator);
+            let e = ches[i];
+            let beats = positionUnitToBeats(e.getLength(), e.getLengthUnit(), e.tsNumerator, e.tsDenominator);
             const scalePitchClasses = e.getPitchClassesFromAbsoluteNotes(e.getScaleAbsoluteNotes());
             const chordPitchClasses = e.getPitchClassesFromAbsoluteNotes(e.getAbsoluteNotesFromScaleIndices(e.getChordRootPositionScaleIndices()));
             for (let j=0; j<range; j++) {
@@ -143,8 +143,8 @@ ControlRoll.prototype.paintRows = function(x, y, context) {
     currentX = x;
     context.beginPath();
     for (let i=0; i<ches.length; i++) {
-        var e = ches[i];
-        var beats = positionUnitToBeats(e.getLength(), e.getLengthUnit(), e.tsNumerator, e.tsDenominator);
+        let e = ches[i];
+        let beats = positionUnitToBeats(e.getLength(), e.getLengthUnit(), e.tsNumerator, e.tsDenominator);
         currentX += beats * this.beatWidth;
         context.moveTo(currentX, y);
         context.lineTo(currentX, y + range * this.noteRowHeight);

@@ -282,7 +282,7 @@ Visualizer3D.prototype.highlightNotes = function(beat) {
                     } else if (channelName.indexOf("bass") == 0 || channelName.indexOf("percussion") == 0) {
                         lightIndex = 2;
                     }
-                    var lightData = lightDatas[lightIndex];
+                    let lightData = lightDatas[lightIndex];
 
                     const intensity = Math.max(0.5, invFrac);
 
@@ -300,7 +300,7 @@ Visualizer3D.prototype.highlightNotes = function(beat) {
     }
 
     for (let i=0; i<lightDatas.length; i++) {
-        var lightData = lightDatas[i];
+        let lightData = lightDatas[i];
         if (lightData.count > 0) {
             lightData.pos.divideScalar(lightData.count);
             lightData.light.position.copy(lightData.pos);
@@ -365,10 +365,10 @@ Visualizer3D.prototype.step = function(dt) {
 
     switch (this.mode) {
         case VisualizerMode.PLAY:
-            var posX = this.currentBeatTime * this.beatLengthScale;
+            let posX = this.currentBeatTime * this.beatLengthScale;
             const distanceZ = 70;
 
-            var lookAtY = 70;
+            let lookAtY = 70;
 
             towardsPosition.set(posX, lookAtY, distanceZ);
             towardsLookAt.set(posX, lookAtY, 0);
@@ -381,80 +381,86 @@ Visualizer3D.prototype.step = function(dt) {
             const seconds = this.currentStopBeatTime;
 //            this.clearHighlightNotes();
             switch (this.stopMovementMode) {
-                case Visualizer3DStopMovementMode.ROTATE_INTERACTIVE_HOVER:
-                    var centerX = this.maxBeat * 0.5 * this.beatLengthScale;
+                case Visualizer3DStopMovementMode.ROTATE_INTERACTIVE_HOVER: {
+                    let centerX = this.maxBeat * 0.5 * this.beatLengthScale;
 
-                    var distance = 150 - 100 * fractionY;
-                    var height = 150 - 100 * fractionY;
-                    var phase = Math.PI * fractionX;
-
-                    towardsPosition.set(distance * Math.cos(phase) + centerX, height, distance * Math.sin(phase));
-                    towardsLookAt.set(centerX, 60, 0);
-
-                    break;
-                case Visualizer3DStopMovementMode.ROTATE_PAN_INTERACTIVE_HOVER:
-                    var centerX = this.maxBeat * fractionX * this.beatLengthScale;
-
-                    var distance = 100 - 50 * fractionY;
-                    var height = 100 - 50 * fractionY;
-                    var phase = -0.75 * Math.PI * (fractionX - 0.5) - Math.PI * 1.5;
+                    let distance = 150 - 100 * fractionY;
+                    let height = 150 - 100 * fractionY;
+                    let phase = Math.PI * fractionX;
 
                     towardsPosition.set(distance * Math.cos(phase) + centerX, height, distance * Math.sin(phase));
                     towardsLookAt.set(centerX, 60, 0);
 
                     break;
-                case Visualizer3DStopMovementMode.PAN_INTERACTIVE_HOVER:
-                    var centerX = this.maxBeat * fractionX * this.beatLengthScale;
+                }
+                case Visualizer3DStopMovementMode.ROTATE_PAN_INTERACTIVE_HOVER: {
+                    let centerX = this.maxBeat * fractionX * this.beatLengthScale;
 
-                    var depth = 60;
-                    var height = 80 - 40 * fractionY;
+                    let distance = 100 - 50 * fractionY;
+                    let height = 100 - 50 * fractionY;
+                    let phase = -0.75 * Math.PI * (fractionX - 0.5) - Math.PI * 1.5;
+
+                    towardsPosition.set(distance * Math.cos(phase) + centerX, height, distance * Math.sin(phase));
+                    towardsLookAt.set(centerX, 60, 0);
+
+                    break;
+                }
+                case Visualizer3DStopMovementMode.PAN_INTERACTIVE_HOVER: {
+                    let centerX = this.maxBeat * fractionX * this.beatLengthScale;
+
+                    let depth = 60;
+                    let height = 80 - 40 * fractionY;
 
                     towardsPosition.set(centerX, height, depth);
                     towardsLookAt.set(centerX, height, 0);
                     break;
-                case Visualizer3DStopMovementMode.PAN_INTERACTIVE_DRAG:
+                }
+                case Visualizer3DStopMovementMode.PAN_INTERACTIVE_DRAG: {
 
-                    var targetX = clamp(currentLookAt.x - docW * this.fractionDragVelX * dSec, 0, this.maxBeat * this.beatLengthScale);
-                    var targetY = clamp(currentLookAt.y + docH * this.fractionDragVelY * dSec, 0, 127);
+                    let targetX = clamp(currentLookAt.x - docW * this.fractionDragVelX * dSec, 0, this.maxBeat * this.beatLengthScale);
+                    let targetY = clamp(currentLookAt.y + docH * this.fractionDragVelY * dSec, 0, 127);
 
-                    var depth = 60;
+                    let depth = 60;
 
                     towardsPosition.set(targetX, targetY, depth);
                     towardsLookAt.set(targetX, targetY, 0);
                     break;
-                case Visualizer3DStopMovementMode.ROTATE_INTERACTIVE_DRAG:
+                }
+                case Visualizer3DStopMovementMode.ROTATE_INTERACTIVE_DRAG: {
 
-                    var centerX = this.maxBeat * 0.5 * this.beatLengthScale;
+                    let centerX = this.maxBeat * 0.5 * this.beatLengthScale;
                     this.currentAngle += this.fractionDragVelX * dSec;
 
-                    var camPos = this.camera.position;
+                    let camPos = this.camera.position;
                     const targetDistance = clamp(camPos.y + docH * this.fractionDragVelY * dSec, 40, 500);
 
-                    var height = targetDistance;
-                    var distance = targetDistance;
-                    var lookAtY = 60;
+                    let height = targetDistance;
+                    let distance = targetDistance;
+                    let lookAtY = 60;
 
                     towardsPosition.set(centerX + distance * Math.cos(this.currentAngle), height, distance * Math.sin(this.currentAngle));
                     towardsLookAt.set(centerX, lookAtY, 0);
                     break;
-                case Visualizer3DStopMovementMode.ROTATE_PAN_INTERACTIVE_DRAG:
+                }
+                case Visualizer3DStopMovementMode.ROTATE_PAN_INTERACTIVE_DRAG: {
 
-                    var camPos = this.camera.position;
-                    var targetX = clamp(currentLookAt.x - docW * this.fractionDragVelX * dSec, 0, this.maxBeat * this.beatLengthScale);
-                    var targetY = clamp(camPos.y + 500 * this.fractionDragVelY * dSec, 20, 300);
+                    let camPos = this.camera.position;
+                    let targetX = clamp(currentLookAt.x - docW * this.fractionDragVelX * dSec, 0, this.maxBeat * this.beatLengthScale);
+                    let targetY = clamp(camPos.y + 500 * this.fractionDragVelY * dSec, 20, 300);
 
                     fractionX = targetX / (this.maxBeat * this.beatLengthScale);
-                    var phase = 0.25 * Math.PI * (fractionX - 0.5) - Math.PI * 1.5;
+                    let phase = 0.25 * Math.PI * (fractionX - 0.5) - Math.PI * 1.5;
 
-                    var distance = targetY;
+                    let distance = targetY;
 
                     towardsPosition.set(distance * Math.cos(phase) + targetX, targetY, distance * Math.sin(phase));
                     towardsLookAt.set(targetX, 60, 0);
                     break;
-                case Visualizer3DStopMovementMode.PAN:
+                }
+                case Visualizer3DStopMovementMode.PAN: {
                     const beatsPerSeconds = 1;
 
-                    var distance = 60;
+                    let distance = 60;
                     let frac = 0;
                     if (this.maxBeat > 5) {
                         const period = 2 * this.maxBeat * this.beatLengthScale;
@@ -468,22 +474,24 @@ Visualizer3D.prototype.step = function(dt) {
                             frac *= 2;
                         }
                     }
-                    var posX = frac * this.maxBeat * 2;
+                    let posX = frac * this.maxBeat * 2;
 
                     towardsPosition.set(posX, distance, distance);
                     towardsLookAt.set(posX, 60, 0);
                     break;
-                case Visualizer3DStopMovementMode.ROTATE:
-                    var centerX = this.maxBeat * 0.5 * this.beatLengthScale;
+                }
+                case Visualizer3DStopMovementMode.ROTATE: {
+                    let centerX = this.maxBeat * 0.5 * this.beatLengthScale;
 
-                    var distance = 100;
-                    var height = 100;
+                    let distance = 100;
+                    let height = 100;
                     const frequency = 0.01;
-                    var phase = frequency * Math.PI * 2 * seconds + Math.PI / 2;
+                    let phase = frequency * Math.PI * 2 * seconds + Math.PI / 2;
 
                     towardsPosition.set(100 * Math.cos(phase) + centerX, height, 100 * Math.sin(phase));
                     towardsLookAt.set(centerX, 60, 0);
                     break;
+                }
             }
             break;
     }

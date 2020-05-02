@@ -99,7 +99,7 @@ VerticalLayoutManager.prototype.layout = function() {
         case "even":
             let sum = 0;
             for (let i=0; i<components.length; i++) {
-                var c = components[i];
+                let c = components[i];
                 sum += c.height;
             }
             const space = Math.max(0, contentHeight - sum);
@@ -109,7 +109,7 @@ VerticalLayoutManager.prototype.layout = function() {
             break;
     }
     for (let i=0; i<components.length; i++) {
-        var c = components[i];
+        let c = components[i];
         c.y = currentY;
         currentY += c.height + step;
         if (!keepX) {
@@ -149,7 +149,7 @@ HorizontalLayoutManager.prototype.layout = function() {
         case "even2": // also adds space at start and end
             let sum = 0;
             for (let i=0; i<components.length; i++) {
-                var c = components[i];
+                let c = components[i];
                 sum += c.width;
             }
             const space = Math.max(0, contentWidth - sum);
@@ -164,7 +164,7 @@ HorizontalLayoutManager.prototype.layout = function() {
             break;
     }
     for (let i=0; i<components.length; i++) {
-        var c = components[i];
+        let c = components[i];
         if (stepBefore) {
             currentX += step;
         }
@@ -444,7 +444,7 @@ Button.prototype.step = function(offsetX, offsetY) {
             }
         }
         for (let i=0; i<this.clickHandlers.length; i++) {
-            var h = this.clickHandlers[i];
+            let h = this.clickHandlers[i];
             h(this);
         }
     }
@@ -460,13 +460,13 @@ Button.prototype.step = function(offsetX, offsetY) {
     if (!overBefore && this.over) {
         Sound.play(Sound.MOUSE_OVER_ID);
         for (let i=0; i<this.enterHandlers.length; i++) {
-            var h = this.enterHandlers[i];
+            let h = this.enterHandlers[i];
             h(this);
         }
     }
     if (overBefore && !this.over) {
         for (let i=0; i<this.leaveHandlers.length; i++) {
-            var h = this.leaveHandlers[i];
+            let h = this.leaveHandlers[i];
             h(this);
         }
     }

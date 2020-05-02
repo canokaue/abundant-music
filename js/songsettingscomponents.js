@@ -185,7 +185,7 @@ const SongSettingsComponent = (function() {
 
 
             if (compIsLikelihoodOrProbEtc(child)) {
-                var propInfo = child.propertyInfo;
+                let propInfo = child.propertyInfo;
 
                 const $zeroButton = $("<button style=\"height: 3em; font-size: 60%\" title=\"Set to zero\" class=\"zero-likelihood-button\">0</button>");
                 const $oneButton = $("<button style=\"height: 3em; font-size: 60%\" title=\"Set to one\" class=\"one-likelihood-button\">1</button>");
@@ -199,11 +199,11 @@ const SongSettingsComponent = (function() {
             }
 
             if (compIsControlEtc(child)) {
-                var propInfo = child.propertyInfo;
+                let propInfo = child.propertyInfo;
 
                 const divisions = 100;
                 const strValue = child.$input.val();
-                var value = parseFloat(strValue);
+                let value = parseFloat(strValue);
                 if (isNaN(value)) {
 
                 } else {
@@ -229,7 +229,7 @@ const SongSettingsComponent = (function() {
 
                     const values = [0, 1];
                     for (let j=0; j<values.length; j++) {
-                        var value = values[j];
+                        let value = values[j];
                         const $valueButton = $("<button style=\"height: 3em; font-size: 60%\" title=\"Set to zero\" class=\"zero-ctrl-button\">" + value + "</button>");
                         child.$component.append($valueButton);
                         $valueButton.button();
@@ -251,7 +251,7 @@ const SongSettingsComponent = (function() {
 
 
             if (compIsSeed(child)) {
-                var propInfo = child.propertyInfo;
+                let propInfo = child.propertyInfo;
 
                 const $clearButton = $("<button style=\"height: 3em; font-size: 60%\" title=\"Clear seed\" class=\"clear-seed-button\">C</button>");
                 const $randomizeButton = $("<button style=\"height: 3em; font-size: 60%\" title=\"Randomize seed\" class=\"randomizer-seed-button\">R</button>");
@@ -260,10 +260,10 @@ const SongSettingsComponent = (function() {
 
                 $clearButton.button();
                 $randomizeButton.button();
-                var $explicitButton = null;
+                let $explicitButton = null;
 
                 if (globalGenInfo[propInfo.propertyName]) {
-                    var $explicitButton = $("<button style=\"height: 3em; font-size: 60%\" title=\"Explicit seed\" class=\"explicit-seed-button\">E</button>");
+                    let $explicitButton = $("<button style=\"height: 3em; font-size: 60%\" title=\"Explicit seed\" class=\"explicit-seed-button\">E</button>");
                     child.$component.append($explicitButton);
                     $explicitButton.button();
                 }
@@ -538,7 +538,7 @@ const SongSettingsComponent = (function() {
             const contentArr = [];
 
             if (obj) {
-                var comp = new GuiPropertiesComponent({object: obj, propertyInfoProvider: propertyInfoProvider});
+                let comp = new GuiPropertiesComponent({object: obj, propertyInfoProvider: propertyInfoProvider});
                 createdComps[i] = comp;
                 const seedChildren = getAllSeedChildren(i, createdComps);
                 hasSeeds[i] = seedChildren.length > 0;
@@ -571,14 +571,14 @@ const SongSettingsComponent = (function() {
 
 
         for (let i=0; i<createdComps.length; i++) {
-            var comp = createdComps[i];
+            let comp = createdComps[i];
             comp.jQueryCreated($tabs);
             addChangeListener(i, createdComps, changeListener);
             createHeaderComponents(i);
         }
 
         for (let i=0; i<createdComps.length; i++) {
-            var comp = createdComps[i];
+            let comp = createdComps[i];
             comp.alignComponents();
             addSideButtons(comp);
         }

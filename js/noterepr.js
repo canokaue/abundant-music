@@ -88,8 +88,8 @@ function gatherNotesFromEvents(events) {
             case "c":
                 e.seconds = currentTime;
                 break;
-            case "n":
-                var current = notes[e.c];
+            case "n": {
+                let current = notes[e.c];
                 if (!current) {
                     current = [];
                     notes[e.c] = current;
@@ -97,8 +97,9 @@ function gatherNotesFromEvents(events) {
                 current.push({onEvent: e, onTime: currentTime});
 //                logit(" event beat: " + e.t + " seconds: " + currentTime + " tempo: " + currentTempo);
                 break;
-            case "f":
-                var current = notes[e.c];
+            }
+            case "f": {
+                let current = notes[e.c];
                 if (!current) {
                     logit("Found note off without noteOn");
                 } else {
@@ -128,6 +129,7 @@ function gatherNotesFromEvents(events) {
                     }
                 }
                 break;
+            }
             case "t":
                 e.seconds = currentTime;
                 const bpm = e.b;

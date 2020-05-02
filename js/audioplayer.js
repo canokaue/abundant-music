@@ -301,8 +301,8 @@ AudioPlayer.prototype.predictTime = function(tempoEvents, beat) {
     for (let i=0; i<tempoEvents.length; i++) {
         const e = tempoEvents[i];
         if (e.t < beat) {
-            var diff = e.t - prevBeat;
-            var dt = this.beatsToSeconds(diff, currentTempo);
+            let diff = e.t - prevBeat;
+            let dt = this.beatsToSeconds(diff, currentTempo);
             result += dt;
             currentTempo = e.b;
             prevBeat = e.t;
@@ -311,8 +311,8 @@ AudioPlayer.prototype.predictTime = function(tempoEvents, beat) {
         }
     }
     if (beat > prevBeat) {
-        var diff = beat - prevBeat;
-        var dt = this.beatsToSeconds(diff, currentTempo);
+        let diff = beat - prevBeat;
+        let dt = this.beatsToSeconds(diff, currentTempo);
         result += dt;
     }
     return result;

@@ -53,9 +53,9 @@ FrustumCullingChunks.prototype.updateScene = function(scene, m) {
     const newSceneObjects = [];
     const newNotInSceneObjects = [];
     for (let i=0; i<this.objectsInScene.length; i++) {
-        var index = this.objectsInScene[i];
-        var object = this.objects[index];
-        var sphere = this.boundingSpheres[index];
+        let index = this.objectsInScene[i];
+        let object = this.objects[index];
+        let sphere = this.boundingSpheres[index];
         if (!this.contains(object, sphere)) {
             sceneObjectsToRemove.push(object);
             newNotInSceneObjects.push(index);
@@ -64,9 +64,9 @@ FrustumCullingChunks.prototype.updateScene = function(scene, m) {
         }
     }
     for (let i=0; i<this.objectsNotInScene.length; i++) {
-        var index = this.objectsNotInScene[i];
-        var object = this.objects[index];
-        var sphere = this.boundingSpheres[index];
+        let index = this.objectsNotInScene[i];
+        let object = this.objects[index];
+        let sphere = this.boundingSpheres[index];
         if (this.contains(object, sphere)) {
             sceneObjectsToAdd.push(object);
             newSceneObjects.push(index);

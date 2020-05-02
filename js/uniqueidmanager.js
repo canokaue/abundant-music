@@ -141,7 +141,7 @@ UniqueIdManager.prototype.removeUniqueId = function(namespace, id) {
 
     const idInfos = this.uniqueIdInfos[namespace];
     if (idInfos) {
-        var owner = idInfos.get(id);
+        let owner = idInfos.get(id);
         if (typeof owner === 'undefined') {
             logit("owner not exist in removeUniqueId() " + namespace + " " + id + "<br />");
         } else {

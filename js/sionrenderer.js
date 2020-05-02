@@ -412,7 +412,7 @@ SionRenderer.prototype.getNoteMML = function(onOff) {
         if (onOff.percussionNote != 0) {
             note = onOff.percussionNote;
         }
-        var octave = Math.floor(note / 12);
+        let octave = Math.floor(note / 12);
 
         const pitchClass = note % 12;
         switch (pitchClass) {
@@ -597,7 +597,7 @@ SionRenderer.prototype.getMML = function(renderData, module) {
 
     let masterEffectString = "";
     for (let i=0; i<this.masterEffects.length; i++) {
-        var effect = this.masterEffects[i];
+        let effect = this.masterEffects[i];
         masterEffectString += effect.getMML();
     }
     
@@ -607,7 +607,7 @@ SionRenderer.prototype.getMML = function(renderData, module) {
     }
 
     for (let i=0; i<this.effects.length; i++) {
-        var effect = this.effects[i];
+        let effect = this.effects[i];
         const effectString = "#EFFECT" + (i + 1) + "{" + effect.getMML() + "}";
         resultArr.push(effectString);
     }

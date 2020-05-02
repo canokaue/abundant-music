@@ -554,7 +554,7 @@ function updateSongInfoPanel() {
 
     if (songStructureInfo) {
         const indexInfos = songStructureInfo.indexInfos;
-        var htmlArr = [];
+        let htmlArr = [];
         htmlArr.push('<table class="songInfoInstrumentsTable">');
         let rowIndex = 0;
 
@@ -571,7 +571,7 @@ function updateSongInfoPanel() {
 
         if (indexInfos) {
 //            logit(songStructureInfo);
-            var rowClass = rowClasses[rowIndex % rowClasses.length];
+            let rowClass = rowClasses[rowIndex % rowClasses.length];
             htmlArr.push('<tr class="' + rowClass + '">');
             htmlArr.push('<td>Type</td>')
             for (let i=0; i<indexInfos.length; i++) {
@@ -607,10 +607,10 @@ function updateSongInfoPanel() {
 
     const channelMaps = renderStorage.channelMaps;
     if (channelMaps) {
-        var htmlArr = [];
+        let htmlArr = [];
         htmlArr.push('<table class="songInfoInstrumentsTable">');
         for (let i=0; i<channelMaps.length-1; i++) {
-            var rowClass = rowClasses[i % rowClasses.length];
+            let rowClass = rowClasses[i % rowClasses.length];
             htmlArr.push('<tr class="' + rowClass + '">');
             const chMap = channelMaps[i];
             const str = MidiProgram.toString(chMap.program);
@@ -901,7 +901,7 @@ function createSongList(info, $targetDiv, urlPrefix, idPrefix, namePrefix, creat
 
     const linkStyle = "margin-right: 0.5em;";
     for (let i=0; i<songs.length; i++) {
-        var songInfo = songs[i];
+        let songInfo = songs[i];
 
         let songName = songInfo.name;
         if (!songName) {
@@ -1001,9 +1001,9 @@ function createSongList(info, $targetDiv, urlPrefix, idPrefix, namePrefix, creat
     $targetDiv.append($list);
 
     for (let i=0; i<songs.length; i++) {
-        var songInfo = songs[i];
+        let songInfo = songs[i];
         if (createLoad) {
-            var buttonId = idPrefix + "-load-song-button-" + i;
+            let buttonId = idPrefix + "-load-song-button-" + i;
             createLoadButton(buttonId, songInfo, $targetDiv, urlPrefix);
         }
 //        if (createOverwrite) {
@@ -1011,11 +1011,11 @@ function createSongList(info, $targetDiv, urlPrefix, idPrefix, namePrefix, creat
 //            createOverwriteButton(buttonId, songInfo, $targetDiv, urlPrefix);
 //        }
         if (createDelete) {
-            var buttonId = idPrefix + "-delete-song-button-" + i;
+            let buttonId = idPrefix + "-delete-song-button-" + i;
             createDeleteButton(buttonId, songs, i, $targetDiv, urlPrefix);
         }
         if (createRename) {
-            var buttonId = idPrefix + "-rename-song-button-" + i;
+            let buttonId = idPrefix + "-rename-song-button-" + i;
             createRenameButton(buttonId, songs, i, $targetDiv, urlPrefix);
         }
     }
@@ -1133,7 +1133,7 @@ function updateUserInfo(showDialog) {
     }
 }
 
-var $updateUserInfoButton = null;
+let $updateUserInfoButton = null;
 
 function createAccountPanel() {
 
@@ -1188,7 +1188,7 @@ function createAccountPanel() {
                             '</form>';
 //                html += userInfo.name + " " + userInfo.email;
 
-                    var userInfoComp = new GuiPropertiesComponent({object: userInfo, propertyInfoProvider: propertyInfoProvider});
+                    let userInfoComp = new GuiPropertiesComponent({object: userInfo, propertyInfoProvider: propertyInfoProvider});
                     userInfoComp.changeListeners.push(function() {
                         if ($updateUserInfoButton) {
                             $updateUserInfoButton.button("enable");
