@@ -16,17 +16,6 @@ if (useDevSources) {
 Modernizr.load(
     [
         {
-            both: ["js/composeeditoronlinesource.js", "js/songsettings.js"],
-            complete: function() {
-                loadSettingsFromLocalStorage();
-                var theme = JQueryUITheme.toUrlString(themeSettings.theme);
-                console.log("loading theme: " + theme);
-                var themeHref = "css/" + theme + "/jquery.ui.theme.css";
-                Modernizr.load(themeHref);
-                updateLoaderProgress(20);
-            }
-        },
-        {
             both: ["js/jquery.cookie.js", "js/openid-jquery.js", "js/openid-en.js", "css/openid.css", "js/three.min.js"],
             complete: function() {
                 console.log("Loaded jQuery plugins and three.js");
