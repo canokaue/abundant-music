@@ -63,7 +63,6 @@ importScripts(
     "composer/suspantstrategies.js",
     "composer/voicelinegenerator.js",
     "composer/classicalvoicelinegenerator.js",
-    "composer/voicelineconstraintsinclude.js",
     "composer/voicelineconstraints.js",
     "composer/classicalvoicelineplanner.js",
     "composer/midiconstants.js",
