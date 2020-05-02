@@ -417,9 +417,9 @@ GuiPropertiesComponent.prototype.createComponents = function() {
     const infosArr = this.propertyInfos.getAsArray();
     const components = [];
 
-    const splitComponents = new LinkedMap(true);
+    const splitComponents = new Map();
 
-    const groupCaptions = new LinkedMap(true);
+    const groupCaptions = new Map();
 
     const that = this;
     for (let i=0; i<infosArr.length; i++) {
@@ -442,22 +442,22 @@ GuiPropertiesComponent.prototype.createComponents = function() {
             if (splitInfo) {
                 let splitMap = splitComponents.get(splitInfo.splitType);
                 if (!splitMap) {
-                    splitMap = new LinkedMap(true);
-                    splitComponents.put(splitInfo.splitType, splitMap);
+                    splitMap = new Map();
+                    splitComponents.set(splitInfo.splitType, splitMap);
                 }
                 let splitArr = splitMap.get(splitInfo.group);
                 if (!splitArr) {
                     splitArr = [];
-                    splitMap.put(splitInfo.group, splitArr);
+                    splitMap.set(splitInfo.group, splitArr);
                 }
                 splitArr.push(component);
 
                 if (splitInfo.groupCaption) {
-                    groupCaptions.put(splitInfo.group, splitInfo.groupCaption);
+                    groupCaptions.set(splitInfo.group, splitInfo.groupCaption);
                 } else {
                     const oldCaption = groupCaptions.get(splitInfo.group);
                     if (!oldCaption) {
-                        groupCaptions.put(splitInfo.group, "Caption");
+                        groupCaptions.set(splitInfo.group, "Caption");
                     }
                 }
             } else {
@@ -471,11 +471,11 @@ GuiPropertiesComponent.prototype.createComponents = function() {
         this.addChild(components[i]);
     }
 
-    splitComponents.each(function(splitType, groupMap) {
+    splitComponents.forEach((groupMap, splitType) => {
         //    logit("group map: " + groupMap);
         const splitComponent = this.createSplitComponent(this.object, groupMap, groupCaptions, splitType);
         this.addChild(splitComponent);
-    }, this);
+    });
 
 };
 

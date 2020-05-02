@@ -58,11 +58,7 @@ UniqueIdManager.prototype.uniqueIdExists = function(owner, namespace, testId) {
     if (!idInfos) {
         return false;
     }
-    const existingOwner = idInfos.get(testId);
-    if (existingOwner) {
-        return true;
-    }
-    return false;
+    return idInfos.has(testId);
 };
 
 
@@ -83,7 +79,7 @@ UniqueIdManager.prototype.getUniqueIds = function(namespace) {
     if (!idInfos) {
         return [];
     } else {
-        return idInfos.listKeys();
+        return idInfos.keys();
     }
 };
 
@@ -97,11 +93,11 @@ UniqueIdManager.prototype.addUniqueId = function(owner, namespace, newId) {
 
     let idInfos = this.uniqueIdInfos[namespace];
     if (!idInfos) {
-        idInfos = new LinkedMap(true);
+        idInfos = new Map();
         this.uniqueIdInfos[namespace] = idInfos;
     }
     if (typeof idInfos.get(newId) === 'undefined') {
-        idInfos.put(newId, owner);
+        idInfos.set(newId, owner);
         //        logit("addUniqueId() called in uid manager. Listeners: " + this.getListeners(namespace) + "<br />");
         $.each(this.getListeners(namespace), function(key, value) {
             //            logit("Calling listener for id added in uid manager<br />");
@@ -120,8 +116,8 @@ UniqueIdManager.prototype.changeUniqueId = function(owner, namespace, oldId, new
     if (idInfos) {
         const oldOwner = idInfos.get(oldId);
         //        if (oldOwner == owner) {
-        idInfos.remove(oldId);
-        idInfos.put(newId, owner);
+        idInfos.delete(oldId);
+        idInfos.set(newId, owner);
         $.each(this.getListeners(namespace), function(key, value) {
             value.uniqueIdChanged(owner, namespace, oldId, newId);
         });
