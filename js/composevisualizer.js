@@ -78,37 +78,6 @@ class Visualizer3D extends Visualizer {
             this.fractionDragVelY = 0;
             this.currentAngle = 0;
             const that = this;
-            //        $(canvas).on("touchmove", function (event) {
-            //            var e = event.originalEvent;
-            //            if (e.touches && e.touches.length > 0) {
-            //                var touch = e.touches[0];
-            //
-            //                var dx = touch.clientX - that.mousePageX;
-            //                var dy = touch.clientY - that.mousePageY;
-            //                that.mouseCanvasDragDx += dx;
-            //                that.mouseCanvasDragDy += dy;
-            //            }
-            //        });
-            //        $(canvas).on("touchstart", function (event) {
-            //            var e = event.originalEvent;
-            //            if (e.touches && e.touches.length > 0) {
-            //                var touch = e.touches[0];
-            //                that.mouseCanvasDown = true;
-            //                that.mousePageX = touch.clientX;
-            //                that.mousePageY = touch.clientY;
-            //            }
-            //        });
-            //        $(canvas).on("touchend", function (event) {
-            //            var e = event.originalEvent;
-            //            if (e.touches && e.touches.length > 0) {
-            //                var touch = e.touches[0];
-            //                var dx = touch.clientX - that.mousePageX;
-            //                var dy = touch.clientY - that.mousePageY;
-            //                that.mouseCanvasDragDx += dx;
-            //                that.mouseCanvasDragDy += dy;
-            //            }
-            //            that.mouseCanvasDown = false;
-            //        });
             $(document).on("mousemove", function (event) {
                 if (that.mouseCanvasDown) {
                     const dx = event.pageX - that.mousePageX;
