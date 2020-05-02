@@ -693,7 +693,7 @@ function traverseValue(value, visitor, visited) {
     }
 
     if (!visited) {
-        visited = new MapClass(true);
+        visited = new LinkedMap(true);
     }
 
     if (isArray(value)) {

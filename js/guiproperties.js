@@ -126,7 +126,7 @@ const GuiNewMode = {
 
 
 function GuiPropertyInfos(options) {
-    this.infos = getValueOrDefault(options, "infos", new MapClass(true));
+    this.infos = getValueOrDefault(options, "infos", new LinkedMap(true));
 }
 
 GuiPropertyInfos.prototype.addPropertyInfo = function(info) {
