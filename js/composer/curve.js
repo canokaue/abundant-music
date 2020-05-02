@@ -761,15 +761,3 @@ MaxCurveComputation.prototype.getValueReferencesOk = function(module, x) {
     }
     return result === null ? 0 : result;
 };
-
-
-
-
-function CurveGroup() {
-    this.curves = [];
-}
-
-function CurveModifier() {
-}
-
-
