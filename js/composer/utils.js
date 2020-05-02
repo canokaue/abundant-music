@@ -137,9 +137,6 @@ function array2dCopy(arr) {
 
 
 function addAll(arr1, arr2) {
-    //    if (!arr2) {
-    //        logit(printStackTrace().join("<br />"));
-    //    }
     if (arr2 && arr1) {
         for (let i=0; i<arr2.length; i++) {
             arr1.push(arr2[i]);
