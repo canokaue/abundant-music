@@ -257,7 +257,6 @@ function getProbabilityFractions(likelihoods) {
 }
 
 function sampleDataIndex(rndInfos, rnd) {
-    const info = {};
     const likelihoods = [];
     for (let j=0; j<rndInfos.length; j++) {
         if (typeof(rndInfos[j].active) != 'undefined') {

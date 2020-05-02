@@ -1,322 +1,326 @@
 
 
 
-function AbstractSettings(options) {
-    this.storagePrefix = ""; // getValueOrDefault(options, "storagePrefix", "");
-    this.dirty = false;
-}
-AbstractSettings.prototype.getStoragePropertyName = function() {
-    return this.storagePrefix + this._constructorName;
-};
-
-
-AbstractSettings.prototype.loadFromLocalStorage = function() {
-
-    try {
-        const lsPropName = this.getStoragePropertyName();
-        const jsonObj = JSON.parse(localStorage.getItem(lsPropName));
-
-        if (jsonObj) {
-            for (const prop in this) {
-                const value = jsonObj[prop];
-                if (typeof(value) != 'undefined') {
-                    this[prop] = value;
+class AbstractSettings {
+    constructor() {
+        this.storagePrefix = ""; // getValueOrDefault(options, "storagePrefix", "");
+        this.dirty = false;
+    }
+    getStoragePropertyName() {
+        return this.storagePrefix + this._constructorName;
+    }
+    loadFromLocalStorage() {
+        try {
+            const lsPropName = this.getStoragePropertyName();
+            const jsonObj = JSON.parse(localStorage.getItem(lsPropName));
+            if (jsonObj) {
+                for (const prop in this) {
+                    const value = jsonObj[prop];
+                    if (typeof (value) != 'undefined') {
+                        this[prop] = value;
+                    }
                 }
             }
         }
-    } catch (exc) {
-        // Just silently ignore this
-        logit("Error when loading from local storage " + this._constructorName);
-    }
-};
-
-AbstractSettings.prototype.saveToLocalStorage = function() {
-    try {
-        const toStore = {};
-        for (const prop in this) {
-            const value = this[prop];
-            if (!isFunction(value)) {
-                toStore[prop] = value;
-            }
+        catch (exc) {
+            // Just silently ignore this
+            logit("Error when loading from local storage " + this._constructorName);
         }
-        const lsPropName = this.getStoragePropertyName();
-        localStorage.setItem(lsPropName, JSON.stringify(toStore));
-    } catch (exc) {
-        // Silently ignore
-        logit("Error when saving to local storage " + this._constructorName);
     }
-};
-
+    saveToLocalStorage() {
+        try {
+            const toStore = {};
+            for (const prop in this) {
+                const value = this[prop];
+                if (!isFunction(value)) {
+                    toStore[prop] = value;
+                }
+            }
+            const lsPropName = this.getStoragePropertyName();
+            localStorage.setItem(lsPropName, JSON.stringify(toStore));
+        }
+        catch (exc) {
+            // Silently ignore
+            logit("Error when saving to local storage " + this._constructorName);
+        }
+    }
+}
 
 //var dialogs = ["songSettings", "visualizerSettings", "player", "tutorials", "export", "songs", "help", "feedback"];
-
-function RenderStorage() {
-    AbstractSettings.call(this);
-
-    this.channelMaps = null;
-    this.renderData = null;
-    this.sectionTimes = null;
-    this.renderDataLength = 1;
-    this.songStructureInfo = null;
-
-    this._constructorName = "RenderStorage";
-}
-RenderStorage.prototype = new AbstractSettings();
-
-function EditorSettings() {
-    AbstractSettings.call(this);
-    this.songSettingsVisible = false;
-    this.visualizerSettingsVisible = false;
-    this.playerVisible = false;
-    this.tutorialsVisible = true;
-    this.exportVisible = false;
-    this.songsVisible = false;
-    this.helpVisible = false;
-    this.feedbackVisible = false;
-    this.accountVisible = false;
-    this.songInfoVisible = false;
-
-    const xStep = 60;
-    const yStep = 60;
-    let xSteps = 0;
-
-    const yOffset = 120;
-
-    const playerX = 500;
-
-    this.songSettingsPosition = [playerX, 250 + yOffset];
-    this.visualizerSettingsPosition = [xStep * xSteps++, yStep * 2];
-    this.playerPosition = [playerX, 80 + yOffset];
-    this.tutorialsPosition = [10, 80 + yOffset];
-    this.exportPosition = [xStep * xSteps++, yStep * 2];
-    this.songsPosition = [xStep * xSteps++, yStep * 3];
-    this.helpPosition = [xStep * xSteps++, yStep];
-    this.feedbackPosition = [xStep * xSteps++, yStep * 2];
-    this.accountPosition = [xStep * xSteps++, yStep * 3];
-    this.songInfoPosition = [xStep * xSteps++, yStep * 3];
-
-    this._constructorName = "EditorSettings";
-}
-EditorSettings.prototype = new AbstractSettings();
-
-function AbstractSettingsPresets() {
-    AbstractSettings.call(this);
-    this.items = [];
-    this._constructorName = "AbstractSettingsPresets";
-}
-AbstractSettingsPresets.prototype = new AbstractSettings();
-
-AbstractSettingsPresets.prototype.getItemWithName = function(name) {
-    const index = this.getItemIndexWithName(name);
-    if (index >= 0) {
-        return this.items[index];
+class RenderStorage extends AbstractSettings {
+    constructor() {
+        super()
+        this.channelMaps = null;
+        this.renderData = null;
+        this.sectionTimes = null;
+        this.renderDataLength = 1;
+        this.songStructureInfo = null;
+        this._constructorName = "RenderStorage";
     }
-    return null;
-};
-AbstractSettingsPresets.prototype.getItemIndexWithName = function(name) {
-    for (let i=0; i<this.items.length; i++) {
-        const item = this.items[i];
-        if (item.name == name) {
-            return i;
+}
+
+class EditorSettings extends AbstractSettings{
+    constructor() {
+        super()
+        this.songSettingsVisible = false;
+        this.visualizerSettingsVisible = false;
+        this.playerVisible = false;
+        this.tutorialsVisible = true;
+        this.exportVisible = false;
+        this.songsVisible = false;
+        this.helpVisible = false;
+        this.feedbackVisible = false;
+        this.accountVisible = false;
+        this.songInfoVisible = false;
+        const xStep = 60;
+        const yStep = 60;
+        let xSteps = 0;
+        const yOffset = 120;
+        const playerX = 500;
+        this.songSettingsPosition = [playerX, 250 + yOffset];
+        this.visualizerSettingsPosition = [xStep * xSteps++, yStep * 2];
+        this.playerPosition = [playerX, 80 + yOffset];
+        this.tutorialsPosition = [10, 80 + yOffset];
+        this.exportPosition = [xStep * xSteps++, yStep * 2];
+        this.songsPosition = [xStep * xSteps++, yStep * 3];
+        this.helpPosition = [xStep * xSteps++, yStep];
+        this.feedbackPosition = [xStep * xSteps++, yStep * 2];
+        this.accountPosition = [xStep * xSteps++, yStep * 3];
+        this.songInfoPosition = [xStep * xSteps++, yStep * 3];
+        this._constructorName = "EditorSettings";
+    }
+}
+
+class AbstractSettingsPresets extends AbstractSettings {
+    constructor() {
+        super()
+        this.items = [];
+        this._constructorName = "AbstractSettingsPresets";
+    }
+    getItemWithName(name) {
+        const index = this.getItemIndexWithName(name);
+        if (index >= 0) {
+            return this.items[index];
         }
+        return null;
     }
-    return -1;
-};
-
-
-function PresetItem() {
-    this.name = "";
-    this.data = null;
-    this._constructorName = "PresetItem";
+    getItemIndexWithName(name) {
+        for (let i = 0; i < this.items.length; i++) {
+            const item = this.items[i];
+            if (item.name == name) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }
-PresetItem.prototype.setName = function(n) {
-    this.name = n;
-    return this;
-};
-PresetItem.prototype.setData = function(n) {
-    this.data = n;
-    return this;
-};
 
-
-function SongSettingsPresets() {
-    AbstractSettingsPresets.call(this);
-    this.items.push(new PresetItem().setName("Default").setData(new SongSettings()));
-    this._constructorName = "SongSettingsPresets";
+class PresetItem {
+    constructor() {
+        this.name = "";
+        this.data = null;
+        this._constructorName = "PresetItem";
+    }
+    setName(n) {
+        this.name = n;
+        return this;
+    }
+    setData(n) {
+        this.data = n;
+        return this;
+    }
 }
-SongSettingsPresets.prototype = new AbstractSettingsPresets();
 
-
-function SongStructureSeedSettingsPresets() {
-    AbstractSettingsPresets.call(this);
-    this.items.push(new PresetItem().setName("Default").setData(new SongStructureSeedSettings()));
-    this._constructorName = "SongStructureSeedSettingsPresets";
+class SongSettingsPresets extends AbstractSettingsPresets {
+    constructor() {
+        super()
+        this.items.push(new PresetItem().setName("Default").setData(new SongSettings()));
+        this._constructorName = "SongSettingsPresets";
+    }
 }
-SongStructureSeedSettingsPresets.prototype = new AbstractSettingsPresets();
 
-function SongContentSeedSettingsPresets() {
-    AbstractSettingsPresets.call(this);
-    this.items.push(new PresetItem().setName("Default").setData(new SongContentSeedSettings()));
-    this._constructorName = "SongContentSeedSettingsPresets";
+class SongStructureSeedSettingsPresets extends AbstractSettingsPresets {
+    constructor() {
+        super()
+        this.items.push(new PresetItem().setName("Default").setData(new SongStructureSeedSettings()));
+        this._constructorName = "SongStructureSeedSettingsPresets";
+    }
 }
-SongContentSeedSettingsPresets.prototype = new AbstractSettingsPresets();
 
-function SongIndicesSeedSettingsPresets() {
-    AbstractSettingsPresets.call(this);
-    this.items.push(new PresetItem().setName("Default").setData(new SongIndicesSeedSettings()));
-    this._constructorName = "SongIndicesSeedSettingsPresets";
+class SongContentSeedSettingsPresets extends AbstractSettingsPresets{
+    constructor() {
+        super()
+        this.items.push(new PresetItem().setName("Default").setData(new SongContentSeedSettings()));
+        this._constructorName = "SongContentSeedSettingsPresets";
+    }
 }
-SongIndicesSeedSettingsPresets.prototype = new AbstractSettingsPresets();
 
-function SongParametersPresets() {
-    AbstractSettingsPresets.call(this);
-    this.items.push(new PresetItem().setName("Default").setData(new SongParameters()));
-    this._constructorName = "SongParametersPresets";
+class SongIndicesSeedSettingsPresets extends AbstractSettingsPresets{
+    constructor() {
+        super()
+        this.items.push(new PresetItem().setName("Default").setData(new SongIndicesSeedSettings()));
+        this._constructorName = "SongIndicesSeedSettingsPresets";
+    }
 }
-SongParametersPresets.prototype = new AbstractSettingsPresets();
 
-function SongDomainsPresets() {
-    AbstractSettingsPresets.call(this);
-    this.items.push(new PresetItem().setName("Default").setData(new SongDomains()));
-    this._constructorName = "SongDomainsPresets";
+class SongParametersPresets extends AbstractSettingsPresets {
+    constructor() {
+        super()
+        this.items.push(new PresetItem().setName("Default").setData(new SongParameters()));
+        this._constructorName = "SongParametersPresets";
+    }
 }
-SongDomainsPresets.prototype = new AbstractSettingsPresets();
 
-function SongDetailsPresets() {
-    AbstractSettingsPresets.call(this);
-    this.items.push(new PresetItem().setName("Default").setData(new SongDetails()));
-    this._constructorName = "SongDetailsPresets";
+class SongDomainsPresets extends AbstractSettingsPresets {
+    constructor() {
+        super()
+        this.items.push(new PresetItem().setName("Default").setData(new SongDomains()));
+        this._constructorName = "SongDomainsPresets";
+    }
 }
-SongDetailsPresets.prototype = new AbstractSettingsPresets();
 
-
-function Visualizer3DSettingsPresets() {
-    AbstractSettingsPresets.call(this);
-    this.items.push(new PresetItem().setName("Default").setData(new Visualizer3DSettings()));
-    this._constructorName = "Visualizer3DSettingsPresets";
+class SongDetailsPresets extends AbstractSettingsPresets {
+    constructor() {
+        super()
+        this.items.push(new PresetItem().setName("Default").setData(new SongDetails()));
+        this._constructorName = "SongDetailsPresets";
+    }
 }
-Visualizer3DSettingsPresets.prototype = new AbstractSettingsPresets();
 
-
-function ThemeSettingsPresets() {
-    AbstractSettingsPresets.call(this);
-    this.items.push(new PresetItem().setName("Default").setData(new ThemeSettings()));
-    this._constructorName = "ThemeSettingsPresets";
+class Visualizer3DSettingsPresets extends AbstractSettingsPresets {
+    constructor() {
+        super()
+        this.items.push(new PresetItem().setName("Default").setData(new Visualizer3DSettings()));
+        this._constructorName = "Visualizer3DSettingsPresets";
+    }
 }
-ThemeSettingsPresets.prototype = new AbstractSettingsPresets();
 
-
-function MidiExportSettingsPresets() {
-    AbstractSettingsPresets.call(this);
-    this.items.push(new PresetItem().setName("Default").setData(new MidiExportSettings()));
-    this._constructorName = "MidiExportSettingsPresets";
+class ThemeSettingsPresets extends AbstractSettingsPresets{
+    constructor() {
+        super()
+        this.items.push(new PresetItem().setName("Default").setData(new ThemeSettings()));
+        this._constructorName = "ThemeSettingsPresets";
+    }
 }
-MidiExportSettingsPresets.prototype = new AbstractSettingsPresets();
 
-function WavExportSettingsPresets() {
-    AbstractSettingsPresets.call(this);
-    this.items.push(new PresetItem().setName("Default").setData(new WavExportSettings()));
-    this._constructorName = "WavExportSettingsPresets";
+class MidiExportSettingsPresets extends AbstractSettingsPresets{
+    constructor() {
+        super()
+        this.items.push(new PresetItem().setName("Default").setData(new MidiExportSettings()));
+        this._constructorName = "MidiExportSettingsPresets";
+    }
 }
-WavExportSettingsPresets.prototype = new AbstractSettingsPresets();
 
-function WavClientExportSettingsPresets() {
-    AbstractSettingsPresets.call(this);
-    this.items.push(new PresetItem().setName("Default").setData(new WavClientExportSettings()));
-    this._constructorName = "WavClientExportSettingsPresets";
+class WavExportSettingsPresets extends AbstractSettingsPresets {
+    constructor() {
+        super()
+        this.items.push(new PresetItem().setName("Default").setData(new WavExportSettings()));
+        this._constructorName = "WavExportSettingsPresets";
+    }
 }
-WavClientExportSettingsPresets.prototype = new AbstractSettingsPresets();
 
-function Mp3ExportSettingsPresets() {
-    AbstractSettingsPresets.call(this);
-    this.items.push(new PresetItem().setName("Default").setData(new Mp3ExportSettings()));
-
-    this._constructorName = "Mp3ExportSettingsPresets";
+class WavClientExportSettingsPresets extends AbstractSettingsPresets {
+    constructor() {
+        super()
+        this.items.push(new PresetItem().setName("Default").setData(new WavClientExportSettings()));
+        this._constructorName = "WavClientExportSettingsPresets";
+    }
 }
-Mp3ExportSettingsPresets.prototype = new AbstractSettingsPresets();
 
-function OggExportSettingsPresets() {
-    AbstractSettingsPresets.call(this);
-    this.items.push(new PresetItem().setName("Default").setData(new OggExportSettings()));
-    this._constructorName = "OggExportSettingsPresets";
+class Mp3ExportSettingsPresets extends AbstractSettingsPresets {
+    constructor() {
+        super()
+        this.items.push(new PresetItem().setName("Default").setData(new Mp3ExportSettings()));
+        this._constructorName = "Mp3ExportSettingsPresets";
+    }
 }
-OggExportSettingsPresets.prototype = new AbstractSettingsPresets();
 
-function ItExportSettingsPresets() {
-    AbstractSettingsPresets.call(this);
-    this.items.push(new PresetItem().setName("Default").setData(new ItExportSettings()));
-    this._constructorName = "ItExportSettingsPresets";
+class OggExportSettingsPresets extends AbstractSettingsPresets {
+    constructor() {
+        super()
+        this.items.push(new PresetItem().setName("Default").setData(new OggExportSettings()));
+        this._constructorName = "OggExportSettingsPresets";
+    }
 }
-ItExportSettingsPresets.prototype = new AbstractSettingsPresets();
 
-
-function MidiExportSettings() {
-    AbstractSettings.call(this);
-    this.exportVolume = true;
-    this.exportEffects = true;
-    this.mergeChannels = false;
-    this.exportChordsToNewChannel = false;
-
-    this.melodyReverbSends = [1];
-    this.melodyChorusSends = [0.3];
-    this.bassReverbSends = [0.1];
-    this.bassChorusSends = [0.1];
-    this.inner1ReverbSends = [0.1];
-    this.inner1ChorusSends = [0.1];
-    this.inner2ReverbSends = [0.1];
-    this.inner2ChorusSends = [0.1];
-    this.percussionReverbSend = 0;
-    this.percussionChorusSend = 0;
-
-    this.melodyVolumeMultipliers = [1];
-    this.inner1VolumeMultipliers = [1];
-    this.inner2VolumeMultipliers = [1];
-    this.bassVolumeMultipliers = [1];
-    this.percussionVolumeMultiplier = 1;
-
-    this._constructorName = "MidiExportSettings";
+class ItExportSettingsPresets extends AbstractSettingsPresets {
+    constructor() {
+        super()
+        this.items.push(new PresetItem().setName("Default").setData(new ItExportSettings()));
+        this._constructorName = "ItExportSettingsPresets";
+    }
 }
-MidiExportSettings.prototype = new AbstractSettings();
 
-function WavExportSettings() {
-    MidiExportSettings.call(this);
-    this.soundFontType = SoundFontType.STANDARD_LIGHT;
-    this.normalizeRenderedResult = false;
-    this.compressRenderedResult = false;
-    this._constructorName = "WavExportSettings";
+class MidiExportSettings extends AbstractSettings {
+    constructor() {
+        super()
+        this.exportVolume = true;
+        this.exportEffects = true;
+        this.mergeChannels = false;
+        this.exportChordsToNewChannel = false;
+        this.melodyReverbSends = [1];
+        this.melodyChorusSends = [0.3];
+        this.bassReverbSends = [0.1];
+        this.bassChorusSends = [0.1];
+        this.inner1ReverbSends = [0.1];
+        this.inner1ChorusSends = [0.1];
+        this.inner2ReverbSends = [0.1];
+        this.inner2ChorusSends = [0.1];
+        this.percussionReverbSend = 0;
+        this.percussionChorusSend = 0;
+        this.melodyVolumeMultipliers = [1];
+        this.inner1VolumeMultipliers = [1];
+        this.inner2VolumeMultipliers = [1];
+        this.bassVolumeMultipliers = [1];
+        this.percussionVolumeMultiplier = 1;
+        this._constructorName = "MidiExportSettings";
+    }
 }
-WavExportSettings.prototype = new MidiExportSettings();
 
-function WavClientExportSettings() {
-    MidiExportSettings.call(this);
-    this._constructorName = "WavClientExportSettings";
+class WavExportSettings extends MidiExportSettings {
+    constructor() {
+        super()
+        this.soundFontType = SoundFontType.STANDARD_LIGHT;
+        this.normalizeRenderedResult = false;
+        this.compressRenderedResult = false;
+        this._constructorName = "WavExportSettings";
+    }
 }
-WavClientExportSettings.prototype = new MidiExportSettings();
 
-function Mp3ExportSettings() {
-    WavExportSettings.call(this);
-    this._constructorName = "Mp3ExportSettings";
+class WavClientExportSettings extends MidiExportSettings {
+    constructor() {
+        super()
+        this._constructorName = "WavClientExportSettings";
+    }
 }
-Mp3ExportSettings.prototype = new WavExportSettings();
 
-function OggExportSettings() {
-    WavExportSettings.call(this);
-    this._constructorName = "OggExportSettings";
+class Mp3ExportSettings extends WavExportSettings {
+    constructor() {
+        super()
+        this._constructorName = "Mp3ExportSettings";
+    }
 }
-OggExportSettings.prototype = new WavExportSettings();
 
-function ItExportSettings() {
-    AbstractSettings.call(this);
-    this._constructorName = "ItExportSettings";
+class OggExportSettings extends WavExportSettings{
+    constructor() {
+        super()
+        this._constructorName = "OggExportSettings";
+    }
 }
-ItExportSettings.prototype = new AbstractSettings();
 
-
-function PlayerSettings() {
-    WavExportSettings.call(this);
-    this._constructorName = "PlayerSettings";
+class ItExportSettings extends AbstractSettings {
+    constructor() {
+        super()
+        this._constructorName = "ItExportSettings";
+    }
 }
-PlayerSettings.prototype = new WavExportSettings();
+
+class PlayerSettings extends WavExportSettings {
+    constructor() {
+        super()
+        this._constructorName = "PlayerSettings";
+    }
+}
 
 const PrimitiveWebAudioPlayerInstrumentType = {
     SINE: 0,
@@ -341,42 +345,46 @@ const PrimitiveWebAudioPlayerInstrumentType = {
 addPossibleValuesFunction(PrimitiveWebAudioPlayerInstrumentType, PrimitiveWebAudioPlayerInstrumentType.SINE, PrimitiveWebAudioPlayerInstrumentType.SQUARE);
 
 
-function WebAudioPlayerInstrument() {
-
-    this._constructorName = "WebAudioPlayerInstrument";
+class WebAudioPlayerInstrument {
+    constructor() {
+        this._constructorName = "WebAudioPlayerInstrument";
+    }
 }
 
-function PrimitiveWebAudioPlayerInstrument() {
-    WebAudioPlayerInstrument.call(this);
-    this.type = PrimitiveWebAudioPlayerInstrumentType.SQUARE;
-    this._constructorName = "PrimitiveWebAudioPlayerInstrument";
+class PrimitiveWebAudioPlayerInstrument extends WebAudioPlayerInstrument {
+    constructor() {
+        super()
+        this.type = PrimitiveWebAudioPlayerInstrumentType.SQUARE;
+        this._constructorName = "PrimitiveWebAudioPlayerInstrument";
+    }
 }
 
 
-function WebAudioPlayerSettings() {
-    PlayerSettings.call(this);
-    this.soundFontType = SoundFontType.STANDARD_HEAVY; // For percussion
-    this.melodyInstruments = [];
-    this.inner1Instruments = [];
-    this.inner2Instruments = [];
-    this.bassInstruments = [];
-    this._constructorName = "WebAudioPlayerSettings";
+class WebAudioPlayerSettings extends PlayerSettings {
+    constructor() {
+        super()
+        this.soundFontType = SoundFontType.STANDARD_HEAVY; // For percussion
+        this.melodyInstruments = [];
+        this.inner1Instruments = [];
+        this.inner2Instruments = [];
+        this.bassInstruments = [];
+        this._constructorName = "WebAudioPlayerSettings";
+    }
 }
-WebAudioPlayerSettings.prototype = new PlayerSettings();
 
-
-function AudioElementPlayerSettings() {
-    PlayerSettings.call(this);
-    this._constructorName = "AudioElementPlayerSettings";
+class AudioElementPlayerSettings extends PlayerSettings {
+    constructor() {
+        super()
+        this._constructorName = "AudioElementPlayerSettings";
+    }
 }
-AudioElementPlayerSettings.prototype = new PlayerSettings();
 
-
-function SoundManager2PlayerSettings() {
-    PlayerSettings.call(this);
-    this._constructorName = "SoundManager2PlayerSettings";
+class SoundManager2PlayerSettings extends PlayerSettings {
+    constructor() {
+        super()
+        this._constructorName = "SoundManager2PlayerSettings";
+    }
 }
-SoundManager2PlayerSettings.prototype = new PlayerSettings();
 
 const JQueryUITheme = {
     BLITZER: 0,
@@ -516,17 +524,14 @@ const JQueryUITheme = {
 };
 addPossibleValuesFunction(JQueryUITheme, JQueryUITheme.BLITZER, JQueryUITheme.VADER);
 
-
-
-function ThemeSettings() {
-    AbstractSettings.call(this);
-    this.theme = JQueryUITheme.SUNNY;
-    this.transparentDialogs = false;
-    this._constructorName = "ThemeSettings";
+class ThemeSettings extends AbstractSettings{
+    constructor() {
+        super()
+        this.theme = JQueryUITheme.SUNNY;
+        this.transparentDialogs = false;
+        this._constructorName = "ThemeSettings";
+    }
 }
-ThemeSettings.prototype = new AbstractSettings();
-
-
 
 const Visualizer3DStopMovementMode = {
     ROTATE: 0,
@@ -562,156 +567,154 @@ const Visualizer3DStopMovementMode = {
 };
 addPossibleValuesFunction(Visualizer3DStopMovementMode, Visualizer3DStopMovementMode.ROTATE, Visualizer3DStopMovementMode.ROTATE_PAN_INTERACTIVE_DRAG);
 
-
-function Visualizer3DSettings() {
-    AbstractSettings.call(this);
-    this.stopMovementMode = Visualizer3DStopMovementMode.PAN_INTERACTIVE_DRAG;
-    this.on = true;
-    this.forceContext2D = true;
-    this.usePerspective = true;
-    this.webGLFps = 30;
-    this.context2DFps = 20;
-    this.addBloom = true;
-    this.addVignette = true;
-    this.addSimulatedAA = true;
-    this._constructorName = "Visualizer3DSettings";
+class Visualizer3DSettings extends AbstractSettings{
+    constructor() {
+        super()
+        this.stopMovementMode = Visualizer3DStopMovementMode.PAN_INTERACTIVE_DRAG;
+        this.on = true;
+        this.forceContext2D = true;
+        this.usePerspective = true;
+        this.webGLFps = 30;
+        this.context2DFps = 20;
+        this.addBloom = true;
+        this.addVignette = true;
+        this.addSimulatedAA = true;
+        this._constructorName = "Visualizer3DSettings";
+    }
 }
-Visualizer3DSettings.prototype = new AbstractSettings();
 
-
-function SongSettings() {
-    AbstractSettings.call(this);
-    this.name = "";
-    this.seed = "12345";
-    this._constructorName = "SongSettings";
+class SongSettings extends AbstractSettings{
+    constructor() {
+        super()
+        this.name = "";
+        this.seed = "12345";
+        this._constructorName = "SongSettings";
+    }
 }
-SongSettings.prototype = new AbstractSettings();
 
-
-function SongStructureSeedSettings() {
-    AbstractSettings.call(this);
-    this.tempoSeed = "";
-    this.scaleSeed = "";
-    this.tsSeed = "";
-    this.introSeed = "";
-    this.endSeed = "";
-    this.renderAmountSeed = "";
-    this.modulationSeed = "";
-    this.tonicizationSeed = "";
-    this.songStructureSeed = "";
-    this.glueSeed = "";
-    this.phraseGroupSeed = "";
-    this.phraseGroupSimilaritySeed = "";
-    this.groupSimilaritySeed = "";
-    this.groupDifferenceSeed = "";
-    this._constructorName = "SongStructureSeedSettings";
+class SongStructureSeedSettings extends AbstractSettings{
+    constructor() {
+        super()
+        this.tempoSeed = "";
+        this.scaleSeed = "";
+        this.tsSeed = "";
+        this.introSeed = "";
+        this.endSeed = "";
+        this.renderAmountSeed = "";
+        this.modulationSeed = "";
+        this.tonicizationSeed = "";
+        this.songStructureSeed = "";
+        this.glueSeed = "";
+        this.phraseGroupSeed = "";
+        this.phraseGroupSimilaritySeed = "";
+        this.groupSimilaritySeed = "";
+        this.groupDifferenceSeed = "";
+        this._constructorName = "SongStructureSeedSettings";
+    }
 }
-SongStructureSeedSettings.prototype = new AbstractSettings();
 
-
-
-function SongContentSeedSettings() {
-    AbstractSettings.call(this);
-    this.instrumentTypeSeed = "";
-    this.melodyInstrumentSeed = "";
-    this.inner1InstrumentSeed = "";
-    this.inner2InstrumentSeed = "";
-    this.bassInstrumentSeed = "";
-    this.melodyMotifSeed = "";
-    this.melodyMotifRythmSeed = "";
-    this.melodyMotifEmbellishConnectSeed = "";
-    this.bassMotifSeed = "";
-    this.bassMotifRythmSeed = "";
-    this.bassMotifEmbellishConnectSeed = "";
-    this.harmonyMotifSeed = "";
-    this.harmonyMotifRythmSeed = "";
-    this.harmonyMotifEmbellishConnectSeed = "";
-    this.percussionInstrumentSeed = "";
-    this.percussionFillInstrumentSeed = "";
-    this.percussionMotifSeed = "";
-    this.percussionMotifRythmSeed = "";
-    this.percussionFillMotifSeed = "";
-    this.percussionFillMotifRythmSeed = "";
-    this.melodyShapeSeed = "";
-    this.bassShapeSeed = "";
-    this.harmonyRythmSeed = "";
-    this.melodyMotifDistributionSeed = "";
-    this.inner1MotifDistributionSeed = "";
-    this.inner2MotifDistributionSeed = "";
-    this.bassMotifDistributionSeed = "";
-    this.percussionMotifDistributionSeed = "";
-    this.percussionFillMotifDistributionSeed = "";
-    this.melodyHarmonyPunctationSeed = "";
-    this.innerHarmonyPunctationSeed = "";
-    this.harmonySeed = "";
-    this.channelDistributionSeed = "";
-    this.tempoChangeSeed = "";
-    this.effectChangeSeed = "";
-    this.suspendSeed = "";
-    this._constructorName = "SongContentSeedSettings";
+class SongContentSeedSettings extends AbstractSettings {
+    constructor() {
+        super()
+        this.instrumentTypeSeed = "";
+        this.melodyInstrumentSeed = "";
+        this.inner1InstrumentSeed = "";
+        this.inner2InstrumentSeed = "";
+        this.bassInstrumentSeed = "";
+        this.melodyMotifSeed = "";
+        this.melodyMotifRythmSeed = "";
+        this.melodyMotifEmbellishConnectSeed = "";
+        this.bassMotifSeed = "";
+        this.bassMotifRythmSeed = "";
+        this.bassMotifEmbellishConnectSeed = "";
+        this.harmonyMotifSeed = "";
+        this.harmonyMotifRythmSeed = "";
+        this.harmonyMotifEmbellishConnectSeed = "";
+        this.percussionInstrumentSeed = "";
+        this.percussionFillInstrumentSeed = "";
+        this.percussionMotifSeed = "";
+        this.percussionMotifRythmSeed = "";
+        this.percussionFillMotifSeed = "";
+        this.percussionFillMotifRythmSeed = "";
+        this.melodyShapeSeed = "";
+        this.bassShapeSeed = "";
+        this.harmonyRythmSeed = "";
+        this.melodyMotifDistributionSeed = "";
+        this.inner1MotifDistributionSeed = "";
+        this.inner2MotifDistributionSeed = "";
+        this.bassMotifDistributionSeed = "";
+        this.percussionMotifDistributionSeed = "";
+        this.percussionFillMotifDistributionSeed = "";
+        this.melodyHarmonyPunctationSeed = "";
+        this.innerHarmonyPunctationSeed = "";
+        this.harmonySeed = "";
+        this.channelDistributionSeed = "";
+        this.tempoChangeSeed = "";
+        this.effectChangeSeed = "";
+        this.suspendSeed = "";
+        this._constructorName = "SongContentSeedSettings";
+    }
 }
-SongContentSeedSettings.prototype = new AbstractSettings();
 
-function SongIndicesSeedSettings() {
-    AbstractSettings.call(this);
-
-    this.melodyShapeIndicesSeed = "";
-    this.bassShapeIndicesSeed = "";
-    this.harmonyIndicesSeed = "";
-    this.harmonyRythmIndicesSeed = "";
-    this.suspendIndicesSeed = "";
-    this.melodyChannelDistributionIndicesSeed = "";
-    this.inner1ChannelDistributionIndicesSeed = "";
-    this.inner2ChannelDistributionIndicesSeed = "";
-    this.bassChannelDistributionIndicesSeed = "";
-    this.melodyMotifDistributionIndicesSeed = "";
-    this.inner1MotifDistributionIndicesSeed = "";
-    this.inner2MotifDistributionIndicesSeed = "";
-    this.bassMotifDistributionIndicesSeed = "";
-    this.percussionMotifDistributionIndicesSeed = "";
-    this.percussionFillMotifDistributionIndicesSeed = "";
-    this.harmonyExtraIndicesSeed = "";
-    this.renderAmountIndicesSeed = "";
-    this.tempoIndicesSeed = "";
-    this.sequentialTempoChangeIndicesSeed = "";
-    this.parallelTempoChangeIndicesSeed = "";
-    this.sequentialMelodyEffectChangeIndicesSeed = "";
-    this.sequentialInner1EffectChangeIndicesSeed = "";
-    this.sequentialInner2EffectChangeIndicesSeed = "";
-    this.sequentialBassEffectChangeIndicesSeed = "";
-    this.sequentialPercussionEffectChangeIndicesSeed = "";
-
-    this._constructorName = "SongIndicesSeedSettings";
+class SongIndicesSeedSettings extends AbstractSettings {
+    constructor() {
+        super()
+        this.melodyShapeIndicesSeed = "";
+        this.bassShapeIndicesSeed = "";
+        this.harmonyIndicesSeed = "";
+        this.harmonyRythmIndicesSeed = "";
+        this.suspendIndicesSeed = "";
+        this.melodyChannelDistributionIndicesSeed = "";
+        this.inner1ChannelDistributionIndicesSeed = "";
+        this.inner2ChannelDistributionIndicesSeed = "";
+        this.bassChannelDistributionIndicesSeed = "";
+        this.melodyMotifDistributionIndicesSeed = "";
+        this.inner1MotifDistributionIndicesSeed = "";
+        this.inner2MotifDistributionIndicesSeed = "";
+        this.bassMotifDistributionIndicesSeed = "";
+        this.percussionMotifDistributionIndicesSeed = "";
+        this.percussionFillMotifDistributionIndicesSeed = "";
+        this.harmonyExtraIndicesSeed = "";
+        this.renderAmountIndicesSeed = "";
+        this.tempoIndicesSeed = "";
+        this.sequentialTempoChangeIndicesSeed = "";
+        this.parallelTempoChangeIndicesSeed = "";
+        this.sequentialMelodyEffectChangeIndicesSeed = "";
+        this.sequentialInner1EffectChangeIndicesSeed = "";
+        this.sequentialInner2EffectChangeIndicesSeed = "";
+        this.sequentialBassEffectChangeIndicesSeed = "";
+        this.sequentialPercussionEffectChangeIndicesSeed = "";
+        this._constructorName = "SongIndicesSeedSettings";
+    }
 }
-SongIndicesSeedSettings.prototype = new AbstractSettings();
-
-
 
 // This is a hack to get exactly the same parameters as in GenInfo. All the seeds are ignored :)
-function SongParameters() {
-    GenInfo.call(this);
-    AbstractSettings.call(this);
-    this._constructorName = "SongParameters";
+class SongParameters extends AbstractSettings {
+    constructor() {
+        super()
+        Object.assign(this, new GenInfo())
+        this._constructorName = "SongParameters";
+    }
 }
-SongParameters.prototype = new AbstractSettings();
-
 
 // Another hack to get the domains in GenInfo :)
-function SongDomains() {
-    GenInfo.call(this);
-    AbstractSettings.call(this);
-    this._constructorName = "SongDomains";
+class SongDomains extends AbstractSettings {
+    constructor() {
+        super()
+        Object.assign(this, new GenInfo())
+        this._constructorName = "SongDomains";
+    }
 }
-SongDomains.prototype = new AbstractSettings();
 
 
 // Another hack to get the details in GenInfo :)
-function SongDetails() {
-    GenInfo.call(this);
-    AbstractSettings.call(this);
-    this._constructorName = "SongDetails";
+class SongDetails extends AbstractSettings{
+    constructor() {
+        super()
+        Object.assign(this, new GenInfo())
+        this._constructorName = "SongDetails";
+    }
 }
-SongDetails.prototype = new AbstractSettings();
 
 
 const renderStorage = new RenderStorage();

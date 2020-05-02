@@ -80,7 +80,8 @@ class ModulationTargetDataSample extends DataSample{
 }
 
 class SongPartStructureInfoDataSample extends DataSample{
-    static data_allowedTypes = {"SongPartStructureInfo": 1};
+    data_allowedTypes = {"SongPartStructureInfo": 1};
+    
     constructor(options) {
         super(options);
         this.data = [new SongPartStructureInfo()]; 
