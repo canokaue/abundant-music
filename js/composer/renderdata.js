@@ -129,7 +129,7 @@ class NoteOnEvent extends RenderEvent {
             return renderChannelIndices[value.id];
         }
         else {
-            return RenderEvent.prototype.netJSONTransformProperty.call(this, name, value, renderChannelIndices, controlChannelIndices);
+            return super.netJSONTransformProperty(name, value, renderChannelIndices, controlChannelIndices);
         }
     }
     toString() {
@@ -154,7 +154,7 @@ class NoteOffEvent extends RenderEvent {
             return renderChannelIndices[value.id];
         }
         else {
-            return RenderEvent.prototype.netJSONTransformProperty.call(this, name, value, renderChannelIndices, controlChannelIndices);
+            return super.netJSONTransformProperty(name, value, renderChannelIndices, controlChannelIndices);
         }
     }
     toString() {
@@ -178,7 +178,7 @@ class SetControlEvent extends RenderEvent {
             return controlChannelIndices[value.id];
         }
         else {
-            return RenderEvent.prototype.netJSONTransformProperty.call(this, name, value, renderChannelIndices, controlChannelIndices);
+            return super.netJSONTransformProperty(name, value, renderChannelIndices, controlChannelIndices);
         }
     }
 
