@@ -10,9 +10,9 @@
  * @author egraether / http://egraether.com/
  */
 
-var TWEEN = TWEEN || ( function () {
+const TWEEN = ( function () {
 
-    var _tweens = [];
+    let _tweens = [];
 
     return {
 
@@ -38,7 +38,7 @@ var TWEEN = TWEEN || ( function () {
 
         remove: function ( tween ) {
 
-            var i = _tweens.indexOf( tween );
+            const i = _tweens.indexOf( tween );
 
             if ( i !== -1 ) {
 
@@ -52,7 +52,7 @@ var TWEEN = TWEEN || ( function () {
 
             if ( _tweens.length === 0 ) return false;
 
-            var i = 0, l = _tweens.length;
+            let i = 0, l = _tweens.length;
 
             time = time !== undefined ? time : Date.now();
 
@@ -82,19 +82,19 @@ var TWEEN = TWEEN || ( function () {
 
 TWEEN.Tween = function ( object ) {
 
-    var _object = object;
-    var _valuesStart = {};
-    var _valuesEnd = {};
-    var _duration = 1000;
-    var _delayTime = 0;
-    var _startTime = null;
-    var _easingFunction = TWEEN.Easing.Linear.None;
-    var _interpolationFunction = TWEEN.Interpolation.Linear;
-    var _chainedTweens = [];
-    var _onStartCallback = null;
-    var _onStartCallbackFired = false;
-    var _onUpdateCallback = null;
-    var _onCompleteCallback = null;
+    const _object = object;
+    const _valuesStart = {};
+    let _valuesEnd = {};
+    let _duration = 1000;
+    let _delayTime = 0;
+    let _startTime = null;
+    let _easingFunction = TWEEN.Easing.Linear.None;
+    let _interpolationFunction = TWEEN.Interpolation.Linear;
+    let _chainedTweens = [];
+    let _onStartCallback = null;
+    let _onStartCallbackFired = false;
+    let _onUpdateCallback = null;
+    let _onCompleteCallback = null;
 
     this.to = function ( properties, duration ) {
 
@@ -119,7 +119,7 @@ TWEEN.Tween = function ( object ) {
         _startTime = time !== undefined ? time : Date.now();
         _startTime += _delayTime;
 
-        for ( var property in _valuesEnd ) {
+        for ( const property in _valuesEnd ) {
 
             // This prevents the engine from interpolating null values
             if ( _object[ property ] === null ) {
@@ -226,15 +226,15 @@ TWEEN.Tween = function ( object ) {
 
         }
 
-        var elapsed = ( time - _startTime ) / _duration;
+        let elapsed = ( time - _startTime ) / _duration;
         elapsed = elapsed > 1 ? 1 : elapsed;
 
-        var value = _easingFunction( elapsed );
+        const value = _easingFunction( elapsed );
 
-        for ( var property in _valuesStart ) {
+        for ( const property in _valuesStart ) {
 
-            var start = _valuesStart[ property ];
-            var end = _valuesEnd[ property ];
+            const start = _valuesStart[ property ];
+            const end = _valuesEnd[ property ];
 
             if ( end instanceof Array ) {
 
@@ -262,7 +262,7 @@ TWEEN.Tween = function ( object ) {
 
             }
 
-            for ( var i = 0, l = _chainedTweens.length; i < l; i ++ ) {
+            for ( let i = 0, l = _chainedTweens.length; i < l; i ++ ) {
 
                 _chainedTweens[ i ].start( time );
 
@@ -455,37 +455,37 @@ TWEEN.Easing = {
     Elastic: {
 
         In: function ( k ) {
-
-            var s, a = 0.1, p = 0.4;
+            let s;
+            let a = 0.1;
+            const p = 0.4;
             if ( k === 0 ) return 0;
             if ( k === 1 ) return 1;
             if ( !a || a < 1 ) { a = 1; s = p / 4; }
             else s = p * Math.asin( 1 / a ) / ( 2 * Math.PI );
             return - ( a * Math.pow( 2, 10 * ( k -= 1 ) ) * Math.sin( ( k - s ) * ( 2 * Math.PI ) / p ) );
-
         },
 
         Out: function ( k ) {
-
-            var s, a = 0.1, p = 0.4;
+            let s;
+            let a = 0.1;
+            const p = 0.4;
             if ( k === 0 ) return 0;
             if ( k === 1 ) return 1;
             if ( !a || a < 1 ) { a = 1; s = p / 4; }
             else s = p * Math.asin( 1 / a ) / ( 2 * Math.PI );
             return ( a * Math.pow( 2, - 10 * k) * Math.sin( ( k - s ) * ( 2 * Math.PI ) / p ) + 1 );
-
         },
 
         InOut: function ( k ) {
-
-            var s, a = 0.1, p = 0.4;
+            let s;
+            let a = 0.1;
+            const p = 0.4;
             if ( k === 0 ) return 0;
             if ( k === 1 ) return 1;
             if ( !a || a < 1 ) { a = 1; s = p / 4; }
             else s = p * Math.asin( 1 / a ) / ( 2 * Math.PI );
             if ( ( k *= 2 ) < 1 ) return - 0.5 * ( a * Math.pow( 2, 10 * ( k -= 1 ) ) * Math.sin( ( k - s ) * ( 2 * Math.PI ) / p ) );
             return a * Math.pow( 2, -10 * ( k -= 1 ) ) * Math.sin( ( k - s ) * ( 2 * Math.PI ) / p ) * 0.5 + 1;
-
         }
 
     },
@@ -494,21 +494,21 @@ TWEEN.Easing = {
 
         In: function ( k ) {
 
-            var s = 1.70158;
+            const s = 1.70158;
             return k * k * ( ( s + 1 ) * k - s );
 
         },
 
         Out: function ( k ) {
 
-            var s = 1.70158;
+            const s = 1.70158;
             return --k * k * ( ( s + 1 ) * k + s ) + 1;
 
         },
 
         InOut: function ( k ) {
 
-            var s = 1.70158 * 1.525;
+            const s = 1.70158 * 1.525;
             if ( ( k *= 2 ) < 1 ) return 0.5 * ( k * k * ( ( s + 1 ) * k - s ) );
             return 0.5 * ( ( k -= 2 ) * k * ( ( s + 1 ) * k + s ) + 2 );
 
@@ -561,7 +561,7 @@ TWEEN.Interpolation = {
 
     Linear: function ( v, k ) {
 
-        var m = v.length - 1, f = m * k, i = Math.floor( f ), fn = TWEEN.Interpolation.Utils.Linear;
+        const m = v.length - 1, f = m * k, i = Math.floor( f ), fn = TWEEN.Interpolation.Utils.Linear;
 
         if ( k < 0 ) return fn( v[ 0 ], v[ 1 ], f );
         if ( k > 1 ) return fn( v[ m ], v[ m - 1 ], m - f );
@@ -571,20 +571,24 @@ TWEEN.Interpolation = {
     },
 
     Bezier: function ( v, k ) {
-
-        var b = 0, n = v.length - 1, pw = Math.pow, bn = TWEEN.Interpolation.Utils.Bernstein, i;
+        let b = 0;
+        const n = v.length - 1;
+        const pw = Math.pow;
+        const bn = TWEEN.Interpolation.Utils.Bernstein;
+        let i;
 
         for ( i = 0; i <= n; i++ ) {
             b += pw( 1 - k, n - i ) * pw( k, i ) * v[ i ] * bn( n, i );
         }
 
         return b;
-
     },
 
     CatmullRom: function ( v, k ) {
-
-        var m = v.length - 1, f = m * k, i = Math.floor( f ), fn = TWEEN.Interpolation.Utils.CatmullRom;
+        const m = v.length - 1;
+        let f = m * k;
+        let i = Math.floor( f );
+        const fn = TWEEN.Interpolation.Utils.CatmullRom;
 
         if ( v[ 0 ] === v[ m ] ) {
 
@@ -600,7 +604,6 @@ TWEEN.Interpolation = {
             return fn( v[ i ? i - 1 : 0 ], v[ i ], v[ m < i + 1 ? m : i + 1 ], v[ m < i + 2 ? m : i + 2 ], f - i );
 
         }
-
     },
 
     Utils: {
@@ -613,18 +616,18 @@ TWEEN.Interpolation = {
 
         Bernstein: function ( n , i ) {
 
-            var fc = TWEEN.Interpolation.Utils.Factorial;
+            const fc = TWEEN.Interpolation.Utils.Factorial;
             return fc( n ) / fc( i ) / fc( n - i );
 
         },
 
         Factorial: ( function () {
 
-            var a = [ 1 ];
+            const a = [ 1 ];
 
             return function ( n ) {
 
-                var s = 1, i;
+                let s = 1, i;
                 if ( a[ n ] ) return a[ n ];
                 for ( i = n; i > 1; i-- ) s *= i;
                 return a[ n ] = s;
@@ -635,7 +638,7 @@ TWEEN.Interpolation = {
 
         CatmullRom: function ( p0, p1, p2, p3, t ) {
 
-            var v0 = ( p2 - p0 ) * 0.5, v1 = ( p3 - p1 ) * 0.5, t2 = t * t, t3 = t * t2;
+            const v0 = ( p2 - p0 ) * 0.5, v1 = ( p3 - p1 ) * 0.5, t2 = t * t, t3 = t * t2;
             return ( 2 * p1 - 2 * p2 + v0 + v1 ) * t3 + ( - 3 * p1 + 3 * p2 - 2 * v0 - v1 ) * t2 + v0 * t + p1;
 
         }

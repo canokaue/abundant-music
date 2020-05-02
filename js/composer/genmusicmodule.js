@@ -39,17 +39,17 @@ function GenMusicModule() {
 
 
 GenMusicModule.prototype.getUniqueId = function(prefix, testArr) {
-    var counter = this.idCounters[prefix];
-    for (var j=0; j<100; j++) {
+    let counter = this.idCounters[prefix];
+    for (let j=0; j<100; j++) {
         if (counter) {
             counter++;
         } else {
             counter = 1;
             this.idCounters[prefix] = counter;
         }
-        var str = prefix + "" + counter;
-        var found = false;
-        for (var i=0; i<testArr.length; i++) {
+        const str = prefix + "" + counter;
+        let found = false;
+        for (let i=0; i<testArr.length; i++) {
             if (str == testArr[i].id) {
                 found = true;
                 break;
@@ -240,10 +240,10 @@ GenMusicModule.prototype.getFigurationPlanner = function(id) {
 
 GenMusicModule.prototype.renderBatch = function(structureId) {
 
-    var result = new RenderData();
-    var structure = this.getStructure(structureId);
+    const result = new RenderData();
+    const structure = this.getStructure(structureId);
     if (structure) {
-        var state = new RenderState(this, result);
+        const state = new RenderState(this, result);
         //        logit("Rendering structure from module ");
 
         structure.renderBatch(state);
@@ -266,7 +266,7 @@ function createGenMusicModuleFromJson(options) {
     // is called on the object first which must then provide a correct object with the jsonType
     // property set.
 
-    var moduleOptions = {
+    const moduleOptions = {
         motifs: [
         {
             id: "motif",

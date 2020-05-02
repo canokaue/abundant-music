@@ -19,8 +19,8 @@ ControlRoll.prototype = new GuiComponent();
 
 ControlRoll.prototype.updateControlLimits = function() {
     if (this.autoControlLimits && this.slotData != null) {
-        var minLimit = -1;
-        var maxLimit = 1;
+        const minLimit = -1;
+        const maxLimit = 1;
         this.controlLimits = [minLimit, maxLimit];
     } else if (this.renderData == null) {
         this.noteLimits = [-1, 1];
@@ -39,11 +39,11 @@ ControlRoll.prototype.getFooterHeight = function() {
 
 
 ControlRoll.prototype.getControlRowsWidth = function() {
-    var ches = this.harmony.getConstantHarmonyElements();
-    var harmonyWidth = 0;
-    for (var i=0; i<ches.length; i++) {
-        var e = ches[i];
-        var beats = positionUnitToBeats(e.getLength(), e.getLengthUnit(), e.tsNumerator, e.tsDenominator);
+    const ches = this.harmony.getConstantHarmonyElements();
+    let harmonyWidth = 0;
+    for (let i=0; i<ches.length; i++) {
+        const e = ches[i];
+        const beats = positionUnitToBeats(e.getLength(), e.getLengthUnit(), e.tsNumerator, e.tsDenominator);
         harmonyWidth += beats * this.beatWidth;
     }
 //    var dataWidth = 0;
@@ -74,7 +74,7 @@ ControlRoll.prototype.updateSize = function() {
         // Calculate header height
 
         // Calculate note rows height
-        var rows = this.noteLimits[1] - this.noteLimits[0] + 1;
+        const rows = this.noteLimits[1] - this.noteLimits[0] + 1;
         sum += this.noteRowHeight * rows;
 
         // Calculate footer height
@@ -83,11 +83,11 @@ ControlRoll.prototype.updateSize = function() {
 };
 
 ControlRoll.prototype.paintRows = function(x, y, context) {
-    var startNote = this.noteLimits[0];
-    var endNote = this.noteLimits[1];
+    const startNote = this.noteLimits[0];
+    const endNote = this.noteLimits[1];
 
-    var range = endNote - startNote + 1;
-    var w = this.getNoteRowsWidth();
+    const range = endNote - startNote + 1;
+    const w = this.getNoteRowsWidth();
     for (var i=0; i<range; i++) {
         if (i % 2 == 0) {
             context.fillStyle = "#aaaaaa";
@@ -99,7 +99,7 @@ ControlRoll.prototype.paintRows = function(x, y, context) {
 
     // Paint the beat lines
     var beats = w / this.beatWidth;
-    var currentX = x;
+    let currentX = x;
     context.beginPath();
     for (var i=0; i<beats; i++) {
         currentX = x + i * this.beatWidth;
@@ -110,9 +110,9 @@ ControlRoll.prototype.paintRows = function(x, y, context) {
     context.strokeStyle = "#888888";
     context.stroke();
 
-    var ches = this.harmony.getConstantHarmonyElements();
+    const ches = this.harmony.getConstantHarmonyElements();
 
-    var totalHeight = this.noteRowHeight * range;
+    const totalHeight = this.noteRowHeight * range;
 
     if (this.highlightScales || this.highlightChords) {
 
@@ -120,14 +120,14 @@ ControlRoll.prototype.paintRows = function(x, y, context) {
         for (var i=0; i<ches.length; i++) {
             var e = ches[i];
             var beats = positionUnitToBeats(e.getLength(), e.getLengthUnit(), e.tsNumerator, e.tsDenominator);
-            var scalePitchClasses = e.getPitchClassesFromAbsoluteNotes(e.getScaleAbsoluteNotes());
-            var chordPitchClasses = e.getPitchClassesFromAbsoluteNotes(e.getAbsoluteNotesFromScaleIndices(e.getChordRootPositionScaleIndices()));
-            for (var j=0; j<range; j++) {
-                var note = j + startNote;
-                var pitchClass = note % 12;
-                var highlightScale = arrayContains(scalePitchClasses, pitchClass);
-                var highlightChord = arrayContains(chordPitchClasses, pitchClass);
-                var noteY = y + totalHeight - (j + 1) * this.noteRowHeight;
+            const scalePitchClasses = e.getPitchClassesFromAbsoluteNotes(e.getScaleAbsoluteNotes());
+            const chordPitchClasses = e.getPitchClassesFromAbsoluteNotes(e.getAbsoluteNotesFromScaleIndices(e.getChordRootPositionScaleIndices()));
+            for (let j=0; j<range; j++) {
+                const note = j + startNote;
+                const pitchClass = note % 12;
+                const highlightScale = arrayContains(scalePitchClasses, pitchClass);
+                const highlightChord = arrayContains(chordPitchClasses, pitchClass);
+                const noteY = y + totalHeight - (j + 1) * this.noteRowHeight;
                 if (highlightChord && this.highlightChords) {
                     context.fillStyle = "#ffff00";
                     context.fillRect(currentX, noteY, beats * this.beatWidth, this.noteRowHeight);
@@ -167,13 +167,13 @@ ControlRoll.prototype.paint = function(offsetX, offsetY, context) {
     context.fillStyle = "#444444";
     context.fillRect(offsetX, offsetY, this.width, this.height);
 
-    var keysY = offsetY;
+    const keysY = offsetY;
     if (this.showKeys) {
         this.paintKeys(offsetX, keysY, context);
     }
 
-    var rowsX = offsetX;
-    var rowsY = keysY;
+    let rowsX = offsetX;
+    const rowsY = keysY;
     rowsX += this.paddingLeft;
     this.paintRows(rowsX, rowsY, context);
 

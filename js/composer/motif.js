@@ -16,7 +16,7 @@ function Motif() {
 }
 
 Motif.prototype.toString = function(options) {
-    var result = "{";
+    let result = "{";
     result += "" + $.map(this.motifElements, function(o, i) {
         return o.toString(options);
     });
@@ -28,10 +28,10 @@ Motif.prototype.getConstantMotifElements = function(module, harmony, harmonyBeat
     if (!visitedMotifs) {
         visitedMotifs = new Map(true);
     }
-    var result = [];
+    let result = [];
 
     if (this.inheritedMotif) {
-        var motif = module.getMotif(this.inheritedMotif);
+        const motif = module.getMotif(this.inheritedMotif);
         if (motif) {
             if (visitedMotifs.get(this)) {
                 // Inherit loop...
@@ -46,31 +46,31 @@ Motif.prototype.getConstantMotifElements = function(module, harmony, harmonyBeat
             }
         }
     } else if (this.rythmBased) {
-        var theRythm = module.getRythm(this.rythm);
+        const theRythm = module.getRythm(this.rythm);
         if (theRythm) {
             // Getting the note rythm elements
-            var startHarmonyIndex = harmony.getHarmonyIndexAt(harmonyBeatOffset);
+            const startHarmonyIndex = harmony.getHarmonyIndexAt(harmonyBeatOffset);
             //            var startHarmonyElement = harmony.get(startHarmonyIndex);
-            var noteRythmElements = theRythm.getNoteRythmElements(module, harmony, harmonyBeatOffset);
+            let noteRythmElements = theRythm.getNoteRythmElements(module, harmony, harmonyBeatOffset);
 
             noteRythmElements = arrayCopyWithCopy(noteRythmElements);
 
             //            logit("Got note rythm elements: " + noteRythmElements + "<br />");
             // Create clusters for the zone elements
-            var elementZones = [];
-            var zoneElements = [];
-            var rangeZoneElements = [];
+            const elementZones = [];
+            const zoneElements = [];
+            const rangeZoneElements = [];
 
-            var currentPosition = 0;
+            let currentPosition = 0;
             for (var j=0; j<noteRythmElements.length; j++) {
                 var rythmElement = noteRythmElements[j];
-                var elementBeatLength = positionUnitToBeats2(rythmElement.length, rythmElement.lengthUnit, harmonyBeatOffset, harmony);
+                const elementBeatLength = positionUnitToBeats2(rythmElement.length, rythmElement.lengthUnit, harmonyBeatOffset, harmony);
                 rythmElement.length = elementBeatLength; // Use beats to simplify the rest of the processing
                 rythmElement.lengthUnit = PositionUnit.BEATS;
 
                 elementZones[j] = -1;
-                var harmonyIndex = harmony.getHarmonyIndexAt(currentPosition + harmonyBeatOffset);
-                var harmonyElement = harmony.get(harmonyIndex);
+                const harmonyIndex = harmony.getHarmonyIndexAt(currentPosition + harmonyBeatOffset);
+                const harmonyElement = harmony.get(harmonyIndex);
 
                 for (var i=0; i<this.motifZones.length; i++) {
                     if (!zoneElements[i]) {
@@ -101,7 +101,7 @@ Motif.prototype.getConstantMotifElements = function(module, harmony, harmonyBeat
                 if (zone.useNoteRangeIfEmpty && zoneElements[i].length == 0) {
                     // Get the rythm elements that haven't been taken yet
                     for (var j=0; j<rangeZoneElements[i].length; j++) {
-                        var index = rangeZoneElements[i][j];
+                        const index = rangeZoneElements[i][j];
                         if (elementZones[index] == -1) {
                             // Not taken yet...
                             zoneElements[i].push(index);
@@ -115,29 +115,29 @@ Motif.prototype.getConstantMotifElements = function(module, harmony, harmonyBeat
             //            logit("zone elements: " + JSON.stringify(zoneElements) + "<br />");
             //            logit("element zones: " + JSON.stringify(elementZones) + "<br />");
 
-            var appliedZones = {};
+            const appliedZones = {};
             for (var j=0; j<noteRythmElements.length; j++) {
                 var rythmElement = noteRythmElements[j];
                 if (rythmElement.rest || elementZones[j] == -1) {
                     // Elements that have no zones become rests
-                    var rest = new ConstantMotifElement();
+                    const rest = new ConstantMotifElement();
                     rest.rest = true;
                     rest.length = rythmElement.length;
                     rest.lengthUnit = rythmElement.lengthUnit;
                     result.push(rest);
                 } else {
                     // Element has a zone and is not a rest
-                    var zoneIndex = elementZones[j];
+                    const zoneIndex = elementZones[j];
                     if (!appliedZones[zoneIndex]) {
                         var zone = this.motifZones[elementZones[j]];
 
 
-                        var elementIndices = zoneElements[elementZones[j]];
-                        var elements = [];
-                        for (var k=0; k<elementIndices.length; k++) {
+                        const elementIndices = zoneElements[elementZones[j]];
+                        const elements = [];
+                        for (let k=0; k<elementIndices.length; k++) {
                             elements[k] = noteRythmElements[elementIndices[k]];
                         }
-                        var zoneResult = zone.applyMotifZone(elements, module);
+                        const zoneResult = zone.applyMotifZone(elements, module);
                         //                        logit("Applying zone " + zoneResult + "<br />");
                         addAll(result, zoneResult);
                         appliedZones[zoneIndex] = true;
@@ -154,7 +154,7 @@ Motif.prototype.getConstantMotifElements = function(module, harmony, harmonyBeat
 
     } else {
         for (var i=0; i<this.motifElements.length; i++) {
-            var e = this.motifElements[i];
+            const e = this.motifElements[i];
             var list = e.getConstantMotifElements(module, harmony, harmonyBeatOffset, visitedMotifs);
             addAll(result, list);
         }
@@ -162,7 +162,7 @@ Motif.prototype.getConstantMotifElements = function(module, harmony, harmonyBeat
 
     // Apply the modifiers
     for (var i=0; i<this.modifiers.length; i++) {
-        var m = this.modifiers[i];
+        const m = this.modifiers[i];
         result = m.apply(module, result);
     }
 
@@ -190,10 +190,10 @@ MotifElement.prototype.getConstantMotifElements = function(module, harmony, harm
 
 
 MotifElement.prototype.toString = function(options) {
-    var showLength = getValueOrDefault(options, "showLength", false);
-    var showLengthUnit = getValueOrDefault(options, "showLength", false);
+    const showLength = getValueOrDefault(options, "showLength", false);
+    const showLengthUnit = getValueOrDefault(options, "showLength", false);
 
-    var result = "";
+    let result = "";
     if (showLength) {
         result += "len:" + this.length + " ";
     }
@@ -260,47 +260,47 @@ SimpleSequenceMotifElement.prototype = new MotifElement();
 
 
 SimpleSequenceMotifElement.prototype.getConstantMotifElements = function(module, harmony, harmonyBeatOffset, visitedMotifs) {
-    var result = [];
+    const result = [];
 
     if (this.elementLengthPattern.length == 0) {
         return result;
     }
 
-    var harmonyElement = harmony.getHarmonyAt(harmonyBeatOffset);
+    const harmonyElement = harmony.getHarmonyAt(harmonyBeatOffset);
 
-    var totalLength = positionUnitToBeats(this.length, this.lengthUnit, harmonyElement.tsNumerator, harmonyElement.tsDenominator, harmony);
+    const totalLength = positionUnitToBeats(this.length, this.lengthUnit, harmonyElement.tsNumerator, harmonyElement.tsDenominator, harmony);
 
-    var minBeatLength = positionUnitToBeats(this.minElementLength, this.minElementLengthUnit, harmonyElement.tsNumerator, harmonyElement.tsDenominator, harmony);
+    const minBeatLength = positionUnitToBeats(this.minElementLength, this.minElementLengthUnit, harmonyElement.tsNumerator, harmonyElement.tsDenominator, harmony);
 
-    var index = 0;
-    var currentPosition = 0;
+    let index = 0;
+    let currentPosition = 0;
     while (currentPosition < totalLength) {
-        var realElementIndex = IndexBorderMode.getIndex(this.elementLengthPatternBorderMode, this.elementLengthPattern.length, index);
+        const realElementIndex = IndexBorderMode.getIndex(this.elementLengthPatternBorderMode, this.elementLengthPattern.length, index);
         if (realElementIndex == -1) {
             break;
         }
-        var elementLength = this.elementLengthPattern[realElementIndex];
-        var beatLength = positionUnitToBeats(elementLength, this.elementLengthPatternUnit,
+        const elementLength = this.elementLengthPattern[realElementIndex];
+        let beatLength = positionUnitToBeats(elementLength, this.elementLengthPatternUnit,
             harmonyElement.tsNumerator, harmonyElement.tsDenominator, harmony);
 
-        var rest = false;
+        let rest = false;
         if (this.restPattern.length > 0) {
-            var realRestIndex = IndexBorderMode.getIndex(this.restPatternBorderMode, this.restPattern.length, index);
+            const realRestIndex = IndexBorderMode.getIndex(this.restPatternBorderMode, this.restPattern.length, index);
             if (realRestIndex >= 0) {
                 rest = this.restPattern[realRestIndex] != 0;
             }
         }
 
-        var offset = 0;
+        let offset = 0;
         if (this.verticalOffsetPattern.length > 0) {
-            var realOffsetIndex = IndexBorderMode.getIndex(this.verticalOffsetPatternBorderMode,
+            const realOffsetIndex = IndexBorderMode.getIndex(this.verticalOffsetPatternBorderMode,
                 this.verticalOffsetPattern.length, index);
             if (realOffsetIndex >= 0) {
                 offset = this.verticalOffsetPattern[realOffsetIndex];
             }
         }
 
-        var isLast = false;
+        let isLast = false;
         if (currentPosition + beatLength > totalLength) {
             // cut or stop
             isLast = true;
@@ -311,7 +311,7 @@ SimpleSequenceMotifElement.prototype.getConstantMotifElements = function(module,
             }
         }
         if (!isLast || beatLength >= minBeatLength) {
-            var motifElement = new VerticalRelativeMotifElement().setLength(beatLength).setLengthUnit(PositionUnit.BEATS);
+            const motifElement = new VerticalRelativeMotifElement().setLength(beatLength).setLengthUnit(PositionUnit.BEATS);
             motifElement.rest = rest;
             motifElement.index = offset;
             motifElement.relativeType = this.verticalRelativeType;
@@ -329,7 +329,7 @@ SimpleSequenceMotifElement.prototype.getConstantMotifElements = function(module,
 };
 
 
-var FillerNoteLengthMode = {
+const FillerNoteLengthMode = {
     INDEPENDENT: 0,
     MATCH: 1
 };
@@ -350,7 +350,7 @@ function FillerNote() {
 FillerNote.prototype = new MotifElement();
 
 FillerNote.prototype.copy = function() {
-    var result = new FillerNote();
+    const result = new FillerNote();
     MotifElement.prototype.set(this, result);
     result.positionOffset = this.positionOffset;
     result.positionOffsetUnit = this.positionOffsetUnit;
@@ -389,10 +389,10 @@ ConstantMotifElement.prototype.addFiller = function(f) {
 
 
 ConstantMotifElement.prototype.toString = function(options) {
-    var result = MotifElement.prototype.toString.call(this, options);
-    var strs = [];
-    var showVelocity = getValueOrDefault(options, "showVelocity", false);
-    var showRest = getValueOrDefault(options, "showRest", true);
+    const result = MotifElement.prototype.toString.call(this, options);
+    const strs = [];
+    const showVelocity = getValueOrDefault(options, "showVelocity", false);
+    const showRest = getValueOrDefault(options, "showRest", true);
     if (this.rest && showRest) {
         strs.push("R");
     }
@@ -406,7 +406,7 @@ ConstantMotifElement.prototype.set = function(e) {
     MotifElement.prototype.set.call(this, e);
     e.rest = this.rest;
     e.fillers = [];
-    for (var i=0; i<this.fillers.length; i++) {
+    for (let i=0; i<this.fillers.length; i++) {
         e.fillers.push(this.fillers[i].copy());
     }
 };
@@ -437,14 +437,14 @@ function VerticalRelativeMotifElement() {
 VerticalRelativeMotifElement.prototype = new ConstantMotifElement();
 
 VerticalRelativeMotifElement.prototype.toString = function(options) {
-    var result = ConstantMotifElement.prototype.toString.call(this, options);
-    var strs = [];
-    var showIndex = getValueOrDefault(options, "showIndex", true);
-    var showRelativeType = getValueOrDefault(options, "showRelativeType", false);
-    var showOffsetType = getValueOrDefault(options, "showOffsetType", false);
-    var showBeforeOffsetSnapType = getValueOrDefault(options, "showBeforeOffsetSnapType", false);
-    var showAfterOffsetSnapType = getValueOrDefault(options, "showAfterOffsetSnapType", false);
-    var showLength = getValueOrDefault(options, "showAfterOffsetSnapType", true);
+    const result = ConstantMotifElement.prototype.toString.call(this, options);
+    const strs = [];
+    const showIndex = getValueOrDefault(options, "showIndex", true);
+    const showRelativeType = getValueOrDefault(options, "showRelativeType", false);
+    const showOffsetType = getValueOrDefault(options, "showOffsetType", false);
+    const showBeforeOffsetSnapType = getValueOrDefault(options, "showBeforeOffsetSnapType", false);
+    const showAfterOffsetSnapType = getValueOrDefault(options, "showAfterOffsetSnapType", false);
+    const showLength = getValueOrDefault(options, "showAfterOffsetSnapType", true);
     if (showIndex) {
         strs.push("ind:" + this.index);
     }
@@ -486,7 +486,7 @@ VerticalRelativeMotifElement.prototype.setAfterOffsetSnapType = function(type) {
 };
 
 VerticalRelativeMotifElement.prototype.copy = function() {
-    var result = new VerticalRelativeMotifElement();
+    const result = new VerticalRelativeMotifElement();
     ConstantMotifElement.prototype.set.call(this, result);
     result.index = this.index;
     result.relativeType = this.relativeType;
@@ -554,7 +554,7 @@ HorizontalRelativeMotifElement.prototype.setAfterOffsetSnapType = function(type)
 
 
 HorizontalRelativeMotifElement.prototype.copy = function() {
-    var result = new HorizontalRelativeMotifElement();
+    const result = new HorizontalRelativeMotifElement();
     ClusterableMotifElement.prototype.set.call(this, result);
     result.index = this.index;
     result.relativeType = this.relativeType;
@@ -566,7 +566,7 @@ HorizontalRelativeMotifElement.prototype.copy = function() {
 
 
 
-var AdaptiveVerticalDomainType = {
+const AdaptiveVerticalDomainType = {
     ENUMERABLE: 0,
     RANGE: 1,
     CURVE: 2,
@@ -587,7 +587,7 @@ var AdaptiveVerticalDomainType = {
 addPossibleValuesFunction(AdaptiveVerticalDomainType, AdaptiveVerticalDomainType.ENUMERABLE, AdaptiveVerticalDomainType.CURVE);
 
 
-var AdaptiveHorizontalDomainType = {
+const AdaptiveHorizontalDomainType = {
     ENUMERABLE: 0,
     RANGE: 1,
 

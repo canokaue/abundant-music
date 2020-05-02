@@ -5,15 +5,15 @@ function RenderData() {
 
 
 RenderData.prototype.toNetJSON = function() {
-    var resultArr = [];
+    const resultArr = [];
     resultArr.push("{");
 
-    var renderChannelIndices = {};
-    var renderChannelNames = [];
-    var controlChannelIndices = {};
-    var controlChannelNames = [];
+    const renderChannelIndices = {};
+    const renderChannelNames = [];
+    const controlChannelIndices = {};
+    const controlChannelNames = [];
     for (var i=0; i<this.events.length; i++) {
-        var e = this.events[i];
+        const e = this.events[i];
         if (e.renderChannel) {
             var index = renderChannelIndices[e.renderChannel.id];
             if (typeof(index) === 'undefined') {
@@ -34,7 +34,7 @@ RenderData.prototype.toNetJSON = function() {
     resultArr.push("\"controlChannelNames\": " + JSON.stringify(controlChannelNames) + ",");
 
     resultArr.push("\"events\": [");
-    var resultArr2 = [];
+    const resultArr2 = [];
     for (var i=0; i<this.events.length; i++) {
         resultArr2.push(this.events[i].toNetJSON(renderChannelIndices, controlChannelIndices));
     }
@@ -45,7 +45,7 @@ RenderData.prototype.toNetJSON = function() {
 
 RenderData.prototype.sort = function() {
     this.events.sort(function(a, b) {
-        var diff = a.time - b.time;
+        const diff = a.time - b.time;
         return diff;
     });
 };
@@ -66,18 +66,18 @@ RenderData.prototype.getEvents = function() {
 };
 
 RenderData.prototype.getNonOverlappingDatas = function() {
-    var result = [];
+    const result = [];
     
     return result;
 };
 
 
 RenderData.prototype.getTimeLimits = function() {
-    var minTime = this.events.length == 0 ? 0 : 99999999;
-    var maxTime = this.events.length == 0 ? 0 : -99999999;
-    for (var i = 0; i<this.events.length; i++) {
-        var e = this.events[i];
-        var t = e.getTime();
+    let minTime = this.events.length == 0 ? 0 : 99999999;
+    let maxTime = this.events.length == 0 ? 0 : -99999999;
+    for (let i = 0; i<this.events.length; i++) {
+        const e = this.events[i];
+        const t = e.getTime();
         minTime = Math.min(minTime, t);
         maxTime = Math.max(maxTime, t);
     }
@@ -85,18 +85,18 @@ RenderData.prototype.getTimeLimits = function() {
 };
 
 RenderData.prototype.splitOnTime = function(time) {
-    var before = new RenderData();
-    var after = new RenderData();
+    const before = new RenderData();
+    const after = new RenderData();
 		
-    for (var i = 0; i<this.events.length; i++) {
-        var e = this.events[i];
+    for (let i = 0; i<this.events.length; i++) {
+        const e = this.events[i];
         if (e.getTime() >= time) {
             after.events.push(e);
         } else {
             before.events.push(e);
         }
     }
-    var result = [before, after];
+    const result = [before, after];
     return result;
 };
 
@@ -109,11 +109,11 @@ function RenderEvent(time) {
 
 
 RenderEvent.prototype.toNetJSON = function(renderChannelIndices, controlChannelIndices) {
-    var resultArr = [];
+    const resultArr = [];
 
-    for (var prop in this.netJSONPropertiesMap) {
-        var value = this[prop];
-        var shortProp = this.netJSONPropertiesMap[prop];
+    for (const prop in this.netJSONPropertiesMap) {
+        let value = this[prop];
+        const shortProp = this.netJSONPropertiesMap[prop];
         value = this.netJSONTransformProperty(prop, value, renderChannelIndices, controlChannelIndices);
         if (typeof(value) === 'string') {
             resultArr.push("\"" + shortProp + "\":\"" + value + "\"");

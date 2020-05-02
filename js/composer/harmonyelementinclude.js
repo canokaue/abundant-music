@@ -65,7 +65,7 @@ ConstantHarmonyElement.prototype = new HarmonyElement();
 
 
 
-var HarmonyLengthMode = {
+const HarmonyLengthMode = {
     COUNT_AND_LENGTH_PATTERN: 0, // The count determines the number of elements. The length pattern is used for determining the length of the separate elements
     COUNT_AND_RYTHM: 1, // The count determines number of elements. The rythm determines the relative lengths. Total length is also used to scale the rythm
     RYTHM_ONLY: 2, // A rythm determines relative lenghts. Total length is used to scale it
@@ -278,7 +278,7 @@ function DynamicSequenceHarmonyElement() {
     this.passingRoots = [0, 1, 2, 3, 4, 5, 6];
     this.passingRootLikelihoods = [1];
 
-    var options = null;
+    const options = null;
     this.passingInversions = getValueOrDefault(options,
         "passingInversions", [1, 2]);
     this.passingInversionLikelihoods = getValueOrDefault(options,

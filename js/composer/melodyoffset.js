@@ -1,4 +1,4 @@
-var MelodyOffsetLevel = {
+const MelodyOffsetLevel = {
     VERY_LOW: -2,
     LOW: -1,
     MIDDLE: 0,

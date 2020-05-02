@@ -20,8 +20,8 @@ DefaultMidiSynthInstrument.prototype.random = function(x) {
 
 DefaultMidiSynthInstrument.prototype.writeVoice = function(arr, offset, len, synth, voice) {
 
-    var volEnvelope = voice.envelopes[0];
-    var oscillator = voice.oscillators[0];
+    let volEnvelope = voice.envelopes[0];
+    let oscillator = voice.oscillators[0];
     if (!volEnvelope) {
         volEnvelope = new MidiSynthADSREnvelope(this.sampleFreq, this.bufferLen);
         voice.envelopes[0] = volEnvelope;
@@ -29,16 +29,16 @@ DefaultMidiSynthInstrument.prototype.writeVoice = function(arr, offset, len, syn
     if (!oscillator) {
         if (voice.channel == 9) {
 
-            var oscillatorType = 0;
-            var oscFunc = this.random;
-            var baseFreq = 100;
-            var freqMult = 1;
-            var attack = 0.001;
-            var decay = 0.1;
-            var sustain = 1;
-            var release = 0.15;
+            const oscillatorType = 0;
+            const oscFunc = this.random;
+            const baseFreq = 100;
+            let freqMult = 1;
+            const attack = 0.001;
+            const decay = 0.1;
+            let sustain = 1;
+            const release = 0.15;
 
-            var ampScale = 1;
+            let ampScale = 1;
 
             switch (voice.note) {
                 case MidiDrum.BASS_DRUM_1:
@@ -117,14 +117,14 @@ DefaultMidiSynthInstrument.prototype.writeVoice = function(arr, offset, len, syn
 
         } else {
             oscillator = new MidiSynthSineOscillator(this.sampleFreq, this.bufferLen);
-            var noteFreq = midiNoteToFrequency(voice.note);
+            const noteFreq = midiNoteToFrequency(voice.note);
             oscillator.setFrequency(noteFreq);
         }
         voice.oscillators[0] = oscillator;
     }
 
     // Write the vol envelope
-    var volBuf = createFilledArray(len, 0);
+    const volBuf = createFilledArray(len, 0);
     switch (voice.mode) {
         case MidiSynthVoiceMode.ON:
         case MidiSynthVoiceMode.RELEASE:
@@ -143,15 +143,15 @@ DefaultMidiSynthInstrument.prototype.writeVoice = function(arr, offset, len, syn
             return; // No need to write anything
     }
 
-    var sourceBuf = createFilledArray(len, 0);
+    const sourceBuf = createFilledArray(len, 0);
     oscillator.write(sourceBuf, 0, len, false);
 
 //    logit("Oscillator wrote " + JSON.stringify(sourceBuf));
 
-    for (var i=0; i<len; i++) {
-        var val = volBuf[i] * sourceBuf[i];
-        for (var j=0; j<synth.channels; j++) {
-            var buf = arr[j];
+    for (let i=0; i<len; i++) {
+        const val = volBuf[i] * sourceBuf[i];
+        for (let j=0; j<synth.channels; j++) {
+            const buf = arr[j];
             buf[i + offset] += val;
         }
     }

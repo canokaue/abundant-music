@@ -1,5 +1,5 @@
 
-var SplitStrategy = {
+const SplitStrategy = {
     NEVER: 0,
     HALVE: 1,
     DOT_FIRST: 2,
@@ -32,7 +32,7 @@ var SplitStrategy = {
 };
 addPossibleValuesFunction(SplitStrategy, SplitStrategy.NEVER, SplitStrategy.DOT_DOT_NORMAL);
 
-var DottedSplitStrategy = {
+const DottedSplitStrategy = {
     NEVER: 0,
     LONGEST_FIRST: 1,
     LONGEST_LAST: 2,
@@ -54,7 +54,7 @@ var DottedSplitStrategy = {
 };
 addPossibleValuesFunction(DottedSplitStrategy, DottedSplitStrategy.NEVER, DottedSplitStrategy.TWO_DOTTED);
 
-var TripletSplitStrategy = {
+const TripletSplitStrategy = {
     NEVER: 0,
     HALVE: 1,
 
@@ -92,18 +92,18 @@ function SplitZone() {
 }
 
 SplitZone.prototype.applicable = function(toSplit, beatIntensity, iteration, numerator, denominator, beatPosition) {
-    var length = positionUnitToBeats(toSplit.length, toSplit.lengthUnit, numerator, denominator);
+    const length = positionUnitToBeats(toSplit.length, toSplit.lengthUnit, numerator, denominator);
 
-    var lowerLength = positionUnitToBeats(this.noteLengthInterval[0], this.noteLengthIntervalUnit, numerator, denominator);
-    var upperLength = positionUnitToBeats(this.noteLengthInterval[1], this.noteLengthIntervalUnit, numerator, denominator);
+    const lowerLength = positionUnitToBeats(this.noteLengthInterval[0], this.noteLengthIntervalUnit, numerator, denominator);
+    const upperLength = positionUnitToBeats(this.noteLengthInterval[1], this.noteLengthIntervalUnit, numerator, denominator);
 
     // Verifying note length
-    var ok = length >= lowerLength && length <= upperLength;
+    let ok = length >= lowerLength && length <= upperLength;
 
     // Verifying note position
     if (ok) {
-        var lowerPosition = positionUnitToBeats(this.positionInterval[0], this.positionIntervalUnit, numerator, denominator);
-        var upperPosition = positionUnitToBeats(this.positionInterval[1], this.positionIntervalUnit, numerator, denominator);
+        const lowerPosition = positionUnitToBeats(this.positionInterval[0], this.positionIntervalUnit, numerator, denominator);
+        const upperPosition = positionUnitToBeats(this.positionInterval[1], this.positionIntervalUnit, numerator, denominator);
         ok = beatPosition >= lowerPosition && beatPosition <= upperPosition;
     }
 
@@ -180,20 +180,20 @@ SplitZoneCollection.prototype.addSplitZone = function(zone) {
 SplitZoneCollection.prototype.splitAndCopy = function(minLengthTicks, bestSplitIndex, current, velocityMultipliers,
     notes, numerator, denominator) {
     for (var i = 0; i < notes.length; i++) {
-        var ticks = positionUnitToBeats(notes[i].length, notes[i].lengthUnit, numerator, denominator);
+        const ticks = positionUnitToBeats(notes[i].length, notes[i].lengthUnit, numerator, denominator);
         if (ticks < minLengthTicks) {
             return null;
         }
     }
-    var result = [];
+    const result = [];
 
     for (var i = 0; i < current.length; i++) {
-        var currentNote = current[i];
-        var velocity = currentNote.strength;
+        const currentNote = current[i];
+        const velocity = currentNote.strength;
         if (i == bestSplitIndex) {
-            for (var j = 0; j < notes.length; j++) {
-                var nl = notes[j];
-                var velMult = 1.0;
+            for (let j = 0; j < notes.length; j++) {
+                const nl = notes[j];
+                let velMult = 1.0;
                 if (velocityMultipliers
                     && velocityMultipliers.length > 0) {
                     velMult = velocityMultipliers[j
@@ -220,11 +220,11 @@ SplitZoneCollection.prototype.split = function(splitStrategy,
     velocityMultipliers, dottedVelocityMultipliers, tripletVelocityMultipliers,
     numerator, denominator) {
 
-    var note = input[bestSplitIndex];
+    const note = input[bestSplitIndex];
 
-    var newLengthMultipliers = [];
-    var newLengthTypes = [NoteRythmElementLengthType.NORMAL];
-    var theVelocityMultipliers = velocityMultipliers;
+    let newLengthMultipliers = [];
+    let newLengthTypes = [NoteRythmElementLengthType.NORMAL];
+    let theVelocityMultipliers = velocityMultipliers;
 
     switch (note.lengthType) {
         case NoteRythmElementLengthType.NORMAL:
@@ -294,9 +294,9 @@ SplitZoneCollection.prototype.split = function(splitStrategy,
             break;
     }
 
-    var newNotes = [];
-    for (var i=0; i<newLengthMultipliers.length; i++) {
-        var mult = newLengthMultipliers[i];
+    const newNotes = [];
+    for (let i=0; i<newLengthMultipliers.length; i++) {
+        const mult = newLengthMultipliers[i];
         newNotes.push(note.copy().setLength(note.length * mult).setLengthType(newLengthTypes[i % newLengthTypes.length]));
     }
     return this.splitAndCopy(minLengthTicks, bestSplitIndex, input, theVelocityMultipliers,
@@ -309,16 +309,16 @@ SplitZoneCollection.prototype.getSplitBeat = function(module,
     start, noteCount,
     density, numerator, denominator) {
 
-    var currentBeat = start;
-    var previousSize = start.length;
+    let currentBeat = start;
+    let previousSize = start.length;
     if (start.length >= noteCount) {
         return currentBeat;
     }
-    var iteration = 0;
+    let iteration = 0;
 
-    var applicationMap = new Map();
+    const applicationMap = new Map();
     while (true) {
-        var next = this.singleSplit(module, density,
+        const next = this.singleSplit(module, density,
             currentBeat,
             noteCount, numerator, denominator, iteration, applicationMap);
         iteration++;
@@ -340,43 +340,43 @@ SplitZoneCollection.prototype.getSplitBeat = function(module,
 
 SplitZoneCollection.prototype.getBestSplitIndex = function(module, input, density, numerator, denominator) {
 
-    var minLengthBeats = positionUnitToBeats(this.minLength, this.minLengthUnit, numerator, denominator);
+    const minLengthBeats = positionUnitToBeats(this.minLength, this.minLengthUnit, numerator, denominator);
 
 //    logit("Min length beats " + minLengthBeats + " minLength: " + this.minLength);
 
-    var noteCount = input.length;
+    const noteCount = input.length;
     // The intensity determines what is over and under 0.5 in the function
 
     // Mean note length = 1 / beatIntensity
-    var totalTicksLength = 0.0;
+    let totalTicksLength = 0.0;
     for (var i=0; i<input.length; i++) {
-        var noteRythmElement = input[i];
+        const noteRythmElement = input[i];
         totalTicksLength += positionUnitToBeats(noteRythmElement.length, noteRythmElement.lengthUnit, numerator, denominator);
     }
 
-    var meanNoteLength = totalTicksLength / noteCount;
+    const meanNoteLength = totalTicksLength / noteCount;
 
     // When the function is 1.0, the note length should be half the size of
     // the meanNoteLength,
     // when the function is -1.0, the note length should be double the size
     // of meanNoteLength
 
-    var minDecreaseFraction = 999999999.9;
-    var bestIndex = 0;
+    let minDecreaseFraction = 999999999.9;
+    let bestIndex = 0;
 
-    var currentPosition = 0;
+    let currentPosition = 0;
     for (var i = 0; i < input.length; i++) {
-        var note = input[i];
-        var beatLength = positionUnitToBeats(note.length, note.lengthUnit, numerator, denominator);
+        const note = input[i];
+        const beatLength = positionUnitToBeats(note.length, note.lengthUnit, numerator, denominator);
 
         if (beatLength > minLengthBeats * 1.0001) {
-            var fraction = currentPosition / totalTicksLength;
-            var wantedDensityFactor = density
+            const fraction = currentPosition / totalTicksLength;
+            const wantedDensityFactor = density
             .getValue(module, fraction);
 
-            var wantedNoteLength = meanNoteLength
+            const wantedNoteLength = meanNoteLength
             / Math.pow(2.0, wantedDensityFactor);
-            var decreaseFraction = wantedNoteLength / beatLength;
+            const decreaseFraction = wantedNoteLength / beatLength;
             if (decreaseFraction < minDecreaseFraction) {
                 minDecreaseFraction = decreaseFraction;
                 bestIndex = i;
@@ -391,16 +391,16 @@ SplitZoneCollection.prototype.getBestSplitIndex = function(module, input, densit
 };
 
 SplitZoneCollection.prototype.singleSplit = function(module, density, input, beatIntensity, numerator, denominator, iteration, applicationMap) {
-    var result = null;
+    let result = null;
     // int bestSplitIndex = currentNode.getBestSplitIndex(density,
     // min_length);
-    var minLengthTicks = positionUnitToBeats(this.minLength, this.minLengthUnit, numerator, denominator);
+    const minLengthTicks = positionUnitToBeats(this.minLength, this.minLengthUnit, numerator, denominator);
 
-    var bestSplitIndex = this.getBestSplitIndex(module, input, density);
+    const bestSplitIndex = this.getBestSplitIndex(module, input, density);
     // Now we know which note to split
-    var toSplit = input[bestSplitIndex];
+    const toSplit = input[bestSplitIndex];
 
-    var beatPosition = 0.0;
+    let beatPosition = 0.0;
     // We also want to know what tick that note is
     for (var i = 0; i < bestSplitIndex; i++) {
         beatPosition += positionUnitToBeats(input[i].length, input[i].lengthUnit, numerator, denominator);
@@ -408,15 +408,15 @@ SplitZoneCollection.prototype.singleSplit = function(module, density, input, bea
     // Use the center tick
     beatPosition += 0.5 * positionUnitToBeats(input[bestSplitIndex].length, input[bestSplitIndex].lengthUnit, numerator, denominator);
 
-    var applicable = [];
+    const applicable = [];
     for (var i=0; i<this.zones.length; i++) {
-        var z = this.zones[i];
+        const z = this.zones[i];
         var applications = applicationMap.get(z);
         if (typeof(applications) === 'undefined') {
             applications = 0;
             applicationMap.put(z, applications);
         }
-        var ok = applications < z.maxApplications;
+        const ok = applications < z.maxApplications;
 //        if (!ok) {
 //            logit(applications + ", " + z.maxApplications);
 //        }
@@ -438,16 +438,16 @@ SplitZoneCollection.prototype.singleSplit = function(module, density, input, bea
             numerator, denominator);
     } else {
         if (applicable.length > 0) {
-            var zone = null;
+            let zone = null;
             if (applicable.length > 1) {
-                var likelihoods = [];
+                const likelihoods = [];
                 for (var i = 0; i < likelihoods.length; i++) {
                     likelihoods[i] = applicable[i].likelihood;
                 }
                 if (this.rnd == null) {
                     this.rnd = new MersenneTwister(this.seed);
                 }
-                var index = sampleIndexIntegerDistribution(
+                const index = sampleIndexIntegerDistribution(
                     this.rnd, getProbabilityDistribution(likelihoods));
                 zone = applicable[index];
             } else {
@@ -458,7 +458,7 @@ SplitZoneCollection.prototype.singleSplit = function(module, density, input, bea
             applications++;
             applicationMap.put(zone, applications);
 
-            var splitStrategy = getValueOrExpressionValue(zone, "splitStrategy", module);
+            const splitStrategy = getValueOrExpressionValue(zone, "splitStrategy", module);
 
 //            function getBeatLengths(arr) {
 //                var result = [];

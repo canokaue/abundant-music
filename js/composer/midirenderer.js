@@ -48,7 +48,7 @@ InitialMidiControllerMessage.prototype.setValue = function(v) {
 
 
 MidiRenderer.prototype.getMidiData = function(renderData, module, options) {
-    var result = {};
+    const result = {};
 
     if (!options) {
         options = {
@@ -61,28 +61,28 @@ MidiRenderer.prototype.getMidiData = function(renderData, module, options) {
     result.fileFormat = 0;
     result.midiDivisions = 192;
 
-    var tracks = [];
-    var track = {};
+    const tracks = [];
+    const track = {};
     tracks.push(track);
-    var trackEvents = [];
+    const trackEvents = [];
     track.trackEvents = trackEvents;
 
 
-    var time = 0;
-    var events = renderData.getEvents();
+    let time = 0;
+    const events = renderData.getEvents();
 
-    var quarterTicks = 192;
+    const quarterTicks = 192;
 
 
-    var emptyChannels = {};
+    const emptyChannels = {};
 
-    var controlChannelMaps = {};
+    const controlChannelMaps = {};
     for (var i=0; i<this.controlChannelMaps.length; i++) {
         var map = this.controlChannelMaps[i];
         controlChannelMaps[map.controlChannel] = map;
 //        logit("Adding control channel map " + map.controlChannel);
     }
-    var channelMaps = {};
+    const channelMaps = {};
     for (var i=0; i<this.channelMaps.length; i++) {
         var map = this.channelMaps[i];
         channelMaps[map.renderChannel] = map;
@@ -100,7 +100,7 @@ MidiRenderer.prototype.getMidiData = function(renderData, module, options) {
         }
     }
 
-    var sentProgramChanges = {};
+    const sentProgramChanges = {};
 
     // Set all initial programs
     for (var i=0; i<this.channelMaps.length; i++) {
@@ -120,8 +120,8 @@ MidiRenderer.prototype.getMidiData = function(renderData, module, options) {
                 sentProgramChanges[map.channel] = true;
             }
             // Add some initial control values
-            for (var j=0; j<map.initialControllerMessages.length; j++) {
-                var message = map.initialControllerMessages[j];
+            for (let j=0; j<map.initialControllerMessages.length; j++) {
+                const message = map.initialControllerMessages[j];
 
                 var controllerType = MidiControllerType.getValue(message.type);
                 if (options.exportEffects && message.type != MidiControllerType.VOLUME ||
@@ -149,13 +149,13 @@ MidiRenderer.prototype.getMidiData = function(renderData, module, options) {
     }
 
 
-    var ticks = 0;
+    let ticks = 0;
     for (var i=0; i<events.length; i++) {
         var event = events[i];
 
-        var deltaTime = event.time - time;
+        const deltaTime = event.time - time;
 
-        var eventTime = Math.round(quarterTicks * deltaTime);
+        const eventTime = Math.round(quarterTicks * deltaTime);
 
         ticks += eventTime;
 
@@ -168,7 +168,7 @@ MidiRenderer.prototype.getMidiData = function(renderData, module, options) {
                 };
                 // logit(" could not find channel map for " + event.renderChannel.id + " all maps: " + JSON.stringify(channelMaps) + "<br />")
             }
-            var isNoteOn = event.type == "noteOn";
+            const isNoteOn = event.type == "noteOn";
 
 //            if (!isNoteOn) {
 //                if (event.startTime < 8) {
@@ -176,9 +176,9 @@ MidiRenderer.prototype.getMidiData = function(renderData, module, options) {
 //                }
 //            }
 
-            var status = isNoteOn ? "NOTE_ON" : "NOTE_OFF";
-            var dVelocity = isNoteOn ? event.onVelocity : event.offVelocity;
-            var velocity = Math.round(clamp(dVelocity * 127, 0, 127));
+            const status = isNoteOn ? "NOTE_ON" : "NOTE_OFF";
+            const dVelocity = isNoteOn ? event.onVelocity : event.offVelocity;
+            const velocity = Math.round(clamp(dVelocity * 127, 0, 127));
 //            logit("Writing note on " + event.note + " to " + channelMap.channel);
             trackEvent = {
                 eventTime: eventTime,
@@ -192,7 +192,7 @@ MidiRenderer.prototype.getMidiData = function(renderData, module, options) {
             };
         } else if (event.type == "setControl") {
 
-            var controlMap = controlChannelMaps[event.controlChannel.id];
+            const controlMap = controlChannelMaps[event.controlChannel.id];
             if (!controlMap) {
 //                controlMap = {
 //                    channel: 0,
@@ -203,7 +203,7 @@ MidiRenderer.prototype.getMidiData = function(renderData, module, options) {
             } else {
 //                logit("Found control map for " + event.controlChannel.id + " " + JSON.stringify(controlMap));
             }
-            var ctrlData = clamp(Math.round(event.value * controlMap.amplitude + controlMap.bias), 0, 127);
+            const ctrlData = clamp(Math.round(event.value * controlMap.amplitude + controlMap.bias), 0, 127);
             var controllerType = MidiControllerType.getValue(controlMap.controllerType);
 //            logit("Writing ctrlData " + ctrlData + " to " + controlMap.channel + " controllerType: " + controllerType);
 
@@ -231,8 +231,8 @@ MidiRenderer.prototype.getMidiData = function(renderData, module, options) {
 //                logit("Not adding " + controllerType);
             }
         } else if (event.type == "setTempo") {
-            var microsPerMinute = 60000000;
-            var microsPerQuarter = Math.round(microsPerMinute / event.bpm);
+            const microsPerMinute = 60000000;
+            const microsPerQuarter = Math.round(microsPerMinute / event.bpm);
 //            logit("midi renderer Writing tempo " + microsPerQuarter);
             trackEvent = {
                 eventTime: eventTime,

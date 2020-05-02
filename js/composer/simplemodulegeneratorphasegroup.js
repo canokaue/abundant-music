@@ -1,5 +1,5 @@
 
-var SimpleModuleGeneratorPhraseGroupType = {
+const SimpleModuleGeneratorPhraseGroupType = {
     SINGLE_COMPLETE: 0,
     TONIC_PROLONG_PLUS_COMPLETE: 1,
     DECEPTIVE_PLUS_COMPLETE: 2,
@@ -189,7 +189,7 @@ var SimpleModuleGeneratorPhraseGroupType = {
 addPossibleValuesFunction(SimpleModuleGeneratorPhraseGroupType, SimpleModuleGeneratorPhraseGroupType.SINGLE_COMPLETE, SimpleModuleGeneratorPhraseGroupType.INCOMPLETE_INITIAL_PLUS_COMPLETE_LENGTHEN_FINAL_TONIC);
 
 
-var PhraseGroupIndexProperty = {
+const PhraseGroupIndexProperty = {
     MELODY_SHAPE: 0,
     BASS_SHAPE: 1,
     HARMONY: 2,

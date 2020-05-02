@@ -11,7 +11,7 @@ THREE.BloomPass = function ( strength, kernelSize, sigma, resolution ) {
 
 	// render targets
 
-	var pars = { minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter, format: THREE.RGBFormat };
+	const pars = { minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter, format: THREE.RGBFormat };
 
 	this.renderTargetX = new THREE.WebGLRenderTarget( resolution, resolution, pars );
 	this.renderTargetY = new THREE.WebGLRenderTarget( resolution, resolution, pars );
@@ -21,7 +21,7 @@ THREE.BloomPass = function ( strength, kernelSize, sigma, resolution ) {
 	if ( THREE.CopyShader === undefined )
 		console.error( "THREE.BloomPass relies on THREE.CopyShader" );
 
-	var copyShader = THREE.CopyShader;
+	const copyShader = THREE.CopyShader;
 
 	this.copyUniforms = THREE.UniformsUtils.clone( copyShader.uniforms );
 
@@ -42,7 +42,7 @@ THREE.BloomPass = function ( strength, kernelSize, sigma, resolution ) {
 	if ( THREE.ConvolutionShader === undefined )
 		console.error( "THREE.BloomPass relies on THREE.ConvolutionShader" );
 
-	var convolutionShader = THREE.ConvolutionShader;
+	const convolutionShader = THREE.ConvolutionShader;
 
 	this.convolutionUniforms = THREE.UniformsUtils.clone( convolutionShader.uniforms );
 

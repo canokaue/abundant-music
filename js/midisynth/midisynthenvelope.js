@@ -62,19 +62,19 @@ MidiSynthADSREnvelope.prototype.writeEnvelope = function(arr, offset, len, synth
     if (this.done) {
         return;
     }
-    var bufferIndex = this.bufferIndex;
-    var attackBufLen = this.attackBufLen;
-    var decayBufLen = this.decayBufLen;
-    var releaseBufLen = this.releaseBufLen;
-    var sustainLevel = this.sustainLevel;
-    var ampScale = this.ampScale;
+    let bufferIndex = this.bufferIndex;
+    const attackBufLen = this.attackBufLen;
+    const decayBufLen = this.decayBufLen;
+    const releaseBufLen = this.releaseBufLen;
+    const sustainLevel = this.sustainLevel;
+    const ampScale = this.ampScale;
 
     var value = 0;
     if (this.releaseBufferIndex > 0) {
-        var releaseBufferIndex = this.releaseBufferIndex;
-        var releaseValue = this.releaseValue;
+        const releaseBufferIndex = this.releaseBufferIndex;
+        const releaseValue = this.releaseValue;
         for (var i=0; i<len; i++) {
-            var diffT = bufferIndex - releaseBufferIndex;
+            const diffT = bufferIndex - releaseBufferIndex;
 
             var k = -releaseValue / releaseBufLen;
             value = k * diffT + releaseValue;

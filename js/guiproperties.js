@@ -1,6 +1,6 @@
 
 
-var GuiPropertyDataType = {
+const GuiPropertyDataType = {
     INT: 0,
     FLOAT: 1,
     STRING: 2,
@@ -27,7 +27,7 @@ var GuiPropertyDataType = {
 };
 
 
-var StringListPropertyDisplayHint = {
+const StringListPropertyDisplayHint = {
     TEXT: 0,
     TEXT_AREA: 1,
     TEXT_LIST: 2,
@@ -35,7 +35,7 @@ var StringListPropertyDisplayHint = {
 };
 
 
-var NumberListPropertyDisplayHint = {
+const NumberListPropertyDisplayHint = {
     TEXT: 0,
     TEXT_AREA: 1,
     TEXT_LIST: 2,
@@ -43,14 +43,14 @@ var NumberListPropertyDisplayHint = {
 };
 
 
-var NumberList2DPropertyDisplayHint = {
+const NumberList2DPropertyDisplayHint = {
     TEXT: 0,
     TEXT_AREA: 1,
     TEXT_LIST: 2
 };
 
 
-var NumberPropertyDisplayHint = {
+const NumberPropertyDisplayHint = {
     TEXT: 0,
     SLIDER: 1,
     SPINNER: 2,
@@ -62,7 +62,7 @@ var NumberPropertyDisplayHint = {
     SELECT: 8
 };
 
-var StringPropertyDisplayHint = {
+const StringPropertyDisplayHint = {
     TEXT: 0,
     COMBOBOX: 1,
     LIST: 2,
@@ -71,53 +71,53 @@ var StringPropertyDisplayHint = {
     TEXT_AREA: 5
 };
 
-var BooleanPropertyDisplayHint = {
+const BooleanPropertyDisplayHint = {
     TEXT: 0,
     COMBOBOX: 1,
     RADIO_BUTTON: 2,
     SELECT: 3
 };
 
-var IdReferencePropertyDisplayHint = {
+const IdReferencePropertyDisplayHint = {
     TEXT: 0,
     COMBOBOX: 1,
     RADIO_BUTTON: 2,
     SELECT: 3
 };
 
-var UniqueIdPropertyDisplayHint = {
+const UniqueIdPropertyDisplayHint = {
     TEXT: 0
 };
 
-var ProcedureDisplayHint = {
+const ProcedureDisplayHint = {
     BUTTON: 0,
     SELECT: 1,
     MENU: 2
 };
 
-var ObjectDisplayHint = {
+const ObjectDisplayHint = {
     PANEL: 0, // Show the object data within a panel and buttons for "unset", "create new" (using constructor infos)
     DIALOG: 1 // Open a dialog to edit object
 };
 
-var GuiListOrientation = {
+const GuiListOrientation = {
     VERTICAL: 0,
     HORIZONTAL: 1
 };
 
-var GuiDetailPanelMode = {
+const GuiDetailPanelMode = {
     SHARE: 0,
     SEPARATE: 1,
     DIALOG: 2
 };
 
-var GuiSplitType = {
+const GuiSplitType = {
     TABS: 0,
     ACCORDION: 1,
     WINDOWS: 2
 };
 
-var GuiNewMode = {
+const GuiNewMode = {
     BUTTONS: 0,
     SELECT: 1,
     COMBOBOX: 2,
@@ -148,8 +148,8 @@ function IndentInfo() {
 }
 
 IndentInfo.prototype.getWhiteSpaceString = function() {
-    var result = "";
-    for (var i=0; i<this.level; i++) {
+    let result = "";
+    for (let i=0; i<this.level; i++) {
         result += this.whiteSpaceString;
     }
     return result;
@@ -253,7 +253,7 @@ ArrayElementConstraint.prototype.isValid = function(object, propertyName, value)
     if (this.elementConstraint) {
         if (isArray(value)) {
 //            logit("Checking array elements in " + value.join(", ") + " prop name: " + propertyName);
-            for (var i=0; i<value.length; i++) {
+            for (let i=0; i<value.length; i++) {
                 if (!this.elementConstraint.isValid(object, propertyName + "[" + i + "]", value[i])) {
                     return false;
                 }
@@ -266,8 +266,8 @@ ArrayElementConstraint.prototype.isValid = function(object, propertyName, value)
 ArrayElementConstraint.prototype.getInvalidDescription = function(object, propertyName, value) {
     if (this.elementConstraint) {
         if (isArray(value)) {
-            for (var i=0; i<value.length; i++) {
-                var propName = propertyName + "[" + i + "]";
+            for (let i=0; i<value.length; i++) {
+                const propName = propertyName + "[" + i + "]";
                 if (!this.elementConstraint.isValid(object, propName, value[i])) {
                     return "Item " + (i+1) + ": " + this.elementConstraint.getInvalidDescription(object, propName, value[i]);
                 }

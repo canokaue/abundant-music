@@ -7,7 +7,7 @@ THREE.FilmPass = function ( noiseIntensity, scanlinesIntensity, scanlinesCount, 
 	if ( THREE.FilmShader === undefined )
 		console.error( "THREE.FilmPass relies on THREE.FilmShader" );
 
-	var shader = THREE.FilmShader;
+	const shader = THREE.FilmShader;
 
 	this.uniforms = THREE.UniformsUtils.clone( shader.uniforms );
 

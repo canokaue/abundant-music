@@ -5,7 +5,7 @@ function EditorFunctionOrVariable() {
 }
 
 
-var EnumType = {
+const EnumType = {
     POSITION_UNIT: 0,
     CHORD_TYPE: 1,
     SCALE_TYPE: 2,
@@ -176,7 +176,7 @@ SimpleStringEditorVariable.prototype.getValue = function(module) {
 
 
 
-var EditorIdReferenceType = {
+const EditorIdReferenceType = {
 
     STRUCTURE: 0,
     SECTION: 1,
@@ -391,23 +391,23 @@ function SimpleRandomIntegerArrayEditorVariable() {
 SimpleRandomIntegerArrayEditorVariable.prototype = new IntegerArrayEditorVariable();
 
 SimpleRandomIntegerArrayEditorVariable.prototype.getValue = function(module, params) {
-    var theSeed = getValueOrDefault(params, "seed", this.seed);
-    var theCount = getValueOrDefault(params, "count", this.count);
-    var rnd = new MersenneTwister(theSeed);
-    var theLikelihoods = this.domainLikelihoods;
+    const theSeed = getValueOrDefault(params, "seed", this.seed);
+    const theCount = getValueOrDefault(params, "count", this.count);
+    const rnd = new MersenneTwister(theSeed);
+    let theLikelihoods = this.domainLikelihoods;
     if (theLikelihoods.length == 0) {
         theLikelihoods = [1];
     }
-    var theDomain = this.domain;
+    let theDomain = this.domain;
     if (theDomain.length == 0) {
         theDomain = [0];
     }
-    var dist = getProbabilityDistribution(createFilledPatternArray(theCount, theLikelihoods));
+    const dist = getProbabilityDistribution(createFilledPatternArray(theCount, theLikelihoods));
 
-    var result = [];
-    for (var i=0; i<theCount; i++) {
-        var index = sampleIndexIntegerDistribution(rnd, dist);
-        var element = theDomain[index % theDomain.length];
+    const result = [];
+    for (let i=0; i<theCount; i++) {
+        const index = sampleIndexIntegerDistribution(rnd, dist);
+        const element = theDomain[index % theDomain.length];
         result.push(element)
     }
     return result;
@@ -432,64 +432,64 @@ function MarkovRandomIntegerArrayEditorVariable() {
 MarkovRandomIntegerArrayEditorVariable.prototype = new IntegerArrayEditorVariable();
 
 MarkovRandomIntegerArrayEditorVariable.prototype.getValue = function(module, params) {
-    var theSeed = getValueOrDefault(params, "seed", this.seed);
-    var theCount = getValueOrDefault(params, "count", this.count);
-    var rnd = new MersenneTwister(theSeed);
+    const theSeed = getValueOrDefault(params, "seed", this.seed);
+    const theCount = getValueOrDefault(params, "count", this.count);
+    const rnd = new MersenneTwister(theSeed);
 
 
-    var theStartStates = this.startStates;
+    let theStartStates = this.startStates;
     if (theStartStates.length == 0) {
         theStartStates = [0];
     }
-    var theStartStateLikelihoods = this.startStateLikelihoods;
+    let theStartStateLikelihoods = this.startStateLikelihoods;
     if (theStartStateLikelihoods.length == 0) {
         theStartStateLikelihoods = [1];
     }
 
-    var theStateDomains = this.stateDomains;
+    let theStateDomains = this.stateDomains;
     if (theStateDomains.length == 0) {
         theStateDomains = [[0]];
     }
     for (var i=0; i<theStateDomains.length; i++) {
-        var dom = theStateDomains[i];
+        const dom = theStateDomains[i];
         if (dom.length == 0) {
             theStateDomains[i] = [0];
         }
     }
 
-    var stateDomainDistributions = [];
+    const stateDomainDistributions = [];
     for (var i=0; i<this.stateDomainLikelihoods.length; i++) {
         var lik = this.stateDomainLikelihoods[i];
         var dist = getProbabilityDistribution(lik);
         stateDomainDistributions[i] = dist;
     }
 
-    var stateTransitionDistributions = [];
+    const stateTransitionDistributions = [];
     for (var i=0; i<this.stateTransitionLikelihoods.length; i++) {
         var lik = this.stateTransitionLikelihoods[i];
         var dist = getProbabilityDistribution(lik);
         stateTransitionDistributions[i] = dist;
     }
 
-    var startStateDistribution = getProbabilityDistribution(createFilledPatternArray(theStartStates.length,
+    const startStateDistribution = getProbabilityDistribution(createFilledPatternArray(theStartStates.length,
         this.startStateLikelihoods));
 
-    var currentState = sampleIndexIntegerDistribution(rnd, startStateDistribution);
+    let currentState = sampleIndexIntegerDistribution(rnd, startStateDistribution);
 
-    var result = [];
+    const result = [];
     for (var i=0; i<theCount; i++) {
         // Sample from the domain
-        var domain = theStateDomains[currentState % theStateDomains.length];
+        const domain = theStateDomains[currentState % theStateDomains.length];
 
-        var domainDistribution = stateDomainDistributions[currentState % stateDomainDistributions.length];
+        const domainDistribution = stateDomainDistributions[currentState % stateDomainDistributions.length];
 
-        var domainIndex = sampleIndexIntegerDistribution(rnd, domainDistribution);
+        const domainIndex = sampleIndexIntegerDistribution(rnd, domainDistribution);
 
-        var element = domain[domainIndex % domain.length];
+        const element = domain[domainIndex % domain.length];
         
         result.push(element);
 
-        var stateTransitionDistribution = stateTransitionDistributions[currentState % stateTransitionDistributions.length];
+        const stateTransitionDistribution = stateTransitionDistributions[currentState % stateTransitionDistributions.length];
 
         currentState = sampleIndexIntegerDistribution(rnd, stateTransitionDistribution);
     }
@@ -523,9 +523,9 @@ function PatternIntegerArrayEditorVariable() {
 PatternIntegerArrayEditorVariable.prototype = new IntegerArrayEditorVariable();
 
 PatternIntegerArrayEditorVariable.prototype.getValue = function(module) {
-    var result = [];
-    for (var i=0; i<this.count; i++) {
-        var value = getItemFromArrayWithStartEndItems(0, this.elements, this.count, i, this.startElements, this.endElements);
+    const result = [];
+    for (let i=0; i<this.count; i++) {
+        const value = getItemFromArrayWithStartEndItems(0, this.elements, this.count, i, this.startElements, this.endElements);
         result.push(value);
     }
     return result;
@@ -543,9 +543,9 @@ function PatternDoubleArrayEditorVariable() {
 PatternDoubleArrayEditorVariable.prototype = new DoubleArrayEditorVariable();
 
 PatternDoubleArrayEditorVariable.prototype.getValue = function(module) {
-    var result = [];
-    for (var i=0; i<this.count; i++) {
-        var value = getItemFromArrayWithStartEndItems(0, this.elements, this.count, i, this.startElements, this.endElements);
+    const result = [];
+    for (let i=0; i<this.count; i++) {
+        const value = getItemFromArrayWithStartEndItems(0, this.elements, this.count, i, this.startElements, this.endElements);
         result.push(value);
     }
     return result;

@@ -41,11 +41,11 @@ function IndexedVoiceLinePlannerConstraintZone() {
 IndexedVoiceLinePlannerConstraintZone.prototype = new AbstractVoiceLinePlannerConstraintZone();
 
 IndexedVoiceLinePlannerConstraintZone.prototype.checkAndAddConstraint = function(cIndex, result, hIndex) {
-    var c = this.constraints[cIndex % this.constraints.length];
+    const c = this.constraints[cIndex % this.constraints.length];
     if (c instanceof EmptyVoiceLinePlannerConstraint) {
         return;
     }
-    var arr = result[hIndex];
+    let arr = result[hIndex];
     if (!arr) {
         arr = [];
         result[hIndex] = arr;
@@ -58,13 +58,13 @@ IndexedVoiceLinePlannerConstraintZone.prototype.checkAndAddConstraint = function
 
 // Adds constraints
 IndexedVoiceLinePlannerConstraintZone.prototype.applyZone = function(harmony, resultConstraints) {
-    var constraintCount = this.constraints.length;
+    const constraintCount = this.constraints.length;
     if (constraintCount > 0) {
-        var harmonyCount = harmony.getCount();
+        const harmonyCount = harmony.getCount();
 
         for (var i=0; i<this.globalIndices.length; i++) {
             var cIndex = this.globalIndices[i];
-            for (var j=0; j<harmonyCount; j++) {
+            for (let j=0; j<harmonyCount; j++) {
                 this.checkAndAddConstraint(cIndex, resultConstraints, j)
             }
         }
@@ -118,7 +118,7 @@ EmptyVoiceLinePlannerConstraint.prototype.getCheckValidSteps = function() {
 };
 
 
-var SuspendVoiceLinePlannerConstraintMode = {
+const SuspendVoiceLinePlannerConstraintMode = {
     PITCH_CLASSES: 0
 };
 
@@ -141,25 +141,25 @@ SuspendVoiceLinePlannerConstraint.prototype.getCheckCostSteps = function() {
 };
 
 SuspendVoiceLinePlannerConstraint.prototype.oneStepCost = function(harmonyIndex, prevStateIndex, stateIndex, planner) {
-    var stepCost = 0;
+    let stepCost = 0;
 
-    var absNotes = planner.possibleAbsoluteNoteTuples[harmonyIndex][stateIndex];
+    const absNotes = planner.possibleAbsoluteNoteTuples[harmonyIndex][stateIndex];
 //    var chordPitchClasses = planner.chordPitchClassesArr[harmonyIndex];
-    var prevAbsNotes = planner.possibleAbsoluteNoteTuples[harmonyIndex-1][prevStateIndex];
+    const prevAbsNotes = planner.possibleAbsoluteNoteTuples[harmonyIndex-1][prevStateIndex];
 //    var prevChordPitchClasses = planner.chordPitchClassesArr[harmonyIndex-1];
 
 
-    for (var j=0; j<this.suspendPitchClassPairs.length; j++) {
-        var pair = this.suspendPitchClassPairs[j];
-        var penalty = this.penalties[j % this.penalties.length];
+    for (let j=0; j<this.suspendPitchClassPairs.length; j++) {
+        const pair = this.suspendPitchClassPairs[j];
+        const penalty = this.penalties[j % this.penalties.length];
 
-        var found = false;
-        for (var i=0; i<absNotes.length; i++) {
+        let found = false;
+        for (let i=0; i<absNotes.length; i++) {
             if (this.onPattern[i % this.onPattern.length] == 1) {
-                var fromAbs = prevAbsNotes[i];
-                var fromPc = fromAbs % 12;
-                var toAbs = absNotes[i];
-                var toPc = toAbs % 12;
+                const fromAbs = prevAbsNotes[i];
+                const fromPc = fromAbs % 12;
+                const toAbs = absNotes[i];
+                const toPc = toAbs % 12;
                 if (pair[0] == fromPc && pair[1] == toPc) {
                     // Should be resolved correctly
                     found = true;
@@ -185,11 +185,11 @@ SuspendVoiceLinePlannerConstraint.prototype.oneStepCost = function(harmonyIndex,
 
 
 MinVoiceLinePlannerConstraint.prototype.getCheckCostSteps = function() {
-    var result = [];
-    for (var i=0; i<this.constraints.length; i++) {
-        var c = this.constraints[i];
-        var steps = c.getCheckCostSteps();
-        for (var j=0; j<steps.length; j++) {
+    const result = [];
+    for (let i=0; i<this.constraints.length; i++) {
+        const c = this.constraints[i];
+        const steps = c.getCheckCostSteps();
+        for (let j=0; j<steps.length; j++) {
             if (!arrayContains(result, steps[j])) {
                 result.push(steps[j]);
             }
@@ -202,9 +202,9 @@ MinVoiceLinePlannerConstraint.prototype.zeroStepCost = function(harmonyIndex, st
     if (this.constraints.length == 0) {
         return 0;
     }
-    var result = 99999999;
-    for (var i=0; i<this.constraints.length; i++) {
-        var c = this.constraints[i];
+    let result = 99999999;
+    for (let i=0; i<this.constraints.length; i++) {
+        const c = this.constraints[i];
         result = Math.min(result, c.zeroStepCost(harmonyIndex, stateIndex, planner));
     }
     return result;
@@ -213,9 +213,9 @@ MinVoiceLinePlannerConstraint.prototype.oneStepCost = function(harmonyIndex, pre
     if (this.constraints.length == 0) {
         return 0;
     }
-    var result = 99999999;
-    for (var i=0; i<this.constraints.length; i++) {
-        var c = this.constraints[i];
+    let result = 99999999;
+    for (let i=0; i<this.constraints.length; i++) {
+        const c = this.constraints[i];
         result = Math.min(result, c.oneStepCost(harmonyIndex, prevStateIndex, stateIndex, planner));
     }
     return result;
@@ -224,9 +224,9 @@ MinVoiceLinePlannerConstraint.prototype.twoStepCost = function(harmonyIndex, pre
     if (this.constraints.length == 0) {
         return 0;
     }
-    var result = 99999999;
-    for (var i=0; i<this.constraints.length; i++) {
-        var c = this.constraints[i];
+    let result = 99999999;
+    for (let i=0; i<this.constraints.length; i++) {
+        const c = this.constraints[i];
         result = Math.min(result, c.twoStepCost(harmonyIndex, prevPrevStateIndex, prevStateIndex, stateIndex, planner));
     }
     return result;
@@ -253,13 +253,13 @@ PitchClassStepVoiceLinePlannerConstraint.prototype.getCheckCostSteps = function(
 };
 
 PitchClassStepVoiceLinePlannerConstraint.prototype.oneStepCost = function(harmonyIndex, prevStateIndex, stateIndex, planner) {
-    var stepCost = 0;
+    let stepCost = 0;
 
-    var absNotes = planner.possibleAbsoluteNoteTuples[harmonyIndex][stateIndex];
-    var prevAbsNotes = planner.possibleAbsoluteNoteTuples[harmonyIndex-1][prevStateIndex];
+    const absNotes = planner.possibleAbsoluteNoteTuples[harmonyIndex][stateIndex];
+    const prevAbsNotes = planner.possibleAbsoluteNoteTuples[harmonyIndex-1][prevStateIndex];
 
-    var chordPitchClasses = planner.chordPitchClassesArr[harmonyIndex];
-    var prevChordPitchClasses = planner.chordPitchClassesArr[harmonyIndex-1];
+    const chordPitchClasses = planner.chordPitchClassesArr[harmonyIndex];
+    const prevChordPitchClasses = planner.chordPitchClassesArr[harmonyIndex-1];
 
     if (!arrayContains(prevChordPitchClasses, this.fromPitchClass) ||
         !arrayContains(chordPitchClasses, this.toPitchClass)) {
@@ -268,14 +268,14 @@ PitchClassStepVoiceLinePlannerConstraint.prototype.oneStepCost = function(harmon
 //        logit("  " + this.fromPitchClass + " -> " + this.toPitchClass + "  " + prevChordPitchClasses.join(", ") + " -> " + chordPitchClasses.join(", "));
     }
 
-    var possibleCount = 0;
-    var okCount = 0;
-    for (var i=0; i<absNotes.length; i++) {
-        var absNote = absNotes[i];
-        var prevAbsNote = prevAbsNotes[i];
+    let possibleCount = 0;
+    let okCount = 0;
+    for (let i=0; i<absNotes.length; i++) {
+        const absNote = absNotes[i];
+        const prevAbsNote = prevAbsNotes[i];
 
-        var pc = absNote % 12;
-        var prevPc = prevAbsNote % 12;
+        const pc = absNote % 12;
+        const prevPc = prevAbsNote % 12;
 
         if (prevPc == this.fromPitchClass) {
             possibleCount++;
@@ -291,7 +291,7 @@ PitchClassStepVoiceLinePlannerConstraint.prototype.oneStepCost = function(harmon
         stepCost += this.missingPenalty;
     }
 
-    var mustCount = Math.min(possibleCount, this.progressionCount);
+    const mustCount = Math.min(possibleCount, this.progressionCount);
     if (okCount >= mustCount) {
 //        logit(this._constructorName + " made it!");
     } else {
@@ -328,17 +328,17 @@ PitchClassLeapRangeVoiceLinePlannerConstraint.prototype.getCheckCostSteps = func
 };
 
 PitchClassLeapRangeVoiceLinePlannerConstraint.prototype.oneStepCost = function(harmonyIndex, prevStateIndex, stateIndex, planner) {
-    var stepCost = 0;
+    let stepCost = 0;
 
-    var absNotes = planner.possibleAbsoluteNoteTuples[harmonyIndex][stateIndex];
-    var prevAbsNotes = planner.possibleAbsoluteNoteTuples[harmonyIndex-1][prevStateIndex];
+    const absNotes = planner.possibleAbsoluteNoteTuples[harmonyIndex][stateIndex];
+    const prevAbsNotes = planner.possibleAbsoluteNoteTuples[harmonyIndex-1][prevStateIndex];
 
-    var enterFound = false;
-    var leaveFound = false;
+    let enterFound = false;
+    let leaveFound = false;
 
     function getCostCount(range, fromAbs, toAbs) {
-        var count = 0;
-        var diff = toAbs - fromAbs;
+        let count = 0;
+        const diff = toAbs - fromAbs;
         if (diff > range[1]) {
             count = diff - range[1];
         } else if (diff < range[0]) {
@@ -347,16 +347,16 @@ PitchClassLeapRangeVoiceLinePlannerConstraint.prototype.oneStepCost = function(h
         return count;
     }
 
-    var leaveFrom = 0;
-    var leaveTo = 0;
-    var enterFrom = 0;
-    var enterTo = 0;
+    let leaveFrom = 0;
+    let leaveTo = 0;
+    let enterFrom = 0;
+    let enterTo = 0;
 
-    for (var i=0; i<absNotes.length; i++) {
-        var fromAbs = prevAbsNotes[i];
-        var fromPc = fromAbs % 12;
-        var toAbs = absNotes[i];
-        var toPc = toAbs % 12;
+    for (let i=0; i<absNotes.length; i++) {
+        const fromAbs = prevAbsNotes[i];
+        const fromPc = fromAbs % 12;
+        const toAbs = absNotes[i];
+        const toPc = toAbs % 12;
         if (this.pitchClass == toPc) {
             // Checking enter stuff
             if (enterFound) {
@@ -414,14 +414,14 @@ LeapRangeVoiceLinePlannerConstraint.prototype.getCheckCostSteps = function() {
 };
 
 LeapRangeVoiceLinePlannerConstraint.prototype.oneStepCost = function(harmonyIndex, prevStateIndex, stateIndex, planner) {
-    var stepCost = 0;
+    let stepCost = 0;
 
-    var absNotes = planner.possibleAbsoluteNoteTuples[harmonyIndex][stateIndex];
-    var prevAbsNotes = planner.possibleAbsoluteNoteTuples[harmonyIndex-1][prevStateIndex];
+    const absNotes = planner.possibleAbsoluteNoteTuples[harmonyIndex][stateIndex];
+    const prevAbsNotes = planner.possibleAbsoluteNoteTuples[harmonyIndex-1][prevStateIndex];
 
     function getCostCount(range, fromAbs, toAbs) {
-        var count = 0;
-        var diff = toAbs - fromAbs;
+        let count = 0;
+        const diff = toAbs - fromAbs;
         if (diff > range[1]) {
             count = diff - range[1];
         } else if (diff < range[0]) {
@@ -430,11 +430,11 @@ LeapRangeVoiceLinePlannerConstraint.prototype.oneStepCost = function(harmonyInde
         return count;
     }
 
-    for (var i=0; i<this.voiceIndices.length; i++) {
-        var voiceIndex = this.voiceIndices[i];
+    for (let i=0; i<this.voiceIndices.length; i++) {
+        const voiceIndex = this.voiceIndices[i];
         if (voiceIndex < absNotes.length) {
-            var fromAbs = prevAbsNotes[voiceIndex];
-            var toAbs = absNotes[voiceIndex];
+            const fromAbs = prevAbsNotes[voiceIndex];
+            const toAbs = absNotes[voiceIndex];
             stepCost += getCostCount(this.range, fromAbs, toAbs) * this.penaltyFactor;
         }
     }
@@ -460,24 +460,24 @@ VoiceChordNotesVoiceLinePlannerConstraint.prototype.setRootPitchCosts = function
 };
 
 VoiceChordNotesVoiceLinePlannerConstraint.prototype.zeroStepCost = function(harmonyIndex, stateIndex, planner) {
-    var stepCost = 0;
+    let stepCost = 0;
 
-    var absoluteNotes = planner.possibleAbsoluteNoteTuples[harmonyIndex][stateIndex];
-    var chordPitchClasses = planner.chordPitchClassesArr[harmonyIndex];
+    const absoluteNotes = planner.possibleAbsoluteNoteTuples[harmonyIndex][stateIndex];
+    const chordPitchClasses = planner.chordPitchClassesArr[harmonyIndex];
 
-    for (var i=0; i<this.chordRootPitchClassConstraints.length; i++) {
-        var rootArr = this.chordRootPitchClassConstraints[i];
-        var costArr = this.chordRootPitchClassConstraintCosts[i % this.chordRootPitchClassConstraintCosts.length];
+    for (let i=0; i<this.chordRootPitchClassConstraints.length; i++) {
+        const rootArr = this.chordRootPitchClassConstraints[i];
+        const costArr = this.chordRootPitchClassConstraintCosts[i % this.chordRootPitchClassConstraintCosts.length];
 
         if (i < absoluteNotes.length) {
             // absolute note for voice with index i
-            var absNote = absoluteNotes[i];
-            var pitchClass = absNote % 12;
-            for (var j=0; j<rootArr.length; j++) {
-                var rootIndex = rootArr[j];
-                var cost = costArr[j % costArr.length];
+            const absNote = absoluteNotes[i];
+            const pitchClass = absNote % 12;
+            for (let j=0; j<rootArr.length; j++) {
+                const rootIndex = rootArr[j];
+                const cost = costArr[j % costArr.length];
                 if (rootIndex < chordPitchClasses.length) {
-                    var chordNotePitchClass = chordPitchClasses[rootIndex];
+                    const chordNotePitchClass = chordPitchClasses[rootIndex];
                     if (pitchClass == chordNotePitchClass) {
 //                        logit("chord pitch class " + chordNotePitchClass);
                         stepCost += cost;
@@ -509,21 +509,21 @@ ChordDoublingVoiceLinePlannerConstraint.prototype.getCheckCostSteps = function()
     return [0];
 };
 ChordDoublingVoiceLinePlannerConstraint.prototype.zeroStepCost = function(harmonyIndex, stateIndex, planner) {
-    var stepCost = 0;
+    let stepCost = 0;
 
-    var absoluteNotes = planner.possibleAbsoluteNoteTuples[harmonyIndex][stateIndex];
+    const absoluteNotes = planner.possibleAbsoluteNoteTuples[harmonyIndex][stateIndex];
 
-    var pitchClassMap = planner.getPitchClassMap(absoluteNotes);
+    const pitchClassMap = planner.getPitchClassMap(absoluteNotes);
 
-    var harmonyElement = planner.harmony.get(harmonyIndex);
-    var isSeventh = harmonyElement.isSeventh();
+    const harmonyElement = planner.harmony.get(harmonyIndex);
+    const isSeventh = harmonyElement.isSeventh();
 
-    var chordPitchClasses = planner.chordPitchClassesArr[harmonyIndex];
+    const chordPitchClasses = planner.chordPitchClassesArr[harmonyIndex];
 
-    var rootPitchClass = chordPitchClasses[0];
-    var thirdPitchClass = chordPitchClasses[1];
-    var fifthPitchClass = chordPitchClasses[2];
-    var seventhPitchClass = rootPitchClass;
+    const rootPitchClass = chordPitchClasses[0];
+    const thirdPitchClass = chordPitchClasses[1];
+    const fifthPitchClass = chordPitchClasses[2];
+    let seventhPitchClass = rootPitchClass;
     if (isSeventh) {
         seventhPitchClass = chordPitchClasses[3];
     }
@@ -569,21 +569,21 @@ ChordCompletenessVoiceLinePlannerConstraint.prototype.getCheckCostSteps = functi
     return [0];
 };
 ChordCompletenessVoiceLinePlannerConstraint.prototype.zeroStepCost = function(harmonyIndex, stateIndex, planner) {
-    var stepCost = 0;
+    let stepCost = 0;
 
-    var absoluteNotes = planner.possibleAbsoluteNoteTuples[harmonyIndex][stateIndex];
+    const absoluteNotes = planner.possibleAbsoluteNoteTuples[harmonyIndex][stateIndex];
 
-    var pitchClassMap = planner.getPitchClassMap(absoluteNotes);
+    const pitchClassMap = planner.getPitchClassMap(absoluteNotes);
 
-    var harmonyElement = planner.harmony.get(harmonyIndex);
-    var isSeventh = harmonyElement.isSeventh();
+    const harmonyElement = planner.harmony.get(harmonyIndex);
+    const isSeventh = harmonyElement.isSeventh();
 
-    var chordPitchClasses = planner.chordPitchClassesArr[harmonyIndex];
+    const chordPitchClasses = planner.chordPitchClassesArr[harmonyIndex];
 
-    var rootPitchClass = chordPitchClasses[0];
-    var thirdPitchClass = chordPitchClasses[1];
-    var fifthPitchClass = chordPitchClasses[2];
-    var seventhPitchClass = rootPitchClass;
+    const rootPitchClass = chordPitchClasses[0];
+    const thirdPitchClass = chordPitchClasses[1];
+    const fifthPitchClass = chordPitchClasses[2];
+    let seventhPitchClass = rootPitchClass;
     if (isSeventh) {
         seventhPitchClass = chordPitchClasses[3];
     }

@@ -7,7 +7,7 @@ THREE.TexturePass = function ( texture, opacity ) {
 	if ( THREE.CopyShader === undefined )
 		console.error( "THREE.TexturePass relies on THREE.CopyShader" );
 
-	var shader = THREE.CopyShader;
+	const shader = THREE.CopyShader;
 
 	this.uniforms = THREE.UniformsUtils.clone( shader.uniforms );
 

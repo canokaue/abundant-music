@@ -28,9 +28,9 @@ function RandomDfsStateIterator(elements, likelihoods, rnd, stepCostSetter) {
 }
 
 RandomDfsStateIterator.prototype.getStepCosts = function(likelihoods) {
-    var stepCosts = [];
-    for (var i=0; i<likelihoods.length; i++) {
-        var l = likelihoods[i];
+    const stepCosts = [];
+    for (let i=0; i<likelihoods.length; i++) {
+        const l = likelihoods[i];
         stepCosts[i] = l > 0.0 ? -Math.log(l) : 99999999999;
     }
     return stepCosts;
@@ -42,11 +42,11 @@ RandomDfsStateIterator.prototype.hasNext = function() {
 
 
 RandomDfsStateIterator.prototype.next = function() {
-    var result = null;
+    let result = null;
     // Sample next element with the probability distribution
     if (this.elements.length > 0) {
-        var probDist = getProbabilityDistribution(this.likelihoods);
-        var index = sampleIndexIntegerDistribution(this.rnd, probDist);
+        const probDist = getProbabilityDistribution(this.likelihoods);
+        const index = sampleIndexIntegerDistribution(this.rnd, probDist);
         result = this.elements[index];
         result.stepCost = this.stepCosts[index];
         this.elements.splice(index, 1);
@@ -82,8 +82,8 @@ RandomDfsStateIterator2.prototype.hasNext = function() {
 RandomDfsStateIterator2.prototype.next = function() {
     // Sample next element with the probability distribution
     if (this.elements.length > 0) {
-        var probDist = getProbabilityDistribution(this.likelihoods);
-        var index = sampleIndexIntegerDistribution(this.rnd, probDist);
+        const probDist = getProbabilityDistribution(this.likelihoods);
+        const index = sampleIndexIntegerDistribution(this.rnd, probDist);
         result = this.elements[index];
         result.stepCost = this.stepCosts[index];
         this.elements.splice(index, 1);
@@ -113,7 +113,7 @@ SimpleDfsStateIterator.prototype.hasNext = function() {
 
 SimpleDfsStateIterator.prototype.next = function() {
     if (this.elements.length > 0) {
-        var result = this.shift();
+        const result = this.shift();
         return result;
     } else {
         logit("Can not get next from iterator. empty");
@@ -179,7 +179,7 @@ DfsSolver.prototype.searchRecursive = function(node) {
         return null;
     }
 
-    var iterator = this.getSuccessorIterator(node);
+    const iterator = this.getSuccessorIterator(node);
     while (iterator.hasNext()) {
         this.steps++;
         if (this.steps > this.maxSearchSteps) {
@@ -188,8 +188,8 @@ DfsSolver.prototype.searchRecursive = function(node) {
         //        } else {
         //            logit("steps: " + this.steps + " ");
         }
-        var next = iterator.next();
-        var newNode = new DfsSearchNode(next, node, node.depth + 1);
+        const next = iterator.next();
+        const newNode = new DfsSearchNode(next, node, node.depth + 1);
         if (this.searchRecursive(newNode)) {
             node.next = newNode;
             return node;
@@ -208,16 +208,16 @@ DfsSolver.prototype.search = function() {
         this.setSeed(this.seed);
     }
     this.steps = 0;
-    var iterator = this.getStartStateIterator();
+    const iterator = this.getStartStateIterator();
     while (iterator.hasNext()) {
-        var startState = iterator.next();
-        var node = new DfsSearchNode(startState, null, 0);
+        const startState = iterator.next();
+        const node = new DfsSearchNode(startState, null, 0);
 
-        var solution = this.searchRecursive(node);
+        const solution = this.searchRecursive(node);
         if (solution) {
             // Extract solution
-            var result = [];
-            var current = solution;
+            const result = [];
+            let current = solution;
             do {
                 result.push(this.extractStateResultData(current.state));
                 current = current.next;
@@ -252,10 +252,10 @@ DfsSolver.prototype.searchMLRecursive = function(node) {
         return null;
     }
 
-    var minCost = Number.MAX_VALUE;
-    var bestNode = null; // Best goal node
+    const minCost = Number.MAX_VALUE;
+    let bestNode = null; // Best goal node
 
-    var iterator = this.getSuccessorIterator(node);
+    const iterator = this.getSuccessorIterator(node);
     while (iterator.hasNext()) {
         this.steps++;
 
@@ -266,19 +266,19 @@ DfsSolver.prototype.searchMLRecursive = function(node) {
             return bestNode;
         }
 
-        var newState = iterator.next();
+        const newState = iterator.next();
 
 
-        var stepCost = newState.stepCost;
-        var totalCost = stepCost + node.totalCost;
+        const stepCost = newState.stepCost;
+        const totalCost = stepCost + node.totalCost;
 
 //        logit("Checking state " + newState + "<br />");
 
         //        logit("Total cost " + totalCost + " on level " + node.depth + " stepCost: " + stepCost + " <br />");
         if (totalCost < this.bestSolutionCost) {
-            var newNode = new DfsSearchNode(newState, node, node.depth + 1);
+            const newNode = new DfsSearchNode(newState, node, node.depth + 1);
             newNode.totalCost = totalCost;
-            var result = this.searchMLRecursive(newNode);
+            const result = this.searchMLRecursive(newNode);
             if (result) {
                 node.next = newNode;
                 bestNode = result;
@@ -313,24 +313,24 @@ DfsSolver.prototype.searchML = function() {
     if (this.seed && this.setSeed) {
         this.setSeed(this.seed);
     }
-    var bestSolution = null;
+    let bestSolution = null;
 
     this.steps = 0;
-    var iterator = this.getStartStateIterator();
+    const iterator = this.getStartStateIterator();
     while (iterator.hasNext()) {
-        var startState = iterator.next();
+        const startState = iterator.next();
 
-        var node = new DfsSearchNode(startState, null, 0);
+        const node = new DfsSearchNode(startState, null, 0);
         node.totalCost = startState.stepCost;
 
 //        investigateObject(startState);
 
 //        logit("Starting ML search from " + startState + " <br />");
 
-        var solution = this.searchMLRecursive(node);
+        const solution = this.searchMLRecursive(node);
         if (solution) {
             bestSolution = this.extractSolutionFromMLGoalNode(solution);
-            var states = this.extractStatesFromMLGoalNode(solution);
+            const states = this.extractStatesFromMLGoalNode(solution);
 //                    logit("Solution states: " + states + "<br />");
         }
         if (this.mlSolutions >= this.maxMLSolutions) {
@@ -347,8 +347,8 @@ DfsSolver.prototype.searchML = function() {
 };
 
 DfsSolver.prototype.extractPartialSolutionFromNode = function(node) {
-    var currentNode = node;
-    var solution = [];
+    let currentNode = node;
+    const solution = [];
     do {
         solution.unshift(currentNode.state.harmony);
         currentNode = currentNode.previous;
@@ -357,8 +357,8 @@ DfsSolver.prototype.extractPartialSolutionFromNode = function(node) {
 };
 
 DfsSolver.prototype.extractPartialSolutionStatesFromNode = function(node) {
-    var currentNode = node;
-    var states = [];
+    let currentNode = node;
+    const states = [];
     do {
         states.unshift(currentNode.state);
         currentNode = currentNode.previous;
@@ -367,16 +367,16 @@ DfsSolver.prototype.extractPartialSolutionStatesFromNode = function(node) {
 };
 
 DfsSolver.prototype.extractSolutionFromStates = function(states) {
-    var solution = [];
-    for (var i=0; i<states.length; i++) {
+    const solution = [];
+    for (let i=0; i<states.length; i++) {
         solution.push(this.extractStateResultData(states[i]));
     }
     return solution;
 };
 
 DfsSolver.prototype.extractSolutionFromMLGoalNode = function(node) {
-    var result = [];
-    var current = node;
+    const result = [];
+    let current = node;
     while (current.previous) {
         current = current.previous;
     }
@@ -388,8 +388,8 @@ DfsSolver.prototype.extractSolutionFromMLGoalNode = function(node) {
 };
 
 DfsSolver.prototype.extractStatesFromMLGoalNode = function(node) {
-    var result = [];
-    var current = node;
+    const result = [];
+    let current = node;
     while (current.previous) {
         current = current.previous;
     }

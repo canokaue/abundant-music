@@ -21,7 +21,7 @@ UniqueIdManager.prototype.addGlobalUniqueIdListener = function(listener) {
 
 
 UniqueIdManager.prototype.addUniqueIdListener = function(namespace, listener) {
-    var listenerArr = this.listeners[namespace];
+    let listenerArr = this.listeners[namespace];
     if (!listenerArr) {
         listenerArr = [];
         this.listeners[namespace] = listenerArr;
@@ -30,7 +30,7 @@ UniqueIdManager.prototype.addUniqueIdListener = function(namespace, listener) {
 };
 
 UniqueIdManager.prototype.removeUniqueIdListener = function(namespace, listener) {
-    var listenerArr = this.listeners[namespace];
+    const listenerArr = this.listeners[namespace];
     if (listenerArr) {
         arrayDelete(listenerArr, listener);
     }
@@ -38,11 +38,11 @@ UniqueIdManager.prototype.removeUniqueIdListener = function(namespace, listener)
 
 
 UniqueIdManager.prototype.uniqueIdAvailable = function(owner, namespace, testId) {
-    var idInfos = this.uniqueIdInfos[namespace];
+    const idInfos = this.uniqueIdInfos[namespace];
     if (!idInfos) {
         return true;
     }
-    var existingOwner = idInfos.get(testId);
+    const existingOwner = idInfos.get(testId);
     if (existingOwner === owner) {
         return true;
     }
@@ -54,11 +54,11 @@ UniqueIdManager.prototype.uniqueIdAvailable = function(owner, namespace, testId)
 
 
 UniqueIdManager.prototype.uniqueIdExists = function(owner, namespace, testId) {
-    var idInfos = this.uniqueIdInfos[namespace];
+    const idInfos = this.uniqueIdInfos[namespace];
     if (!idInfos) {
         return false;
     }
-    var existingOwner = idInfos.get(testId);
+    const existingOwner = idInfos.get(testId);
     if (existingOwner) {
         return true;
     }
@@ -67,10 +67,10 @@ UniqueIdManager.prototype.uniqueIdExists = function(owner, namespace, testId) {
 
 
 UniqueIdManager.prototype.getNextUniqueId = function(namespace, prefix) {
-    var counter = 1;
-    var idInfos = this.uniqueIdInfos[namespace];
+    let counter = 1;
+    const idInfos = this.uniqueIdInfos[namespace];
     while (true) {
-        var testId = prefix + "" + counter;
+        const testId = prefix + "" + counter;
         if (!idInfos || typeof idInfos.get(testId) === 'undefined') {
             return testId;
         }
@@ -79,7 +79,7 @@ UniqueIdManager.prototype.getNextUniqueId = function(namespace, prefix) {
 };
 
 UniqueIdManager.prototype.getUniqueIds = function(namespace) {
-    var idInfos = this.uniqueIdInfos[namespace];
+    const idInfos = this.uniqueIdInfos[namespace];
     if (!idInfos) {
         return [];
     } else {
@@ -88,14 +88,14 @@ UniqueIdManager.prototype.getUniqueIds = function(namespace) {
 };
 
 UniqueIdManager.prototype.getListeners = function(namespace) {
-    var arr = this.listeners[namespace];
+    const arr = this.listeners[namespace];
     return arr ? arr : [];
 };
 
 UniqueIdManager.prototype.addUniqueId = function(owner, namespace, newId) {
     //    logit("Adding unique id " + newId + " ns: " + namespace + "<br />");
 
-    var idInfos = this.uniqueIdInfos[namespace];
+    let idInfos = this.uniqueIdInfos[namespace];
     if (!idInfos) {
         idInfos = new Map(true);
         this.uniqueIdInfos[namespace] = idInfos;
@@ -107,7 +107,7 @@ UniqueIdManager.prototype.addUniqueId = function(owner, namespace, newId) {
             //            logit("Calling listener for id added in uid manager<br />");
             value.uniqueIdAdded(owner, namespace, newId);
         });
-        for (var i=0; i<this.globalListeners.length; i++) {
+        for (let i=0; i<this.globalListeners.length; i++) {
             this.globalListeners[i].uniqueIdAdded(owner, namespace, newId);
         }
     } else {
@@ -116,9 +116,9 @@ UniqueIdManager.prototype.addUniqueId = function(owner, namespace, newId) {
 };
 
 UniqueIdManager.prototype.changeUniqueId = function(owner, namespace, oldId, newId) {
-    var idInfos = this.uniqueIdInfos[namespace];
+    const idInfos = this.uniqueIdInfos[namespace];
     if (idInfos) {
-        var oldOwner = idInfos.get(oldId);
+        const oldOwner = idInfos.get(oldId);
         //        if (oldOwner == owner) {
         idInfos.remove(oldId);
         idInfos.put(newId, owner);
@@ -131,7 +131,7 @@ UniqueIdManager.prototype.changeUniqueId = function(owner, namespace, oldId, new
     } else {
         logit("could not find any ids for namespace " + namespace + " in changeUniqueId()<br />");
     }
-    for (var i=0; i<this.globalListeners.length; i++) {
+    for (let i=0; i<this.globalListeners.length; i++) {
         this.globalListeners[i].uniqueIdChanged(owner, namespace, oldId, newId);
     }
 
@@ -139,7 +139,7 @@ UniqueIdManager.prototype.changeUniqueId = function(owner, namespace, oldId, new
 
 UniqueIdManager.prototype.removeUniqueId = function(namespace, id) {
 
-    var idInfos = this.uniqueIdInfos[namespace];
+    const idInfos = this.uniqueIdInfos[namespace];
     if (idInfos) {
         var owner = idInfos.get(id);
         if (typeof owner === 'undefined') {
@@ -154,7 +154,7 @@ UniqueIdManager.prototype.removeUniqueId = function(namespace, id) {
         logit("could not find any ids for namespace " + namespace + " in removeUniqueId()<br />");
     }
 
-    for (var i=0; i<this.globalListeners.length; i++) {
+    for (let i=0; i<this.globalListeners.length; i++) {
         this.globalListeners[i].uniqueIdRemoved(owner, namespace, id);
     }
 

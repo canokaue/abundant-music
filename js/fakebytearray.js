@@ -7,13 +7,13 @@ function FakeByteArray() {
 
 FakeByteArray.prototype.toBuffer = function() {
 
-    var result = new ArrayBuffer(this.length);
-    var dv = new DataView(result);
+    const result = new ArrayBuffer(this.length);
+    const dv = new DataView(result);
 
-    var bytePos = 0;
-    for (var i=0; i<this.data.length; i++) {
-        var d = this.data[i];
-        var dataLength = this.lengths[i];
+    let bytePos = 0;
+    for (let i=0; i<this.data.length; i++) {
+        const d = this.data[i];
+        const dataLength = this.lengths[i];
 
 //        logit("bytepos " + bytePos + " dataLength: " + dataLength + " length: " + this.length);
         switch (dataLength) {
@@ -34,9 +34,9 @@ FakeByteArray.prototype.toBuffer = function() {
 };
 
 FakeByteArray.prototype.appendByteArray = function(arr) {
-    for (var i=0; i<arr.data.length; i++) {
-        var d = arr.data[i];
-        var dataLength = arr.lengths[i];
+    for (let i=0; i<arr.data.length; i++) {
+        const d = arr.data[i];
+        const dataLength = arr.lengths[i];
         switch (dataLength) {
             case 1:
 //                logit("Appending byte " + d);

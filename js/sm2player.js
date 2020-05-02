@@ -32,7 +32,7 @@ SoundManager2Player.prototype.getProgramIndex = function(map) {
 };
 
 SoundManager2Player.prototype.getContextTime = function() {
-    var currentSeconds = Date.now() * 0.001;
+    const currentSeconds = Date.now() * 0.001;
     if (this.contextStartTime == -1) {
         this.contextStartTime = currentSeconds;
     }
@@ -54,7 +54,7 @@ SoundManager2Player.prototype.stopVoice = function(v) {
 
 
 SoundManager2Player.prototype.getOrCreateChannelNodes = function(channel) {
-    var nodes = this.channelNodes[channel];
+    let nodes = this.channelNodes[channel];
     if (!nodes) {
         nodes = {};
         nodes.channelName = this.data.renderChannelNames[channel];
@@ -69,36 +69,36 @@ SoundManager2Player.prototype.scheduleControlWithChannelInfo = function(info, va
 
 SoundManager2Player.prototype.scheduleNoteOnOff = function(noteData) {
 
-    var onEvent = noteData.onEvent;
-    var delay = 0.1;
-    var onTime = noteData.onTime + this.contextOffset + delay;
-    var offTime = noteData.offTime + this.contextOffset + delay;
+    const onEvent = noteData.onEvent;
+    const delay = 0.1;
+    const onTime = noteData.onTime + this.contextOffset + delay;
+    let offTime = noteData.offTime + this.contextOffset + delay;
 
     // Add some reverb time
     offTime += 2;
 
-    var bufferInfoId = this.getBufferInfoId(noteData);
-    var bufferInfo = this.bufferInfos[bufferInfoId];
+    const bufferInfoId = this.getBufferInfoId(noteData);
+    const bufferInfo = this.bufferInfos[bufferInfoId];
 
-    var audioElement = bufferInfo.buffer;
+    const audioElement = bufferInfo.buffer;
 
-    var volMult = 1;
+    let volMult = 1;
     if (bufferInfo.channelPrefix == "percussion") {
         volMult = this.settings.percussionVolumeMultiplier;
     } else {
-        var arr = this.settings[bufferInfo.channelPrefix + "VolumeMultipliers"];
+        const arr = this.settings[bufferInfo.channelPrefix + "VolumeMultipliers"];
         if (arr.length > 0) {
             volMult = arr[bufferInfo.voiceIndex % arr.length];
         }
     }
 
-    var voice = new AudioElementVoice();
+    const voice = new AudioElementVoice();
     voice.audioElement = audioElement;
     voice.offTime = offTime;
     voice.isPlaying = true;
     this.playingVoices.push(voice);
 
-    var delaySeconds = Math.max(0, onTime - this.getContextTime());
+    const delaySeconds = Math.max(0, onTime - this.getContextTime());
 
 //    logit("delay " + delaySeconds);
     voice.timeout = setTimeout(function() {

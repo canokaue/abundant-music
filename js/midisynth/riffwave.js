@@ -17,21 +17,21 @@
  *
  */
 
-var FastBase64 = {
+const FastBase64 = {
 
     chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
     encLookup: [],
 
     Init: function() {
-        for (var i=0; i<4096; i++) {
+        for (let i=0; i<4096; i++) {
             this.encLookup[i] = this.chars[i >> 6] + this.chars[i & 0x3F];
         }
     },
 
     Encode: function(src) {
-        var len = src.length;
-        var dst = '';
-        var i = 0;
+        let len = src.length;
+        let dst = '';
+        let i = 0;
         while (len > 2) {
             n = (src[i] << 16) | (src[i+1]<<8) | src[i+2];
             dst+= this.encLookup[n >> 12] + this.encLookup[n & 0xFFF];
@@ -39,13 +39,13 @@ var FastBase64 = {
             i+= 3;
         }
         if (len > 0) {
-            var n1= (src[i] & 0xFC) >> 2;
-            var n2= (src[i] & 0x03) << 4;
+            const n1= (src[i] & 0xFC) >> 2;
+            let n2= (src[i] & 0x03) << 4;
             if (len > 1) n2 |= (src[++i] & 0xF0) >> 4;
             dst+= this.chars[n1];
             dst+= this.chars[n2];
             if (len == 2) {
-                var n3= (src[i++] & 0x0F) << 2;
+                let n3= (src[i++] & 0x0F) << 2;
                 n3 |= (src[i] & 0xC0) >> 6;
                 dst+= this.chars[n3];
             }
@@ -55,11 +55,11 @@ var FastBase64 = {
         return dst;
     } // end Encode
 
-}
+};
 
 FastBase64.Init();
 
-var RIFFWAVE = function(data) {
+const RIFFWAVE = function(data) {
 
     this.data = [];        // Array containing audio samples
     this.wav = [];         // Array containing the generated wave file
@@ -90,10 +90,10 @@ var RIFFWAVE = function(data) {
     }
 
     function split16bitArray(data) {
-        var r = [];
-        var j = 0;
-        var len = data.length;
-        for (var i=0; i<len; i++) {
+        const r = [];
+        let j = 0;
+        const len = data.length;
+        for (let i=0; i<len; i++) {
             r[j++] = data[i] & 0xFF;
             r[j++] = (data[i]>>8) & 0xFF;
         }
@@ -112,21 +112,21 @@ var RIFFWAVE = function(data) {
         this.header.subChunk2Size = (dataView.byteLength / 2) * (this.header.bitsPerSample >> 3);
         this.header.chunkSize = 36 + this.header.subChunk2Size;
 
-        var byteLength = 44 + dataView.byteLength;
+        const byteLength = 44 + dataView.byteLength;
 
-        var resultBuffer = new ArrayBuffer(byteLength);
-        var view = new DataView(resultBuffer);
+        const resultBuffer = new ArrayBuffer(byteLength);
+        const view = new DataView(resultBuffer);
 
         function setInt8Array(view, arr, offset) {
-            for (var i=0; i<arr.length; i++) {
+            for (let i=0; i<arr.length; i++) {
                 view.setInt8(offset++, arr[i], true);
             }
             return offset;
         }
 
         function copyInt16Array(view, viewToCopy, offset) {
-            var len = viewToCopy.byteLength / 2;
-            for (var i=0; i<len; i++) {
+            const len = viewToCopy.byteLength / 2;
+            for (let i=0; i<len; i++) {
                 view.setInt16(offset, viewToCopy.getInt16(i * 2, true), true);
                 offset += 2;
             }
@@ -134,7 +134,7 @@ var RIFFWAVE = function(data) {
         }
 
 
-        var offset = 0;
+        let offset = 0;
         offset = setInt8Array(view, this.header.chunkId, offset);
         view.setUint32(offset, this.header.chunkSize, true); offset += 4;
         offset = setInt8Array(view, this.header.format, offset);

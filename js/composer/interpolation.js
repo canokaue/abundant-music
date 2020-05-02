@@ -10,7 +10,7 @@ function BaseInterpolator(x, m) {
 }
 
 BaseInterpolator.prototype.interpolate = function(x) {
-    var jlo = (this.cor != 0) ? this.hunt(x) : this.locate(x);
+    const jlo = (this.cor != 0) ? this.hunt(x) : this.locate(x);
     return this.rawInterpolate(jlo, x);
 };
 
@@ -35,12 +35,12 @@ BaseInterpolator.prototype.rawInterpolate = function(jlo, x) {
 //    }
 
 BaseInterpolator.prototype.locate = function(x) {
-    var ju, jm, jl;
+    let ju, jm, jl;
     if (this.n < 2 || this.mm < 2 || this.mm > this.n) {
         logit("Locate size error");
         return 0;
     }
-    var ascnd = (this.xx[this.n - 1] >= this.xx[0]);
+    const ascnd = (this.xx[this.n - 1] >= this.xx[0]);
     jl = 0;
     ju = this.n - 1;
     while (ju - jl > 1) {
@@ -57,14 +57,14 @@ BaseInterpolator.prototype.locate = function(x) {
 };
 
 BaseInterpolator.prototype.hunt = function(x) {
-    var jl = this.jsav;
-    var jm, ju;
-    var inc = 1;
+    let jl = this.jsav;
+    let jm, ju;
+    let inc = 1;
     if (this.n < 2 || this.mm < 2 || this.mm > this.n) {
         logit(" Hunt size error");
         return 0;
     }
-    var ascnd = (this.xx[this.n - 1] > this.xx[0]);
+    const ascnd = (this.xx[this.n - 1] > this.xx[0]);
     if (jl < 0 || jl > this.n - 1) {
         jl = 0;
         ju = this.n - 1;

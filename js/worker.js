@@ -1,5 +1,5 @@
 
-var that = self;
+const that = self;
 
 function logit(str) {
     that.postMessage({type: "log", data: str});
@@ -86,7 +86,7 @@ importScripts(
 importScripts("stacktrace.js");
 
 function inputOk(genInfo, correct) {
-    var valid = true;
+    let valid = true;
     try {
         valid = validateValueWithSafeValue(genInfo, new GenInfo(), null, {"array": 1, "number": 1}, correct);
         if (!valid) {
@@ -102,38 +102,38 @@ function inputOk(genInfo, correct) {
 
 function render(data, progressMultiplier) {
 
-    var content = data.content;
+    const content = data.content;
 
 //                        logit("Worker is composing with seed " + content.seed);
-    var seed = content.seed;
-    var sectionIndex = content.sectionIndex;
+    const seed = content.seed;
+    const sectionIndex = content.sectionIndex;
 
-    var rnd = new MersenneTwister(seed);
-    var genInfo = content.genInfo;
+    const rnd = new MersenneTwister(seed);
+    const genInfo = content.genInfo;
 
 
     if (inputOk(genInfo, true)) {
 
-        var resultObj = {};
-        var maxSections = 40;
-        var module = createTestModule(rnd.genrand_int31(), genInfo, resultObj);
+        const resultObj = {};
+        const maxSections = 40;
+        const module = createTestModule(rnd.genrand_int31(), genInfo, resultObj);
 
-        var midiRenderer = module.getSynthRenderer("midiRenderer");
+        const midiRenderer = module.getSynthRenderer("midiRenderer");
 
-        var result = {
+        const result = {
             songStructureInfo: resultObj.songStructureInfo,
             seed: seed,
             channelMaps: midiRenderer.channelMaps,
             module: module
         };
 
-        var renderData = new RenderData();
-        var state = new RenderState(module, renderData);
-        var structure = module.structures[0];
+        const renderData = new RenderData();
+        const state = new RenderState(module, renderData);
+        const structure = module.structures[0];
         if (structure.references.length > maxSections) {
             structure.references.length = maxSections;
         }
-        var sectionTimes = [];
+        const sectionTimes = [];
         structure.renderBatch(state, function(progress) {
             sectionTimes.push(state.sectionTime);
             that.postMessage({type: "progressReport", progress: progress * progressMultiplier});
@@ -142,7 +142,7 @@ function render(data, progressMultiplier) {
 
         result.origRenderData = renderData;
 
-        var netJson = renderData.toNetJSON();
+        const netJson = renderData.toNetJSON();
 
         result.renderData = JSON.parse(netJson);
         result.renderDataLength = state.sectionTime;
@@ -159,7 +159,7 @@ self.addEventListener('message', function(e) {
 
     try {
 
-        var data = e.data;
+        const data = e.data;
 
         if (!data) {
             return; // Empty message
@@ -172,7 +172,7 @@ self.addEventListener('message', function(e) {
 
         switch (data.type) {
             case "startTask":
-                var taskType = data.taskType;
+                const taskType = data.taskType;
                 switch (taskType) {
                     case 0:
 //                        logit("Worker is composing...");
@@ -192,12 +192,12 @@ self.addEventListener('message', function(e) {
 //                        logit("Worker is exporting midi...");
 
 
-                        var progMult = taskType == 1 ? 1 : 0.5;
+                        const progMult = taskType == 1 ? 1 : 0.5;
 
                         var result = render(data, progMult);
                         if (result) {
-                            var midiRenderer = result.module.getSynthRenderer("midiRenderer");
-                            var midiData = midiRenderer.getMidiData(result.origRenderData, result.module, data.content.genInfo);
+                            const midiRenderer = result.module.getSynthRenderer("midiRenderer");
+                            const midiData = midiRenderer.getMidiData(result.origRenderData, result.module, data.content.genInfo);
                             result.midiData = midiData;
 
 //                            logit("Result midi data " + JSON.stringify(result.midiData));
@@ -205,30 +205,30 @@ self.addEventListener('message', function(e) {
                             delete result.origRenderData; // No use to us now after midi has been rendered
                             delete result.module; // No use to us now after midi has been rendered
 
-                            var that = self;
+                            const that = self;
                             if (taskType == 2) {
                                 // Render wav and send the buffer first
-                                var options = {sampleFreq: 44100, channels: 2};
-                                var synth = new MidiSynth(options);
-                                var floatResult = synth.synthesizeBatch(result.midiData, function(progress) {
+                                const options = {sampleFreq: 44100, channels: 2};
+                                const synth = new MidiSynth(options);
+                                const floatResult = synth.synthesizeBatch(result.midiData, function(progress) {
                                     that.postMessage({type: "progressReport", progress: 0.5 + 0.5 * progress});
                                 });
 
-                                var maxShort = (256 * 256) / 2 - 1;
+                                const maxShort = (256 * 256) / 2 - 1;
 
-                                var len = floatResult[0].length;
+                                const len = floatResult[0].length;
 
-                                var dataView = new DataView(new ArrayBuffer(len * 4));
+                                const dataView = new DataView(new ArrayBuffer(len * 4));
 
-                                for (var i=0; i<len; i++) {
+                                for (let i=0; i<len; i++) {
                                     var value = floatResult[0][i];
                                     dataView.setInt16(i * 4, Math.round(maxShort * value), true);
                                     var value = floatResult[1][i];
                                     dataView.setInt16(i * 4 + 2, Math.round(maxShort * value), true);
                                 }
 
-                                var rw = new RIFFWAVE();
-                                var buffer = rw.create(dataView);
+                                const rw = new RIFFWAVE();
+                                const buffer = rw.create(dataView);
                                 if (data.transferableSupported) {
 //                                    logit("Using transferable!");
                                     self.postMessage(buffer, [buffer]);

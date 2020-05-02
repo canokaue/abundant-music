@@ -13,7 +13,7 @@ function GuiObjectListComponent(object, propertyInfo) {
 
     this.currentDetailComponent = null;
 
-    var uiInfo = propertyInfo.uniqueIdInfo;
+    const uiInfo = propertyInfo.uniqueIdInfo;
 //    uiInfo.manager.addUniqueIdListener(uiInfo.namespace, this);
 }
 
@@ -22,7 +22,7 @@ GuiObjectListComponent.prototype = new GuiAbstractListComponent();
 
 GuiObjectListComponent.prototype.componentRemoved = function() {
     GuiAbstractListComponent.prototype.componentRemoved.call(this);
-    var uiInfo = this.propertyInfo.uniqueIdInfo;
+    const uiInfo = this.propertyInfo.uniqueIdInfo;
 //    uiInfo.manager.removeUniqueIdListener(uiInfo.namespace, this);
     if (this.currentDetailComponent) {
         this.currentDetailComponent.componentRemoved();
@@ -74,46 +74,46 @@ GuiObjectListComponent.prototype.removeDetailComponent = function() {
 
 
 GuiObjectListComponent.prototype.updateDetailsPanel = function() {
-    var selectedArr = this.getSelectedItems();
-    var comp = this;
-    var propInfo = this.propertyInfo;
+    const selectedArr = this.getSelectedItems();
+    const comp = this;
+    const propInfo = this.propertyInfo;
     if (selectedArr.length == 1) {
-        var item = selectedArr[0];
+        const item = selectedArr[0];
 
-        var valueItem = $(item).data("value");
+        const valueItem = $(item).data("value");
 
         if (valueItem) {
             this.$details.empty();
             // Create or get the details component
             //            logit("Creating details component with parentPropInfo " + propInfo + "<br />");
 
-            var instanceText = null;
-            var constructorInfos = propInfo.listInfo.constructorInfos;
+            let instanceText = null;
+            const constructorInfos = propInfo.listInfo.constructorInfos;
             if (constructorInfos.length > 1) {
-                for (var i=0; i<constructorInfos.length; i++) {
-                    var ci = constructorInfos[i];
+                for (let i=0; i<constructorInfos.length; i++) {
+                    const ci = constructorInfos[i];
                     if (ci.nameIsConstructor && ci.name == valueItem._constructorName) {
                         instanceText = ci.text;
                         break;
                     }
                 }
             }
-            var newComponent = new GuiPropertiesComponent({
+            const newComponent = new GuiPropertiesComponent({
                 propertyInfoProvider: propInfo.propertyInfoProvider,
                 object: valueItem,
                 parentPropertyInfo: propInfo,
                 componentRegisters: propInfo.componentRegisters
             });
 
-            var that = this;
+            const that = this;
             newComponent.changeListeners.push(
                 function(c, oldValue, newValue) {
                     that.callChangeListeners();
-                    var items = that.getSelectedItems();
-                    for (var i=0; i<items.length; i++) {
-                        var item = items[i];
-                        var valueItem = $(item).data("value");
-                        var rArr = [];
+                    const items = that.getSelectedItems();
+                    for (let i=0; i<items.length; i++) {
+                        const item = items[i];
+                        const valueItem = $(item).data("value");
+                        const rArr = [];
                         that.getListItemContentHtml(valueItem, rArr);
 //                            logit("new item html " + rArr.join(""));
                         $(item).find(".object-list-item-content")[0].innerHTML = rArr.join("");

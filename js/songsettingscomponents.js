@@ -1,21 +1,21 @@
-var SongSettingsComponent = (function() {
+const SongSettingsComponent = (function() {
 
     function changeComponentValue(newValue, createdComps, index, tabsId, changeListener) {
-        var oldComp = createdComps[index];
-        var oldValue = oldComp.object;
+        const oldComp = createdComps[index];
+        const oldValue = oldComp.object;
 //            logit("Searching for " + oldComp.id);
         $("#" + oldComp.id).remove();
 
         copyObjectPropertiesDeep(oldValue, newValue);
 //            logit("New value " + JSON.stringify(newValue) + " " + oldValue._constructorName);
-        var comp = new GuiPropertiesComponent({object: oldValue, propertyInfoProvider: propertyInfoProvider});
+        const comp = new GuiPropertiesComponent({object: oldValue, propertyInfoProvider: propertyInfoProvider});
         createdComps[index] = comp;
-        var contentArr = [];
+        const contentArr = [];
         comp.createJQueryStrings(contentArr);
 
-        var $theTab = $("#" + tabsId + index);
+        const $theTab = $("#" + tabsId + index);
         $theTab.append($(contentArr.join("")));
-        var $tabs = $("#" + tabsId);
+        const $tabs = $("#" + tabsId);
         comp.jQueryCreated($tabs);
 
         // Code duplication below...
@@ -38,8 +38,8 @@ var SongSettingsComponent = (function() {
     }
 
     function addChangeListener(index, createdComps, changeListener) {
-        var comp = createdComps[index];
-        var oldValue = comp.object;
+        const comp = createdComps[index];
+        const oldValue = comp.object;
         comp.changeListeners.push(function() {
             oldValue.dirty = true;
         });
@@ -50,15 +50,15 @@ var SongSettingsComponent = (function() {
 
 
     function compIsSeed(c) {
-        var propInfo = c.propertyInfo;
+        const propInfo = c.propertyInfo;
         return stringEndsWith(propInfo.propertyName.toLowerCase(), "seed");
     }
 
     function compIsControlEtc(c) {
-        var propInfo = c.propertyInfo;
-        var test = propInfo.propertyName.toLowerCase();
+        const propInfo = c.propertyInfo;
+        const test = propInfo.propertyName.toLowerCase();
 
-        var result =
+        const result =
             stringEndsWith(test, "volumemultipliers") ||
                 stringEndsWith(test, "volumemultiplier") ||
                 stringEndsWith(test, "reverbsends") ||
@@ -69,10 +69,10 @@ var SongSettingsComponent = (function() {
     }
 
     function compIsLikelihoodOrProbEtc(c) {
-        var propInfo = c.propertyInfo;
-        var test = propInfo.propertyName.toLowerCase();
+        const propInfo = c.propertyInfo;
+        const test = propInfo.propertyName.toLowerCase();
 
-        var result =
+        const result =
             stringEndsWith(test, "renderamountoverride") ||
                 stringEndsWith(test, "probsoverride") ||
                 stringEndsWith(test, "likelihood") ||
@@ -102,19 +102,19 @@ var SongSettingsComponent = (function() {
         comp.setValueVerifyRaw();
     }
     function randomizeSeed(comp) {
-        var seed = globalRnd.genrand_int32();
+        const seed = globalRnd.genrand_int32();
         comp.$input.val("" + seed);
         comp.setValueVerifyRaw();
     }
     function explicitizeSeed(comp) {
-        var mainSeed = getMainSeed();
-        var rnd = new MersenneTwister(mainSeed);
-        var createModuleSeed = rnd.genrand_int31();
-        var genInfoRnd = new MersenneTwister(createModuleSeed);
+        const mainSeed = getMainSeed();
+        const rnd = new MersenneTwister(mainSeed);
+        const createModuleSeed = rnd.genrand_int31();
+        const genInfoRnd = new MersenneTwister(createModuleSeed);
         globalGenInfo.randomize(genInfoRnd);
-        var propInfo = comp.propertyInfo;
+        const propInfo = comp.propertyInfo;
 
-        var explicitSeed = globalGenInfo[propInfo.propertyName];
+        const explicitSeed = globalGenInfo[propInfo.propertyName];
 
         if (explicitSeed) {
             comp.$input.val("" + explicitSeed);
@@ -123,10 +123,10 @@ var SongSettingsComponent = (function() {
     }
 
     function getAllChildrenWithTest(index, createdComps, test) {
-        var result = [];
-        var comp = createdComps[index];
-        for (var j=0; j<comp.children.length; j++) {
-            var child = comp.children[j];
+        const result = [];
+        const comp = createdComps[index];
+        for (let j=0; j<comp.children.length; j++) {
+            const child = comp.children[j];
             if (test(child)) {
                 result.push(child);
             }
@@ -145,7 +145,7 @@ var SongSettingsComponent = (function() {
     function addSideButtons(comp, index) {
 
         function addSeedButtonsEventHandlers(child, $clearButton, $randomizeButton, $explicitButton) {
-            var propInfo = child.propertyInfo;
+            const propInfo = child.propertyInfo;
             $clearButton.click(function() {
                 clearSeed(child);
             });
@@ -175,8 +175,8 @@ var SongSettingsComponent = (function() {
             });
         }
 
-        for (var i=0; i<comp.children.length; i++) {
-            var child = comp.children[i];
+        for (let i=0; i<comp.children.length; i++) {
+            const child = comp.children[i];
 
 //            var test = stringEndsWith(child.propertyInfo.propertyName.toLowerCase(), "likelihoods");
 //            if (test) {
@@ -187,8 +187,8 @@ var SongSettingsComponent = (function() {
             if (compIsLikelihoodOrProbEtc(child)) {
                 var propInfo = child.propertyInfo;
 
-                var $zeroButton = $("<button style=\"height: 3em; font-size: 60%\" title=\"Set to zero\" class=\"zero-likelihood-button\">0</button>");
-                var $oneButton = $("<button style=\"height: 3em; font-size: 60%\" title=\"Set to one\" class=\"one-likelihood-button\">1</button>");
+                const $zeroButton = $("<button style=\"height: 3em; font-size: 60%\" title=\"Set to zero\" class=\"zero-likelihood-button\">0</button>");
+                const $oneButton = $("<button style=\"height: 3em; font-size: 60%\" title=\"Set to one\" class=\"one-likelihood-button\">1</button>");
                 child.$component.append($zeroButton);
                 child.$component.append($oneButton);
 
@@ -201,19 +201,19 @@ var SongSettingsComponent = (function() {
             if (compIsControlEtc(child)) {
                 var propInfo = child.propertyInfo;
 
-                var divisions = 100;
-                var strValue = child.$input.val();
+                const divisions = 100;
+                const strValue = child.$input.val();
                 var value = parseFloat(strValue);
                 if (isNaN(value)) {
 
                 } else {
 
-                    var $ctrlSlider = $("<div style=\"width: 10em; margin-right: 1em; height: 1em; display: inline-block; font-size: 60%\"  class=\"ctrl-slider\"></div>");
+                    const $ctrlSlider = $("<div style=\"width: 10em; margin-right: 1em; height: 1em; display: inline-block; font-size: 60%\"  class=\"ctrl-slider\"></div>");
                     child.$component.append($ctrlSlider);
 
                     function refreshCtrl(toRefresh, $slider) {
                         return function() {
-                            var value = clamp((1 / divisions) * $slider.slider("value"), 0, 1);
+                            const value = clamp((1 / divisions) * $slider.slider("value"), 0, 1);
                             toRefresh.$input.val("" + value);
                             toRefresh.setValueVerifyRaw();
                         };
@@ -227,17 +227,17 @@ var SongSettingsComponent = (function() {
                         change: refreshCtrl(child, $ctrlSlider)
                     });
 
-                    var values = [0, 1];
-                    for (var j=0; j<values.length; j++) {
+                    const values = [0, 1];
+                    for (let j=0; j<values.length; j++) {
                         var value = values[j];
-                        var $valueButton = $("<button style=\"height: 3em; font-size: 60%\" title=\"Set to zero\" class=\"zero-ctrl-button\">" + value + "</button>");
+                        const $valueButton = $("<button style=\"height: 3em; font-size: 60%\" title=\"Set to zero\" class=\"zero-ctrl-button\">" + value + "</button>");
                         child.$component.append($valueButton);
                         $valueButton.button();
 
                         $valueButton.click(
                             (function() {
-                                var $slider = $ctrlSlider;
-                                var v = value;
+                                const $slider = $ctrlSlider;
+                                const v = value;
                                 return function() {
                                     $slider.slider("option", "value", clamp(v * divisions, 0, divisions));
                                 }
@@ -253,8 +253,8 @@ var SongSettingsComponent = (function() {
             if (compIsSeed(child)) {
                 var propInfo = child.propertyInfo;
 
-                var $clearButton = $("<button style=\"height: 3em; font-size: 60%\" title=\"Clear seed\" class=\"clear-seed-button\">C</button>");
-                var $randomizeButton = $("<button style=\"height: 3em; font-size: 60%\" title=\"Randomize seed\" class=\"randomizer-seed-button\">R</button>");
+                const $clearButton = $("<button style=\"height: 3em; font-size: 60%\" title=\"Clear seed\" class=\"clear-seed-button\">C</button>");
+                const $randomizeButton = $("<button style=\"height: 3em; font-size: 60%\" title=\"Randomize seed\" class=\"randomizer-seed-button\">R</button>");
                 child.$component.append($clearButton);
                 child.$component.append($randomizeButton);
 
@@ -280,10 +280,10 @@ var SongSettingsComponent = (function() {
             addSeeds = [];
         }
 
-        var tabsArr = ["<div id=\"" + tabsId + "\">"];
+        const tabsArr = ["<div id=\"" + tabsId + "\">"];
 
-        var createdComps = [];
-        var contentArrs = [];
+        const createdComps = [];
+        const contentArrs = [];
 
         tabsArr.push('<ul class="' + tabsClass + '-ul">');
         for (var i=0; i<tabCaptions.length; i++) {
@@ -291,30 +291,30 @@ var SongSettingsComponent = (function() {
         }
         tabsArr.push("</ul>");
 
-        var hasSeeds = [];
-        var hasLikelihoods = [];
+        const hasSeeds = [];
+        const hasLikelihoods = [];
 
         if (presets) {
             for (var i=0; i<presets.length; i++) {
-                var preset = presets[i];
-                for (var j=0; j<preset.items.length; j++) {
-                    var item = preset.items[j];
+                const preset = presets[i];
+                for (let j=0; j<preset.items.length; j++) {
+                    const item = preset.items[j];
                     uidManager.addUniqueId(uidManager, tabsId + i, item.name);
                 }
             }
         }
 
         function addHeaderHtml(arr, index) {
-            var defaultButtonId = (tabsId + "_default_button_" + index);
-            var saveButtonId = (tabsId + "_save_button_" + index);
-            var loadButtonId = (tabsId + "_load_button_" + index);
-            var manageButtonId = (tabsId + "_manage_button_" + index);
-            var clearSeedsButtonId = (tabsId + "_clear_seeds_button_" + index);
-            var randomizeSeedsButtonId = (tabsId + "_randomize_seeds_button_" + index);
-            var explicitSeedsButtonId = (tabsId + "_explicit_seeds_button_" + index);
+            const defaultButtonId = (tabsId + "_default_button_" + index);
+            const saveButtonId = (tabsId + "_save_button_" + index);
+            const loadButtonId = (tabsId + "_load_button_" + index);
+            const manageButtonId = (tabsId + "_manage_button_" + index);
+            const clearSeedsButtonId = (tabsId + "_clear_seeds_button_" + index);
+            const randomizeSeedsButtonId = (tabsId + "_randomize_seeds_button_" + index);
+            const explicitSeedsButtonId = (tabsId + "_explicit_seeds_button_" + index);
 
-            var buttonStyle = "style=\"height: 3em; font-size: 50%\"";
-            var headerArr = [
+            const buttonStyle = "style=\"height: 3em; font-size: 50%\"";
+            const headerArr = [
                 "<div " +
                     "id=\"" + (tabsId + "_header_" + i) + "\" " +
                     "class=\"" + tabsClass + "\" " +
@@ -336,31 +336,31 @@ var SongSettingsComponent = (function() {
 
         function createHeaderComponents(index) {
 
-            var defaultButtonId = (tabsId + "_default_button_" + index);
-            var saveButtonId = (tabsId + "_save_button_" + index);
-            var loadButtonId = (tabsId + "_load_button_" + index);
-            var manageButtonId = (tabsId + "_manage_button_" + index);
+            const defaultButtonId = (tabsId + "_default_button_" + index);
+            const saveButtonId = (tabsId + "_save_button_" + index);
+            const loadButtonId = (tabsId + "_load_button_" + index);
+            const manageButtonId = (tabsId + "_manage_button_" + index);
 
-            var clearSeedsButtonId = (tabsId + "_clear_seeds_button_" + index);
-            var randomizeSeedsButtonId = (tabsId + "_randomize_seeds_button_" + index);
-            var explicitSeedsButtonId = (tabsId + "_explicit_seeds_button_" + index);
+            const clearSeedsButtonId = (tabsId + "_clear_seeds_button_" + index);
+            const randomizeSeedsButtonId = (tabsId + "_randomize_seeds_button_" + index);
+            const explicitSeedsButtonId = (tabsId + "_explicit_seeds_button_" + index);
 
             if (hasSeeds[index] && addSeeds[index]) {
                 $("#" + clearSeedsButtonId).button().click(function() {
-                    var seedChildren = getAllSeedChildren(index, createdComps);
-                    for (var i=0; i<seedChildren.length; i++) {
+                    const seedChildren = getAllSeedChildren(index, createdComps);
+                    for (let i=0; i<seedChildren.length; i++) {
                         clearSeed(seedChildren[i]);
                     }
                 });
                 $("#" + randomizeSeedsButtonId).button().click(function() {
-                    var seedChildren = getAllSeedChildren(index, createdComps);
-                    for (var i=0; i<seedChildren.length; i++) {
+                    const seedChildren = getAllSeedChildren(index, createdComps);
+                    for (let i=0; i<seedChildren.length; i++) {
                         randomizeSeed(seedChildren[i]);
                     }
                 });
                 $("#" + explicitSeedsButtonId).button().click(function() {
-                    var seedChildren = getAllSeedChildren(index, createdComps);
-                    for (var i=0; i<seedChildren.length; i++) {
+                    const seedChildren = getAllSeedChildren(index, createdComps);
+                    for (let i=0; i<seedChildren.length; i++) {
                         explicitizeSeed(seedChildren[i]);
                     }
                 });
@@ -368,21 +368,21 @@ var SongSettingsComponent = (function() {
 
             if (presets) {
                 $("#" + saveButtonId).button().click(function() {
-                    var content = "";
-                    var idSuggest = uidManager.getNextUniqueId(tabsId + index, tabCaptions[index] + " Sub-Settings ");
+                    let content = "";
+                    const idSuggest = uidManager.getNextUniqueId(tabsId + index, tabCaptions[index] + " Sub-Settings ");
                     content += "<div>";
                     content += "<span class=\"preset-name-label\" >Name:</span>";
                     content += "<input class=\"preset-name-input ui-corner-all\" value=\"" + idSuggest + "\" />";
                     content += "</div>";
-                    var options = {
+                    const options = {
                         modal: true,
                         width: 450,
                         buttons: {
                             "Save": function() {
                                 if (presets) {
-                                    var newId = $(this).find(".preset-name-input")[0].value;
-                                    var preset = presets[index];
-                                    var item = preset.getItemWithName(newId);
+                                    const newId = $(this).find(".preset-name-input")[0].value;
+                                    const preset = presets[index];
+                                    let item = preset.getItemWithName(newId);
 
                                     if (!item) {
                                         item = new PresetItem();
@@ -407,28 +407,28 @@ var SongSettingsComponent = (function() {
 
                 $("#" + loadButtonId).button().click(function() {
 
-                    var content = "";
+                    let content = "";
                     content += "<div>";
                     content += "<select class=\"preset-name-select ui-corner-all\" >";
                     if (presets) {
-                        var preset = presets[index];
-                        for (var i=0; i<preset.items.length; i++) {
-                            var item = preset.items[i];
+                        const preset = presets[index];
+                        for (let i=0; i<preset.items.length; i++) {
+                            const item = preset.items[i];
                             content += "<option value=\"" + item.name + "\" >" + item.name + "</option>";
                         }
                     }
                     content += "</select>";
                     content += "</div>";
-                    var options = {
+                    const options = {
                         modal: true,
                         width: 450,
                         buttons: {
                             "Load": function() {
                                 if (presets) {
-                                    var presetName = $(this).find(".preset-name-select")[0].value;
-                                    var preset = presets[index];
-                                    var item = null;
-                                    for (var i=0; i<preset.items.length; i++) {
+                                    const presetName = $(this).find(".preset-name-select")[0].value;
+                                    const preset = presets[index];
+                                    let item = null;
+                                    for (let i=0; i<preset.items.length; i++) {
                                         if (preset.items[i].name == presetName) {
                                             item = preset.items[i];
                                             break;
@@ -450,13 +450,13 @@ var SongSettingsComponent = (function() {
                 });
 
                 $("#" + manageButtonId).button().click(function() {
-                    var content = "";
+                    let content = "";
                     content += "<div>";
                     content += "<ol class=\"preset-list\" >";
                     if (presets) {
-                        var preset = presets[index];
-                        for (var i=0; i<preset.items.length; i++) {
-                            var item = preset.items[i];
+                        const preset = presets[index];
+                        for (let i=0; i<preset.items.length; i++) {
+                            const item = preset.items[i];
                             content += "<li class=\"ui-widget-content\" >" + item.name + "</li>";
                         }
                     }
@@ -468,7 +468,7 @@ var SongSettingsComponent = (function() {
                     content += "<button class=\"preset-duplicate-button\">Duplicate</button>";
                     content += "<button class=\"preset-delete-button\">Delete</button>";
                     content += "</div>";
-                    var options = {
+                    const options = {
                         modal: true,
                         width: 450,
                         buttons: {
@@ -477,26 +477,26 @@ var SongSettingsComponent = (function() {
                             }
                         }
                     };
-                    var selectedList = [];
-                    var selectedSet = {};
-                    var $dialog = showModalDialog("Edit " + tabCaptions[index] + " Sub-Settings", content, options);
-                    var $list = $dialog.find(".preset-list").selectable({
+                    let selectedList = [];
+                    let selectedSet = {};
+                    const $dialog = showModalDialog("Edit " + tabCaptions[index] + " Sub-Settings", content, options);
+                    const $list = $dialog.find(".preset-list").selectable({
                         selected: function(event, ui) {
-                            var selected = ui.selected;
+                            const selected = ui.selected;
                             if (!arrayContains(selectedList, selected.innerHTML)) {
                                 selectedList.push(selected.innerHTML);
                             }
                             selectedSet[selected.innerHTML] = selected;
                         },
                         unselected: function(event, ui) {
-                            var unselected = ui.unselected;
+                            const unselected = ui.unselected;
                             arrayDelete(selectedList, unselected.innerHTML);
                             selectedSet[unselected.innerHTML] = null;
                         }
                     });
-                    var $renameButton = $dialog.find(".preset-rename-button").button();
-                    var $duplicateButton = $dialog.find(".preset-duplicate-button").button();
-                    var $deleteButton = $dialog.find(".preset-delete-button").button();
+                    const $renameButton = $dialog.find(".preset-rename-button").button();
+                    const $duplicateButton = $dialog.find(".preset-duplicate-button").button();
+                    const $deleteButton = $dialog.find(".preset-delete-button").button();
                     $renameButton.click(
                         function() {
                             if (selectedList.length == 1) {
@@ -507,11 +507,11 @@ var SongSettingsComponent = (function() {
                     $deleteButton.click(
                         function() {
                             if (presets) {
-                                var preset = presets[index];
-                                for (var i=0; i<selectedList.length; i++) {
-                                    var item = preset.getItemWithName(selectedList[i]);
+                                const preset = presets[index];
+                                for (let i=0; i<selectedList.length; i++) {
+                                    const item = preset.getItemWithName(selectedList[i]);
                                     arrayDelete(preset.items, item);
-                                    var $sel = $(selectedSet[selectedList[i]]);
+                                    const $sel = $(selectedSet[selectedList[i]]);
                                     $sel.remove();
                                 }
                                 preset.saveToLocalStorage();
@@ -523,7 +523,7 @@ var SongSettingsComponent = (function() {
                 });
 
                 $("#" + defaultButtonId).button().click(function() {
-                    var newValue = eval("new " + tabObjects[index]._constructorName + "()");
+                    const newValue = eval("new " + tabObjects[index]._constructorName + "()");
                     changeComponentValue(newValue, createdComps, index, tabsId, changeListener);
                 });
             }
@@ -532,17 +532,17 @@ var SongSettingsComponent = (function() {
 
 
         for (var i=0; i<tabCaptions.length; i++) {
-            var obj = tabObjects[i];
+            const obj = tabObjects[i];
 
-            var headerArr = [];
-            var contentArr = [];
+            const headerArr = [];
+            const contentArr = [];
 
             if (obj) {
                 var comp = new GuiPropertiesComponent({object: obj, propertyInfoProvider: propertyInfoProvider});
                 createdComps[i] = comp;
-                var seedChildren = getAllSeedChildren(i, createdComps);
+                const seedChildren = getAllSeedChildren(i, createdComps);
                 hasSeeds[i] = seedChildren.length > 0;
-                var likelihoodChildren = getAllLikelihoodChildren(i, createdComps);
+                const likelihoodChildren = getAllLikelihoodChildren(i, createdComps);
                 hasLikelihoods[i] = likelihoodChildren.length > 0;
                 comp.createJQueryStrings(contentArr);
                 contentArrs.push(contentArr);
@@ -562,11 +562,11 @@ var SongSettingsComponent = (function() {
         tabsArr.push("</div>");
 
 
-        var $tabs = $(tabsArr.join(""));
+        const $tabs = $(tabsArr.join(""));
         $parent.append($tabs);
 
         for (var i=0; i<tabCaptions.length; i++) {
-            var $tab = $("#" + tabsId + i);
+            const $tab = $("#" + tabsId + i);
         }
 
 

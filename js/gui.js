@@ -14,8 +14,8 @@ StrokeAndFillLooks.prototype.applyFillAndStroke = function(context) {
         context.fill();
     }
     if (this.stroke) {
-        var size = this.strokeLooks.getSize();
-        for (var i=0; i<size; i++) {
+        const size = this.strokeLooks.getSize();
+        for (let i=0; i<size; i++) {
             this.strokeLooks.applyAndStroke(i, context);
         }
     }
@@ -50,16 +50,16 @@ StrokeLooks.prototype.applyAndStroke = function(i, context) {
 };
 
 StrokeLooks.prototype.applyAndStrokeAll = function(context) {
-    var size = this.getSize();
-    for (var i=0; i<size; i++) {
+    const size = this.getSize();
+    for (let i=0; i<size; i++) {
         this.applyAndStroke(i, context);
     }
 };
 
 function calculateAlignment(min, max, elementSize, alignment) {
-    var w = max - min;
-    var span = w - elementSize;
-    var result = span * alignment + min;
+    const w = max - min;
+    const span = w - elementSize;
+    const result = span * alignment + min;
     // logit("min: " + min + " max: " + max + " elementSize: " + elementSize + " align: " + alignment + " result: " + result + "\n");
     return result;
 }
@@ -79,30 +79,30 @@ VerticalLayoutManager.prototype = new LayoutManager();
 
 VerticalLayoutManager.prototype.layout = function() {
 
-    var options = this.options;
-    var separation = getValueOrDefault(options, "separation", 5);
-    var distribution = getValueOrDefault(options, "distribution", "none");
-    var keepX = getValueOrDefault(options, "keepX", false);
+    const options = this.options;
+    const separation = getValueOrDefault(options, "separation", 5);
+    const distribution = getValueOrDefault(options, "distribution", "none");
+    const keepX = getValueOrDefault(options, "keepX", false);
 
-    var component = this.component;
-    var components = component.components;
-    var step = separation;
+    const component = this.component;
+    const components = component.components;
+    let step = separation;
 
-    var currentY = 0;
+    let currentY = 0;
 
-    var rect = component.getContentRect();
-    var contentWidth = rect[2];
-    var contentHeight = rect[3];
+    const rect = component.getContentRect();
+    const contentWidth = rect[2];
+    const contentHeight = rect[3];
     switch (distribution) {
         case "none":
             break;
         case "even":
-            var sum = 0;
+            let sum = 0;
             for (var i=0; i<components.length; i++) {
                 var c = components[i];
                 sum += c.height;
             }
-            var space = Math.max(0, contentHeight - sum);
+            const space = Math.max(0, contentHeight - sum);
             if (components.length > 1) {
                 step = space / (components.length - 1);
             }
@@ -113,7 +113,7 @@ VerticalLayoutManager.prototype.layout = function() {
         c.y = currentY;
         currentY += c.height + step;
         if (!keepX) {
-            var newX = calculateAlignment(0, contentWidth, c.width, c.alignmentX);
+            const newX = calculateAlignment(0, contentWidth, c.width, c.alignmentX);
             c.x = newX;
         }
     }
@@ -127,32 +127,32 @@ HorizontalLayoutManager.prototype = new LayoutManager();
 
 HorizontalLayoutManager.prototype.layout = function() {
 
-    var options = this.options;
-    var separation = getValueOrDefault(options, "separation", 5);
-    var distribution = getValueOrDefault(options, "distribution", "none");
-    var keepY = getValueOrDefault(options, "keepY", false);
+    const options = this.options;
+    const separation = getValueOrDefault(options, "separation", 5);
+    const distribution = getValueOrDefault(options, "distribution", "none");
+    const keepY = getValueOrDefault(options, "keepY", false);
 
-    var currentX = 0;
+    let currentX = 0;
 
-    var component = this.component;
-    var components = component.components;
-    var step = separation;
+    const component = this.component;
+    const components = component.components;
+    let step = separation;
 
-    var rect = component.getContentRect();
-    var contentWidth = rect[2];
-    var contentHeight = rect[3];
-    var stepBefore = false;
+    const rect = component.getContentRect();
+    const contentWidth = rect[2];
+    const contentHeight = rect[3];
+    let stepBefore = false;
     switch (distribution) {
         case "none":
             break;
         case "even":
         case "even2": // also adds space at start and end
-            var sum = 0;
+            let sum = 0;
             for (var i=0; i<components.length; i++) {
                 var c = components[i];
                 sum += c.width;
             }
-            var space = Math.max(0, contentWidth - sum);
+            const space = Math.max(0, contentWidth - sum);
             if (distribution == "even") {
                 if (components.length > 1) {
                     step = space / (components.length - 1);
@@ -175,7 +175,7 @@ HorizontalLayoutManager.prototype.layout = function() {
             currentX += c.width;
         }
         if (!keepY) {
-            var newY = calculateAlignment(0, contentHeight, c.height, c.alignmentY);
+            const newY = calculateAlignment(0, contentHeight, c.height, c.alignmentY);
             c.y = newY;
         }
     }
@@ -191,14 +191,14 @@ CardLayoutManager.prototype = new LayoutManager();
 
 CardLayoutManager.prototype.layout = function() {
 
-    var options = this.options;
+    const options = this.options;
 
-    var rect = this.component.getContentRect();
-    var contentWidth = rect[2];
-    var contentHeight = rect[3];
+    const rect = this.component.getContentRect();
+    const contentWidth = rect[2];
+    const contentHeight = rect[3];
 
-    for (var i=0; i<this.component.components.length; i++) {
-        var c = this.component.components[i];
+    for (let i=0; i<this.component.components.length; i++) {
+        const c = this.component.components[i];
         c.x = calculateAlignment(0, contentWidth, c.width, c.alignmentX);
         c.y = calculateAlignment(0, contentHeight, c.height, c.alignmentY);
     }
@@ -222,7 +222,7 @@ function GuiComponent(options) {
 }
 
 GuiComponent.prototype.getContentRect = function() {
-    var result = [this.x + this.leftBorder, this.y + this.topBorder,
+    const result = [this.x + this.leftBorder, this.y + this.topBorder,
     this.width - this.leftBorder - this.rightBorder, this.height - this.topBorder - this.bottomBorder];
     return result;
 };
@@ -235,8 +235,8 @@ GuiComponent.prototype.layout = function(layoutChildren) {
         this.layoutManager.layout();
     }
     if (layoutChildren) {
-        for (var i=0; i<this.components.length; i++) {
-            var c = this.components[i];
+        for (let i=0; i<this.components.length; i++) {
+            const c = this.components[i];
             c.layout(layoutChildren);
         }
     }
@@ -254,10 +254,10 @@ GuiComponent.prototype.paint = function(offsetX, offsetY, context) {
 
     //    context.fillStyle = "#ff0000";
     //    context.fillRect(this.x + offsetX, this.y + offsetY, this.width, this.height);
-    for (var i=0; i<this.components.length; i++) {
-        var c = this.components[i];
-        var ox = this.x + offsetX;
-        var oy = this.y + offsetY;
+    for (let i=0; i<this.components.length; i++) {
+        const c = this.components[i];
+        const ox = this.x + offsetX;
+        const oy = this.y + offsetY;
         c.paint(ox, oy, context);
     }
 };
@@ -269,10 +269,10 @@ GuiComponent.prototype.step = function(offsetX, offsetY) {
     if (!offsetY) {
         offsetY = 0;
     }
-    for (var i=0; i<this.components.length; i++) {
-        var c = this.components[i];
-        var ox = this.x + offsetX;
-        var oy = this.y + offsetY;
+    for (let i=0; i<this.components.length; i++) {
+        const c = this.components[i];
+        const ox = this.x + offsetX;
+        const oy = this.y + offsetY;
         c.step(ox, oy);
     }
 };
@@ -338,9 +338,9 @@ CardPanel.prototype.paint = function(offsetX, offsetY, context) {
 
     // Paint only the current card
     if (this.currentCard >= 0 && this.currentCard < this.components.length) {
-        var c = this.components[this.currentCard];
-        var ox = this.x + offsetX;
-        var oy = this.y + offsetY;
+        const c = this.components[this.currentCard];
+        const ox = this.x + offsetX;
+        const oy = this.y + offsetY;
         c.paint(ox, oy, context);
     }
 };
@@ -355,9 +355,9 @@ CardPanel.prototype.step = function(offsetX, offsetY) {
 
     // Step only the current card
     if (this.currentCard >= 0 && this.currentCard < this.components.length) {
-        var c = this.components[this.currentCard];
-        var ox = this.x + offsetX;
-        var oy = this.y + offsetY;
+        const c = this.components[this.currentCard];
+        const ox = this.x + offsetX;
+        const oy = this.y + offsetY;
         c.step(ox, oy);
     }
 };
@@ -419,8 +419,8 @@ Button.prototype.addLeaveHandler = function(leaveHandler) {
 
 Button.prototype.setToggled = function() {
     this.toggled = true;
-    for (var i = 0; i<this.buttonGroup.length; i++) {
-        var b = this.buttonGroup[i];
+    for (let i = 0; i<this.buttonGroup.length; i++) {
+        const b = this.buttonGroup[i];
         if (b != this) {
             b.toggled = false;
         }
@@ -428,7 +428,7 @@ Button.prototype.setToggled = function() {
 };
 
 Button.prototype.step = function(offsetX, offsetY) {
-    var rect = rectScaleCopy(this.panel.rect, this.size, this.size);
+    const rect = rectScaleCopy(this.panel.rect, this.size, this.size);
     rectTranslate(rect, offsetX + this.x, offsetY + this.y);
 
     this.clicked = this.pressed && !Input.mouseDown;
@@ -449,13 +449,13 @@ Button.prototype.step = function(offsetX, offsetY) {
         }
     }
 
-    var pressedBefore = this.pressed;
+    const pressedBefore = this.pressed;
     this.pressed = this.over && Input.mouseDown;
     if (!pressedBefore && this.pressed) {
         Sound.play(Sound.BUTTON_DOWN_ID);
     }
 
-    var overBefore = this.over;
+    const overBefore = this.over;
     this.over = rectContains(rect, [Input.mouseX, Input.mouseY]);
     if (!overBefore && this.over) {
         Sound.play(Sound.MOUSE_OVER_ID);
@@ -490,7 +490,7 @@ Button.prototype.paint = function(offsetX, offsetY, context) {
     //    context.fillRect(this.x + offsetX, this.y + offsetY, this.width, this.height);
 
     // Remember the old looks
-    var oldLooks = this.looks;
+    const oldLooks = this.looks;
 
     if (this.over) {
         this.looks = this.overLooks;
@@ -503,27 +503,27 @@ Button.prototype.paint = function(offsetX, offsetY, context) {
         this.looks = this.toggledLooks;
     }
 
-    var oldContext = context;
-    var currentContext = context;
-    var oldOffsetX = offsetX;
-    var oldOffsetY = offsetY;
+    const oldContext = context;
+    const currentContext = context;
+    const oldOffsetX = offsetX;
+    const oldOffsetY = offsetY;
     
     PanelComponent.prototype.paint.call(this, offsetX, offsetY, currentContext);
     this.looks = oldLooks;
 
-    var rect = rectScaleCopy(this.panel.contentRect, this.size, this.size);
-    var contentWidth = rect[2];
-    var contentHeight = rect[3];
+    const rect = rectScaleCopy(this.panel.contentRect, this.size, this.size);
+    const contentWidth = rect[2];
+    const contentHeight = rect[3];
 
     if (this.text != "") {
-        var textScale = rect[3];
+        let textScale = rect[3];
         textScale = Math.min(textScale, this.maxTextScale);
 
-        var textWidth = LineFont.getWidth(this.font, this.text, textScale, 0);
-        var textHeight = textScale;
+        const textWidth = LineFont.getWidth(this.font, this.text, textScale, 0);
+        const textHeight = textScale;
 
-        var textX = this.x + calculateAlignment(rect[0], contentWidth + rect[0], textWidth, this.textAlignmentX) + offsetX;
-        var textY = this.y + calculateAlignment(rect[1], contentHeight + rect[1], textHeight, this.textAlignmentY) + offsetY + textHeight;
+        const textX = this.x + calculateAlignment(rect[0], contentWidth + rect[0], textWidth, this.textAlignmentX) + offsetX;
+        const textY = this.y + calculateAlignment(rect[1], contentHeight + rect[1], textHeight, this.textAlignmentY) + offsetY + textHeight;
 
 //        LineFont.pathString(this.font, this.text, textX, textY, textScale, 0, currentContext);
 //

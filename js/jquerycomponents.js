@@ -13,7 +13,7 @@ function JQueryComponent() {
 JQueryComponent.prototype.counters = {};
 
 JQueryComponent.prototype.setUniqueId = function() {
-    var counter = JQueryComponent.prototype.counters[this.cssClassName];
+    let counter = JQueryComponent.prototype.counters[this.cssClassName];
     if (!counter) {
         counter = 1;
     } else {
@@ -46,10 +46,10 @@ JQueryComponent.prototype.addStartHtmlString = function(resultArr) {
 };
 
 JQueryComponent.prototype.getTagAttributeString = function() {
-    var result = "";
-    var obj = {};
+    let result = "";
+    const obj = {};
     this.getTagAttributes(obj);
-    for (var atr in obj) {
+    for (const atr in obj) {
         result += " " + atr + "=\"" + obj[atr] + " ";
     }
     return result;
@@ -64,10 +64,10 @@ JQueryComponent.prototype.addEndHtmlString = function(resultArr) {
 
 
 JQueryComponent.prototype.spawn = function(parent) {
-    var strings = [];
+    const strings = [];
     this.createJQueryStrings(strings);
-    var $item = $(strings.join(''));
-    var $parentComponent = parent.$component;
+    const $item = $(strings.join(''));
+    let $parentComponent = parent.$component;
     if (!$parentComponent) {
         $parentComponent = parent;
     }
@@ -76,7 +76,7 @@ JQueryComponent.prototype.spawn = function(parent) {
 };
 
 JQueryComponent.prototype.jQueryCreated = function($localRoot) {
-    var selector = "." + this.cssClassName;
+    const selector = "." + this.cssClassName;
     if ($localRoot.is(selector)) {
         this.$component = $localRoot;
     } else {
@@ -85,7 +85,7 @@ JQueryComponent.prototype.jQueryCreated = function($localRoot) {
     if (this.id) {
         this.$component = this.$component.filter("#" + this.id);
     }
-    for (var i=0; i<this.children.length; i++) {
+    for (let i=0; i<this.children.length; i++) {
         this.children[i].jQueryCreated($localRoot);
     }
 };
@@ -93,7 +93,7 @@ JQueryComponent.prototype.jQueryCreated = function($localRoot) {
 JQueryComponent.prototype.createJQueryStrings = function(resultArr) {
     this.addStartHtmlString(resultArr);
     this.getHtmlContentBeforeChildren(resultArr);
-    for (var i=0; i<this.children.length; i++) {
+    for (let i=0; i<this.children.length; i++) {
         this.getHtmlContentBeforeChild(resultArr, i);
         this.children[i].createJQueryStrings(resultArr);
         this.getHtmlContentAfterChild(resultArr, i);
@@ -146,7 +146,7 @@ JQueryButton.prototype.disable = function() {
 
 JQueryButton.prototype.jQueryCreated = function($localRoot) {
     JQueryComponent.prototype.jQueryCreated.call(this, $localRoot);
-    var buttonOptions = {};
+    const buttonOptions = {};
     buttonOptions.text = this.enableText;
     if (this.primaryIcon || this.secondaryIcon) {
         buttonOptions.icons = {};
@@ -164,7 +164,7 @@ JQueryButton.prototype.jQueryCreated = function($localRoot) {
 };
 
 JQueryButton.prototype.buttonClick = function(event) {
-    var button = event.data;
+    const button = event.data;
     $.each(button.clickListeners, function(key, value) {
         //        logit("bc data " + value.data + "<br />");
         value.clicked(value.data);

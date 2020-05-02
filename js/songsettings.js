@@ -13,12 +13,12 @@ AbstractSettings.prototype.getStoragePropertyName = function() {
 AbstractSettings.prototype.loadFromLocalStorage = function() {
 
     try {
-        var lsPropName = this.getStoragePropertyName();
-        var jsonObj = JSON.parse(localStorage.getItem(lsPropName));
+        const lsPropName = this.getStoragePropertyName();
+        const jsonObj = JSON.parse(localStorage.getItem(lsPropName));
 
         if (jsonObj) {
-            for (var prop in this) {
-                var value = jsonObj[prop];
+            for (const prop in this) {
+                const value = jsonObj[prop];
                 if (typeof(value) != 'undefined') {
                     this[prop] = value;
                 }
@@ -32,14 +32,14 @@ AbstractSettings.prototype.loadFromLocalStorage = function() {
 
 AbstractSettings.prototype.saveToLocalStorage = function() {
     try {
-        var toStore = {};
-        for (var prop in this) {
-            var value = this[prop];
+        const toStore = {};
+        for (const prop in this) {
+            const value = this[prop];
             if (!isFunction(value)) {
                 toStore[prop] = value;
             }
         }
-        var lsPropName = this.getStoragePropertyName();
+        const lsPropName = this.getStoragePropertyName();
         localStorage.setItem(lsPropName, JSON.stringify(toStore));
     } catch (exc) {
         // Silently ignore
@@ -76,13 +76,13 @@ function EditorSettings() {
     this.accountVisible = false;
     this.songInfoVisible = false;
 
-    var xStep = 60;
-    var yStep = 60;
-    var xSteps = 0;
+    const xStep = 60;
+    const yStep = 60;
+    let xSteps = 0;
 
-    var yOffset = 120;
+    const yOffset = 120;
 
-    var playerX = 500;
+    const playerX = 500;
 
     this.songSettingsPosition = [playerX, 250 + yOffset];
     this.visualizerSettingsPosition = [xStep * xSteps++, yStep * 2];
@@ -107,15 +107,15 @@ function AbstractSettingsPresets() {
 AbstractSettingsPresets.prototype = new AbstractSettings();
 
 AbstractSettingsPresets.prototype.getItemWithName = function(name) {
-    var index = this.getItemIndexWithName(name);
+    const index = this.getItemIndexWithName(name);
     if (index >= 0) {
         return this.items[index];
     }
     return null;
 };
 AbstractSettingsPresets.prototype.getItemIndexWithName = function(name) {
-    for (var i=0; i<this.items.length; i++) {
-        var item = this.items[i];
+    for (let i=0; i<this.items.length; i++) {
+        const item = this.items[i];
         if (item.name == name) {
             return i;
         }
@@ -318,7 +318,7 @@ function PlayerSettings() {
 }
 PlayerSettings.prototype = new WavExportSettings();
 
-var PrimitiveWebAudioPlayerInstrumentType = {
+const PrimitiveWebAudioPlayerInstrumentType = {
     SINE: 0,
     TRIANGLE: 1,
     SAW: 2,
@@ -378,7 +378,7 @@ function SoundManager2PlayerSettings() {
 }
 SoundManager2PlayerSettings.prototype = new PlayerSettings();
 
-var JQueryUITheme = {
+const JQueryUITheme = {
     BLITZER: 0,
     BLACK_TIE: 1,
     CUPERTINO: 2,
@@ -528,7 +528,7 @@ ThemeSettings.prototype = new AbstractSettings();
 
 
 
-var Visualizer3DStopMovementMode = {
+const Visualizer3DStopMovementMode = {
     ROTATE: 0,
     PAN: 1,
     PAN_INTERACTIVE_HOVER: 2,
@@ -714,49 +714,49 @@ function SongDetails() {
 SongDetails.prototype = new AbstractSettings();
 
 
-var renderStorage = new RenderStorage();
+const renderStorage = new RenderStorage();
 
-var editorSettings = new EditorSettings();
+const editorSettings = new EditorSettings();
 
-var visualizer3DSettings = new Visualizer3DSettings();
-var visualizer3DSettingsPresets = new Visualizer3DSettingsPresets();
+const visualizer3DSettings = new Visualizer3DSettings();
+const visualizer3DSettingsPresets = new Visualizer3DSettingsPresets();
 
-var themeSettings = new ThemeSettings();
-var themeSettingsPresets = new ThemeSettingsPresets();
+const themeSettings = new ThemeSettings();
+const themeSettingsPresets = new ThemeSettingsPresets();
 
-var webAudioPlayerSettings = new WebAudioPlayerSettings();
-var audioElementPlayerSettings = new AudioElementPlayerSettings();
-var soundManager2PlayerSettings = new SoundManager2PlayerSettings();
+const webAudioPlayerSettings = new WebAudioPlayerSettings();
+const audioElementPlayerSettings = new AudioElementPlayerSettings();
+const soundManager2PlayerSettings = new SoundManager2PlayerSettings();
 
-var midiExportSettings = new MidiExportSettings();
-var midiExportSettingsPresets = new MidiExportSettingsPresets();
-var wavExportSettings = new WavExportSettings();
-var wavExportSettingsPresets = new WavExportSettingsPresets();
-var wavClientExportSettings = new WavClientExportSettings();
-var wavClientExportSettingsPresets = new WavClientExportSettingsPresets();
-var mp3ExportSettings = new Mp3ExportSettings();
-var mp3ExportSettingsPresets = new Mp3ExportSettingsPresets();
-var oggExportSettings = new OggExportSettings();
-var oggExportSettingsPresets = new OggExportSettingsPresets();
-var itExportSettings = new ItExportSettings();
-var itExportSettingsPresets = new ItExportSettingsPresets();
+const midiExportSettings = new MidiExportSettings();
+const midiExportSettingsPresets = new MidiExportSettingsPresets();
+const wavExportSettings = new WavExportSettings();
+const wavExportSettingsPresets = new WavExportSettingsPresets();
+const wavClientExportSettings = new WavClientExportSettings();
+const wavClientExportSettingsPresets = new WavClientExportSettingsPresets();
+const mp3ExportSettings = new Mp3ExportSettings();
+const mp3ExportSettingsPresets = new Mp3ExportSettingsPresets();
+const oggExportSettings = new OggExportSettings();
+const oggExportSettingsPresets = new OggExportSettingsPresets();
+const itExportSettings = new ItExportSettings();
+const itExportSettingsPresets = new ItExportSettingsPresets();
 
-var songSettings = new SongSettings();
-var songSettingsPresets = new SongSettingsPresets();
-var songStructureSeedSettings = new SongStructureSeedSettings();
-var songStructureSeedSettingsPresets = new SongStructureSeedSettingsPresets();
-var songContentSeedSettings = new SongContentSeedSettings();
-var songContentSeedSettingsPresets = new SongContentSeedSettingsPresets();
-var songIndicesSeedSettings = new SongIndicesSeedSettings();
-var songIndicesSeedSettingsPresets = new SongIndicesSeedSettingsPresets();
-var songParameters = new SongParameters();
-var songParametersPresets = new SongParametersPresets();
-var songDomains = new SongDomains();
-var songDomainsPresets = new SongDomainsPresets();
-var songDetails = new SongDetails();
-var songDetailsPresets = new SongDetailsPresets();
+const songSettings = new SongSettings();
+const songSettingsPresets = new SongSettingsPresets();
+const songStructureSeedSettings = new SongStructureSeedSettings();
+const songStructureSeedSettingsPresets = new SongStructureSeedSettingsPresets();
+const songContentSeedSettings = new SongContentSeedSettings();
+const songContentSeedSettingsPresets = new SongContentSeedSettingsPresets();
+const songIndicesSeedSettings = new SongIndicesSeedSettings();
+const songIndicesSeedSettingsPresets = new SongIndicesSeedSettingsPresets();
+const songParameters = new SongParameters();
+const songParametersPresets = new SongParametersPresets();
+const songDomains = new SongDomains();
+const songDomainsPresets = new SongDomainsPresets();
+const songDetails = new SongDetails();
+const songDetailsPresets = new SongDetailsPresets();
 
-var allSettings = [
+const allSettings = [
     renderStorage, // Rendered stuff
     themeSettings,
     editorSettings, visualizer3DSettings, webAudioPlayerSettings, soundManager2PlayerSettings, audioElementPlayerSettings, // GUI
@@ -771,7 +771,7 @@ var allSettings = [
 ];
 
 
-var allLoadSaveSongSettings = [
+const allLoadSaveSongSettings = [
     songSettings,
     songStructureSeedSettings, songContentSeedSettings, songIndicesSeedSettings,
     songParameters, songDomains, songDetails
@@ -779,14 +779,14 @@ var allLoadSaveSongSettings = [
 
 
 function loadSettingsFromLocalStorage() {
-    for (var i=0; i<allSettings.length; i++) {
-        var settings = allSettings[i];
+    for (let i=0; i<allSettings.length; i++) {
+        const settings = allSettings[i];
         settings.loadFromLocalStorage();
     }
 }
 function saveSettingsToLocalStorage() {
-    for (var i=0; i<allSettings.length; i++) {
-        var settings = allSettings[i];
+    for (let i=0; i<allSettings.length; i++) {
+        const settings = allSettings[i];
         if (settings.dirty) {
             settings.saveToLocalStorage();
             settings.dirty = false;

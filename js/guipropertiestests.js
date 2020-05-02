@@ -1,19 +1,19 @@
 
 function testValueComponents() {
-    var dummyObject = {};
+    const dummyObject = {};
 
-    var uidManager = new UniqueIdManager();
+    const uidManager = new UniqueIdManager();
     uidManager.addUniqueId(dummyObject, "ns", "frasse");
     uidManager.addUniqueId(dummyObject, "ns", "olle");
     uidManager.addUniqueId(dummyObject, "ns", "Nisse");
     uidManager.addUniqueId(dummyObject, "ns", "Kalle");
 
-    var counter = 1;
+    let counter = 1;
 
 
-    var testObject = {
+    const testObject = {
         getGuiPropertyInfos: function() {
-            var result = new GuiPropertyInfos();
+            const result = new GuiPropertyInfos();
             var info = new GuiPropertyInfo(
             {
                 propertyName: "testProperty",
@@ -381,16 +381,16 @@ function testValueComponents() {
             counter++;
         },
         aProcedure2: function() {
-            var arr = uidManager.getUniqueIds("ns");
+            const arr = uidManager.getUniqueIds("ns");
             if (arr.length > 1) {
-                var index = Math.min(Math.round(Math.random() * arr.length) + 1, arr.length - 1);
+                const index = Math.min(Math.round(Math.random() * arr.length) + 1, arr.length - 1);
             //                uidManager.removeUniqueId("ns", arr[index]);
             }
         },
         aProcedure3: function() {
-            var arr = uidManager.getUniqueIds("ns");
+            const arr = uidManager.getUniqueIds("ns");
             if (arr.length > 1) {
-                var index = Math.min(Math.round(Math.random() * arr.length) + 1, arr.length - 1);
+                const index = Math.min(Math.round(Math.random() * arr.length) + 1, arr.length - 1);
             //                uidManager.changeUniqueId(dummyObject, "ns", arr[index], arr[index] + "A");
             }
         },
@@ -402,7 +402,7 @@ function testValueComponents() {
         intList2: [1, 3, 5, 7]
     };
 
-    var comp = new GuiPropertiesComponent({
+    const comp = new GuiPropertiesComponent({
         object: testObject
     });
 

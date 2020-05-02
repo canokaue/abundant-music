@@ -1,5 +1,5 @@
 
-var SionPresetCategory = {
+const SionPresetCategory = {
     DEFAULT: 0,
     VALSOUND_BASS: 1,
     VALSOUND_BELL: 2,
@@ -53,7 +53,7 @@ var SionPresetCategory = {
 };
 addPossibleValuesFunction(SionPresetCategory, SionPresetCategory.DEFAULT, SionPresetCategory.MIDI_DRUM);
 
-var SionPresetVoiceDEFAULT = {
+const SionPresetVoiceDEFAULT = {
     _SINE_WAVE: 0,
     _SAW_WAVE: 1,
     _8BIT_TRIANGLE_WAVE: 2,
@@ -156,7 +156,7 @@ var SionPresetVoiceDEFAULT = {
     }
 };
 addPossibleValuesFunction(SionPresetVoiceDEFAULT, SionPresetVoiceDEFAULT._SINE_WAVE, SionPresetVoiceDEFAULT._DUAL_SQUARE);
-var SionPresetVoiceVALSOUND_BASS = {
+const SionPresetVoiceVALSOUND_BASS = {
     _ANALOG_BASS_2_FBSYNTH: 0,
     _ANALOG_BASS: 1,
     _ANALOG_BASS_2_Q2: 2,
@@ -439,7 +439,7 @@ var SionPresetVoiceVALSOUND_BASS = {
     }
 };
 addPossibleValuesFunction(SionPresetVoiceVALSOUND_BASS, SionPresetVoiceVALSOUND_BASS._ANALOG_BASS_2_FBSYNTH, SionPresetVoiceVALSOUND_BASS._WOOD_BASS_3_MUTED1);
-var SionPresetVoiceVALSOUND_BELL = {
+const SionPresetVoiceVALSOUND_BELL = {
     _CALM_BELL: 0,
     _CHINA_BELL_DOUBLE: 1,
     _CHURCH_BELL_2: 2,
@@ -542,7 +542,7 @@ var SionPresetVoiceVALSOUND_BELL = {
     }
 };
 addPossibleValuesFunction(SionPresetVoiceVALSOUND_BELL, SionPresetVoiceVALSOUND_BELL._CALM_BELL, SionPresetVoiceVALSOUND_BELL._TWIN_MARINBA_1_GAMP_C);
-var SionPresetVoiceVALSOUND_BRASS = {
+const SionPresetVoiceVALSOUND_BRASS = {
     _BRASS_STRINGS: 0,
     _E_MUTE_TRAMPET: 1,
     _HORN_2: 2,
@@ -655,7 +655,7 @@ var SionPresetVoiceVALSOUND_BRASS = {
     }
 };
 addPossibleValuesFunction(SionPresetVoiceVALSOUND_BRASS, SionPresetVoiceVALSOUND_BRASS._BRASS_STRINGS, SionPresetVoiceVALSOUND_BRASS._TWIN_HORN_OR_OL25);
-var SionPresetVoiceVALSOUND_GUITAR = {
+const SionPresetVoiceVALSOUND_GUITAR = {
     _GUITAR_VELOLOW: 0,
     _GUITAR_VELOHIGH: 1,
     _A_GUITAR_3: 2,
@@ -758,7 +758,7 @@ var SionPresetVoiceVALSOUND_GUITAR = {
     }
 };
 addPossibleValuesFunction(SionPresetVoiceVALSOUND_GUITAR, SionPresetVoiceVALSOUND_GUITAR._GUITAR_VELOLOW, SionPresetVoiceVALSOUND_GUITAR._SOFT_DIS_GUITAR);
-var SionPresetVoiceVALSOUND_LEAD = {
+const SionPresetVoiceVALSOUND_LEAD = {
     _ACO_CODE: 0,
     _ANALOG_SYNTHE_1: 1,
     _BOSCO_LEAD: 2,
@@ -981,7 +981,7 @@ var SionPresetVoiceVALSOUND_LEAD = {
     }
 };
 addPossibleValuesFunction(SionPresetVoiceVALSOUND_LEAD, SionPresetVoiceVALSOUND_LEAD._ACO_CODE, SionPresetVoiceVALSOUND_LEAD._SIN_WATER_SYNTH);
-var SionPresetVoiceVALSOUND_PERCUS = {
+const SionPresetVoiceVALSOUND_PERCUS = {
     _BASS_DRUM_2: 0,
     _BASS_DRUM_3_O1F: 1,
     _RUFINA_BD_O2C: 2,
@@ -1184,7 +1184,7 @@ var SionPresetVoiceVALSOUND_PERCUS = {
     }
 };
 addPossibleValuesFunction(SionPresetVoiceVALSOUND_PERCUS, SionPresetVoiceVALSOUND_PERCUS._BASS_DRUM_2, SionPresetVoiceVALSOUND_PERCUS._TRIANGLE_1_O5C);
-var SionPresetVoiceVALSOUND_PIANO = {
+const SionPresetVoiceVALSOUND_PIANO = {
     _ACO_PIANO2_ATTACK: 0,
     _BACKING_1_CLAV_: 1,
     _CLAV_COAD: 2,
@@ -1297,7 +1297,7 @@ var SionPresetVoiceVALSOUND_PIANO = {
     }
 };
 addPossibleValuesFunction(SionPresetVoiceVALSOUND_PIANO, SionPresetVoiceVALSOUND_PIANO._ACO_PIANO2_ATTACK, SionPresetVoiceVALSOUND_PIANO._YAM_HARPCI_CHORD);
-var SionPresetVoiceVALSOUND_SE = {
+const SionPresetVoiceVALSOUND_SE = {
     _S_E_DETUNE_IS_NEEDED_O2C: 0,
     _S_E_2_O0_1_2: 1,
     _S_E_3_FEEDIN_NOISE_ADD_: 2,
@@ -1325,7 +1325,7 @@ var SionPresetVoiceVALSOUND_SE = {
     }
 };
 addPossibleValuesFunction(SionPresetVoiceVALSOUND_SE, SionPresetVoiceVALSOUND_SE._S_E_DETUNE_IS_NEEDED_O2C, SionPresetVoiceVALSOUND_SE._S_E_3_FEEDIN_NOISE_ADD_);
-var SionPresetVoiceVALSOUND_SPECIAL = {
+const SionPresetVoiceVALSOUND_SPECIAL = {
     _DIGITAL_1: 0,
     _DIGITAL_2: 1,
     _DIGITAL_BAS_3_O2_O3: 2,
@@ -1363,7 +1363,7 @@ var SionPresetVoiceVALSOUND_SPECIAL = {
     }
 };
 addPossibleValuesFunction(SionPresetVoiceVALSOUND_SPECIAL, SionPresetVoiceVALSOUND_SPECIAL._DIGITAL_1, SionPresetVoiceVALSOUND_SPECIAL._DIGITAL_4_O4A);
-var SionPresetVoiceVALSOUND_STRPAD = {
+const SionPresetVoiceVALSOUND_STRPAD = {
     _ACCORDION1: 0,
     _ACCORDION2: 1,
     _ACCORDION3: 2,
@@ -1501,7 +1501,7 @@ var SionPresetVoiceVALSOUND_STRPAD = {
     }
 };
 addPossibleValuesFunction(SionPresetVoiceVALSOUND_STRPAD, SionPresetVoiceVALSOUND_STRPAD._ACCORDION1, SionPresetVoiceVALSOUND_STRPAD._VOICE_O3_O5);
-var SionPresetVoiceVALSOUND_WIND = {
+const SionPresetVoiceVALSOUND_WIND = {
     _CLARINET_1: 0,
     _CLARINET_2_BRIGHTER: 1,
     _E_FLUTE: 2,
@@ -1554,7 +1554,7 @@ var SionPresetVoiceVALSOUND_WIND = {
     }
 };
 addPossibleValuesFunction(SionPresetVoiceVALSOUND_WIND, SionPresetVoiceVALSOUND_WIND._CLARINET_1, SionPresetVoiceVALSOUND_WIND._WHITSLE_2);
-var SionPresetVoiceVALSOUND_WORLD = {
+const SionPresetVoiceVALSOUND_WORLD = {
     _BANJO_HARPCI: 0,
     _KOTO: 1,
     _KOTO_2: 2,
@@ -1602,7 +1602,7 @@ var SionPresetVoiceVALSOUND_WORLD = {
     }
 };
 addPossibleValuesFunction(SionPresetVoiceVALSOUND_WORLD, SionPresetVoiceVALSOUND_WORLD._BANJO_HARPCI, SionPresetVoiceVALSOUND_WORLD._SYNTH_SHAMISEN);
-var SionPresetVoiceMIDI = {
+const SionPresetVoiceMIDI = {
     _GRANDPNO: 0,
     _BRITEPNO: 1,
     _E_GRANDP: 2,
@@ -2255,7 +2255,7 @@ var SionPresetVoiceMIDI = {
     }
 };
 addPossibleValuesFunction(SionPresetVoiceMIDI, SionPresetVoiceMIDI._GRANDPNO, SionPresetVoiceMIDI._GUNSHOT);
-var SionPresetVoiceMIDI_DRUM = {
+const SionPresetVoiceMIDI_DRUM = {
     _SEQ_CLICK_H: 0,
     _BRUSH_TAP: 1,
     _BRUSH_SWIRL: 2,

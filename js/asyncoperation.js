@@ -1,6 +1,6 @@
 
 
-var AsyncServerChildTaskType = {
+const AsyncServerChildTaskType = {
     RENDER: 0,
     EXPORT_MIDI: 1,
     EXPORT_WAV: 2,
@@ -15,7 +15,7 @@ var AsyncServerChildTaskType = {
 };
 
 
-var WorkerTaskType = {
+const WorkerTaskType = {
     RENDER: 0,
     EXPORT_MIDI: 1,
     EXPORT_WAV: 2
@@ -68,7 +68,7 @@ AsyncOperation.prototype.start = function() {
 };
 
 AsyncOperation.prototype.cancel = function() {
-    var that = this;
+    const that = this;
     setTimeout(function() {
         that.removeProgress();
     }, this.removeDelay);
@@ -85,7 +85,7 @@ AsyncOperation.prototype.cancel = function() {
 
 AsyncOperation.prototype.removeProgress = function(fraction) {
     if (this.$progressComp) {
-        var that = this;
+        const that = this;
         this.$progressComp.hide("fast", function() {
             that.$progressComp.remove();
         });
@@ -96,7 +96,7 @@ AsyncOperation.prototype.removeProgress = function(fraction) {
 
 AsyncOperation.prototype.addResultUrl = function(resultUrl) {
     if (this.resultDivId) {
-        var $resultDiv = $("#" + this.resultDivId);
+        const $resultDiv = $("#" + this.resultDivId);
 
         $resultDiv.prepend($("<div style=\"display: none\" class=\"ui-widget-content ui-corner-all progress-component\" ><a href=\"" + resultUrl + "\">Result</a></div>"));
         $resultDiv.show("fast");
@@ -106,13 +106,13 @@ AsyncOperation.prototype.addResultUrl = function(resultUrl) {
 
 AsyncOperation.prototype.updateProgress = function(intProgress) {
     if (this.createProgress) {
-        var barId = this.$progressBar.attr("id");
+        const barId = this.$progressBar.attr("id");
         this.$progressBar.progressbar("option", "value", intProgress);
     }
 };
 
 AsyncOperation.prototype.success = function() {
-    var that = this;
+    const that = this;
     setTimeout(function() {
         that.removeProgress();
     }, that.removeDelay);
@@ -133,15 +133,15 @@ AsyncOperation.prototype.success = function() {
 
 
 AsyncOperation.prototype.fail = function() {
-    var that = this;
+    const that = this;
     setTimeout(function() {
         that.removeProgress();
     }, this.removeDelay);
 
     if (this.$progressComp) {
         // Some visual indication that the operation is a failure
-        var captionId = this.id + "_caption";
-        var failStr = this.failReason ? this.failReason : "Failed...";
+        const captionId = this.id + "_caption";
+        const failStr = this.failReason ? this.failReason : "Failed...";
         this.$progressComp.find("#" + captionId)[0].innerHTML = failStr;
     }
     if (that.onFail) {
@@ -156,12 +156,12 @@ AsyncOperation.prototype.fail = function() {
 
 AsyncOperation.prototype.addProgress = function() {
     if (this.createProgress) {
-        var $progressDiv = $("#" + this.progressDivId);
+        const $progressDiv = $("#" + this.progressDivId);
 
-        var barId = this.id + "_progressbar";
-        var captionId = this.id + "_caption";
-        var cancelButtonId = this.id + "_cancelbutton";
-        var progressStrs = [
+        const barId = this.id + "_progressbar";
+        const captionId = this.id + "_caption";
+        const cancelButtonId = this.id + "_cancelbutton";
+        const progressStrs = [
             "<div style=\"display: none\" class=\"ui-widget-content ui-corner-all progress-component\" >",
             "<div class=\"ui-widget\" id=\"" + captionId + "\" >" + this.caption + "</div>",
             "<div id=\"" + barId + "\" class=\"progress-bar\" ></div>",
@@ -180,7 +180,7 @@ AsyncOperation.prototype.addProgress = function() {
         this.$cancelButton = this.$progressComp.find("#" + cancelButtonId);
         this.$cancelButton.button();
 
-        var that = this;
+        const that = this;
         this.$cancelButton.click(function() {
             that.cancel();
         });
@@ -219,7 +219,7 @@ LoadSM2SoundsAsyncOperation.prototype._bufferMap = {}; // Indexed by urls
 
 LoadSM2SoundsAsyncOperation.prototype.start = function() {
 
-    var that = this;
+    const that = this;
 
 
     if (!LoadSM2SoundsAsyncOperation.prototype.sm2Loaded) {
@@ -258,8 +258,8 @@ LoadSM2SoundsAsyncOperation.prototype.start = function() {
         that.resultBuffers[index] = buffer;
         that.loadedCount++;
 
-        var fractionDone = that.loadedCount / that.bufferUrls.length;
-        var intProgress = Math.round(100 * fractionDone);
+        const fractionDone = that.loadedCount / that.bufferUrls.length;
+        const intProgress = Math.round(100 * fractionDone);
 
         that.updateProgress(intProgress);
 
@@ -272,15 +272,15 @@ LoadSM2SoundsAsyncOperation.prototype.start = function() {
 
 
     function loadBuffer(index) {
-        var url = that.bufferUrls[index];
+        const url = that.bufferUrls[index];
 
-        var theBuffer = LoadSM2SoundsAsyncOperation.prototype._bufferMap[url];
+        const theBuffer = LoadSM2SoundsAsyncOperation.prototype._bufferMap[url];
 
         if (theBuffer) {
             addBuffer(theBuffer, url, index);
         } else {
 
-            var sound = soundManager.createSound({
+            const sound = soundManager.createSound({
                 id: url,
                 url: url
             });
@@ -294,7 +294,7 @@ LoadSM2SoundsAsyncOperation.prototype.start = function() {
     try {
 
         if (that.bufferUrls.length > 0) {
-            for (var i=0; i<this.bufferUrls.length; i++) {
+            for (let i=0; i<this.bufferUrls.length; i++) {
                 loadBuffer(i);
             }
         }
@@ -317,10 +317,10 @@ LoadAudioBuffersAsyncOperation.prototype = new LoadSamplesAsyncOperation();
 LoadAudioBuffersAsyncOperation.prototype._bufferMap = {};
 
 LoadAudioBuffersAsyncOperation.prototype.createBuffer = function(func, freq) {
-    var buffer = this.context.createBuffer(1, this.context.sampleRate, this.context.sampleRate);
-    var data = buffer.getChannelData(0);
-    for (var i=0; i<data.length; i++) {
-        var frac = i / (data.length - 1);
+    const buffer = this.context.createBuffer(1, this.context.sampleRate, this.context.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i=0; i<data.length; i++) {
+        const frac = i / (data.length - 1);
         data[i] = 0.5 * func(frac * freq);
     }
     return buffer;
@@ -329,19 +329,19 @@ LoadAudioBuffersAsyncOperation.prototype.createBuffer = function(func, freq) {
 
 LoadAudioBuffersAsyncOperation.prototype.start = function() {
 
-    var that = this;
+    const that = this;
 
     this.addProgress();
 
-    var maxConcurrent = 1;
+    const maxConcurrent = 1;
 
     function addBuffer(buffer, url, index) {
         LoadAudioBuffersAsyncOperation.prototype._bufferMap[url] = buffer;
         that.resultBuffers[index] = buffer;
         that.loadedCount++;
 
-        var fractionDone = that.loadedCount / that.bufferUrls.length;
-        var intProgress = Math.round(100 * fractionDone);
+        const fractionDone = that.loadedCount / that.bufferUrls.length;
+        const intProgress = Math.round(100 * fractionDone);
 
         that.updateProgress(intProgress);
 
@@ -349,7 +349,7 @@ LoadAudioBuffersAsyncOperation.prototype.start = function() {
             if (that.loadedCount == that.bufferUrls.length) {
                 that.success();
             } else {
-                var nextIndex = index + maxConcurrent;
+                const nextIndex = index + maxConcurrent;
                 if (nextIndex < that.bufferUrls.length) {
                     loadBuffer(nextIndex);
                 }
@@ -359,16 +359,16 @@ LoadAudioBuffersAsyncOperation.prototype.start = function() {
 
 
     function loadBuffer(index) {
-        var url = that.bufferUrls[index];
+        const url = that.bufferUrls[index];
 
-        var theBuffer = LoadAudioBuffersAsyncOperation.prototype._bufferMap[url];
+        const theBuffer = LoadAudioBuffersAsyncOperation.prototype._bufferMap[url];
 
         if (theBuffer) {
             // Already found the buffer
 //            logit("reusing buffer " + url);
             addBuffer(theBuffer, url, index);
         } else {
-            var request = new XMLHttpRequest();
+            const request = new XMLHttpRequest();
             request.open('GET', url, true);
             request.responseType = 'arraybuffer';
             request.onfail = function() {
@@ -385,7 +385,7 @@ LoadAudioBuffersAsyncOperation.prototype.start = function() {
         }
     }
     if (that.bufferUrls.length > 0) {
-        for (var i=0; i<maxConcurrent; i++) {
+        for (let i=0; i<maxConcurrent; i++) {
             loadBuffer(i);
         }
     }
@@ -424,18 +424,18 @@ AsyncServerChildTask.prototype = new AsyncOperation();
 AsyncServerChildTask.prototype.cancel = function() {
     AsyncOperation.prototype.cancel.call(this);
 
-    var message = {
+    const message = {
         type: "cancelTask",
         taskName: this.taskName
     };
 
-    var that = this;
+    const that = this;
     $.ajax("task", {
         data: JSON.stringify(message),
         contentType: "application/json",
         complete: function(jqXhr, textStatus) {
             if (textStatus == "success") {
-                var response = $.parseJSON(jqXhr.responseText);
+                const response = $.parseJSON(jqXhr.responseText);
 //                logit(" Received task name " + that.taskName);
             } else {
                 console.log("Task cancel ajax complete. Text status not success: " + textStatus);
@@ -453,14 +453,14 @@ AsyncServerChildTask.prototype.update = function() {
     }
 
     // Get progress reports from server
-    var message = {
+    const message = {
         type: "getTaskProgress",
         taskType: this.taskType,
         taskName: this.taskName
     };
 
     if (this.taskName && !this.done) {
-        var that = this;
+        const that = this;
         $.ajax("task", {
             data: JSON.stringify(message),
             contentType: "application/json",
@@ -472,13 +472,13 @@ AsyncServerChildTask.prototype.update = function() {
 
                 if (textStatus == "success") {
 
-                    var response = $.parseJSON(jqXhr.responseText);
+                    const response = $.parseJSON(jqXhr.responseText);
 
 //                    logit(" received progress result: " + jqXhr.responseText);
 
                     if (response.type == "progress") {
 
-                        var intProgress = Math.round(100 * response.progress);
+                        const intProgress = Math.round(100 * response.progress);
 
                         that.updateProgress(intProgress);
                         if (response.progress == 1 && (response.result || response.resultUrl)) {
@@ -490,11 +490,11 @@ AsyncServerChildTask.prototype.update = function() {
 //                                    </audio>
 
                                 if (that.resultDivId) {
-                                    var $resultDiv = $("#" + that.resultDivId);
+                                    const $resultDiv = $("#" + that.resultDivId);
 
-                                    var addAudioElement = true;
+                                    let addAudioElement = true;
 
-                                    var audioType = "audio/mp3";
+                                    let audioType = "audio/mp3";
 
                                     switch (that.taskType) {
                                         case AsyncServerChildTaskType.EXPORT_MP3:
@@ -512,17 +512,17 @@ AsyncServerChildTask.prototype.update = function() {
                                             break;
                                     }
 
-                                    var audioElementHtml = "";
+                                    let audioElementHtml = "";
                                     if (addAudioElement) {
                                         audioElementHtml = "<audio style=\"width: 20em; height: 3em; \" class=\"audio-player\" controls=\"controls\" preload=\"none\" >" +
                                             "<source src=\"" + response.resultUrl + "\" type=\"" + audioType + "\" />" +
                                             "</audio>";
                                     }
 
-                                    var removeButtonId = response.resultUrl.replace(/\/|\./g, "_") + "_button";
-                                    var resultDivId = response.resultUrl.replace(/\/|\./g, "_") + "_div";
+                                    const removeButtonId = response.resultUrl.replace(/\/|\./g, "_") + "_button";
+                                    const resultDivId = response.resultUrl.replace(/\/|\./g, "_") + "_div";
 
-                                    var $theResult = $("<div style=\"display: none\" " +
+                                    const $theResult = $("<div style=\"display: none\" " +
                                         "class=\"ui-widget-content ui-corner-all progress-component\" " +
                                         "id=\"" + resultDivId + "\" >" +
                                         audioElementHtml +
@@ -577,20 +577,20 @@ AsyncServerChildTask.prototype.update = function() {
 
 AsyncServerChildTask.prototype.start = function() {
 
-    var message = {
+    const message = {
         type: "startTask",
         taskType: this.taskType,
         user: this.user,
         content: this.content
     };
 
-    var that = this;
+    const that = this;
     $.ajax("task", {
         data: JSON.stringify(message),
         contentType: "application/json",
         complete: function(jqXhr, textStatus) {
             if (textStatus == "success") {
-                var response = $.parseJSON(jqXhr.responseText);
+                const response = $.parseJSON(jqXhr.responseText);
                 if (response.type == "error") {
                     that.failReason = response.message;
                     that.fail();
@@ -630,14 +630,14 @@ function AsyncWorkerTask(options) {
 
     this.progress = 0;
 
-    var script = 'js/worker.js';
+    const script = 'js/worker.js';
 
     this.worker = new Worker(script);
     this.worker.postMessage({});
 
-    var that = this;
+    const that = this;
 
-    var testBuf = new ArrayBuffer(1);
+    const testBuf = new ArrayBuffer(1);
     try {
         this.worker.postMessage(testBuf, [testBuf]);
         if (testBuf.byteLength) {
@@ -651,7 +651,7 @@ function AsyncWorkerTask(options) {
     }
 
     function padNumberString(number, length) {
-        var str = '' + number;
+        let str = '' + number;
         while (str.length < length) {
             str = '0' + str;
         }
@@ -659,8 +659,8 @@ function AsyncWorkerTask(options) {
     }
 
     function getFilenamePrefix() {
-        var date = new Date();
-        var songName = "song";
+        const date = new Date();
+        const songName = "song";
         return songName + "_" +
             padNumberString(date.getUTCFullYear(), 4) + "" +
             padNumberString(date.getUTCMonth() + 1, 2) + "" + // utc month starts at zero :)
@@ -671,10 +671,10 @@ function AsyncWorkerTask(options) {
             padNumberString(date.getUTCMilliseconds(), 3);
     }
 
-    var onWorkerMessage = function(e) {
-        var msg = e.data;
+    const onWorkerMessage = function(e) {
+        const msg = e.data;
 
-        var type = msg.type;
+        const type = msg.type;
 
         if (type) {
             switch (type) {
@@ -687,7 +687,7 @@ function AsyncWorkerTask(options) {
                     that.worker.terminate();
                     break;
                 case "result":
-                    var result = JSON.parse(msg.data);
+                    const result = JSON.parse(msg.data);
                     that.resultRenderData = result.renderData;
                     that.resultRenderDataLength = result.renderDataLength;
                     that.resultChannelMaps = result.channelMaps;
@@ -697,15 +697,15 @@ function AsyncWorkerTask(options) {
                     if (that.taskType == WorkerTaskType.EXPORT_MIDI || that.taskType == WorkerTaskType.EXPORT_WAV) {
 //                    logit(result.midiData);
 
-                        var buffer = null;
-                        var extension = ".mid";
+                        let buffer = null;
+                        let extension = ".mid";
 
-                        var addAudioElement = false;
-                        var audioType = "audio/wav";
+                        let addAudioElement = false;
+                        let audioType = "audio/wav";
 
                         switch (that.taskType) {
                             case WorkerTaskType.EXPORT_MIDI:
-                                var fakeByteArray = new FakeByteArray();
+                                const fakeByteArray = new FakeByteArray();
                                 Midi.encodeMidi(result.midiData, fakeByteArray);
                                 buffer = fakeByteArray.toBuffer();
 //                                addAudioElement = true;
@@ -724,11 +724,11 @@ function AsyncWorkerTask(options) {
 
                         if (buffer) {
 
-                            var blob = new Blob([new Uint8Array(buffer)]);
+                            const blob = new Blob([new Uint8Array(buffer)]);
 
-                            var resultUrl = window.URL.createObjectURL(blob);
+                            const resultUrl = window.URL.createObjectURL(blob);
 
-                            var audioElementHtml = "";
+                            let audioElementHtml = "";
 
                             if (addAudioElement) {
                                 if (addAudioElement) {
@@ -738,23 +738,23 @@ function AsyncWorkerTask(options) {
                                 }
                             }
 
-                            var removeButtonId = that.id + "_result_remove_button";
-                            var loadButtonId = that.id + "_result_load_button";
-                            var resultDivId = that.id + "_result_div";
+                            const removeButtonId = that.id + "_result_remove_button";
+                            const loadButtonId = that.id + "_result_load_button";
+                            const resultDivId = that.id + "_result_div";
 
-                            var $resultDiv = $("#" + that.resultDivId);
+                            const $resultDiv = $("#" + that.resultDivId);
 
 //                    var resultUrl = "";
 
-                            var downloadName = getFilenamePrefix() + extension;
+                            const downloadName = getFilenamePrefix() + extension;
 
-                            var extraHint = "";
-                            var a = document.createElement('a');
+                            let extraHint = "";
+                            const a = document.createElement('a');
                             if (typeof a.download === "undefined") {
                                 extraHint = '<div>You need to "save link target as" and ensure that the filename ends with "' + extension + '"</div>';
                             }
 
-                            var $theResult = $("<div style=\"display: none\" " +
+                            const $theResult = $("<div style=\"display: none\" " +
                                 "class=\"ui-widget-content ui-corner-all progress-component\" " +
                                 "id=\"" + resultDivId + "\" >" +
                                 audioElementHtml +
@@ -813,7 +813,7 @@ AsyncWorkerTask.prototype = new AsyncOperation();
 AsyncWorkerTask.prototype.cancel = function() {
     AsyncOperation.prototype.cancel.call(this);
 
-    var message = {
+    const message = {
         type: "cancelTask"
     };
 //    this.worker.postMessage(message);
@@ -831,7 +831,7 @@ AsyncWorkerTask.prototype.update = function() {
 
 AsyncWorkerTask.prototype.start = function() {
 
-    var message = {
+    const message = {
         type: "startTask",
         transferableSupported: this.transferableSupported,
         taskType: this.taskType,

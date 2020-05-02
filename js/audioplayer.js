@@ -1,4 +1,4 @@
-var AudioPlayerMode = {
+const AudioPlayerMode = {
     STOP: 0,
     PLAY: 1,
     PAUSE: 2
@@ -72,7 +72,7 @@ AudioPlayer.prototype.updateVoice = function(v) {
 
 AudioPlayer.prototype.step = function() {
 
-    var dSeconds = this.getContextTime() - this.contextOffset - this.playSeconds;
+    const dSeconds = this.getContextTime() - this.contextOffset - this.playSeconds;
 
     switch (this.mode) {
         case AudioPlayerMode.PAUSE:
@@ -85,7 +85,7 @@ AudioPlayer.prototype.step = function() {
         case AudioPlayerMode.PLAY:
 
             // Calculate new beat
-            var beatStep = this.getBeatStep(dSeconds);
+            const beatStep = this.getBeatStep(dSeconds);
 
 //            logit("  wap beatStep: " + beatStep + " ctx.time " + this.getContextTime());
 
@@ -93,21 +93,21 @@ AudioPlayer.prototype.step = function() {
 //            logit(" player step bt: " + this.songPlayBeatTime + " sbt: " + scheduleToBeatTime + " s: " + this.playSeconds);
 
             // Update tempo events
-            var lookaheadSeconds = 2.0;
+            const lookaheadSeconds = 2.0;
 
-            var tempoBeforeAfter = this.splitSortedEvents(this.tempoEvents, this.playSeconds + dSeconds);
-            var newTempoEvents = tempoBeforeAfter[0];
+            const tempoBeforeAfter = this.splitSortedEvents(this.tempoEvents, this.playSeconds + dSeconds);
+            const newTempoEvents = tempoBeforeAfter[0];
             this.tempoEvents = tempoBeforeAfter[1];
             // Digest the tempo events by setting the tempo
             for (var i=0; i<newTempoEvents.length; i++) {
                 this.currentTempo = newTempoEvents[i].b;
             }
 
-            var controlBeforeAfter = this.splitSortedEvents(this.controlEvents, this.playSeconds + dSeconds);
-            var newControlEvents = controlBeforeAfter[0];
+            const controlBeforeAfter = this.splitSortedEvents(this.controlEvents, this.playSeconds + dSeconds);
+            const newControlEvents = controlBeforeAfter[0];
             this.controlEvents = controlBeforeAfter[1];
             for (var i=0; i<newControlEvents.length; i++) {
-                var cEvent = newControlEvents[i];
+                const cEvent = newControlEvents[i];
                 this.scheduleControl(cEvent);
             }
 
@@ -115,13 +115,13 @@ AudioPlayer.prototype.step = function() {
             // Schedule notes
 //            logit(" spliiting on " + (this.playSeconds + lookaheadSeconds));
 
-            var notesBeforeAfter = this.splitSortedNotes(this.notes, this.playSeconds + lookaheadSeconds, 128);
+            const notesBeforeAfter = this.splitSortedNotes(this.notes, this.playSeconds + lookaheadSeconds, 128);
             this.notes = notesBeforeAfter[1];
-            var notesToSchedule = notesBeforeAfter[0];
-            for (var ch in notesToSchedule) {
-                var arr = notesToSchedule[ch];
+            const notesToSchedule = notesBeforeAfter[0];
+            for (const ch in notesToSchedule) {
+                const arr = notesToSchedule[ch];
                 for (var i=0; i<arr.length; i++) {
-                    var noteData = arr[i];
+                    const noteData = arr[i];
                     if (noteData.onTime > this.playSeconds + lookaheadSeconds) {
                         logit("  stupid note should not play yet ")
                     }
@@ -141,8 +141,8 @@ AudioPlayer.prototype.step = function() {
 
 AudioPlayer.prototype.stopAllPlayingVoices = function() {
     // All voices that are connected to the graph should be stopped and disconnected
-    for (var i=0; i<this.playingVoices.length; i++) {
-        var v = this.playingVoices[i];
+    for (let i=0; i<this.playingVoices.length; i++) {
+        const v = this.playingVoices[i];
         this.stopVoice(v);
     }
     this.playingVoices = [];
@@ -150,9 +150,9 @@ AudioPlayer.prototype.stopAllPlayingVoices = function() {
 
 
 AudioPlayer.prototype.updateVoices = function() {
-    var newPlaying = [];
-    for (var i=0; i<this.playingVoices.length; i++) {
-        var v = this.playingVoices[i];
+    const newPlaying = [];
+    for (let i=0; i<this.playingVoices.length; i++) {
+        const v = this.playingVoices[i];
         if (this.updateVoice(v)) {
             newPlaying.push(v);
         }
@@ -162,8 +162,8 @@ AudioPlayer.prototype.updateVoices = function() {
 
 
 AudioPlayer.prototype.noteToFrequency = function(note) {
-    var n = note - 69; // A4;
-    var p = Math.pow(2.0, n / 12.0);
+    const n = note - 69; // A4;
+    const p = Math.pow(2.0, n / 12.0);
 
 //    logit("Converting " + note + " to freq n: " + n + " p: " + p + " result: " + (440 * p));
 
@@ -207,8 +207,8 @@ AudioPlayer.prototype.setRenderData = function(data) {
 AudioPlayer.prototype.setChannelMaps = function(maps) {
     this.channelMaps = {};
 //    this.bufferInfos = {};
-    for (var i=0; i<maps.length; i++) {
-        var map = maps[i];
+    for (let i=0; i<maps.length; i++) {
+        const map = maps[i];
         this.channelMaps[map.renderChannel] = map;
     }
 };
@@ -216,12 +216,12 @@ AudioPlayer.prototype.setChannelMaps = function(maps) {
 
 
 AudioPlayer.prototype.splitSortedEvents = function(events, seconds) {
-    var before = [];
-    var after = [];
+    const before = [];
+    const after = [];
 
-    var splitIndex = events.length;
+    let splitIndex = events.length;
     for (var i=0; i<events.length; i++) {
-        var e = events[i];
+        const e = events[i];
         if (e.seconds < seconds) {
             before.push(e);
         } else {
@@ -236,21 +236,21 @@ AudioPlayer.prototype.splitSortedEvents = function(events, seconds) {
 };
 
 AudioPlayer.prototype.splitSortedNotes = function(notes, seconds, maxCount) {
-    var before = {};
-    var after = {};
+    const before = {};
+    const after = {};
 
     maxCount = maxCount ? maxCount : 128;
-    var count = 0;
+    let count = 0;
 
-    for (var ch in notes) {
-        var arr = notes[ch];
+    for (const ch in notes) {
+        const arr = notes[ch];
 
-        var beforeArr = null;
-        var splitIndex = arr.length;
+        let beforeArr = null;
+        let splitIndex = arr.length;
         for (var i=0; i<arr.length; i++) {
-            var noteData = arr[i];
+            const noteData = arr[i];
 //            var onEvent = noteData.onEvent;
-            var onTime = noteData.onTime;
+            const onTime = noteData.onTime;
             if (onTime < seconds && count < maxCount) {
                 // Should be in left
                 if (beforeArr == null) {
@@ -265,7 +265,7 @@ AudioPlayer.prototype.splitSortedNotes = function(notes, seconds, maxCount) {
             }
         }
         if (splitIndex < arr.length) {
-            var afterArr = [];
+            const afterArr = [];
             after[ch] = afterArr;
             for (var i=splitIndex; i<arr.length; i++) {
                 afterArr.push(arr[i]);
@@ -294,12 +294,12 @@ AudioPlayer.prototype.play = function() {
 };
 
 AudioPlayer.prototype.predictTime = function(tempoEvents, beat) {
-    var result = 0;
-    var currentTempo = 120;
+    let result = 0;
+    let currentTempo = 120;
 
-    var prevBeat = 0;
-    for (var i=0; i<tempoEvents.length; i++) {
-        var e = tempoEvents[i];
+    let prevBeat = 0;
+    for (let i=0; i<tempoEvents.length; i++) {
+        const e = tempoEvents[i];
         if (e.t < beat) {
             var diff = e.t - prevBeat;
             var dt = this.beatsToSeconds(diff, currentTempo);
@@ -323,14 +323,14 @@ AudioPlayer.prototype.predictTime = function(tempoEvents, beat) {
 
 AudioPlayer.prototype.gotoBeat = function(beat) {
     this.stopAllPlayingVoices();
-    var nextBeat = Math.max(0, beat);
+    const nextBeat = Math.max(0, beat);
 
     this.data = copyValueDeep(this.origData);
     this.notes = copyValueDeep(this.origNotes);
     this.tempoEvents = copyValueDeep(this.origTempoEvents);
     this.controlEvents = copyValueDeep(this.origControlEvents);
 
-    var newTime = this.predictTime(this.tempoEvents, nextBeat);
+    const newTime = this.predictTime(this.tempoEvents, nextBeat);
 
 //    logit("Trying to set beat to " + nextBeat + " predicted time: " + newTime);
 
@@ -338,7 +338,7 @@ AudioPlayer.prototype.gotoBeat = function(beat) {
     this.controlEvents = this.splitSortedEvents(this.controlEvents, newTime)[1];
     this.notes = this.splitSortedNotes(this.notes, newTime)[1];
 
-    var secondsDiff = newTime - this.playSeconds;
+    const secondsDiff = newTime - this.playSeconds;
 
     this.songPlayBeatTime = nextBeat;
     this.playSeconds = newTime;
@@ -386,14 +386,14 @@ AudioPlayer.prototype.getBufferInfoId = function(noteData) {
 //        }
 //    }
 
-    var result = this.getSoundFontPrefix(this.soundFontType);
+    let result = this.getSoundFontPrefix(this.soundFontType);
 
-    var onEvent = noteData.onEvent;
-    var channelName = this.data.renderChannelNames[onEvent.c];
+    const onEvent = noteData.onEvent;
+    const channelName = this.data.renderChannelNames[onEvent.c];
 
-    var map = this.channelMaps[channelName];
+    const map = this.channelMaps[channelName];
 
-    var program = this.getProgramIndex(map);
+    const program = this.getProgramIndex(map);
 
     if (channelName.indexOf("percussion") == 0) {
         result += "_perc_";
@@ -407,9 +407,9 @@ AudioPlayer.prototype.getBufferInfoId = function(noteData) {
 
 AudioPlayer.prototype.createBufferInfos = function() {
 
-    for (var ch in this.notes) {
-        var arr = this.notes[ch];
-        for (var i=0; i<arr.length; i++) {
+    for (const ch in this.notes) {
+        const arr = this.notes[ch];
+        for (let i=0; i<arr.length; i++) {
             this.createBufferInfoForNoteData(arr[i]);
         }
     }
@@ -420,17 +420,17 @@ AudioPlayer.prototype.getSoundFontPrefix = function(type) {
 };
 
 AudioPlayer.prototype.createBufferInfoForNoteData = function(noteData) {
-    var onEvent = noteData.onEvent;
-    var offEvent = noteData.offEvent;
-    var note = onEvent.n;
+    const onEvent = noteData.onEvent;
+    const offEvent = noteData.offEvent;
+    const note = onEvent.n;
 
-    var channelName = this.data.renderChannelNames[onEvent.c];
-    var isPercussion = channelName.indexOf("percussion") == 0;
+    const channelName = this.data.renderChannelNames[onEvent.c];
+    const isPercussion = channelName.indexOf("percussion") == 0;
 
-    var channelPrefix = channelName.substring(0, channelName.indexOf("Render"));
-    var voiceIndex = parseInt(channelName.substring(channelName.length - 1, channelName.length)) - 1;
+    const channelPrefix = channelName.substring(0, channelName.indexOf("Render"));
+    const voiceIndex = parseInt(channelName.substring(channelName.length - 1, channelName.length)) - 1;
 
-    var sampleNote = clamp(Math.ceil(note / this.notesPerSample) * this.notesPerSample, 0, 127);
+    let sampleNote = clamp(Math.ceil(note / this.notesPerSample) * this.notesPerSample, 0, 127);
 
     if (isPercussion) {
         sampleNote = note;
@@ -445,27 +445,27 @@ AudioPlayer.prototype.createBufferInfoForNoteData = function(noteData) {
 //    logit("playback rate: " + playbackRate);
 
 
-    var map = this.channelMaps[channelName];
+    const map = this.channelMaps[channelName];
 
 //    var lengths = this.bufferLengths[this.soundFontType];
 
-    var lengths = [125];
+    let lengths = [125];
 
-    var program = this.getProgramIndex(map);
+    const program = this.getProgramIndex(map);
 
-    var programDir = "program" + program;
+    let programDir = "program" + program;
     if (isPercussion) {
         lengths = this.percussionBufferLengths;
         programDir = "percussion";
     }
 
-    var noteLength = (noteData.offTime - noteData.onTime);
-    var lengthMillis = 1000 * noteLength;
+    const noteLength = (noteData.offTime - noteData.onTime);
+    const lengthMillis = 1000 * noteLength;
 
-    var bestLength = lengths[0];
+    let bestLength = lengths[0];
     // Find the best length
-    for (var i=0; i<lengths.length; i++) {
-        var length = lengths[i];
+    for (let i=0; i<lengths.length; i++) {
+        const length = lengths[i];
         if (length <= lengthMillis) {
             bestLength = length;
         }
@@ -473,12 +473,12 @@ AudioPlayer.prototype.createBufferInfoForNoteData = function(noteData) {
 
 //    logit("bestLength " + bestLength + " for length: " + lengthMillis + " " + (noteData.offEvent.t - noteData.onEvent.t));
 
-    var id = this.getBufferInfoId(noteData);
+    const id = this.getBufferInfoId(noteData);
 
-    var bufferInfo = this.bufferInfos[id];
+    let bufferInfo = this.bufferInfos[id];
 
     if (!bufferInfo) {
-        var prefix = this.getSoundFontPrefix(this.soundFontType);
+        const prefix = this.getSoundFontPrefix(this.soundFontType);
 
 //        logit("creating buffer info " + channelName + " " + channelPrefix + " " + voiceIndex);
 
@@ -501,12 +501,12 @@ AudioPlayer.prototype.createBufferInfoForNoteData = function(noteData) {
 AudioPlayer.prototype.getReadyForPlay = function(callback, cancelFunc) {
     this.createBufferInfos();
 
-    var urls = [];
-    var bufferInfoArr = [];
-    for (var id in this.bufferInfos) {
-        var bufferInfo = this.bufferInfos[id];
+    const urls = [];
+    const bufferInfoArr = [];
+    for (const id in this.bufferInfos) {
+        const bufferInfo = this.bufferInfos[id];
         if (!bufferInfo.buffer) {
-            var url = bufferInfo.url;
+            const url = bufferInfo.url;
             if (url) {
                 urls.push(url);
                 bufferInfoArr.push(bufferInfo);
@@ -526,10 +526,10 @@ AudioPlayer.prototype.getReadyForPlay = function(callback, cancelFunc) {
         } else {
             this.audioType= 'audio/ogg';
         }
-        var op = new this.loadSamplesAsyncOperationConstructor({bufferUrls: urls, audioContext: this.context, audioType: this.audioType,
+        const op = new this.loadSamplesAsyncOperationConstructor({bufferUrls: urls, audioContext: this.context, audioType: this.audioType,
             onDone: function() {
-                for (var i=0; i<bufferInfoArr.length; i++) {
-                    var bufferInfo = bufferInfoArr[i];
+                for (let i=0; i<bufferInfoArr.length; i++) {
+                    const bufferInfo = bufferInfoArr[i];
                     bufferInfo.buffer = op.resultBuffers[i];
 //                    logit("Read buffer " + bufferInfo.url);
                 }
@@ -547,15 +547,15 @@ AudioPlayer.prototype.getReadyForPlay = function(callback, cancelFunc) {
 
 
 AudioPlayer.prototype.scheduleControl = function(cEvent) {
-    var delay = 0.1;
-    var time = cEvent.seconds + this.contextOffset + delay;
+    const delay = 0.1;
+    const time = cEvent.seconds + this.contextOffset + delay;
 
-    var channelIndex = cEvent.c;
-    var value = cEvent.v;
+    const channelIndex = cEvent.c;
+    const value = cEvent.v;
 
 //    logit("Scheduling control " + channelIndex + " " + value + " " + channelName);
 
-    var info = this.getChannelInfoForControlChannel(channelIndex);
+    const info = this.getChannelInfoForControlChannel(channelIndex);
 
     this.scheduleControlWithChannelInfo(info, value, time);
 };
@@ -563,26 +563,26 @@ AudioPlayer.prototype.scheduleControl = function(cEvent) {
 
 
 AudioPlayer.prototype.getChannelInfoForControlChannel = function(cChannelIndex) {
-    var info = this.controlChannelInfos[cChannelIndex];
+    let info = this.controlChannelInfos[cChannelIndex];
 
     if (!info) {
 
         info = {};
 
-        var cChannelName = this.data.controlChannelNames[cChannelIndex];
+        const cChannelName = this.data.controlChannelNames[cChannelIndex];
 
-        var index = -1;
+        let index = -1;
 
-        var str = "ControlChannel";
-        var wanted = cChannelName.substring(0, cChannelName.indexOf(str)) + "RenderChannel" + cChannelName.charAt(cChannelName.length - 1);
+        const str = "ControlChannel";
+        const wanted = cChannelName.substring(0, cChannelName.indexOf(str)) + "RenderChannel" + cChannelName.charAt(cChannelName.length - 1);
 
-        var controlType = cChannelName.substring(cChannelName.indexOf(str) + str.length, cChannelName.length - 1);
+        const controlType = cChannelName.substring(cChannelName.indexOf(str) + str.length, cChannelName.length - 1);
         info.controlType = controlType;
 
 //        logit(controlType);
         // Find the index for
-        for (var i=0; i<this.data.renderChannelNames.length; i++) {
-            var rChannelName = this.data.renderChannelNames[i];
+        for (let i=0; i<this.data.renderChannelNames.length; i++) {
+            const rChannelName = this.data.renderChannelNames[i];
 
 //            logit(cChannelName + " - " + wanted + " " + rChannelName);
 
@@ -593,7 +593,7 @@ AudioPlayer.prototype.getChannelInfoForControlChannel = function(cChannelIndex) 
         }
 
         if (index != -1) {
-            var nodes = this.getOrCreateChannelNodes(index);
+            const nodes = this.getOrCreateChannelNodes(index);
             info.nodes = nodes;
 //            logit("Found render channel for " + cChannelName);
         } else {

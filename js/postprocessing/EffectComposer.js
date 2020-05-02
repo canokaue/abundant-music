@@ -10,8 +10,8 @@ THREE.EffectComposer = function ( renderer, renderTarget ) {
 
 	if ( this.renderTarget1 === undefined ) {
 
-		var width = window.innerWidth || 1;
-		var height = window.innerHeight || 1;
+		const width = window.innerWidth || 1;
+		const height = window.innerHeight || 1;
 
 		this.renderTargetParameters = { minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter, format: THREE.RGBFormat, stencilBuffer: false };
 		this.renderTarget1 = new THREE.WebGLRenderTarget( width, height, this.renderTargetParameters );
@@ -36,7 +36,7 @@ THREE.EffectComposer.prototype = {
 
 	swapBuffers: function() {
 
-		var tmp = this.readBuffer;
+		const tmp = this.readBuffer;
 		this.readBuffer = this.writeBuffer;
 		this.writeBuffer = tmp;
 
@@ -49,15 +49,16 @@ THREE.EffectComposer.prototype = {
 	},
 
 	render: function ( delta ) {
+        this.writeBuffer = this.renderTarget1;
+        this.readBuffer = this.renderTarget2;
 
-		this.writeBuffer = this.renderTarget1;
-		this.readBuffer = this.renderTarget2;
+        let maskActive = false;
 
-		var maskActive = false;
+        let pass;
+        let i;
+        const il = this.passes.length;
 
-		var pass, i, il = this.passes.length;
-
-		for ( i = 0; i < il; i ++ ) {
+        for ( i = 0; i < il; i ++ ) {
 
 			pass = this.passes[ i ];
 
@@ -69,7 +70,7 @@ THREE.EffectComposer.prototype = {
 
 				if ( maskActive ) {
 
-					var context = this.renderer.context;
+					const context = this.renderer.context;
 
 					context.stencilFunc( context.NOTEQUAL, 1, 0xffffffff );
 
@@ -94,8 +95,7 @@ THREE.EffectComposer.prototype = {
 			}
 
 		}
-
-	},
+    },
 
 	reset: function ( renderTarget ) {
 

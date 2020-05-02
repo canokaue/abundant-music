@@ -1,5 +1,5 @@
 
-var VisualizerMode = {
+const VisualizerMode = {
     PLAY: 0,
     PAUSE: 1,
     STOP: 2
@@ -65,11 +65,11 @@ Visualizer.prototype.resetRenderData = function() {
 
 
 
-var Visualizer3DPlayMovementMode = {
+const Visualizer3DPlayMovementMode = {
     ROTATE: 0,
     PAN: 1
 };
-var Visualizer3DPauseMovementMode = {
+const Visualizer3DPauseMovementMode = {
     ROTATE: 0,
     PAN: 1
 };
@@ -92,7 +92,7 @@ function Visualizer3D(canvas, options) {
 
         this.currentAngle = 0;
 
-        var that = this;
+        const that = this;
 
 //        $(canvas).on("touchmove", function (event) {
 //            var e = event.originalEvent;
@@ -128,8 +128,8 @@ function Visualizer3D(canvas, options) {
 
         $(document).on("mousemove", function(event) {
             if (that.mouseCanvasDown) {
-                var dx = event.pageX - that.mousePageX;
-                var dy = event.pageY - that.mousePageY;
+                const dx = event.pageX - that.mousePageX;
+                const dy = event.pageY - that.mousePageY;
                 that.mouseCanvasDragDx += dx;
                 that.mouseCanvasDragDy += dy;
             }
@@ -159,12 +159,12 @@ function Visualizer3D(canvas, options) {
         this.stopMovementMode = Visualizer3DStopMovementMode.PAN_INTERACTIVE_HOVER;
         this.pauseMovementMode = Visualizer3DPauseMovementMode.PAN;
         this.beatLengthScale = 2.0;
-        var w = canvas.width;
-        var h = canvas.height;
+        const w = canvas.width;
+        const h = canvas.height;
 
-        var fov = 75;
-        var near = 1;
-        var far = 1000;
+        const fov = 75;
+        const near = 1;
+        const far = 1000;
 
         this.canvas = canvas;
 //        this.camera = new THREE.PerspectiveCamera( fov, w / h, near, far );
@@ -180,7 +180,7 @@ function Visualizer3D(canvas, options) {
         this.landscapeChunkSize = 128;
         this.landscapeChunkDivisions = this.getLandscapeChunkDivisions();
 
-        var rnd = new MersenneTwister(3423432);
+        const rnd = new MersenneTwister(3423432);
         this.perlin = new ClassicalNoise(rnd);
 
         this.frustumChunks = new FrustumCullingChunks();
@@ -212,8 +212,8 @@ Visualizer3D.prototype.clearHighlightNotes = function() {
     this.middleLight.intensity = 0;
     this.lowerLight.intensity = 0;
 
-    for (var i=0; i<this.allNoteDatas.length; i++) {
-        var dat = this.allNoteDatas[i];
+    for (let i=0; i<this.allNoteDatas.length; i++) {
+        const dat = this.allNoteDatas[i];
         dat.mesh.scale.set(dat.w, 1, 1);
         dat.material.emissive = new THREE.Color(dat.normalEmissive);
         dat.material.color = new THREE.Color(dat.normalColor);
@@ -221,14 +221,14 @@ Visualizer3D.prototype.clearHighlightNotes = function() {
 };
 
 Visualizer3D.prototype.highlightNotes = function(beat) {
-    var b = Math.floor(beat);
+    const b = Math.floor(beat);
 //    logit("Checking beat " + beat);
 
     this.upperLight.intensity = 0;
     this.middleLight.intensity = 0;
     this.lowerLight.intensity = 0;
 
-    var lightDatas = [
+    const lightDatas = [
         {
             light: this.upperLight,
             colorVec: new THREE.Vector3(0.01, 0.01, 0.01),
@@ -251,32 +251,32 @@ Visualizer3D.prototype.highlightNotes = function(beat) {
 
 
     if (b >= 0) {
-        var arr = this.noteCollisionGrid[b];
+        const arr = this.noteCollisionGrid[b];
 
         if (arr) {
 //            logit("Checking beat " + beat + " " + arr.length);
 
 
             for (var i=0; i<arr.length; i++) {
-                var dat = arr[i];
-                var onEvent = dat.onEvent;
-                var channel = onEvent.c;
+                const dat = arr[i];
+                const onEvent = dat.onEvent;
+                const channel = onEvent.c;
 //                logit(channel);
 
-                var channelName = this.renderChannelNames[channel];
+                const channelName = this.renderChannelNames[channel];
 
-                var offEvent = dat.offEvent;
+                const offEvent = dat.offEvent;
                 if (beat >= onEvent.t && beat <= offEvent.t) {
-                    var frac = (beat - onEvent.t) / (offEvent.t - onEvent.t);
-                    var invFrac = 1.0 - frac;
-                    var amp = 0.7;
-                    var newEmissive = new THREE.Color(dat.normalColor);
-                    var newColor = new THREE.Color(dat.playColor);
+                    const frac = (beat - onEvent.t) / (offEvent.t - onEvent.t);
+                    const invFrac = 1.0 - frac;
+                    const amp = 0.7;
+                    const newEmissive = new THREE.Color(dat.normalColor);
+                    const newColor = new THREE.Color(dat.playColor);
                     dat.material.emissive = newEmissive;
                     dat.material.color = newColor;
                     dat.mesh.scale.set(dat.w, 1 + amp * invFrac, 1 + amp * invFrac);
 
-                    var lightIndex = 0;
+                    let lightIndex = 0;
                     if (channelName.indexOf("inner") == 0) {
                         lightIndex = 1;
                     } else if (channelName.indexOf("bass") == 0 || channelName.indexOf("percussion") == 0) {
@@ -284,7 +284,7 @@ Visualizer3D.prototype.highlightNotes = function(beat) {
                     }
                     var lightData = lightDatas[lightIndex];
 
-                    var intensity = Math.max(0.5, invFrac);
+                    const intensity = Math.max(0.5, invFrac);
 
                     lightData.colorVec.add(new THREE.Vector3(newEmissive.r * intensity, newEmissive.g * intensity, newEmissive.b * intensity));
                     lightData.pos.add(new THREE.Vector3(dat.minX, dat.minY, dat.minZ));
@@ -307,7 +307,7 @@ Visualizer3D.prototype.highlightNotes = function(beat) {
 //            logit(lightData.pos.x + ", " + lightData.pos.y + ", " + lightData.pos.z);
             lightData.light.intensity = 0.5 * lightData.colorVec.length();
             lightData.colorVec.normalize();
-            var lightColor = new THREE.Color();
+            const lightColor = new THREE.Color();
             lightColor.r = lightData.colorVec.x;
             lightColor.g = lightData.colorVec.y;
             lightColor.b = lightData.colorVec.z;
@@ -319,45 +319,45 @@ Visualizer3D.prototype.highlightNotes = function(beat) {
 Visualizer3D.prototype.step = function(dt) {
 
 
-    var towardsPosition = new THREE.Vector3();
-    var towardsLookAt = new THREE.Vector3(1, 0, 0);
+    const towardsPosition = new THREE.Vector3();
+    const towardsLookAt = new THREE.Vector3(1, 0, 0);
 
-    var currentPosition = new THREE.Vector3().copy(this.camera.position);
-    var currentLookAt = this.currentLookAt;
+    const currentPosition = new THREE.Vector3().copy(this.camera.position);
+    let currentLookAt = this.currentLookAt;
 
-    var factor = 0.9;
+    const factor = 0.9;
 
 
-    var docW = window.innerWidth;
-    var docH = window.innerHeight;
+    let docW = window.innerWidth;
+    let docH = window.innerHeight;
 
-    var fractionX = this.mousePageX / docW;
-    var fractionY = this.mousePageY / docH;
+    let fractionX = this.mousePageX / docW;
+    const fractionY = this.mousePageY / docH;
 
-    var fractionCanvasDragDx = this.mouseCanvasDragDx / docW;
-    var fractionCanvasDragDy = this.mouseCanvasDragDy / docH;
+    const fractionCanvasDragDx = this.mouseCanvasDragDx / docW;
+    const fractionCanvasDragDy = this.mouseCanvasDragDy / docH;
 
-    var dSec = dt * 0.001;
+    const dSec = dt * 0.001;
 
     if (!docW || !docH) {
-        var $document = $(document);
+        const $document = $(document);
         docW = $document.innerWidth();
         docH = $document.innerWidth();
     }
 
     if (dSec > 0 && docW && docH) {
         if (this.mouseCanvasDown) {
-            var velFactor = 0.5;
-            var invVelFactor = 1.0 - velFactor;
+            const velFactor = 0.5;
+            const invVelFactor = 1.0 - velFactor;
 
-            var fractionCanvasDragDxDt = fractionCanvasDragDx / dSec;
-            var fractionCanvasDragDyDt = fractionCanvasDragDy / dSec;
+            const fractionCanvasDragDxDt = fractionCanvasDragDx / dSec;
+            const fractionCanvasDragDyDt = fractionCanvasDragDy / dSec;
             this.fractionDragVelX = this.fractionDragVelX * velFactor + fractionCanvasDragDxDt * invVelFactor;
             this.fractionDragVelY = this.fractionDragVelY * velFactor + fractionCanvasDragDyDt * invVelFactor;
         } else {
-            var dragCoeff = 1.5;
-            var forceX = -dragCoeff * this.fractionDragVelX;
-            var forceY = -dragCoeff * this.fractionDragVelY;
+            const dragCoeff = 1.5;
+            const forceX = -dragCoeff * this.fractionDragVelX;
+            const forceY = -dragCoeff * this.fractionDragVelY;
             this.fractionDragVelX += forceX * dSec;
             this.fractionDragVelY += forceY * dSec;
         }
@@ -366,7 +366,7 @@ Visualizer3D.prototype.step = function(dt) {
     switch (this.mode) {
         case VisualizerMode.PLAY:
             var posX = this.currentBeatTime * this.beatLengthScale;
-            var distanceZ = 70;
+            const distanceZ = 70;
 
             var lookAtY = 70;
 
@@ -378,7 +378,7 @@ Visualizer3D.prototype.step = function(dt) {
         case VisualizerMode.PAUSE:
         case VisualizerMode.STOP:
             this.currentStopBeatTime += dt * 0.002;
-            var seconds = this.currentStopBeatTime;
+            const seconds = this.currentStopBeatTime;
 //            this.clearHighlightNotes();
             switch (this.stopMovementMode) {
                 case Visualizer3DStopMovementMode.ROTATE_INTERACTIVE_HOVER:
@@ -428,7 +428,7 @@ Visualizer3D.prototype.step = function(dt) {
                     this.currentAngle += this.fractionDragVelX * dSec;
 
                     var camPos = this.camera.position;
-                    var targetDistance = clamp(camPos.y + docH * this.fractionDragVelY * dSec, 40, 500);
+                    const targetDistance = clamp(camPos.y + docH * this.fractionDragVelY * dSec, 40, 500);
 
                     var height = targetDistance;
                     var distance = targetDistance;
@@ -452,14 +452,14 @@ Visualizer3D.prototype.step = function(dt) {
                     towardsLookAt.set(targetX, 60, 0);
                     break;
                 case Visualizer3DStopMovementMode.PAN:
-                    var beatsPerSeconds = 1;
+                    const beatsPerSeconds = 1;
 
                     var distance = 60;
-                    var frac = 0;
+                    let frac = 0;
                     if (this.maxBeat > 5) {
-                        var period = 2 * this.maxBeat * this.beatLengthScale;
+                        const period = 2 * this.maxBeat * this.beatLengthScale;
 
-                        var x = beatsPerSeconds * this.beatLengthScale * seconds;
+                        const x = beatsPerSeconds * this.beatLengthScale * seconds;
                         frac = mod(x, period) / period;
 
                         if (frac >= 0.5) {
@@ -478,7 +478,7 @@ Visualizer3D.prototype.step = function(dt) {
 
                     var distance = 100;
                     var height = 100;
-                    var frequency = 0.01;
+                    const frequency = 0.01;
                     var phase = frequency * Math.PI * 2 * seconds + Math.PI / 2;
 
                     towardsPosition.set(100 * Math.cos(phase) + centerX, height, 100 * Math.sin(phase));
@@ -488,7 +488,7 @@ Visualizer3D.prototype.step = function(dt) {
             break;
     }
 
-    var invFactor = 1.0 - factor;
+    const invFactor = 1.0 - factor;
 
     this.camera.position.set(towardsPosition.x * invFactor + currentPosition.x * factor,
         towardsPosition.y * invFactor + currentPosition.y * factor,
@@ -497,7 +497,7 @@ Visualizer3D.prototype.step = function(dt) {
     currentLookAt = new THREE.Vector3(towardsLookAt.x * invFactor + currentLookAt.x * factor,
         towardsLookAt.y * invFactor + currentLookAt.y * factor,
         towardsLookAt.z * invFactor + currentLookAt.z * factor);
-    var distanceToLookAt = this.camera.position.distanceTo(currentLookAt);
+    const distanceToLookAt = this.camera.position.distanceTo(currentLookAt);
     if (distanceToLookAt < 0.0001) {
         // Crazy, but it feels better to deal with this than to hope for the best :)
         currentLookAt.add(new THREE.Vector3(0.1 * Math.random() + 0.01, 0.1 * Math.random(), 0.1 * Math.random()));
@@ -506,7 +506,7 @@ Visualizer3D.prototype.step = function(dt) {
     this.camera.lookAt(currentLookAt);
     this.currentLookAt = currentLookAt;
 
-    var camMatrix = new THREE.Matrix4();
+    const camMatrix = new THREE.Matrix4();
     camMatrix.multiplyMatrices( this.camera.projectionMatrix, this.camera.matrixWorldInverse );
     this.frustumChunks.updateScene(this.scene, camMatrix);
 
@@ -519,26 +519,26 @@ Visualizer3D.prototype.step = function(dt) {
 
 Visualizer3D.prototype.getLandscapeNormal = function(x, y) {
 
-    var d = 0.1;
-    var h = this.randomHeight(x, y);
-    var dzdx = (this.randomHeight(x + d, y) - h) / d;
-    var dzdy = (this.randomHeight(x, y + d) - h) / d;
+    const d = 0.1;
+    const h = this.randomHeight(x, y);
+    const dzdx = (this.randomHeight(x + d, y) - h) / d;
+    const dzdy = (this.randomHeight(x, y + d) - h) / d;
 
 //    logit("d stuff " + dzdx + " " + dzdy);
 
-    var result = new THREE.Vector3(-dzdx, 1, -dzdy).normalize();
+    const result = new THREE.Vector3(-dzdx, 1, -dzdy).normalize();
 
     return result;
 };
 
 Visualizer3D.prototype.randomHeight = function(x, y) {
-    var freq = 3;
+    let freq = 3;
 
-    var landscapeChunkSize = this.landscapeChunkSize;
-    var perlin = this.perlin;
+    const landscapeChunkSize = this.landscapeChunkSize;
+    const perlin = this.perlin;
 
-    var z = 34.342352
-    var n = perlin.noise(freq * x / landscapeChunkSize, freq * y / landscapeChunkSize, z);
+    let z = 34.342352;
+    let n = perlin.noise(freq * x / landscapeChunkSize, freq * y / landscapeChunkSize, z);
 
     freq *= 2;
     z = 21.23423;
@@ -549,15 +549,15 @@ Visualizer3D.prototype.randomHeight = function(x, y) {
     n += 0.25 * perlin.noise(freq * x / landscapeChunkSize, freq * y / landscapeChunkSize, z);
 //        var n = perlin.noise(x, y, 21.32124432);
 
-    var result = 40 + n * 20;
+    let result = 40 + n * 20;
 
-    var corridorRadius = 35;
-    var corridorHeight = 15;
+    const corridorRadius = 35;
+    const corridorHeight = 15;
 
-    var corridorMaxInfulence = 0.5;
-    var absY = Math.abs(y);
+    const corridorMaxInfulence = 0.5;
+    const absY = Math.abs(y);
     if (absY < corridorRadius) {
-        var mixValue = (corridorRadius - absY) / corridorRadius;
+        let mixValue = (corridorRadius - absY) / corridorRadius;
         mixValue = Math.min(mixValue, corridorMaxInfulence);
         result = mixValue * corridorHeight + (1.0 - mixValue) * result;
     }
@@ -568,35 +568,35 @@ Visualizer3D.prototype.randomHeight = function(x, y) {
 
 Visualizer3D.prototype.createLandscapeChunk = function(cx, cz) {
 
-    var landscapeChunkSize = this.landscapeChunkSize;
-    var landscapeChunkDivisions = this.landscapeChunkDivisions;
+    const landscapeChunkSize = this.landscapeChunkSize;
+    const landscapeChunkDivisions = this.landscapeChunkDivisions;
 
 
-    var landscapeChunkParent = new THREE.Object3D();
-    var landscapeGeom = new THREE.PlaneGeometry(landscapeChunkSize, landscapeChunkSize,
+    const landscapeChunkParent = new THREE.Object3D();
+    const landscapeGeom = new THREE.PlaneGeometry(landscapeChunkSize, landscapeChunkSize,
         landscapeChunkDivisions-1, landscapeChunkDivisions-1);
-    var m2 = new THREE.Matrix4();
+    const m2 = new THREE.Matrix4();
     m2.rotateX(-Math.PI * 0.5);
 
-    var chunkOffsetX = cx * landscapeChunkSize;
-    var chunkOffsetZ = cz * landscapeChunkSize;
+    const chunkOffsetX = cx * landscapeChunkSize;
+    const chunkOffsetZ = cz * landscapeChunkSize;
 
     landscapeGeom.applyMatrix(m2);
-    var step = landscapeChunkSize / landscapeChunkDivisions;
+    const step = landscapeChunkSize / landscapeChunkDivisions;
     for ( var i = 0, l = landscapeGeom.vertices.length; i < l; i ++ ) {
-        var x = i % landscapeChunkDivisions;
-        var y = ~~ ( i / landscapeChunkDivisions );
-        var v = landscapeGeom.vertices[i];
+        const x = i % landscapeChunkDivisions;
+        const y = ~~ ( i / landscapeChunkDivisions );
+        const v = landscapeGeom.vertices[i];
         v.y = this.randomHeight(v.x + chunkOffsetX, v.z + chunkOffsetZ);
     }
 
-    var vertices = landscapeGeom.vertices;
+    const vertices = landscapeGeom.vertices;
     for (var i=0; i<landscapeGeom.faces.length; i++) {
-        var face = landscapeGeom.faces[i];
-        var va = vertices[face.a];
-        var vb = vertices[face.b];
-        var vc = vertices[face.c];
-        var vd = vertices[face.d];
+        const face = landscapeGeom.faces[i];
+        const va = vertices[face.a];
+        const vb = vertices[face.b];
+        const vc = vertices[face.c];
+        const vd = vertices[face.d];
         face.vertexNormals[ 0 ].copy(this.getLandscapeNormal(va.x + chunkOffsetX, va.z + chunkOffsetZ));
         face.vertexNormals[ 1 ].copy(this.getLandscapeNormal(vb.x + chunkOffsetX, vb.z + chunkOffsetZ));
         face.vertexNormals[ 2 ].copy(this.getLandscapeNormal(vc.x + chunkOffsetX, vc.z + chunkOffsetZ));
@@ -609,11 +609,11 @@ Visualizer3D.prototype.createLandscapeChunk = function(cx, cz) {
     landscapeGeom.normalsNeedUpdate = true;
 
 //    var material = this.getLandscapeMaterial(0x444444, 0x000000);
-    var material = this.getLandscapeMaterial(0x444444, 0x333333);
+    const material = this.getLandscapeMaterial(0x444444, 0x333333);
 
     landscapeGeom.computeCentroids();
 
-    var mesh = new THREE.Mesh( landscapeGeom, material );
+    const mesh = new THREE.Mesh( landscapeGeom, material );
     landscapeChunkParent.add(mesh);
 
     landscapeChunkParent.position.set(chunkOffsetX, 0, chunkOffsetZ)
@@ -628,17 +628,17 @@ Visualizer3D.prototype.createLandscape = function() {
 
 //    var landscapeParent = new THREE.Object3D();
 
-    var minChunkIndexX = -1;
-    var maxChunkIndexX = 5;
-    var minChunkIndexZ = -1;
-    var maxChunkIndexZ = 1;
-    var chunkRad = this.landscapeChunkSize / Math.sqrt(2);
+    const minChunkIndexX = -1;
+    const maxChunkIndexX = 5;
+    const minChunkIndexZ = -1;
+    const maxChunkIndexZ = 1;
+    const chunkRad = this.landscapeChunkSize / Math.sqrt(2);
 
-    for (var x=minChunkIndexX; x<=maxChunkIndexX; x++) {
-        for (var z=minChunkIndexZ; z<=maxChunkIndexZ; z++) {
-            var xIndex = x;
-            var yIndex = z;
-            var lsChunk = this.createLandscapeChunk(xIndex, yIndex);
+    for (let x=minChunkIndexX; x<=maxChunkIndexX; x++) {
+        for (let z=minChunkIndexZ; z<=maxChunkIndexZ; z++) {
+            const xIndex = x;
+            const yIndex = z;
+            const lsChunk = this.createLandscapeChunk(xIndex, yIndex);
             this.scene.add(lsChunk);
             this.frustumChunks.addChunk(lsChunk, {radius: chunkRad});
         }
@@ -661,8 +661,8 @@ Visualizer3D.prototype.resized = function(w, h) {
 };
 
 Visualizer3D.prototype.addGlobalLights = function() {
-    var light = new THREE.DirectionalLight(0xffffff, 0.5);
-    var pos = new THREE.Vector3(0.5, 0.5, 0.5).normalize();
+    const light = new THREE.DirectionalLight(0xffffff, 0.5);
+    const pos = new THREE.Vector3(0.5, 0.5, 0.5).normalize();
     light.position.copy(pos);
     this.scene.add(light);
 
@@ -712,19 +712,19 @@ Visualizer3D.prototype.addRenderData = function(data, length) {
 
 //    logit(this.renderChannelNames);
 
-    var events = data.events;
+    const events = data.events;
 
-    var parent = new THREE.Object3D();
+    const parent = new THREE.Object3D();
 //    parent.position.set(beatOffset * this.beatLengthScale, 0, 0);
 
     this.maxBeat = Math.max(this.maxBeat, length);
 
 //    logit("setting pos to " + beatOffset * this.beatLengthScale);
 
-    var notesDone = gatherNotesFromEvents(events);
+    const notesDone = gatherNotesFromEvents(events);
 
 
-    var channelColors = {
+    const channelColors = {
         melody: [0xff0000, 0xff8800, 0xff8888],
         inner1: [0x00ff00, 0x88ff00, 0x88ff88],
         inner2: [0x0000ff, 0x8800ff, 0x8888ff],
@@ -732,10 +732,10 @@ Visualizer3D.prototype.addRenderData = function(data, length) {
         percussion: [0x666666]
     };
 
-    var channelPlayColors = this.getChannelPlayColors();
+    const channelPlayColors = this.getChannelPlayColors();
 
 
-    var channelEmissiveColors = {
+    const channelEmissiveColors = {
         melody: [0x020000, 0x020100, 0x020101],
         inner1: [0x000200, 0x010200, 0x010201],
         inner2: [0x000002, 0x010002, 0x010102],
@@ -743,7 +743,7 @@ Visualizer3D.prototype.addRenderData = function(data, length) {
         percussion: [0x010101]
     };
 
-    var channelZs = {
+    const channelZs = {
         melody: 2,
         inner1: 1,
         inner2: 0,
@@ -752,8 +752,8 @@ Visualizer3D.prototype.addRenderData = function(data, length) {
     };
 
     function getFromPrefix(data, str, def) {
-        var result = def;
-        for (var p in data) {
+        let result = def;
+        for (const p in data) {
             if (str.indexOf(p) == 0) {
                 result = data[p];
             }
@@ -761,52 +761,52 @@ Visualizer3D.prototype.addRenderData = function(data, length) {
         return result;
     }
 
-    var zSeparation = 2;
+    const zSeparation = 2;
 
-    var noteGeom = this.createNoteGeometry();
+    const noteGeom = this.createNoteGeometry();
 
     // Prepare the collision grid. Make sure that every index has an array.
-    for (var i=0; i<=length; i++) {
+    for (let i=0; i<=length; i++) {
         this.noteCollisionGrid[i] = [];
     }
 
     this.allNoteDatas = [];
-    for (var ch in notesDone) {
-        var rawChannelIndex = parseInt(ch);
-        var realChannelName = data.renderChannelNames[rawChannelIndex];
+    for (const ch in notesDone) {
+        const rawChannelIndex = parseInt(ch);
+        const realChannelName = data.renderChannelNames[rawChannelIndex];
 
         if (realChannelName == "chordsRenderChannel") {
             continue;
         }
 
-        var datas = notesDone[ch];
+        const datas = notesDone[ch];
 //    logit("Adding " + ch + " to scene");
 
         addAll(this.allNoteDatas, datas);
 
-        var channelIndex = parseInt(realChannelName.charAt(realChannelName.length - 1)) - 1;
+        const channelIndex = parseInt(realChannelName.charAt(realChannelName.length - 1)) - 1;
 
 //        logit("real channel: " + realChannelName + " " + channelIndex);
 
-        var color = getFromPrefix(channelColors, realChannelName, 0xffffff)[channelIndex];
-        var playColor = getFromPrefix(channelPlayColors, realChannelName, 0xffffff)[channelIndex];
-        var emissive = getFromPrefix(channelEmissiveColors, realChannelName, 0xffffff)[channelIndex];
-        var z = zSeparation * getFromPrefix(channelZs, realChannelName, -4);
+        const color = getFromPrefix(channelColors, realChannelName, 0xffffff)[channelIndex];
+        const playColor = getFromPrefix(channelPlayColors, realChannelName, 0xffffff)[channelIndex];
+        const emissive = getFromPrefix(channelEmissiveColors, realChannelName, 0xffffff)[channelIndex];
+        const z = zSeparation * getFromPrefix(channelZs, realChannelName, -4);
 
-        for (var j=0; j<datas.length; j++) {
-            var dat = datas[j];
-            var onEvent = dat.onEvent;
-            var offEvent = dat.offEvent;
+        for (let j=0; j<datas.length; j++) {
+            const dat = datas[j];
+            const onEvent = dat.onEvent;
+            const offEvent = dat.offEvent;
             if (!offEvent) {
 //            logit("Found on event without off event in final for");
                 continue;
             }
 
 
-            var minX = Math.floor(onEvent.t);
-            var maxX = Math.ceil(offEvent.t);
-            for (var xx = minX; xx <= maxX; xx++) {
-                var arr = this.noteCollisionGrid[xx];
+            const minX = Math.floor(onEvent.t);
+            const maxX = Math.ceil(offEvent.t);
+            for (let xx = minX; xx <= maxX; xx++) {
+                let arr = this.noteCollisionGrid[xx];
                 if (!arr) {
                     arr = [];
                     this.noteCollisionGrid[xx] = arr;
@@ -814,15 +814,15 @@ Visualizer3D.prototype.addRenderData = function(data, length) {
                 arr.push(dat);
             }
 
-            var noteDepth = 1;
-            var noteHeight = 1;
+            const noteDepth = 1;
+            const noteHeight = 1;
 
-            var x = onEvent.t * this.beatLengthScale;
-            var y = onEvent.n;
-            var w = this.beatLengthScale * (Math.max(0.05, (offEvent.t - onEvent.t - 0.1)));
+            const x = onEvent.t * this.beatLengthScale;
+            const y = onEvent.n;
+            const w = this.beatLengthScale * (Math.max(0.05, (offEvent.t - onEvent.t - 0.1)));
 
-            var material = this.getNoteMaterial(color, emissive);
-            var mesh = new THREE.Mesh( noteGeom, material );
+            const material = this.getNoteMaterial(color, emissive);
+            const mesh = new THREE.Mesh( noteGeom, material );
 
             dat.minX = x;
             dat.maxX = offEvent.t * this.beatLengthScale;
@@ -859,33 +859,33 @@ Visualizer3D.prototype.updateSectionFramework = function() {
     if (this.songStructureInfo && this.sectionTimes) {
 
 
-        var frameworkObject = new THREE.Object3D();
+        const frameworkObject = new THREE.Object3D();
         this.sectionMarkers = {
             frameworkObject: frameworkObject
         };
 
 
         function createLine(fx, fy, fz, tx, ty, tz, mat) {
-            var geometry = new THREE.Geometry();
-            var from = new THREE.Vector3();
+            const geometry = new THREE.Geometry();
+            const from = new THREE.Vector3();
             from.x = fx;
             from.z = fz;
             from.y = fy;
-            var to = new THREE.Vector3();
+            const to = new THREE.Vector3();
             to.x = tx;
             to.z = tz;
             to.y = ty;
             geometry.vertices.push(from);
             geometry.vertices.push(to);
 
-            var line = new THREE.Line( geometry, mat );
+            const line = new THREE.Line( geometry, mat );
             return line;
         }
 
 
         function createText(x, y, z, text, size) {
-            var fontSize = 12;
-            var textMat = new THREE.ParticleCanvasMaterial( {
+            const fontSize = 12;
+            const textMat = new THREE.ParticleCanvasMaterial( {
                 color: 0xffffff,
                 program: function ( context ) {
                     context.scale(1, -1);
@@ -894,7 +894,7 @@ Visualizer3D.prototype.updateSectionFramework = function() {
                 }
             } );
 
-            var particle = new THREE.Particle(textMat);
+            const particle = new THREE.Particle(textMat);
             particle.position.x = x;
             particle.position.y = y;
             particle.position.z = z;
@@ -903,24 +903,24 @@ Visualizer3D.prototype.updateSectionFramework = function() {
         }
 
 
-        var lineMat = new THREE.LineBasicMaterial( { color: 0xffff00, opacity: 0.5 } );
+        const lineMat = new THREE.LineBasicMaterial( { color: 0xffff00, opacity: 0.5 } );
 
-        var sectionTimes = arrayCopy(this.sectionTimes);
+        const sectionTimes = arrayCopy(this.sectionTimes);
         sectionTimes.unshift(0);
 
-        var minY = 20;
-        var maxY = 105;
+        const minY = 20;
+        const maxY = 105;
 
-        var indexInfos = this.songStructureInfo.indexInfos;
+        const indexInfos = this.songStructureInfo.indexInfos;
 
-        for (var i=0; i<sectionTimes.length; i++) {
-            var time = sectionTimes[i];
-            var x = time * this.beatLengthScale;
+        for (let i=0; i<sectionTimes.length; i++) {
+            const time = sectionTimes[i];
+            const x = time * this.beatLengthScale;
             frameworkObject.add(createLine(x, maxY, 0, x, maxY, 0, lineMat));
             frameworkObject.add(createLine(x, minY, 0, x, maxY, 0, lineMat));
 
             if (i < indexInfos.length) {
-                var text = getSongPartName(i, this.songStructureInfo);
+                const text = getSongPartName(i, this.songStructureInfo);
                 frameworkObject.add(createText(x + 1, maxY, 0, text, 2));
             }
         }
@@ -933,8 +933,8 @@ Visualizer3D.prototype.updateSectionFramework = function() {
 
 Visualizer3D.prototype.resetRenderData = function() {
     Visualizer.prototype.resetRenderData.call(this);
-    for (var i=0; i<this.noteChunks.length; i++) {
-        var o = this.noteChunks[i];
+    for (let i=0; i<this.noteChunks.length; i++) {
+        const o = this.noteChunks[i];
         this.scene.remove(o);
     }
 
@@ -951,8 +951,8 @@ Visualizer3D.prototype.resetRenderData = function() {
 function CanvasVisualizer3D(canvas, options) {
     Visualizer3D.call(this, canvas, options);
 
-    var w = canvas.width;
-    var h = canvas.height;
+    const w = canvas.width;
+    const h = canvas.height;
 
     this.renderer = new THREE.CanvasRenderer({canvas: canvas});
     this.renderer.sortObjects = false;
@@ -985,7 +985,7 @@ CanvasVisualizer3D.prototype.getLandscapeChunkDivisions = function() {
 
 
 CanvasVisualizer3D.prototype.getNoteMaterial = function(color, emissive) {
-    var result = new THREE.MeshBasicMaterial( { color: color, emissive: emissive, wireframe: false} );
+    const result = new THREE.MeshBasicMaterial( { color: color, emissive: emissive, wireframe: false} );
     result.side = THREE.DoubleSide;
     return result;
 };
@@ -1002,8 +1002,8 @@ function WebGLVisualizer3D(canvas, options) {
     this.addVignette = getValueOrDefault(options, "addVignette", true);
     this.addSimulatedAA = getValueOrDefault(options, "addSimulatedAA", true);
 
-    var w = canvas.width;
-    var h = canvas.height;
+    const w = canvas.width;
+    const h = canvas.height;
 
     this.renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: false});
     this.renderer.sortObjects = false;
@@ -1014,15 +1014,15 @@ function WebGLVisualizer3D(canvas, options) {
 
 //    var renderTargetParameters = { generateMipmaps: false, minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter, format: THREE.RGBFormat, stencilBuffer: false };
 
-    var renderModel = new THREE.RenderPass( this.scene, this.camera );
-    var effectBloom = new THREE.BloomPass(1, 25, 4.0, 512);
-    var effectCopy = new THREE.ShaderPass( THREE.CopyShader );
+    const renderModel = new THREE.RenderPass( this.scene, this.camera );
+    const effectBloom = new THREE.BloomPass(1, 25, 4.0, 512);
+    const effectCopy = new THREE.ShaderPass( THREE.CopyShader );
 
     this.effectFXAA = new THREE.ShaderPass( THREE.FXAAShader );
 
     this.effectFXAA.uniforms[ 'resolution' ].value.set( 1 / w, 1 / h );
 
-    var vignette = new THREE.ShaderPass(THREE.VignetteShader);
+    const vignette = new THREE.ShaderPass(THREE.VignetteShader);
     vignette.uniforms[ 'darkness' ].value = 1.1;
     vignette.uniforms[ 'offset' ].value = 1;
 

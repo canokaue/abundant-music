@@ -4,7 +4,7 @@ function ModulePropertyInfoProvider(options) {
     this.moduleEditor = getValueOrDefault(options, "moduleEditor", null);
     this.uniqueIdManager = getValueOrDefault(options, "uniqueIdManager", new UniqueIdManager());
 
-    var uidManager = this.uniqueIdManager;
+    const uidManager = this.uniqueIdManager;
 
     this.variablesUidInfo = new GuiUniqueIdInfo({
         manager: uidManager,
@@ -374,7 +374,7 @@ ModulePropertyInfoProvider.prototype.getHarmonyElementConstructorTexts = functio
 
 
 ModulePropertyInfoProvider.prototype.createDefaultBooleanPropertyInfo = function(propName, caption, defaultValue) {
-    var info = new GuiPropertyInfo(
+    const info = new GuiPropertyInfo(
     {
         propertyName: propName,
         propertyCaption: caption,
@@ -387,7 +387,7 @@ ModulePropertyInfoProvider.prototype.createDefaultBooleanPropertyInfo = function
 };
 
 ModulePropertyInfoProvider.prototype.createDefaultFloatPropertyInfo = function(propName, caption, defaultValue) {
-    var info = new GuiPropertyInfo(
+    const info = new GuiPropertyInfo(
     {
         propertyName: propName,
         propertyCaption: caption,
@@ -400,7 +400,7 @@ ModulePropertyInfoProvider.prototype.createDefaultFloatPropertyInfo = function(p
 };
 
 ModulePropertyInfoProvider.prototype.createDefaultIntPropertyInfo = function(propName, caption, defaultValue) {
-    var info = new GuiPropertyInfo(
+    const info = new GuiPropertyInfo(
     {
         propertyName: propName,
         propertyCaption: caption,
@@ -413,7 +413,7 @@ ModulePropertyInfoProvider.prototype.createDefaultIntPropertyInfo = function(pro
 };
 
 ModulePropertyInfoProvider.prototype.createDefaultStringPropertyInfo = function(propName, caption, defaultValue) {
-    var info = new GuiPropertyInfo(
+    const info = new GuiPropertyInfo(
     {
         propertyName: propName,
         propertyCaption: caption,
@@ -426,7 +426,7 @@ ModulePropertyInfoProvider.prototype.createDefaultStringPropertyInfo = function(
 };
 
 ModulePropertyInfoProvider.prototype.createStringTextAreaPropertyInfo = function(propName, caption, defaultValue) {
-    var info = new GuiPropertyInfo(
+    const info = new GuiPropertyInfo(
     {
         propertyName: propName,
         propertyCaption: caption,
@@ -448,7 +448,7 @@ ModulePropertyInfoProvider.prototype.createDefaultScaleIndexPropertyInfo = funct
 };
 
 ModulePropertyInfoProvider.prototype.createDefaultMinIntPropertyInfo = function(propName, caption, defaultValue, minValue) {
-    var info = this.createDefaultIntPropertyInfo(propName, caption, defaultValue);
+    const info = this.createDefaultIntPropertyInfo(propName, caption, defaultValue);
     info.constraints = [
     {
         getMinValue: function() {
@@ -462,7 +462,7 @@ ModulePropertyInfoProvider.prototype.createDefaultMinIntPropertyInfo = function(
 
 ModulePropertyInfoProvider.prototype.createDefaultMinMaxIntPropertyInfo = function(propName, caption, defaultValue,
     minValue, maxValue) {
-    var info = this.createDefaultIntPropertyInfo(propName, caption, defaultValue);
+    const info = this.createDefaultIntPropertyInfo(propName, caption, defaultValue);
     info.constraints = [
     {
         getMinValue: function() {
@@ -477,7 +477,7 @@ ModulePropertyInfoProvider.prototype.createDefaultMinMaxIntPropertyInfo = functi
 };
 
 ModulePropertyInfoProvider.prototype.createDefaultMinFloatPropertyInfo = function(propName, caption, defaultValue, minValue) {
-    var info = this.createDefaultFloatPropertyInfo(propName, caption, defaultValue);
+    const info = this.createDefaultFloatPropertyInfo(propName, caption, defaultValue);
     info.constraints = [
     {
         getMinValue: function() {
@@ -491,7 +491,7 @@ ModulePropertyInfoProvider.prototype.createDefaultMinFloatPropertyInfo = functio
 
 ModulePropertyInfoProvider.prototype.createDefaultMinMaxFloatPropertyInfo = function(propName, caption, defaultValue,
     minValue, maxValue) {
-    var info = this.createDefaultFloatPropertyInfo(propName, caption, defaultValue);
+    const info = this.createDefaultFloatPropertyInfo(propName, caption, defaultValue);
     info.constraints = [
     {
         getMinValue: function() {
@@ -507,7 +507,7 @@ ModulePropertyInfoProvider.prototype.createDefaultMinMaxFloatPropertyInfo = func
 
 
 ModulePropertyInfoProvider.prototype.createDefaultRangePropertyInfo = function(propName, caption, defaultValue, dataType) {
-    var info = new GuiPropertyInfo(
+    const info = new GuiPropertyInfo(
     {
         propertyName: propName,
         propertyCaption: caption,
@@ -552,7 +552,7 @@ ModulePropertyInfoProvider.prototype.createDefaultFloatRangePropertyInfo = funct
 
 
 ModulePropertyInfoProvider.prototype.createDefaultIntListPropertyInfo = function(propName, caption, defaultValue) {
-    var info = new GuiPropertyInfo(
+    const info = new GuiPropertyInfo(
     {
         propertyName: propName,
         propertyCaption: caption,
@@ -565,7 +565,7 @@ ModulePropertyInfoProvider.prototype.createDefaultIntListPropertyInfo = function
 };
 
 ModulePropertyInfoProvider.prototype.createDefaultIntList2DPropertyInfo = function(propName, caption, defaultValue) {
-    var info = new GuiPropertyInfo(
+    const info = new GuiPropertyInfo(
     {
         propertyName: propName,
         propertyCaption: caption,
@@ -578,7 +578,7 @@ ModulePropertyInfoProvider.prototype.createDefaultIntList2DPropertyInfo = functi
 };
 
 ModulePropertyInfoProvider.prototype.createDefaultFloatList2DPropertyInfo = function(propName, caption, defaultValue) {
-    var info = new GuiPropertyInfo(
+    const info = new GuiPropertyInfo(
     {
         propertyName: propName,
         propertyCaption: caption,
@@ -591,7 +591,7 @@ ModulePropertyInfoProvider.prototype.createDefaultFloatList2DPropertyInfo = func
 };
 
 ModulePropertyInfoProvider.prototype.createDefaultIntRangeListPropertyInfo = function(propName, caption, defaultValue) {
-    var info = this.createDefaultIntList2DPropertyInfo(propName, caption, defaultValue);
+    const info = this.createDefaultIntList2DPropertyInfo(propName, caption, defaultValue);
 
     info.constraints = [
     {
@@ -599,7 +599,7 @@ ModulePropertyInfoProvider.prototype.createDefaultIntRangeListPropertyInfo = fun
             return arr.length > 0;
         },
         lengthValid: function(arr) {
-            for (var i=0; i<arr.length; i++) {
+            for (let i=0; i<arr.length; i++) {
                 if (arr[i].length != 2) {
                     return false;
                 }
@@ -607,7 +607,7 @@ ModulePropertyInfoProvider.prototype.createDefaultIntRangeListPropertyInfo = fun
             return true;
         },
         lowerUpperValid: function(arr) {
-            for (var i=0; i<arr.length; i++) {
+            for (let i=0; i<arr.length; i++) {
                 if (arr[i][0] > arr[i][1]) {
                     return false;
                 }
@@ -639,7 +639,7 @@ ModulePropertyInfoProvider.prototype.createDefaultIntRangeListPropertyInfo = fun
 
 
 ModulePropertyInfoProvider.prototype.createDefaultFloatListPropertyInfo = function(propName, caption, defaultValue) {
-    var info = new GuiPropertyInfo(
+    const info = new GuiPropertyInfo(
     {
         propertyName: propName,
         propertyCaption: caption,
@@ -654,7 +654,7 @@ ModulePropertyInfoProvider.prototype.createDefaultFloatListPropertyInfo = functi
 
 
 ModulePropertyInfoProvider.prototype.createStrengthPropertyInfo = function(propName, caption, defaultValue) {
-    var info = new GuiPropertyInfo(
+    const info = new GuiPropertyInfo(
     {
         propertyName: propName,
         propertyCaption: caption,
@@ -678,7 +678,7 @@ ModulePropertyInfoProvider.prototype.createStrengthPropertyInfo = function(propN
 
 
 ModulePropertyInfoProvider.prototype.createEnumPropertyInfo = function(propName, caption, defaultValue, enumType) {
-    var info = new GuiPropertyInfo(
+    const info = new GuiPropertyInfo(
     {
         propertyName: propName,
         propertyCaption: caption,
@@ -696,7 +696,7 @@ ModulePropertyInfoProvider.prototype.createEnumPropertyInfo = function(propName,
 
 
 ModulePropertyInfoProvider.prototype.createEnumListPropertyInfo = function(propName, caption, defaultValue, enumType) {
-    var info = new GuiPropertyInfo(
+    const info = new GuiPropertyInfo(
     {
         propertyName: propName,
         propertyCaption: caption,
@@ -730,7 +730,7 @@ ModulePropertyInfoProvider.prototype.createPositionUnitPropertyInfo = function(p
 
 ModulePropertyInfoProvider.prototype.createProcedureButtonPropertyInfo = function(caption, funcName, target, args) {
 
-    var info = new GuiPropertyInfo(
+    const info = new GuiPropertyInfo(
     {
         propertyName: funcName,
         propertyCaption: caption,
@@ -747,7 +747,7 @@ ModulePropertyInfoProvider.prototype.createProcedureButtonPropertyInfo = functio
 };
 
 ModulePropertyInfoProvider.prototype.createUniqueIdPropertyInfo = function(prefix, uniqueIdInfo) {
-    var info = new GuiPropertyInfo(
+    const info = new GuiPropertyInfo(
     {
         propertyName: "id",
         propertyCaption: "Name",
@@ -761,8 +761,8 @@ ModulePropertyInfoProvider.prototype.createUniqueIdPropertyInfo = function(prefi
 };
 
 ModulePropertyInfoProvider.prototype.createPreviewPropertyInfo = function(componentConstructor) {
-    var module = this.module;
-    var info = new GuiPropertyInfo(
+    const module = this.module;
+    const info = new GuiPropertyInfo(
     {
         otherInfo: new GuiOtherInfo({
             componentConstructor: componentConstructor,
@@ -774,7 +774,7 @@ ModulePropertyInfoProvider.prototype.createPreviewPropertyInfo = function(compon
 };
 
 ModulePropertyInfoProvider.prototype.createIdReferencePropertyInfo = function(propertyName, caption, uniqueIdInfo) {
-    var info = new GuiPropertyInfo(
+    const info = new GuiPropertyInfo(
     {
         propertyName: propertyName,
         propertyCaption: caption,
@@ -789,7 +789,7 @@ ModulePropertyInfoProvider.prototype.createIdReferencePropertyInfo = function(pr
 
 
 ModulePropertyInfoProvider.prototype.createIdReferenceListPropertyInfo = function(propertyName, caption, uniqueIdInfo) {
-    var info = new GuiPropertyInfo(
+    const info = new GuiPropertyInfo(
     {
         propertyName: propertyName,
         propertyCaption: caption,
@@ -819,7 +819,7 @@ ModulePropertyInfoProvider.prototype.createIdReferenceListPropertyInfo = functio
 
 
 ModulePropertyInfoProvider.prototype.createIdReferenceNotSelfPropertyInfo = function(propertyName, caption, uniqueIdInfo) {
-    var info = this.createIdReferencePropertyInfo(propertyName, caption, uniqueIdInfo);
+    const info = this.createIdReferencePropertyInfo(propertyName, caption, uniqueIdInfo);
 
     info.constraints = [
     {
@@ -840,8 +840,8 @@ ModulePropertyInfoProvider.prototype.createIdReferenceNotSelfPropertyInfo = func
 };
 
 ModulePropertyInfoProvider.prototype.createObjectPropertyInfo = function(propertyName, caption, uniqueIdInfo, constructorTexts) {
-    var provider = this;
-    var info = new GuiPropertyInfo(
+    const provider = this;
+    const info = new GuiPropertyInfo(
     {
         propertyName: propertyName,
         propertyCaption: caption,
@@ -852,9 +852,9 @@ ModulePropertyInfoProvider.prototype.createObjectPropertyInfo = function(propert
     }
     );
 
-    var constructorInfos = [];
-    for (var i=0; i<constructorTexts.length; i++) {
-        var ct = constructorTexts[i];
+    const constructorInfos = [];
+    for (let i=0; i<constructorTexts.length; i++) {
+        const ct = constructorTexts[i];
         constructorInfos.push(new GuiConstructorInfo({
             name: ct[0],
             text: ct[1]
@@ -871,8 +871,8 @@ ModulePropertyInfoProvider.prototype.createObjectPropertyInfo = function(propert
 
 
 ModulePropertyInfoProvider.prototype.createObjectListPropertyInfo = function(propertyName, caption, uniqueIdInfo, constructorTexts) {
-    var provider = this;
-    var info = new GuiPropertyInfo(
+    const provider = this;
+    const info = new GuiPropertyInfo(
     {
         propertyName: propertyName,
         propertyCaption: caption,
@@ -884,9 +884,9 @@ ModulePropertyInfoProvider.prototype.createObjectListPropertyInfo = function(pro
     }
     );
 
-    var constructorInfos = [];
-    for (var i=0; i<constructorTexts.length; i++) {
-        var ct = constructorTexts[i];
+    const constructorInfos = [];
+    for (let i=0; i<constructorTexts.length; i++) {
+        const ct = constructorTexts[i];
         constructorInfos.push(new GuiConstructorInfo({
             name: ct[0],
             text: ct[1]
@@ -904,7 +904,7 @@ ModulePropertyInfoProvider.prototype.createObjectListPropertyInfo = function(pro
 
 ModulePropertyInfoProvider.prototype.createObjectListInTabPropertyInfo = function(propertyName, caption, uniqueIdInfo, constructorTexts, group, groupCaption) {
 
-    var info = this.createObjectListPropertyInfo(propertyName, caption, uniqueIdInfo, constructorTexts);
+    const info = this.createObjectListPropertyInfo(propertyName, caption, uniqueIdInfo, constructorTexts);
 
     if (!group) {
         group = caption;
@@ -926,8 +926,8 @@ ModulePropertyInfoProvider.prototype.getUniqueNamespace = function(nsPrefix) {
         this.uniqueNamespaces = {};
     }
 
-    var counter = Math.round(Math.random() * 99999999);
-    var testNs = nsPrefix + "" + counter;
+    let counter = Math.round(Math.random() * 99999999);
+    let testNs = nsPrefix + "" + counter;
     while (true) {
         if (!this.uniqueNamespaces[testNs]) {
             // Namespace is available
@@ -944,11 +944,11 @@ ModulePropertyInfoProvider.prototype.getOrCreateUniqueIdInfo = function(obj, nsP
     if (!obj.__uniqueIdInfos) {
         obj.__uniqueIdInfos = {};
     }
-    var info = obj.__uniqueIdInfos[nsPrefix];
+    let info = obj.__uniqueIdInfos[nsPrefix];
     if (!info) {
-        var uidManager = this.uniqueIdManager;
+        const uidManager = this.uniqueIdManager;
 
-        var namespace = this.getUniqueNamespace(nsPrefix);
+        const namespace = this.getUniqueNamespace(nsPrefix);
 
         info = new GuiUniqueIdInfo({
             manager: uidManager,
@@ -1017,7 +1017,7 @@ ModulePropertyInfoProvider.prototype.createMotifElementPropertyInfos = function(
         }
 
         // Add the fillers last
-        var info = this.createObjectListPropertyInfo("fillers", "Fillers", this.fillersUidInfo,
+        const info = this.createObjectListPropertyInfo("fillers", "Fillers", this.fillersUidInfo,
             [["FillerNote", "Filler"]
             ]);
         result.addPropertyInfo(info);
@@ -1049,7 +1049,7 @@ ModulePropertyInfoProvider.prototype.createMotifElementPropertyInfos = function(
 
 
 ModulePropertyInfoProvider.prototype.getGuiPropertyInfos = function(obj, parentPropertyInfo) {
-    var result = new GuiPropertyInfos();
+    const result = new GuiPropertyInfos();
 
     //    if (!parentPropertyInfo) {
     //        logit("parent property info not set for " + obj._constructorName + "<br />");

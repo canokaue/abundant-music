@@ -1,9 +1,9 @@
 
 
 function gatherEventsWithType(events, type) {
-    var result = [];
-    for (var i=0; i<events.length; i++) {
-        var e = events[i];
+    const result = [];
+    for (let i=0; i<events.length; i++) {
+        const e = events[i];
 
 //        console.log(e);
         if (e.y == type) {
@@ -24,24 +24,24 @@ function secondsToBeats(seconds, tempo) {
 
 function predictBeat(tempoEvents, time) {
 
-    var currentTempo = 120;
+    let currentTempo = 120;
 
-    var currentSeconds = 0;
-    var prevSeconds = 0;
+    let currentSeconds = 0;
+    let prevSeconds = 0;
 
-    var currentBeat = 0;
+    let currentBeat = 0;
 
-    for (var i=0; i<tempoEvents.length; i++) {
+    for (let i=0; i<tempoEvents.length; i++) {
         prevSeconds = currentSeconds;
 
-        var e = tempoEvents[i];
+        const e = tempoEvents[i];
 
-        var beatStep = e.t - currentBeat;
+        const beatStep = e.t - currentBeat;
 
-        var secondsStep = beatsToSeconds(beatStep, currentTempo);
+        const secondsStep = beatsToSeconds(beatStep, currentTempo);
 
         if (time >= currentSeconds && time <= currentSeconds + secondsStep) {
-            var timeFrac = (time - currentSeconds) / secondsStep;
+            const timeFrac = (time - currentSeconds) / secondsStep;
             currentBeat += timeFrac * beatStep;
             currentSeconds += secondsStep * 2; // So we don't check true later
             break;
@@ -53,8 +53,8 @@ function predictBeat(tempoEvents, time) {
         currentTempo = e.b;
     }
     if (time > currentSeconds) {
-        var diff = time - currentSeconds;
-        var dt = secondsToBeats(diff, currentTempo);
+        const diff = time - currentSeconds;
+        const dt = secondsToBeats(diff, currentTempo);
         currentBeat += dt;
     }
     return currentBeat;
@@ -64,25 +64,25 @@ function predictBeat(tempoEvents, time) {
 
 // Events must be sorted
 function gatherNotesFromEvents(events) {
-    var notes = {};
-    var notesDone = {};
-    var allNotes = [];
+    const notes = {};
+    const notesDone = {};
+    const allNotes = [];
 
-    var currentTempo = 120;
+    let currentTempo = 120;
 
-    var currentTime = 0; // Seconds
+    let currentTime = 0; // Seconds
 
-    var currentBeat = 0;
-    for (var i=0; i<events.length; i++) {
-        var e = events[i];
+    let currentBeat = 0;
+    for (let i=0; i<events.length; i++) {
+        const e = events[i];
 
 //        console.log(e);
 
-        var beatStep = e.t - currentBeat;
+        const beatStep = e.t - currentBeat;
         if (beatStep < 0) {
             logit("The events must be sorted " + beatStep);
         }
-        var timeStep = beatsToSeconds(beatStep, currentTempo);
+        const timeStep = beatsToSeconds(beatStep, currentTempo);
         currentTime += timeStep;
         switch (e.y) { // The compressed format
             case "c":
@@ -102,9 +102,9 @@ function gatherNotesFromEvents(events) {
                 if (!current) {
                     logit("Found note off without noteOn");
                 } else {
-                    var minTimeData = null;
-                    for (var j=0; j<current.length; j++) {
-                        var c = current[j];
+                    let minTimeData = null;
+                    for (let j=0; j<current.length; j++) {
+                        const c = current[j];
                         if (e.n == c.onEvent.n) {
                             if (!minTimeData || c.onEvent.t < minTimeData.onEvent.t) {
                                 minTimeData = c;
@@ -116,7 +116,7 @@ function gatherNotesFromEvents(events) {
                     } else {
                         minTimeData.offEvent = e;
                         minTimeData.offTime = currentTime;
-                        var doneArr = notesDone[e.c];
+                        let doneArr = notesDone[e.c];
                         if (!doneArr) {
                             doneArr = [];
                             notesDone[e.c] = doneArr;
@@ -130,7 +130,7 @@ function gatherNotesFromEvents(events) {
                 break;
             case "t":
                 e.seconds = currentTime;
-                var bpm = e.b;
+                const bpm = e.b;
                 currentTempo = bpm;
                 break;
             default:

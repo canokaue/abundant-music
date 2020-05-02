@@ -31,41 +31,41 @@ MotifRenderElement.prototype = new PositionedRenderElement();
 
 
 MotifRenderElement.prototype.render = function(harmony, elements, theVoiceLine, noteAbsoluteNotes, state) {
-    var he = harmony.get(0);
-    var startBeatTime = positionUnitToBeats(this.startTime, this.startTimeUnit, he.tsNumerator, he.tsDenominator, harmony);
+    const he = harmony.get(0);
+    const startBeatTime = positionUnitToBeats(this.startTime, this.startTimeUnit, he.tsNumerator, he.tsDenominator, harmony);
 
-    var currentTime = startBeatTime;
+    let currentTime = startBeatTime;
 
-    var harmonyBeatLength = harmony.getBeatLength();
+    const harmonyBeatLength = harmony.getBeatLength();
 
 //    logit("  " + this._constructorName + " Rendering at time " + currentTime + " " + this.motif);
-    for (var i=0; i<elements.length; i++) {
-        var e = elements[i];
+    for (let i=0; i<elements.length; i++) {
+        const e = elements[i];
 
-        var harmonyIndex = harmony.getHarmonyIndexAt(currentTime);
-        var che = harmony.get(harmonyIndex);
-        var voiceLineElement = theVoiceLine.get(harmonyIndex);
+        const harmonyIndex = harmony.getHarmonyIndexAt(currentTime);
+        const che = harmony.get(harmonyIndex);
+        const voiceLineElement = theVoiceLine.get(harmonyIndex);
 
-        var beatLength = e.getBeatLength(che.tsNumerator,
+        const beatLength = e.getBeatLength(che.tsNumerator,
             che.tsDenominator);
 
 
         if (!e.rest) {
-            var absoluteNote = noteAbsoluteNotes.get(e);
+            const absoluteNote = noteAbsoluteNotes.get(e);
 
 
             if (absoluteNote && absoluteNote > 0 && absoluteNote < 128) {
 
-                var noteLength = beatLength;
+                let noteLength = beatLength;
 
-                var nextHarmonyIndex = harmony.getHarmonyIndexAt(currentTime + beatLength);
+                const nextHarmonyIndex = harmony.getHarmonyIndexAt(currentTime + beatLength);
                 if (nextHarmonyIndex != harmonyIndex || currentTime + beatLength > harmonyBeatLength) {
                     // Cuts harmony border
 
                     //                    var startHarmonyBeat = harmony.getBeatLengthUntilIndex(harmonyIndex);
-                    var endHarmonyBeat = harmony.getBeatLengthUntilIndex(harmonyIndex + 1);
+                    const endHarmonyBeat = harmony.getBeatLengthUntilIndex(harmonyIndex + 1);
 
-                    var overlapBeats = currentTime + beatLength - endHarmonyBeat;
+                    const overlapBeats = currentTime + beatLength - endHarmonyBeat;
 
                     if (overlapBeats > 0) {
                         switch (this.noteOverlapHarmonyMode) {
@@ -90,7 +90,7 @@ MotifRenderElement.prototype.render = function(harmony, elements, theVoiceLine, 
 
                 if (noteLength > 0.0) {
 
-                    var renderChannel = state.renderChannel;
+                    let renderChannel = state.renderChannel;
                     if (this.channel) {
                         renderChannel = state.module.getRenderChannel(this.channel);
                     }
@@ -105,13 +105,13 @@ MotifRenderElement.prototype.render = function(harmony, elements, theVoiceLine, 
 
 
 
-                    var noteOnEvent = new NoteOnEvent();
+                    let noteOnEvent = new NoteOnEvent();
                     noteOnEvent.time = snapMidiTicks(currentTime + state.sectionTime, 192);
                     noteOnEvent.onVelocity = e.strength;
                     noteOnEvent.note = absoluteNote;
                     noteOnEvent.renderChannel = renderChannel;
 
-                    var noteOffEvent = new NoteOffEvent();
+                    let noteOffEvent = new NoteOffEvent();
                     noteOffEvent.time = snapMidiTicks(currentTime + noteLength * 0.99 + state.sectionTime, 192);
                     noteOffEvent.startTime = noteOnEvent.time;
                     noteOffEvent.offVelocity = e.strength;
@@ -125,13 +125,13 @@ MotifRenderElement.prototype.render = function(harmony, elements, theVoiceLine, 
 
                     // Add filler notes if available
                     if (e.fillers) {
-                        var oldRenderChannel = renderChannel;
-                        for (var j=0; j<e.fillers.length; j++) {
-                            var filler = e.fillers[j];
-                            var fillerAbsNote = filler.getAbsoluteNote(absoluteNote, che, voiceLineElement);
-                            var fillerPosition = currentTime + state.sectionTime + positionUnitToBeats(filler.positionOffset, filler.positionOffsetUnit,
+                        const oldRenderChannel = renderChannel;
+                        for (let j=0; j<e.fillers.length; j++) {
+                            const filler = e.fillers[j];
+                            const fillerAbsNote = filler.getAbsoluteNote(absoluteNote, che, voiceLineElement);
+                            const fillerPosition = currentTime + state.sectionTime + positionUnitToBeats(filler.positionOffset, filler.positionOffsetUnit,
                                 che.tsNumerator, che.tsDenominator);
-                            var fillerLength = positionUnitToBeats(filler.length, filler.lengthUnit,
+                            let fillerLength = positionUnitToBeats(filler.length, filler.lengthUnit,
                                 che.tsNumerator, che.tsDenominator);
                             switch (filler.lengthMode) {
                                 case FillerNoteLengthMode.INDEPENDENT:
@@ -185,15 +185,15 @@ MotifRenderElement.prototype.figurate = function(harmony, elements, noteAbsolute
                                                  elementHarmonyIndices, previousVoiceElements, nextVoiceElements, theVoiceLine, theMotif, module, section) {
     // The remaining notes need to be set using search/optimization
     // We need to find the clusters between the assigned notes and create a search/optimization problem for each
-    var searchClusters = [];
-    var currentCluster = [];
+    const searchClusters = [];
+    let currentCluster = [];
 
     for (var i = 0; i < elements.length; i++) {
-        var ve = elements[i];
+        const ve = elements[i];
         if (!ve.rest) {
             //            logit("ve: " + ve + "<br />");
-            var absNote = noteAbsoluteNotes.get(ve);
-            var voiceLineElement = voiceHarmonyElements.get(ve);
+            const absNote = noteAbsoluteNotes.get(ve);
+            const voiceLineElement = voiceHarmonyElements.get(ve);
             if (voiceLineElement && !absNote && ve instanceof AdaptiveMotifElement) {
                 currentCluster.push(ve);
                 ve.clusterId = searchClusters.length;
@@ -213,14 +213,14 @@ MotifRenderElement.prototype.figurate = function(harmony, elements, noteAbsolute
     // Set the position fraction for all clusters
     for (var i=0; i<searchClusters.length; i++) {
         var cluster = searchClusters[i];
-        var clusterPosition = 0;
-        var positions = [];
+        const clusterPosition = 0;
+        const positions = [];
         for (var j=0; j<cluster.length; j++) {
             positions[j] = clusterPosition;
             // Need length of voice element here...
         }
         // clusterPosition now contains the length of the cluster
-        var clusterLength = clusterPosition;
+        let clusterLength = clusterPosition;
         if (clusterLength < 0.000001) {
             clusterLength = cluster.length; // Just use the index as fraction
         }
@@ -230,19 +230,19 @@ MotifRenderElement.prototype.figurate = function(harmony, elements, noteAbsolute
     }
 
 
-    var theSeed = theMotif.useExternalSeed ? this.seed : theMotif.seed;
-    var rnd = new MersenneTwister(theSeed);
+    const theSeed = theMotif.useExternalSeed ? this.seed : theMotif.seed;
+    const rnd = new MersenneTwister(theSeed);
 
     // Perform the search
     for (var i=0; i<searchClusters.length; i++) {
         var cluster = searchClusters[i];
         //        logit("Searching in cluster " + i + " " + cluster + " with size " + cluster.length + "<br />");
 
-        var harmonyIndices = [];
+        const harmonyIndices = [];
         for (var j=0; j<cluster.length; j++) {
             harmonyIndices.push(elementHarmonyIndices.get(cluster[j]));
         }
-        var defaultOptions = {
+        const defaultOptions = {
             seed: rnd.genrand_int32(),
             module: module,
             cluster: cluster,
@@ -255,15 +255,15 @@ MotifRenderElement.prototype.figurate = function(harmony, elements, noteAbsolute
             maxMLSolutions: 10
         };
 
-        var figurator = null;
+        let figurator = null;
 
-        var figuratorId = this.figurationPlanner;
+        let figuratorId = this.figurationPlanner;
         if (!figuratorId && section) {
             figuratorId = section.figurationPlanner;
         }
 
         if (figuratorId) {
-            var planner = module.getFigurationPlanner(figuratorId);
+            const planner = module.getFigurationPlanner(figuratorId);
             if (planner) {
                 figurator = planner.getFigurator(defaultOptions);
             }
@@ -274,7 +274,7 @@ MotifRenderElement.prototype.figurate = function(harmony, elements, noteAbsolute
             figurator = new Figurator(defaultOptions);
         }
         //        figurator.maxMLSolutions = 10;
-        var solution = figurator.searchML();
+        const solution = figurator.searchML();
         if (solution != null) {
             if (solution.length != cluster.length) {
                 logit("Mitchmatch between solution and cluster lengths " + solution.length + " " + cluster.length + "<br />");
@@ -296,24 +296,24 @@ MotifRenderElement.prototype.figurate = function(harmony, elements, noteAbsolute
 MotifRenderElement.prototype.assignHorizontalRelativeMotifElements = function(harmony, elementHarmonyIndices,
                                                                               theVoiceLine, voiceElements, noteAbsoluteNotes) {
 
-    var horizontalChanged = true;
+    let horizontalChanged = true;
     while (horizontalChanged) {
         horizontalChanged = false;
 
         function propagate(i) {
-            var vnme = voiceElements[i];
+            const vnme = voiceElements[i];
             if (vnme instanceof HorizontalRelativeMotifElement) {
-                var absNote = noteAbsoluteNotes.get(vnme);
+                const absNote = noteAbsoluteNotes.get(vnme);
                 if (!absNote) {
                     // Doesn't have any absolute note yet
 
-                    var referenceAbsNote = null;
+                    let referenceAbsNote = null;
 
-                    var harmonyCount = harmony.getCount();
-                    var harmonyIndex = elementHarmonyIndices.get(vnme);
-                    var currentHarmonyElement = harmony.get(harmonyIndex);
-                    var referenceHarmonyElement = harmony.get(harmonyIndex);
-                    var referenceVoiceLineElement = theVoiceLine.get(harmonyIndex);
+                    const harmonyCount = harmony.getCount();
+                    const harmonyIndex = elementHarmonyIndices.get(vnme);
+                    const currentHarmonyElement = harmony.get(harmonyIndex);
+                    let referenceHarmonyElement = harmony.get(harmonyIndex);
+                    let referenceVoiceLineElement = theVoiceLine.get(harmonyIndex);
                     switch (vnme.relativeType) {
                         case HorizontalRelativeType.NEXT_VOICE_LINE_ELEMENT:
                             if (harmonyIndex < harmonyCount - 1) {
@@ -356,7 +356,7 @@ MotifRenderElement.prototype.assignHorizontalRelativeMotifElements = function(ha
                     }
 
                     if (referenceAbsNote != null) {
-                        var newAbsNote = currentHarmonyElement.snapOffsetSnap(referenceAbsNote,
+                        const newAbsNote = currentHarmonyElement.snapOffsetSnap(referenceAbsNote,
                             vnme.beforeOffsetSnapType, vnme.offsetType, vnme.afterOffsetSnapType,
                             vnme.index, currentHarmonyElement);
                         noteAbsoluteNotes.put(vnme, newAbsNote);
@@ -381,22 +381,22 @@ MotifRenderElement.prototype.assignHorizontalRelativeMotifElements = function(ha
 
 MotifRenderElement.prototype.assignVerticalRelativeMotifElements = function(voiceElements, voiceHarmonyElements,
                                                                             voiceVoiceLineElements, noteAbsoluteNotes) {
-    for (var i = 0; i < voiceElements.length; i++) {
-        var vnme = voiceElements[i];
+    for (let i = 0; i < voiceElements.length; i++) {
+        const vnme = voiceElements[i];
 
-        var harmonyElement = voiceHarmonyElements
+        const harmonyElement = voiceHarmonyElements
             .get(vnme);
-        var voiceLineElement = voiceVoiceLineElements
+        const voiceLineElement = voiceVoiceLineElements
             .get(vnme);
 
-        var absoluteNote = null;
+        let absoluteNote = null;
 
         if (vnme instanceof VerticalRelativeMotifElement) {
             absoluteNote = harmonyElement.getVerticalRelativeAbsoluteNote(vnme.relativeType, voiceLineElement);
         }
         if (absoluteNote != null) {
-            var absNote = harmonyElement.snapOffsetSnap(absoluteNote, vnme.beforeOffsetSnapType, vnme.offsetType, vnme.afterOffsetSnapType,
-                vnme.index, harmonyElement)
+            const absNote = harmonyElement.snapOffsetSnap(absoluteNote, vnme.beforeOffsetSnapType, vnme.offsetType, vnme.afterOffsetSnapType,
+                vnme.index, harmonyElement);
             noteAbsoluteNotes.put(vnme, absNote);
         }
     }
@@ -408,18 +408,18 @@ MotifRenderElement.prototype.gatherVoiceAndHarmonyInfo = function(harmony, eleme
                                                                   elementHarmonyIndices, voiceHarmonyElements, voiceVoiceLineElements, voiceElements, previousVoiceElements,
                                                                   nextVoiceElements) {
 
-    var he = harmony.get(0);
-    var startBeatTime = positionUnitToBeats(this.startTime, this.startTimeUnit, he.tsNumerator, he.tsDenominator, harmony);
+    const he = harmony.get(0);
+    const startBeatTime = positionUnitToBeats(this.startTime, this.startTimeUnit, he.tsNumerator, he.tsDenominator, harmony);
 
-    var currentTime = startBeatTime;
+    let currentTime = startBeatTime;
 
-    var startHarmonyIndex = harmony.getHarmonyIndexAt(currentTime);
+    const startHarmonyIndex = harmony.getHarmonyIndexAt(currentTime);
 
     for (var i=0; i<elements.length; i++) {
-        var e = elements[i];
-        var harmonyIndex = harmony.getHarmonyIndexAt(currentTime);
+        const e = elements[i];
+        let harmonyIndex = harmony.getHarmonyIndexAt(currentTime);
 
-        var stop = false;
+        let stop = false;
         switch (this.cutHarmonyMode) {
             case RenderElementCutHarmonyMode.STOP:
                 if (harmonyIndex != startHarmonyIndex) {
@@ -439,8 +439,8 @@ MotifRenderElement.prototype.gatherVoiceAndHarmonyInfo = function(harmony, eleme
             break;
         }
         elementHarmonyIndices.put(e, harmonyIndex);
-        var che = harmony.get(harmonyIndex);
-        var voiceElement = theVoiceLine
+        const che = harmony.get(harmonyIndex);
+        const voiceElement = theVoiceLine
             .get(harmonyIndex);
 
         voiceHarmonyElements.put(e, che);
@@ -449,7 +449,7 @@ MotifRenderElement.prototype.gatherVoiceAndHarmonyInfo = function(harmony, eleme
             // Don't add rests
             voiceElements.push(e);
         }
-        var beatLength = e.getBeatLength(che.tsNumerator,
+        const beatLength = e.getBeatLength(che.tsNumerator,
             che.tsDenominator);
 
         currentTime += beatLength;
@@ -458,14 +458,14 @@ MotifRenderElement.prototype.gatherVoiceAndHarmonyInfo = function(harmony, eleme
     // Make sure that every voice element has a previous and next element
     // Create dummys for initial and final
     for (var i = 0; i < voiceElements.length; i++) {
-        var vnme = voiceElements[i];
-        var prev = null;
+        const vnme = voiceElements[i];
+        let prev = null;
         if (i > 0) {
             prev = voiceElements[i - 1];
         } else {
             // Create dummy previous
         }
-        var next = null;
+        let next = null;
         if (i < voiceElements.length - 1) {
             next = voiceElements[i + 1];
         } else {
@@ -479,7 +479,7 @@ MotifRenderElement.prototype.gatherVoiceAndHarmonyInfo = function(harmony, eleme
 };
 
 MotifRenderElement.prototype.getOrCreateVoiceLine = function(state, harmony) {
-    var theVoiceLine = getObjectWithId(this.voiceLine,
+    let theVoiceLine = getObjectWithId(this.voiceLine,
         state.plannedVoiceLines);
     if (this.useVoiceLine) {
         if (!theVoiceLine) {
@@ -490,20 +490,20 @@ MotifRenderElement.prototype.getOrCreateVoiceLine = function(state, harmony) {
     } else {
         // Create dummy voice line
 
-        var oldVoiceLine = theVoiceLine; // Get the referenced voice line if, for some reason, the relative type is along voice line
+        const oldVoiceLine = theVoiceLine; // Get the referenced voice line if, for some reason, the relative type is along voice line
         theVoiceLine = new ConstantVoiceLine();
-        for (var i=0; i<harmony.getCount(); i++) {
-            var he = harmony.get(i);
-            var cvle = new ConstantVoiceLineElement();
+        for (let i=0; i<harmony.getCount(); i++) {
+            const he = harmony.get(i);
+            const cvle = new ConstantVoiceLineElement();
 
-            var voiceLineElement = null;
+            let voiceLineElement = null;
             if (oldVoiceLine) {
                 voiceLineElement = oldVoiceLine.get(i);
             }
 
-            var absNote = he.getVerticalRelativeAbsoluteNote(this.relativeType, voiceLineElement);
+            let absNote = he.getVerticalRelativeAbsoluteNote(this.relativeType, voiceLineElement);
 
-            var offset = getItemFromArrayWithStartEndItems(0, this.offsets, harmony.getCount(), i,
+            const offset = getItemFromArrayWithStartEndItems(0, this.offsets, harmony.getCount(), i,
                 this.startOffsets, this.endOffsets);
 
             absNote = he.offset(absNote, this.offsetType, offset, he);
@@ -521,44 +521,44 @@ MotifRenderElement.prototype.getOrCreateVoiceLine = function(state, harmony) {
 
 MotifRenderElement.prototype.renderBatch = function(state) {
 
-    var activated = getValueOrExpressionValue(this, "activated", state.module);
+    const activated = getValueOrExpressionValue(this, "activated", state.module);
     if (!activated) {
         return;
     }
 
-    var theMotif = state.module.getMotif(this.motif);
+    const theMotif = state.module.getMotif(this.motif);
     if (!theMotif) {
         logit("could not find motif " + this.motif);
         return;
     }
 
 
-    var harmony = state.constantHarmony;
+    let harmony = state.constantHarmony;
 
-    var noteAbsoluteNotes = new Map(true);
+    const noteAbsoluteNotes = new Map(true);
 
-    var voiceElements = [];
+    const voiceElements = [];
 
-    var previousVoiceElements = new Map(true);
-    var nextVoiceElements = new Map(true);
-    var voiceHarmonyElements = new Map(true);
-    var voiceVoiceLineElements = new Map(true);
-    var elementHarmonyIndices = new Map(true);
+    const previousVoiceElements = new Map(true);
+    const nextVoiceElements = new Map(true);
+    const voiceHarmonyElements = new Map(true);
+    const voiceVoiceLineElements = new Map(true);
+    const elementHarmonyIndices = new Map(true);
 
 
     // The voice line can either be used or a dummy will be created
-    var theVoiceLine = this.getOrCreateVoiceLine(state, harmony)
+    const theVoiceLine = this.getOrCreateVoiceLine(state, harmony);
 
-    var voiceLineHarmony = state.voiceLineHarmonies[theVoiceLine.id];
+    const voiceLineHarmony = state.voiceLineHarmonies[theVoiceLine.id];
     if (voiceLineHarmony) {
         harmony = voiceLineHarmony;
     }
 
-    var he = harmony.get(0);
-    var startBeatTime = positionUnitToBeats(this.startTime, this.startTimeUnit, he.tsNumerator, he.tsDenominator, harmony);
+    const he = harmony.get(0);
+    const startBeatTime = positionUnitToBeats(this.startTime, this.startTimeUnit, he.tsNumerator, he.tsDenominator, harmony);
 
     // Get the constant motif elements
-    var elements = theMotif.getConstantMotifElements(state.module, harmony, startBeatTime);
+    const elements = theMotif.getConstantMotifElements(state.module, harmony, startBeatTime);
 
     // Gather info about all elements, such as the harmony index for all elements etc.
     this.gatherVoiceAndHarmonyInfo(harmony, elements, theVoiceLine, elementHarmonyIndices, voiceHarmonyElements,

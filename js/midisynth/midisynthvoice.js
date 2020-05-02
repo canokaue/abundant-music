@@ -1,5 +1,5 @@
 
-var MidiSynthVoiceMode = {
+const MidiSynthVoiceMode = {
     ON: 0,
     RELEASE: 1,
     OFF: 2

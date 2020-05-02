@@ -115,7 +115,7 @@ SionPmsInstrument.prototype.getMMLSelect = function() {
 
 
 
-var SionNesToneColor = {
+const SionNesToneColor = {
     SQUARE_DUTY_0: 0,
     SQUARE_DUTY_12_5: 1,
     SQUARE_DUTY_25: 2,
@@ -201,13 +201,13 @@ function SionInstrumentChannelMap() {
 }
 
 SionInstrumentChannelMap.prototype.getMML = function(effectArr) {
-    var sendArr = [0, 0, 0, 0, 0, 0, 0, 0];
+    const sendArr = [0, 0, 0, 0, 0, 0, 0, 0];
 
     sendArr[0] = this.masterVolume;
 
-    for (var i = 0; i<this.effectSends.length; i++) {
-        var effectSend = this.effectSends[i];
-        var index = getObjectIndexWithId(effectSend.effect, effectArr);
+    for (let i = 0; i<this.effectSends.length; i++) {
+        const effectSend = this.effectSends[i];
+        const index = getObjectIndexWithId(effectSend.effect, effectArr);
         if (index >= 0 && index < sendArr.length) {
             sendArr[index + 1] = effectSend.sendLevel;
         }
@@ -238,9 +238,9 @@ function SionSerialEffect() {
 SionSerialEffect.prototype = new SionEffect();
 
 SionSerialEffect.prototype.getMML = function() {
-    var result = "";
-    for (var i=0; i<this.effects.length; i++) {
-        var effect = this.effects[i];
+    let result = "";
+    for (let i=0; i<this.effects.length; i++) {
+        const effect = this.effects[i];
         result += effect.getMML();
     }
     return result;
@@ -373,18 +373,18 @@ function SionRenderer() {
 
 
 SionRenderer.prototype.getLengthString = function(onOff) {
-    var lengthLeft = onOff.wholeNoteLength;
+    let lengthLeft = onOff.wholeNoteLength;
 
-    var resultString = "";
+    let resultString = "";
 
-    var maxDivider = 64;
+    const maxDivider = 64;
 
     while (lengthLeft > 1.0 / maxDivider) {
         // Go through the dividers
-        var startIndex = Math.max(1, Math.floor(1 / lengthLeft));
+        const startIndex = Math.max(1, Math.floor(1 / lengthLeft));
 
-        for (var i=startIndex; i<=64; i++) {
-            var wholeNotes = 1.0 / i;
+        for (let i=startIndex; i<=64; i++) {
+            const wholeNotes = 1.0 / i;
             if (wholeNotes <= lengthLeft) {
                 lengthLeft -= wholeNotes;
                 if (!resultString) {
@@ -402,19 +402,19 @@ SionRenderer.prototype.getLengthString = function(onOff) {
 
 
 SionRenderer.prototype.getNoteMML = function(onOff) {
-    var noteString = "";
+    let noteString = "";
 
     if (onOff.isRest) {
         noteString = "r";
     } else {
 
-        var note = onOff.on.note;
+        let note = onOff.on.note;
         if (onOff.percussionNote != 0) {
             note = onOff.percussionNote;
         }
         var octave = Math.floor(note / 12);
 
-        var pitchClass = note % 12;
+        const pitchClass = note % 12;
         switch (pitchClass) {
             case 0:
                 noteString = "c";
@@ -462,7 +462,7 @@ SionRenderer.prototype.getNoteMML = function(onOff) {
 };
 
 SionRenderer.prototype.getOnOffMML = function(onOff) {
-    var result = "";
+    let result = "";
     if (onOff.isRest) {
         result = "r";
     } else {
@@ -474,16 +474,16 @@ SionRenderer.prototype.getOnOffMML = function(onOff) {
 
 
 SionRenderer.prototype.appendNoteOnOff = function(noff, tracks, theMapping) {
-    var channelId = noff.on.renderChannel.id;
+    const channelId = noff.on.renderChannel.id;
 
-    var suitableTrack = null;
-    var bestRestLength = 9999999;
-    var restLength = 0;
-    for (var i=0; i<tracks.length; i++) {
-        var track = tracks[i];
+    let suitableTrack = null;
+    let bestRestLength = 9999999;
+    let restLength = 0;
+    for (let i=0; i<tracks.length; i++) {
+        const track = tracks[i];
         if (track.channel == channelId && track.mapping == theMapping) {
-            var lastNoff = track.noteOnOffs[track.noteOnOffs.length - 1];
-            var diffTime = noff.on.time - lastNoff.off.time;
+            const lastNoff = track.noteOnOffs[track.noteOnOffs.length - 1];
+            const diffTime = noff.on.time - lastNoff.off.time;
             if (diffTime < bestRestLength && diffTime >= -0.000001) {
                 suitableTrack = track;
                 restLength = diffTime;
@@ -506,7 +506,7 @@ SionRenderer.prototype.appendNoteOnOff = function(noff, tracks, theMapping) {
 
     // Add a rest if necessary
     if (restLength > 0) {
-        var rest = new NoteOnOff();
+        const rest = new NoteOnOff();
         rest.wholeNoteLength = restLength;
         rest.isRest = true;
         suitableTrack.noteOnOffs.push(rest);
@@ -516,23 +516,23 @@ SionRenderer.prototype.appendNoteOnOff = function(noff, tracks, theMapping) {
 };
 
 SionRenderer.prototype.processNoteOnOrOffEvent = function(event, noteOnMaps, tracks, module) {
-    var noteArrMap = noteOnMaps[event.renderChannel.id];
+    let noteArrMap = noteOnMaps[event.renderChannel.id];
     if (!noteArrMap) {
         noteArrMap = {};
         noteOnMaps[event.renderChannel.id] = noteArrMap;
     }
-    var noteArr = noteArrMap[event.note];
+    let noteArr = noteArrMap[event.note];
     if (!noteArr) {
         noteArr = [];
         noteArrMap[event.note] = noteArr;
     }
 
-    var theMapping = null;
+    let theMapping = null;
     for (var i=0; i<this.mappings.length; i++) {
-        var mapping = this.mappings[i];
+        const mapping = this.mappings[i];
         if (mapping.renderChannel == event.renderChannel.id) {
             if (mapping.instrument.isPercussion) {
-                var namedNote = module.getNamedNote(mapping.instrument.percussionNote);
+                const namedNote = module.getNamedNote(mapping.instrument.percussionNote);
                 if (namedNote && event.note == namedNote.note) {
                     theMapping = mapping;
                 }
@@ -548,9 +548,9 @@ SionRenderer.prototype.processNoteOnOrOffEvent = function(event, noteOnMaps, tra
     if (event.type == "noteOn") {
         noteArr.push(event);
     } else { // Note off
-        var onEvent = null;
+        let onEvent = null;
         for (var i=0; i<noteArr.length; i++) {
-            var otherEvent = noteArr[i];
+            const otherEvent = noteArr[i];
             onEvent = otherEvent;
             break;
         }
@@ -558,7 +558,7 @@ SionRenderer.prototype.processNoteOnOrOffEvent = function(event, noteOnMaps, tra
             logit("Could not find matching note on for note off");
         } else {
             noteArr.splice(0, 1);
-            var noff = new NoteOnOff();
+            const noff = new NoteOnOff();
             if (theMapping.instrument.isPercussion) {
                 noff.percussionNote = theMapping.instrument.percussionPlayNote;
             }
@@ -582,20 +582,20 @@ SionRenderer.prototype.processEvent = function(renderEvent, noteOnMaps, tracks, 
 };
 
 SionRenderer.prototype.getMML = function(renderData, module) {
-    var resultArr = [];
+    const resultArr = [];
 
 
     // { channel: "ch1", noteOnOffs: [] }
 
-    var tracks = [];
-    var noteOnMaps = {
+    const tracks = [];
+    const noteOnMaps = {
     };
     for (var i=0; i<renderData.events.length; i++) {
-        var event = renderData.events[i];
+        const event = renderData.events[i];
         this.processEvent(event, noteOnMaps, tracks, module);
     }
 
-    var masterEffectString = "";
+    let masterEffectString = "";
     for (var i=0; i<this.masterEffects.length; i++) {
         var effect = this.masterEffects[i];
         masterEffectString += effect.getMML();
@@ -608,28 +608,28 @@ SionRenderer.prototype.getMML = function(renderData, module) {
 
     for (var i=0; i<this.effects.length; i++) {
         var effect = this.effects[i];
-        var effectString = "#EFFECT" + (i + 1) + "{" + effect.getMML() + "}";
+        const effectString = "#EFFECT" + (i + 1) + "{" + effect.getMML() + "}";
         resultArr.push(effectString);
     }
 
     for (var i=0; i<this.mappings.length; i++) {
-        var mapping = this.mappings[i];
+        const mapping = this.mappings[i];
         mapping.instrument.index = i;
-        var spec = mapping.instrument.getMMLSpec();
+        const spec = mapping.instrument.getMMLSpec();
         if (spec) {
             resultArr.push(spec);
         }
     }
 
     for (var i=0; i<tracks.length; i++) {
-        var track = tracks[i];
-        var onOffs = track.noteOnOffs;
+        const track = tracks[i];
+        const onOffs = track.noteOnOffs;
 
-        var trackString = "";
+        let trackString = "";
 
         // var trackChannel = track.channel;
 
-        var theMapping = track.mapping;
+        const theMapping = track.mapping;
         
         //        for (var j=0; j<this.mappings.length; j++) {
         //            var mapping = this.mappings[j];
@@ -642,8 +642,8 @@ SionRenderer.prototype.getMML = function(renderData, module) {
             trackString += theMapping.getMML(this.effects) + " ";
         }
         
-        for (var j=0; j<onOffs.length; j++) {
-            var onOff = onOffs[j];
+        for (let j=0; j<onOffs.length; j++) {
+            const onOff = onOffs[j];
             trackString += this.getOnOffMML(onOff);
         }
         resultArr.push(trackString);

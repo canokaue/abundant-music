@@ -14,8 +14,8 @@
  */
 function printStackTrace(options) {
     options = options || {guess: true};
-    var ex = options.e || null, guess = !!options.guess;
-    var p = new printStackTrace.implementation(), result = p.run(ex);
+    const ex = options.e || null, guess = !!options.guess;
+    const p = new printStackTrace.implementation(), result = p.run(ex);
     return (guess) ? p.guessAnonymousFunctions(result) : result;
 }
 
@@ -100,7 +100,7 @@ printStackTrace.implementation.prototype = {
      */
     instrumentFunction: function(context, functionName, callback) {
         context = context || window;
-        var original = context[functionName];
+        const original = context[functionName];
         context[functionName] = function instrumented() {
             callback.call(this, printStackTrace().slice(4));
             return context[functionName]._instrumented.apply(this, arguments);
@@ -131,7 +131,7 @@ printStackTrace.implementation.prototype = {
      * @return Array<String> of function calls, files and line numbers
      */
     chrome: function(e) {
-        var stack = (e.stack + '\n').replace(/^\S[^\(]+?[\n$]/gm, '').
+        const stack = (e.stack + '\n').replace(/^\S[^\(]+?[\n$]/gm, '').
             replace(/^\s+(at eval )?at\s+/gm, '').
             replace(/^([^\(]+?)([\n$])/gm, '{anonymous}()@$1$2').
             replace(/^Object.<anonymous>\s*\(([^\)]+)\)/gm, '{anonymous}()@$1').split('\n');
@@ -159,7 +159,7 @@ printStackTrace.implementation.prototype = {
      * @return Array<String> of function calls, files and line numbers
      */
     ie: function(e) {
-        var lineRE = /^.*at (\w+) \(([^\)]+)\)$/gm;
+        const lineRE = /^.*at (\w+) \(([^\)]+)\)$/gm;
         return e.stack.replace(/at Anonymous function /gm, '{anonymous}()@')
             .replace(/^(?=\w+Error\:).*$\n/m, '')
             .replace(lineRE, '$1@$2')
@@ -177,14 +177,14 @@ printStackTrace.implementation.prototype = {
     },
 
     opera11: function(e) {
-        var ANON = '{anonymous}', lineRE = /^.*line (\d+), column (\d+)(?: in (.+))? in (\S+):$/;
-        var lines = e.stacktrace.split('\n'), result = [];
+        const ANON = '{anonymous}', lineRE = /^.*line (\d+), column (\d+)(?: in (.+))? in (\S+):$/;
+        const lines = e.stacktrace.split('\n'), result = [];
 
-        for (var i = 0, len = lines.length; i < len; i += 2) {
-            var match = lineRE.exec(lines[i]);
+        for (let i = 0, len = lines.length; i < len; i += 2) {
+            const match = lineRE.exec(lines[i]);
             if (match) {
-                var location = match[4] + ':' + match[1] + ':' + match[2];
-                var fnName = match[3] || "global code";
+                const location = match[4] + ':' + match[1] + ':' + match[2];
+                let fnName = match[3] || "global code";
                 fnName = fnName.replace(/<anonymous function: (\S+)>/, "$1").replace(/<anonymous function>/, ANON);
                 result.push(fnName + '@' + location + ' -- ' + lines[i + 1].replace(/^\s+/, ''));
             }
@@ -197,13 +197,13 @@ printStackTrace.implementation.prototype = {
         // "<anonymous function: run>([arguments not available])@file://localhost/G:/js/stacktrace.js:27\n" +
         // "printStackTrace([arguments not available])@file://localhost/G:/js/stacktrace.js:18\n" +
         // "@file://localhost/G:/js/test/functional/testcase1.html:15"
-        var lineRE = /^(.*)@(.+):(\d+)$/;
-        var lines = e.stacktrace.split('\n'), result = [];
+        const lineRE = /^(.*)@(.+):(\d+)$/;
+        const lines = e.stacktrace.split('\n'), result = [];
 
-        for (var i = 0, len = lines.length; i < len; i++) {
-            var match = lineRE.exec(lines[i]);
+        for (let i = 0, len = lines.length; i < len; i++) {
+            const match = lineRE.exec(lines[i]);
             if (match) {
-                var fnName = match[1]? (match[1] + '()') : "global code";
+                const fnName = match[1]? (match[1] + '()') : "global code";
                 result.push(fnName + '@' + match[2] + ':' + match[3]);
             }
         }
@@ -220,13 +220,13 @@ printStackTrace.implementation.prototype = {
     opera10a: function(e) {
         // "  Line 27 of linked script file://localhost/G:/js/stacktrace.js\n"
         // "  Line 11 of inline#1 script in file://localhost/G:/js/test/functional/testcase1.html: In function foo\n"
-        var ANON = '{anonymous}', lineRE = /Line (\d+).*script (?:in )?(\S+)(?:: In function (\S+))?$/i;
-        var lines = e.stacktrace.split('\n'), result = [];
+        const ANON = '{anonymous}', lineRE = /Line (\d+).*script (?:in )?(\S+)(?:: In function (\S+))?$/i;
+        const lines = e.stacktrace.split('\n'), result = [];
 
-        for (var i = 0, len = lines.length; i < len; i += 2) {
-            var match = lineRE.exec(lines[i]);
+        for (let i = 0, len = lines.length; i < len; i += 2) {
+            const match = lineRE.exec(lines[i]);
             if (match) {
-                var fnName = match[3] || ANON;
+                const fnName = match[3] || ANON;
                 result.push(fnName + '()@' + match[2] + ':' + match[1] + ' -- ' + lines[i + 1].replace(/^\s+/, ''));
             }
         }
@@ -238,11 +238,11 @@ printStackTrace.implementation.prototype = {
     opera9: function(e) {
         // "  Line 43 of linked script file://localhost/G:/js/stacktrace.js\n"
         // "  Line 7 of inline#1 script in file://localhost/G:/js/test/functional/testcase1.html\n"
-        var ANON = '{anonymous}', lineRE = /Line (\d+).*script (?:in )?(\S+)/i;
-        var lines = e.message.split('\n'), result = [];
+        const ANON = '{anonymous}', lineRE = /Line (\d+).*script (?:in )?(\S+)/i;
+        const lines = e.message.split('\n'), result = [];
 
-        for (var i = 2, len = lines.length; i < len; i += 2) {
-            var match = lineRE.exec(lines[i]);
+        for (let i = 2, len = lines.length; i < len; i += 2) {
+            const match = lineRE.exec(lines[i]);
             if (match) {
                 result.push(ANON + '()@' + match[2] + ':' + match[1] + ' -- ' + lines[i + 1].replace(/^\s+/, ''));
             }
@@ -253,7 +253,12 @@ printStackTrace.implementation.prototype = {
 
     // Safari 5-, IE 9-, and others
     other: function(curr) {
-        var ANON = '{anonymous}', fnRE = /function\s*([\w\-$]+)?\s*\(/i, stack = [], fn, args, maxStackSize = 10;
+        const ANON = '{anonymous}';
+        const fnRE = /function\s*([\w\-$]+)?\s*\(/i;
+        const stack = [];
+        let fn;
+        let args;
+        const maxStackSize = 10;
         while (curr && curr['arguments'] && stack.length < maxStackSize) {
             fn = fnRE.test(curr.toString()) ? RegExp.$1 || ANON : ANON;
             args = Array.prototype.slice.call(curr['arguments'] || []);
@@ -270,10 +275,10 @@ printStackTrace.implementation.prototype = {
      * @return {Array} of Strings with stringified arguments
      */
     stringifyArguments: function(args) {
-        var result = [];
-        var slice = Array.prototype.slice;
-        for (var i = 0; i < args.length; ++i) {
-            var arg = args[i];
+        const result = [];
+        const slice = Array.prototype.slice;
+        for (let i = 0; i < args.length; ++i) {
+            const arg = args[i];
             if (arg === undefined) {
                 result[i] = 'undefined';
             } else if (arg === null) {
@@ -305,7 +310,7 @@ printStackTrace.implementation.prototype = {
      * @return the text from a given URL
      */
     ajax: function(url) {
-        var req = this.createXMLHTTPObject();
+        const req = this.createXMLHTTPObject();
         if (req) {
             try {
                 req.open('GET', url, false);
@@ -326,7 +331,9 @@ printStackTrace.implementation.prototype = {
      * @return <Function> XHR function or equivalent
      */
     createXMLHTTPObject: function() {
-        var xmlhttp, XMLHttpFactories = [
+        let xmlhttp;
+
+        const XMLHttpFactories = [
             function() {
                 return new XMLHttpRequest();
             }, function() {
@@ -337,7 +344,8 @@ printStackTrace.implementation.prototype = {
                 return new ActiveXObject('Microsoft.XMLHTTP');
             }
         ];
-        for (var i = 0; i < XMLHttpFactories.length; i++) {
+
+        for (let i = 0; i < XMLHttpFactories.length; i++) {
             try {
                 xmlhttp = XMLHttpFactories[i]();
                 // Use memoization to cache the factory
@@ -374,17 +382,15 @@ printStackTrace.implementation.prototype = {
     },
 
     guessAnonymousFunctions: function(stack) {
-        for (var i = 0; i < stack.length; ++i) {
-            var reStack = /\{anonymous\}\(.*\)@(.*)/,
-                reRef = /^(.*?)(?::(\d+))(?::(\d+))?(?: -- .+)?$/,
-                frame = stack[i], ref = reStack.exec(frame);
+        for (let i = 0; i < stack.length; ++i) {
+            const reStack = /\{anonymous\}\(.*\)@(.*)/, reRef = /^(.*?)(?::(\d+))(?::(\d+))?(?: -- .+)?$/, frame = stack[i], ref = reStack.exec(frame);
 
             if (ref) {
-                var m = reRef.exec(ref[1]);
+                const m = reRef.exec(ref[1]);
                 if (m) { // If falsey, we did not get any file/line information
-                    var file = m[1], lineno = m[2], charno = m[3] || 0;
+                    const file = m[1], lineno = m[2], charno = m[3] || 0;
                     if (file && this.isSameDomain(file) && lineno) {
-                        var functionName = this.guessAnonymousFunction(file, lineno, charno);
+                        const functionName = this.guessAnonymousFunction(file, lineno, charno);
                         stack[i] = frame.replace('{anonymous}', functionName);
                     }
                 }
@@ -394,7 +400,7 @@ printStackTrace.implementation.prototype = {
     },
 
     guessAnonymousFunction: function(url, lineNo, charNo) {
-        var ret;
+        let ret;
         try {
             ret = this.findFunctionName(this.getSource(url), lineNo);
         } catch (e) {
@@ -407,16 +413,22 @@ printStackTrace.implementation.prototype = {
         // FIXME findFunctionName fails for compressed source
         // (more than one function on the same line)
         // function {name}({args}) m[1]=name m[2]=args
-        var reFunctionDeclaration = /function\s+([^(]*?)\s*\(([^)]*)\)/;
+        const reFunctionDeclaration = /function\s+([^(]*?)\s*\(([^)]*)\)/;
         // {name} = function ({args}) TODO args capture
         // /['"]?([0-9A-Za-z_]+)['"]?\s*[:=]\s*function(?:[^(]*)/
-        var reFunctionExpression = /['"]?([$_A-Za-z][$_A-Za-z0-9]*)['"]?\s*[:=]\s*function\b/;
+        const reFunctionExpression = /['"]?([$_A-Za-z][$_A-Za-z0-9]*)['"]?\s*[:=]\s*function\b/;
         // {name} = eval()
-        var reFunctionEvaluation = /['"]?([$_A-Za-z][$_A-Za-z0-9]*)['"]?\s*[:=]\s*(?:eval|new Function)\b/;
+        const reFunctionEvaluation = /['"]?([$_A-Za-z][$_A-Za-z0-9]*)['"]?\s*[:=]\s*(?:eval|new Function)\b/;
+
         // Walk backwards in the source lines until we find
         // the line which matches one of the patterns above
-        var code = "", line, maxLines = Math.min(lineNo, 20), m, commentPos;
-        for (var i = 0; i < maxLines; ++i) {
+        let code = "";
+
+        let line;
+        const maxLines = Math.min(lineNo, 20);
+        let m;
+        let commentPos;
+        for (let i = 0; i < maxLines; ++i) {
             // lineNo is 1-based, source[] is 0-based
             line = source[lineNo - i - 1];
             commentPos = line.indexOf('//');

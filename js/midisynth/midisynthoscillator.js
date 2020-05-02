@@ -26,7 +26,7 @@ MidiSynthCustomOscillator.prototype.setFrequency = function(freq) {
 };
 
 MidiSynthCustomOscillator.prototype.write = function(arr, offset, len, restore) {
-    for (var i=0; i<len; i++) {
+    for (let i=0; i<len; i++) {
         arr[i + offset] += this.func(this.normalizedPhase);
         this.normalizedPhase += this.phaseStep;
         if (this.normalizedPhase > 1) {
@@ -53,7 +53,7 @@ MidiSynthSampleAndHoldOscillator.prototype.setFrequency = function(freq) {
 };
 
 MidiSynthSampleAndHoldOscillator.prototype.write = function(arr, offset, len, restore) {
-    var funcSampleFreqMult = this.funcSampleFreqMult;
+    const funcSampleFreqMult = this.funcSampleFreqMult;
 
     this.phaseStep = this.freq / this.sampleFreq;
 
@@ -61,7 +61,7 @@ MidiSynthSampleAndHoldOscillator.prototype.write = function(arr, offset, len, re
         this.value = this.func(this.phase);
     }
 
-    for (var i=0; i<len; i++) {
+    for (let i=0; i<len; i++) {
         arr[i + offset] += this.value;
         this.normalizedPhase += this.phaseStep;
         this.phase += this.phaseStep;
@@ -87,20 +87,20 @@ MidiSynthSineOscillator.prototype = new MidiSynthOscillator(44100, 100);
 MidiSynthSineOscillator.prototype.setFrequency = function(freq) {
     this.freq = freq;
     this.delta = freq * (2 * Math.PI) / this.sampleFreq;
-    var sinHalfDelta = Math.sin(this.delta * 0.5);
+    const sinHalfDelta = Math.sin(this.delta * 0.5);
     this.alpha = 2 * sinHalfDelta * sinHalfDelta;
     this.beta = Math.sin(this.delta);
 };
 
 
 MidiSynthSineOscillator.prototype.write = function(arr, offset, len, restore) {
-    var oldSinVal = this.sinVal;
-    var oldCosVal = this.cosVal;
+    const oldSinVal = this.sinVal;
+    const oldCosVal = this.cosVal;
 
-    for (var i=0; i<len; i++) {
+    for (let i=0; i<len; i++) {
         arr[i + offset] += this.sinVal;
-        var cosVal = this.cosVal;
-        var sinVal = this.sinVal;
+        const cosVal = this.cosVal;
+        const sinVal = this.sinVal;
         this.cosVal = cosVal - (this.alpha * cosVal + this.beta * sinVal);
         this.sinVal = sinVal - (this.alpha * sinVal - this.beta * cosVal);
     }

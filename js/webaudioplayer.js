@@ -45,7 +45,7 @@ WebAudioPlayer.prototype.contextSupported = function() {
 };
 
 WebAudioPlayer.prototype.getContextConstructor = function() {
-    var con = null;
+    let con = null;
     if (typeof(AudioContext) != 'undefined') {
         con = AudioContext;
     } else if (typeof(webkitAudioContext) != 'undefined') {
@@ -56,17 +56,17 @@ WebAudioPlayer.prototype.getContextConstructor = function() {
 
 WebAudioPlayer.prototype.createContextIfNecessary = function() {
     if (!this.context) {
-        var con = this.getContextConstructor();
+        const con = this.getContextConstructor();
         this.context = new con();
     }
 };
 
 
 WebAudioPlayer.prototype.createBuffer = function(func, freq) {
-    var buffer = this.context.createBuffer(1, this.context.sampleRate, this.context.sampleRate);
-    var data = buffer.getChannelData(0);
-    for (var i=0; i<data.length; i++) {
-        var frac = i / (data.length - 1);
+    const buffer = this.context.createBuffer(1, this.context.sampleRate, this.context.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i=0; i<data.length; i++) {
+        const frac = i / (data.length - 1);
         data[i] = func.call(this, frac * freq);
     }
     return buffer;
@@ -91,7 +91,7 @@ WebAudioPlayer.prototype.getOrCreateChannelNodes = function(channel) {
         this.context.listener.setOrientation(0, 0, -1, 0, 1, 0);
 
     }
-    var nodes = this.channelNodes[channel];
+    let nodes = this.channelNodes[channel];
     if (!nodes) {
         nodes = new WebAudioChannelNodes();
         nodes.channelName = this.data.renderChannelNames[channel];
@@ -123,10 +123,10 @@ WebAudioPlayer.prototype.scheduleControlWithChannelInfo = function(info, value, 
             switch (info.controlType) {
                 case "Pan":
 //                logit("Setting pan to " + value);
-                    var maxAngle = Math.PI / 4;
-                    var angleFrac = 2 * (value - 0.5);
-                    var angle = angleFrac * maxAngle;
-                    var distance = 1;
+                    const maxAngle = Math.PI / 4;
+                    const angleFrac = 2 * (value - 0.5);
+                    const angle = angleFrac * maxAngle;
+                    const distance = 1;
 
 //                logit("Setting angle frac to " + angleFrac + " " + info.nodes.channelName + " " + this.data.controlChannelNames[channelIndex]);
 
@@ -134,15 +134,15 @@ WebAudioPlayer.prototype.scheduleControlWithChannelInfo = function(info, value, 
                     break;
                 case "FilterF":
 //                info.nodes.filter.frequency.value =
-                    var maxFreq = this.noteToFrequency(127);
-                    var minFreq = this.noteToFrequency(0);
+                    const maxFreq = this.noteToFrequency(127);
+                    const minFreq = this.noteToFrequency(0);
 
-                    var frequency = minFreq + (maxFreq - minFreq) * value;
+                    const frequency = minFreq + (maxFreq - minFreq) * value;
 //                logit("Setting filter f to " + frequency + " at " + time + " " + maxFreq + " " + minFreq);
                     info.nodes.filter.frequency.exponentialRampToValueAtTime(frequency, time);
                     break;
                 case "FilterQ":
-                    var newQ = 1.0 / (0.01 + 0.1 * value);
+                    const newQ = 1.0 / (0.01 + 0.1 * value);
 //                logit("Setting filter q to " + newQ + " at " + time);
                     info.nodes.filter.Q.exponentialRampToValueAtTime(newQ, time);
                     break;
@@ -157,7 +157,7 @@ WebAudioPlayer.prototype.scheduleControlWithChannelInfo = function(info, value, 
 };
 
 WebAudioPlayer.prototype.sineBufferFunc = function(f) {
-    var a = 2.0 * Math.PI * f;
+    const a = 2.0 * Math.PI * f;
     return this.bufferAmpScale * Math.sin(a); //  + 0.25 * Math.sin(2 * a) + 0.15 * Math.sin(3 * a);
 };
 
@@ -187,24 +187,24 @@ WebAudioPlayer.prototype.snareBufferFunc = function(f) {
 
 WebAudioPlayer.prototype.scheduleNoteOnOff = function(noteData) {
 
-    var bufferInfoId = this.getBufferInfoId(noteData);
-    var bufferInfo = this.bufferInfos[bufferInfoId];
+    const bufferInfoId = this.getBufferInfoId(noteData);
+    const bufferInfo = this.bufferInfos[bufferInfoId];
 
-    var isPercussion = bufferInfo.channelPrefix == "percussion";
-    var onEvent = noteData.onEvent;
+    const isPercussion = bufferInfo.channelPrefix == "percussion";
+    const onEvent = noteData.onEvent;
 
-    var delay = 0.1;
-    var onTime = noteData.onTime + this.contextOffset + delay;
-    var offTime = noteData.offTime + this.contextOffset + delay;
+    const delay = 0.1;
+    const onTime = noteData.onTime + this.contextOffset + delay;
+    let offTime = noteData.offTime + this.contextOffset + delay;
 
-    var origOffTime = offTime;
+    const origOffTime = offTime;
     // Add some reverb time
     offTime += 1;
 
-    var voiceIndex = bufferInfo.voiceIndex;
+    const voiceIndex = bufferInfo.voiceIndex;
 
-    var instrType = null; // PrimitiveWebAudioPlayerInstrumentType.SQUARE;
-    var instrumentArr = null;
+    let instrType = null; // PrimitiveWebAudioPlayerInstrumentType.SQUARE;
+    let instrumentArr = null;
     switch (bufferInfo.channelPrefix) {
         case "melody":
             instrumentArr = this.settings.melodyInstruments;
@@ -221,7 +221,7 @@ WebAudioPlayer.prototype.scheduleNoteOnOff = function(noteData) {
     }
     if (instrumentArr != null) {
         if (instrumentArr.length > 0) {
-            var instrument = instrumentArr[voiceIndex % instrumentArr.length];
+            const instrument = instrumentArr[voiceIndex % instrumentArr.length];
             if (instrument instanceof PrimitiveWebAudioPlayerInstrument) {
                 instrType = instrument.type;
             }
@@ -238,13 +238,13 @@ WebAudioPlayer.prototype.scheduleNoteOnOff = function(noteData) {
         return;
     }
 
-    var nodes = this.getOrCreateChannelNodes(onEvent.c);
+    const nodes = this.getOrCreateChannelNodes(onEvent.c);
 
-    var bufferSource = this.context.createBufferSource();
+    const bufferSource = this.context.createBufferSource();
 
-    var oscOutput = bufferSource;
+    let oscOutput = bufferSource;
 
-    var buffer = null;
+    let buffer = null;
 
     if (isPercussion) {
 
@@ -274,10 +274,10 @@ WebAudioPlayer.prototype.scheduleNoteOnOff = function(noteData) {
 
     } else {
         bufferSource.loop = true;
-        var freq = this.noteToFrequency(onEvent.n);
+        const freq = this.noteToFrequency(onEvent.n);
 //            var freqScale = this.context.sampleRate / 500.0;
 
-        var freqMult = 22;
+        const freqMult = 22;
         buffer = this.melodicBuffers[instrType];
         if (!buffer) {
             var bufferFunc = this.sineBufferFunc;
@@ -300,12 +300,12 @@ WebAudioPlayer.prototype.scheduleNoteOnOff = function(noteData) {
         }
         bufferSource.playbackRate.value = freq / freqMult;
 
-        var noteLength = origOffTime - onTime;
+        const noteLength = origOffTime - onTime;
 
-        var attackTime = Math.min(0.05, noteLength * 0.5);
-        var decayTime = Math.min(0.2, noteLength * 0.5);
-        var sustainValue = 0.25;
-        var releaseTime = 0.25;
+        const attackTime = Math.min(0.05, noteLength * 0.5);
+        const decayTime = Math.min(0.2, noteLength * 0.5);
+        const sustainValue = 0.25;
+        const releaseTime = 0.25;
 
         var ampEnvNode = this.context.createGain();
         var ampEnvGainParam = ampEnvNode.gain;
@@ -326,17 +326,17 @@ WebAudioPlayer.prototype.scheduleNoteOnOff = function(noteData) {
 
 //    logit(" Active source count: " + this.context.activeSourceCount);
 
-    var volMult = 1;
+    let volMult = 1;
     if (bufferInfo.channelPrefix == "percussion") {
         volMult = this.settings.percussionVolumeMultiplier;
     } else {
-        var arr = this.settings[bufferInfo.channelPrefix + "VolumeMultipliers"];
+        const arr = this.settings[bufferInfo.channelPrefix + "VolumeMultipliers"];
         if (arr && arr.length > 0) {
             volMult = arr[bufferInfo.voiceIndex % arr.length];
         }
     }
 
-    var velNode = this.context.createGain();
+    const velNode = this.context.createGain();
     velNode.gain.value = onEvent.v * volMult;
 
 //    logit(onEvent.v);
@@ -348,7 +348,7 @@ WebAudioPlayer.prototype.scheduleNoteOnOff = function(noteData) {
     bufferSource.start(onTime);
     bufferSource.stop(offTime);
 
-    var voice = new WebAudioVoice();
+    const voice = new WebAudioVoice();
     voice.outputNode = oscOutput;
     voice.offTime = offTime;
     this.playingVoices.push(voice);

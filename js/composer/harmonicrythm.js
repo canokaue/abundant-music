@@ -1,7 +1,7 @@
 
 function applyHarmonyModifiers(elements, modifiers, module) {
-    for (var i=0; i<modifiers.length; i++) {
-        var modifier = modifiers[i];
+    for (let i=0; i<modifiers.length; i++) {
+        const modifier = modifiers[i];
         elements = modifier.modifyConstantHarmonyElements(elements, module);
     }
     return elements;
@@ -15,14 +15,14 @@ function ConstantHarmonicRythm(harmonyElements) {
 }
 
 ConstantHarmonicRythm.prototype.toRomanString = function() {
-    var result = "[";
-    var prevScaleBase = -1;
-    var prevScaleType = -1;
-    for (var i=0; i<this.harmonyElements.length; i++) {
-        var e = this.harmonyElements[i];
+    let result = "[";
+    let prevScaleBase = -1;
+    let prevScaleType = -1;
+    for (let i=0; i<this.harmonyElements.length; i++) {
+        const e = this.harmonyElements[i];
         result += e.toRomanString();
-        var baseNote = e.getBaseNote();
-        var scaleType = e.getScaleType();
+        const baseNote = e.getBaseNote();
+        const scaleType = e.getScaleType();
         if (baseNote != prevScaleBase || scaleType != prevScaleType) {
             result += "(" + toPitchClassString(baseNote) + " " + ScaleType.toString(scaleType) + ")";
             prevScaleBase = baseNote;
@@ -46,20 +46,20 @@ ConstantHarmonicRythm.prototype.get = function(index) {
 };
 
 ConstantHarmonicRythm.prototype.getConstantHarmonyElements = function(module, beatOffset) {
-    var result = [];
-    for (var i=0; i<this.harmonyElements.length; i++) {
-        var element = this.harmonyElements[i];
-        var list = element.getConstantHarmonyElements(module, beatOffset);
+    const result = [];
+    for (let i=0; i<this.harmonyElements.length; i++) {
+        const element = this.harmonyElements[i];
+        const list = element.getConstantHarmonyElements(module, beatOffset);
         addAll(result, list);
     }
     return applyHarmonyModifiers(result, this.modifiers, module);
 };
 
 ConstantHarmonicRythm.prototype.getPhraseRanges = function() {
-    var result = [];
-    var prevStartIndex = 0;
-    for (var i=0; i<this.getCount(); i++) {
-        var he = this.get(i);
+    const result = [];
+    let prevStartIndex = 0;
+    for (let i=0; i<this.getCount(); i++) {
+        const he = this.get(i);
         if (he instanceof ConstantHarmonyElement) {
             if (he.startsPhrase && i > 0) {
                 result.push([prevStartIndex, i - 1]);
@@ -72,9 +72,9 @@ ConstantHarmonicRythm.prototype.getPhraseRanges = function() {
 };
 
 ConstantHarmonicRythm.prototype.getPhraseRangeBeatLength = function(range) {
-    var result = 0;
-    for (var i=range[0]; i<=range[1]; i++) {
-        var he = this.get(i);
+    let result = 0;
+    for (let i=range[0]; i<=range[1]; i++) {
+        const he = this.get(i);
         if (he instanceof ConstantHarmonyElement) {
             result += he.getBeatLength();
         } else {
@@ -85,10 +85,10 @@ ConstantHarmonicRythm.prototype.getPhraseRangeBeatLength = function(range) {
 };
 
 ConstantHarmonicRythm.prototype.getPhraseRangeAt = function(beatTime) {
-    var harmonyIndex = this.getHarmonyIndexAt(beatTime);
-    var phraseRanges = this.getPhraseRanges();
-    for (var i=0; i<phraseRanges.length; i++) {
-        var range = phraseRanges[i];
+    const harmonyIndex = this.getHarmonyIndexAt(beatTime);
+    const phraseRanges = this.getPhraseRanges();
+    for (let i=0; i<phraseRanges.length; i++) {
+        const range = phraseRanges[i];
         if (range[0] <= harmonyIndex && harmonyIndex <= range[1]) {
             return [range[0], range[1]];
         }
@@ -101,11 +101,11 @@ ConstantHarmonicRythm.prototype.getHarmonyIndexAt = function(beatTime) {
         return 0;
     }
 
-    var result = this.harmonyElements.length - 1;
-    var currentTime = 0.0;
-    for (var i=0; i<this.harmonyElements.length; i++) {
-        var e = this.harmonyElements[i];
-        var beatLength = positionUnitToBeats(e.length, e.lengthUnit, e.tsNumerator, e.tsDenominator);
+    let result = this.harmonyElements.length - 1;
+    let currentTime = 0.0;
+    for (let i=0; i<this.harmonyElements.length; i++) {
+        const e = this.harmonyElements[i];
+        const beatLength = positionUnitToBeats(e.length, e.lengthUnit, e.tsNumerator, e.tsDenominator);
 
         if (beatTime >= currentTime && beatTime < currentTime + beatLength) {
             result = i;
@@ -122,10 +122,10 @@ ConstantHarmonicRythm.prototype.getHarmonyAt = function(beatTime) {
 };
 
 ConstantHarmonicRythm.prototype.getBeatLengthUntilIndex = function(endIndex) {
-    var result = 0.0;
-    for (var i=0; i<Math.min(this.harmonyElements.length, endIndex); i++) {
-        var e = this.harmonyElements[i];
-        var beatLength = positionUnitToBeats(e.length, e.lengthUnit, e.tsNumerator, e.tsDenominator);
+    let result = 0.0;
+    for (let i=0; i<Math.min(this.harmonyElements.length, endIndex); i++) {
+        const e = this.harmonyElements[i];
+        const beatLength = positionUnitToBeats(e.length, e.lengthUnit, e.tsNumerator, e.tsDenominator);
         result += beatLength;
     }
     return result;
@@ -133,10 +133,10 @@ ConstantHarmonicRythm.prototype.getBeatLengthUntilIndex = function(endIndex) {
 
 
 ConstantHarmonicRythm.prototype.getBeatLength = function() {
-    var result = 0.0;
-    for (var i=0; i<this.harmonyElements.length; i++) {
-        var e = this.harmonyElements[i];
-        var beatLength = positionUnitToBeats(e.length, e.lengthUnit, e.tsNumerator, e.tsDenominator);
+    let result = 0.0;
+    for (let i=0; i<this.harmonyElements.length; i++) {
+        const e = this.harmonyElements[i];
+        const beatLength = positionUnitToBeats(e.length, e.lengthUnit, e.tsNumerator, e.tsDenominator);
         result += beatLength;
     }
     return result;

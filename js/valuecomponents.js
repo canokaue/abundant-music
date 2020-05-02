@@ -1,7 +1,7 @@
 
 function IdReferenceListSelectComponent(object, propertyInfo) {
     GuiPropertySelectListComponent.call(this, object, propertyInfo);
-    var manager = this.getUniqueIdManager();
+    const manager = this.getUniqueIdManager();
     if (manager) {
         manager.addUniqueIdListener(this.propertyInfo.uniqueIdInfo.namespace, this);
     } else {
@@ -18,7 +18,7 @@ IdReferenceListSelectComponent.prototype.getItemValue = function(itemString) {
 
 IdReferenceListSelectComponent.prototype.componentRemoved = function() {
     GuiPropertySelectListComponent.prototype.componentRemoved.call(this);
-    var manager = this.getUniqueIdManager();
+    const manager = this.getUniqueIdManager();
     if (manager) {
         manager.removeUniqueIdListener(this.propertyInfo.uniqueIdInfo.namespace, this);
     }
@@ -37,11 +37,11 @@ IdReferenceListSelectComponent.prototype.uniqueIdRemoved = function(owner, names
 };
 
 IdReferenceListSelectComponent.prototype.getValuesAndNames = function() {
-    var result = [["", "None"]];
-    var manager = this.getUniqueIdManager();
+    const result = [["", "None"]];
+    const manager = this.getUniqueIdManager();
     if (manager) {
-        var ids = manager.getUniqueIds(this.getUniqueIdNamespace());
-        for (var i=0; i<ids.length; i++) {
+        const ids = manager.getUniqueIds(this.getUniqueIdNamespace());
+        for (let i=0; i<ids.length; i++) {
             result.push([ids[i], ids[i]]);
         }
     }
@@ -56,9 +56,9 @@ function IntegerSelectComponent(object, propertyInfo) {
 IntegerSelectComponent.prototype = new GuiPropertySelectComponent();
 
 IntegerSelectComponent.prototype.setValueVerifyRaw = function() {
-    var value = this.$input.val();
-    var intValue = parseInt(value);
-    var error = isNaN(intValue);
+    const value = this.$input.val();
+    const intValue = parseInt(value);
+    const error = isNaN(intValue);
     this.setError(error, "Invalid integer");
     if (!error) {
         this.setValueVerify(intValue);
@@ -74,7 +74,7 @@ IntegerListSelectComponent.prototype = new GuiPropertySelectListComponent();
 
 
 IntegerListSelectComponent.prototype.getItemValue = function(itemString) {
-    var intValue = parseInt(itemString);
+    const intValue = parseInt(itemString);
     return intValue;
 };
 
@@ -88,9 +88,9 @@ function FloatSelectComponent(object, propertyInfo) {
 FloatSelectComponent.prototype = new GuiPropertySelectComponent();
 
 FloatSelectComponent.prototype.setValueVerifyRaw = function() {
-    var value = this.$input.val();
-    var floatValue = parseFloat(value);
-    var error = isNaN(floatValue);
+    const value = this.$input.val();
+    const floatValue = parseFloat(value);
+    const error = isNaN(floatValue);
     this.setError(error, "Invalid decimal");
     if (!error) {
         this.setValueVerify(floatValue);
@@ -104,7 +104,7 @@ function StringSelectComponent(object, propertyInfo) {
 StringSelectComponent.prototype = new GuiPropertySelectComponent();
 
 StringSelectComponent.prototype.setValueVerifyRaw = function() {
-    var value = this.$input.val();
+    const value = this.$input.val();
     this.setValueVerify(value);
 };
 
@@ -115,18 +115,18 @@ function BooleanSelectComponent(object, propertyInfo) {
 BooleanSelectComponent.prototype = new GuiPropertySelectComponent();
 
 BooleanSelectComponent.prototype.setValueVerifyRaw = function() {
-    var textValue = this.$input.val();
-    var booleanValue = textValue == "true" ? true : false;
+    const textValue = this.$input.val();
+    const booleanValue = textValue == "true" ? true : false;
     //    logit(" in boolean select: textValue: " + textValue + " booleanValue: " + booleanValue + "<br />");
     this.setValueVerify(booleanValue);
 };
 
 BooleanSelectComponent.prototype.getValuesAndNames = function() {
-    var result = [];
-    var values = [true, false];
-    for (var i=0; i<values.length; i++) {
-        var value = values[i];
-        var displayValue = value;
+    const result = [];
+    const values = [true, false];
+    for (let i=0; i<values.length; i++) {
+        const value = values[i];
+        let displayValue = value;
         if (this.propertyInfo.displayFunction) {
             displayValue = this.propertyInfo.displayFunction.call(this, this.object, this.propertyInfo.propertyName, value);
         }
@@ -144,10 +144,10 @@ function IntegerTextComponent(object, propertyInfo) {
 IntegerTextComponent.prototype = new GuiPropertyTextComponent();
 
 IntegerTextComponent.prototype.setValueVerifyRaw = function() {
-    var error = false;
-    var textValue = this.$input.val();
+    let error = false;
+    const textValue = this.$input.val();
 
-    var parseResult = {};
+    const parseResult = {};
     this.parseInteger(textValue, parseResult);
 
     error = parseResult.error;
@@ -175,7 +175,7 @@ function StringTextAreaComponent(object, propertyInfo) {
 StringTextAreaComponent.prototype = new GuiPropertyTextComponent();
 
 StringTextAreaComponent.prototype.setValueVerifyRaw = function() {
-    var textValue = this.$input.val();
+    const textValue = this.$input.val();
     this.setValueVerify(textValue);
 };
 
@@ -192,20 +192,20 @@ IntegerListTextComponent.prototype.valueToString = function(value) {
 
 
 IntegerListTextComponent.prototype.setValueVerifyRaw = function() {
-    var error = false;
-    var errorMessage = "";
+    let error = false;
+    let errorMessage = "";
 
-    var textValue = this.$input.val();
+    let textValue = this.$input.val();
 
     textValue = $.trim(textValue);
 
-    var textArray = textValue.split(" ");
+    const textArray = textValue.split(" ");
 
-    var intArr = [];
-    for (var i=0; i<textArray.length; i++) {
-        var text = $.trim(textArray[i]);
+    const intArr = [];
+    for (let i=0; i<textArray.length; i++) {
+        const text = $.trim(textArray[i]);
         if (text) {
-            var parseResult = {};
+            const parseResult = {};
             this.parseInteger(text, parseResult);
             if (!parseResult.error) {
                 intArr.push(parseResult.value);
@@ -232,9 +232,9 @@ function IntegerList2DTextComponent(object, propertyInfo) {
 IntegerList2DTextComponent.prototype = new GuiPropertyTextComponent();
 
 IntegerList2DTextComponent.prototype.valueToString = function(value) {
-    var result = "";
-    for (var i=0; i<value.length; i++) {
-        var arr = value[i];
+    let result = "";
+    for (let i=0; i<value.length; i++) {
+        const arr = value[i];
         result += arr.join(" ");
         if (i < value.length - 1) {
             result += ", ";
@@ -245,27 +245,27 @@ IntegerList2DTextComponent.prototype.valueToString = function(value) {
 
 
 IntegerList2DTextComponent.prototype.setValueVerifyRaw = function() {
-    var error = false;
-    var errorMessage = "";
+    let error = false;
+    let errorMessage = "";
 
-    var textValue = this.$input.val();
+    let textValue = this.$input.val();
 
     textValue = $.trim(textValue);
 
-    var intArrs = [];
+    const intArrs = [];
 
-    var arrayTexts = textValue.split(",");
+    const arrayTexts = textValue.split(",");
 
-    for (var j=0; j<arrayTexts.length; j++) {
-        var arrayText = arrayTexts[j];
+    for (let j=0; j<arrayTexts.length; j++) {
+        const arrayText = arrayTexts[j];
 
-        var textArray = arrayText.split(" ");
+        const textArray = arrayText.split(" ");
 
-        var intArr = [];
-        for (var i=0; i<textArray.length; i++) {
-            var text = $.trim(textArray[i]);
+        const intArr = [];
+        for (let i=0; i<textArray.length; i++) {
+            const text = $.trim(textArray[i]);
             if (text) {
-                var parseResult = {};
+                const parseResult = {};
                 this.parseInteger(text, parseResult);
                 if (!parseResult.error) {
                     intArr.push(parseResult.value);
@@ -302,8 +302,8 @@ function FloatTextComponent(object, propertyInfo) {
 FloatTextComponent.prototype = new GuiPropertyTextComponent();
 
 FloatTextComponent.prototype.setValueVerifyRaw = function() {
-    var error = false;
-    var textValue = this.$input.val();
+    let error = false;
+    const textValue = this.$input.val();
     if (!error) {
         var floatValue = parseFloat(textValue);
         error = isNaN(floatValue);
@@ -335,20 +335,20 @@ FloatListTextComponent.prototype.valueToString = function(value) {
 
 
 FloatListTextComponent.prototype.setValueVerifyRaw = function() {
-    var error = false;
-    var errorMessage = "";
+    let error = false;
+    let errorMessage = "";
 
-    var textValue = this.$input.val();
+    let textValue = this.$input.val();
 
     textValue = $.trim(textValue);
 
-    var textArray = textValue.split(" ");
+    const textArray = textValue.split(" ");
 
-    var floatArr = [];
-    for (var i=0; i<textArray.length; i++) {
-        var text = $.trim(textArray[i]);
+    const floatArr = [];
+    for (let i=0; i<textArray.length; i++) {
+        const text = $.trim(textArray[i]);
         if (text) {
-            var floatValue = parseFloat(text);
+            const floatValue = parseFloat(text);
             error = isNaN(floatValue);
             if (!error) {
                 floatArr.push(floatValue);
@@ -374,9 +374,9 @@ function FloatList2DTextComponent(object, propertyInfo) {
 FloatList2DTextComponent.prototype = new GuiPropertyTextComponent();
 
 FloatList2DTextComponent.prototype.valueToString = function(value) {
-    var result = "";
-    for (var i=0; i<value.length; i++) {
-        var arr = value[i];
+    let result = "";
+    for (let i=0; i<value.length; i++) {
+        const arr = value[i];
         result += arr.join(" ");
         if (i < value.length - 1) {
             result += ", ";
@@ -387,30 +387,30 @@ FloatList2DTextComponent.prototype.valueToString = function(value) {
 
 
 FloatList2DTextComponent.prototype.setValueVerifyRaw = function() {
-    var error = false;
-    var errorMessage = "";
+    let error = false;
+    let errorMessage = "";
 
-    var textValue = this.$input.val();
+    let textValue = this.$input.val();
 
     textValue = $.trim(textValue);
 
-    var floatArrs = [];
+    const floatArrs = [];
 
     if (textValue != "") {
 
-        var arrayTexts = textValue.split(",");
+        const arrayTexts = textValue.split(",");
 
-        for (var j=0; j<arrayTexts.length; j++) {
-            var arrayText = arrayTexts[j];
+        for (let j=0; j<arrayTexts.length; j++) {
+            const arrayText = arrayTexts[j];
 
-            var textArray = arrayText.split(" ");
+            const textArray = arrayText.split(" ");
 
-            var floatArr = [];
-            for (var i=0; i<textArray.length; i++) {
-                var text = $.trim(textArray[i]);
+            const floatArr = [];
+            for (let i=0; i<textArray.length; i++) {
+                const text = $.trim(textArray[i]);
                 if (text) {
 
-                    var floatValue = parseFloat(text);
+                    const floatValue = parseFloat(text);
                     error = isNaN(floatValue);
                     if (!error) {
                         floatArr.push(floatValue);
@@ -476,8 +476,8 @@ function StringTextComponent(object, propertyInfo) {
 StringTextComponent.prototype = new GuiPropertyTextComponent();
 
 StringTextComponent.prototype.setValueVerifyRaw = function() {
-    var error = false;
-    var textValue = this.$input.val();
+    const error = false;
+    const textValue = this.$input.val();
     if (!error) {
         this.setValueVerify(textValue);
     }
@@ -488,7 +488,7 @@ function IdReferenceSelectComponent(object, propertyInfo) {
     GuiPropertySelectComponent.call(this, object, propertyInfo);
 
     // this.hasValueTypeRadios = false;
-    var manager = this.getUniqueIdManager();
+    const manager = this.getUniqueIdManager();
     if (manager) {
         manager.addUniqueIdListener(this.propertyInfo.uniqueIdInfo.namespace, this);
     } else {
@@ -501,7 +501,7 @@ IdReferenceSelectComponent.prototype = new GuiPropertySelectComponent();
 
 IdReferenceSelectComponent.prototype.componentRemoved = function() {
     GuiPropertySelectComponent.prototype.componentRemoved.call(this);
-    var manager = this.getUniqueIdManager();
+    const manager = this.getUniqueIdManager();
     if (manager) {
         manager.removeUniqueIdListener(this.propertyInfo.uniqueIdInfo.namespace, this);
     }
@@ -520,11 +520,11 @@ IdReferenceSelectComponent.prototype.uniqueIdRemoved = function(owner, namespace
 };
 
 IdReferenceSelectComponent.prototype.getValuesAndNames = function() {
-    var result = [["", "None"]];
-    var manager = this.getUniqueIdManager();
+    const result = [["", "None"]];
+    const manager = this.getUniqueIdManager();
     if (manager) {
-        var ids = manager.getUniqueIds(this.getUniqueIdNamespace());
-        for (var i=0; i<ids.length; i++) {
+        const ids = manager.getUniqueIds(this.getUniqueIdNamespace());
+        for (let i=0; i<ids.length; i++) {
             result.push([ids[i], ids[i]]);
         }
     }
@@ -532,7 +532,7 @@ IdReferenceSelectComponent.prototype.getValuesAndNames = function() {
 };
 
 IdReferenceSelectComponent.prototype.setValueVerifyRaw = function() {
-    var value = this.$input.val();
+    const value = this.$input.val();
     this.setValueVerify(value);
 };
 
@@ -553,13 +553,13 @@ ProcedureButtonComponent.prototype.getHtmlContentBeforeChildren = function(resul
 ProcedureButtonComponent.prototype.jQueryCreated = function($localRoot) {
     GuiPropertyComponent.prototype.jQueryCreated.call(this, $localRoot);
     this.$component.button();
-    var propertyInfo = this.propertyInfo;
-    var object = this.object;
-    var comp = this;
+    const propertyInfo = this.propertyInfo;
+    const object = this.object;
+    const comp = this;
     this.$component.on("click", function() {
-        var procInfo = propertyInfo.procedureInfo;
-        var args = [];
-        var targetObject = null;
+        const procInfo = propertyInfo.procedureInfo;
+        let args = [];
+        let targetObject = null;
         if (procInfo) {
             args = procInfo.args;
             targetObject = procInfo.targetObject;
@@ -567,7 +567,7 @@ ProcedureButtonComponent.prototype.jQueryCreated = function($localRoot) {
         if (!targetObject) {
             targetObject = comp;
         }
-        var proc = targetObject[propertyInfo.propertyName];
+        const proc = targetObject[propertyInfo.propertyName];
         if (proc && $.isFunction(proc)) {
             proc.apply(targetObject, args);
         } else {
@@ -588,15 +588,15 @@ function UniqueIdTextComponent(object, propertyInfo) {
 UniqueIdTextComponent.prototype = new GuiPropertyTextComponent();
 
 UniqueIdTextComponent.prototype.setValueVerifyRaw = function() {
-    var error = false;
-    var errorText = "";
-    var textValue = this.$input.val();
+    let error = false;
+    let errorText = "";
+    const textValue = this.$input.val();
 
     if (!textValue) {
         error = true;
         errorText = "ID can not be empty";
     }
-    var oldValue = this.getValue();
+    const oldValue = this.getValue();
     if (!error && oldValue != textValue) {
         var manager = this.getUniqueIdManager();
         var namespace = this.getUniqueIdNamespace();
@@ -653,7 +653,7 @@ GuiObjectComponent.prototype.removeDetailsComponent = function() {
 GuiObjectComponent.prototype.getHtmlContentBeforeChildren = function(resultArr) {
     resultArr.push("<div>" + this.propertyInfo.propertyCaption + "</div>");
 
-    var objectInfo = this.propertyInfo.objectInfo;
+    const objectInfo = this.propertyInfo.objectInfo;
     this.getConstructorsHtml(resultArr,
         objectInfo.constructorInfos, objectInfo.newMode);
     // Details panel
@@ -669,13 +669,13 @@ GuiObjectComponent.prototype.jQueryCreated = function($localRoot) {
     GuiPropertyComponent.prototype.jQueryCreated.call(this, $localRoot);
     this.$details = this.$component.find("#" + this.detailsId);
 
-    var objectInfo = this.propertyInfo.objectInfo;
+    const objectInfo = this.propertyInfo.objectInfo;
 
-    var comp = this;
+    const comp = this;
 
     this.addConstructorClickListeners(objectInfo.constructorInfos, function(constrInfo) {
         //        logit("Creating " + constrInfo.text + "<br />");
-        var newValue = comp.createNewValue(constrInfo, comp.propertyInfo);
+        const newValue = comp.createNewValue(constrInfo, comp.propertyInfo);
         comp.setValueVerify(newValue);
         //        comp.object[comp.propertyInfo.propertyName] = newValue;
         comp.updateDetailsPanel();
@@ -685,18 +685,18 @@ GuiObjectComponent.prototype.jQueryCreated = function($localRoot) {
 
 
 GuiObjectComponent.prototype.updateDetailsPanel = function() {
-    var value = this.getValue();
+    const value = this.getValue();
 
-    var propInfo = this.propertyInfo;
+    const propInfo = this.propertyInfo;
 
     this.$details.empty();
     this.removeDetailsComponent();
 
-    var instanceText = null;
-    var constructorInfos = propInfo.objectInfo.constructorInfos;
+    let instanceText = null;
+    const constructorInfos = propInfo.objectInfo.constructorInfos;
     if (constructorInfos.length > 1) {
-        for (var i=0; i<constructorInfos.length; i++) {
-            var ci = constructorInfos[i];
+        for (let i=0; i<constructorInfos.length; i++) {
+            const ci = constructorInfos[i];
             if (ci.nameIsConstructor && ci.name == value._constructorName) {
                 instanceText = ci.text;
                 break;
@@ -705,7 +705,7 @@ GuiObjectComponent.prototype.updateDetailsPanel = function() {
     }
 
     // Create or get the details component
-    var newComponent = new GuiPropertiesComponent({
+    const newComponent = new GuiPropertiesComponent({
         propertyInfoProvider: propInfo.propertyInfoProvider,
         object: value,
         componentRegisters: propInfo.componentRegisters
@@ -730,8 +730,8 @@ function IntegerSliderComponent(object, propertyInfo) {
 IntegerSliderComponent.prototype = new GuiPropertySliderComponent();
 
 IntegerSliderComponent.prototype.setValueVerifyRaw = function() {
-    var error = false;
-    var value = this.$input.slider("value");
+    const error = false;
+    const value = this.$input.slider("value");
 
     if (!error) {
         this.setValueVerify(value);

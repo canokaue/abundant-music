@@ -1,8 +1,8 @@
 
-var Midi = (function() {
+const Midi = (function() {
 
 
-    var MessageStatus = {
+    const MessageStatus = {
         NOTE_OFF: 0x80,
         NOTE_ON: 0x90,
         KEY_PRESSURE: 0xA0,
@@ -53,7 +53,7 @@ var Midi = (function() {
     DataMessage.prototype = new Message();
 
     DataMessage.prototype.combinedData = function() {
-        var combined = this.data2;
+        let combined = this.data2;
         combined <<= 7;
         combined |= this.data1;
         return combined;
@@ -138,7 +138,7 @@ var Midi = (function() {
     };
 
 
-    var MetaEventMessageType =
+    const MetaEventMessageType =
     {
         SEQUENCE_NUM: 0x00,
 
@@ -160,11 +160,11 @@ var Midi = (function() {
         TIME_SIGNATURE: 0x58,
         KEY_SIGNATURE: 0x59,
         SEQUENCER_SPECIFIC: 0x7F
-    }
+    };
 
 
 
-    var SystemMessageType = {
+    const SystemMessageType = {
         SYS_EX_START: 0x0,
         MIDI_TIME_CODE: 0x1,
         SONG_POSITION: 0x2,
@@ -308,8 +308,8 @@ var Midi = (function() {
     MIDIEncoder.prototype.MIDI_TRACK_HEADER_TAG = 0x4D54726B; // MTrk
 
     MIDIEncoder.prototype.encodeEvents = function(data, events) {
-        for (var i = 0; i < events.length; i++) {
-            var event = events[i];
+        for (let i = 0; i < events.length; i++) {
+            const event = events[i];
             event.encode(data);
         }
     };
@@ -320,9 +320,9 @@ var Midi = (function() {
         data.writeInt(this.MIDI_FILE_HEADER_TAG);
         data.writeInt(this.MIDI_FILE_HEADER_SIZE);
 
-        var format = file.fileFormat;
-        var numTracks = file.midiTracks.length;
-        var timingDivision = file.midiDivision;
+        const format = file.fileFormat;
+        const numTracks = file.midiTracks.length;
+        const timingDivision = file.midiDivision;
 
         if (typeof(format) === 'undefined') {
             logit("format undef...");
@@ -337,24 +337,24 @@ var Midi = (function() {
         data.writeShort(numTracks);
         data.writeShort(timingDivision);
 
-        var tracks = file.midiTracks;
+        const tracks = file.midiTracks;
 
-        var track;
-        var trackHeader;
-        var trackSize;
-        var trackEnd;
-        var trackTime;
+        let track;
+        let trackHeader;
+        let trackSize;
+        let trackEnd;
+        let trackTime;
 
-        var events;
-        var event;
-        var eventDelta;
+        let events;
+        let event;
+        let eventDelta;
 
-        var messageBytes;
-        var message;
+        let messageBytes;
+        let message;
 
-        var previousStatusByte;
+        let previousStatusByte;
 
-        for (var i = 0; i < numTracks; i++) {
+        for (let i = 0; i < numTracks; i++) {
             track = tracks[i];
 
             events = track.trackEvents;
@@ -362,7 +362,7 @@ var Midi = (function() {
             data.writeInt(this.MIDI_TRACK_HEADER_TAG);
 
             // Encoding all events in the track and then check and write the size
-            var trackBytes = new FakeByteArray();
+            const trackBytes = new FakeByteArray();
             this.encodeEvents(trackBytes, events);
 
             data.writeInt(trackBytes.length);
@@ -376,12 +376,12 @@ var Midi = (function() {
 
 
     function writeVariableLengthUInt(data, theUInt) {
-        var mask = 0xffffff7f;
+        const mask = 0xffffff7f;
 
-        var bytes = [];
+        const bytes = [];
 
         for (var i = 0; i < 4; i++) {
-            var masked = theUInt & mask;
+            const masked = theUInt & mask;
             var byt = masked & 0x7f;
             //trace("current: " + theUInt.toString(2) + " masked: " + masked.toString(2) + " the byte: " + byte.toString(2));
             if (masked) {
@@ -411,7 +411,7 @@ var Midi = (function() {
 
     function encodeMidi(midiDataObject, resultBuffer) {
 
-        var resultMidiTracks = [];
+        const resultMidiTracks = [];
 
         if (typeof(midiDataObject.midiTracks) === 'undefined') {
             logit("Midi data missing midiTracks property<br />");
@@ -423,15 +423,15 @@ var Midi = (function() {
             return;
         }
 
-        var inputMidiTracks = midiDataObject.midiTracks;
+        const inputMidiTracks = midiDataObject.midiTracks;
 
         inputMidiTracks.push({});
 
-        for (var i = 0; i < inputMidiTracks.length - 1; i++) {
+        for (let i = 0; i < inputMidiTracks.length - 1; i++) {
 
-            var trackEvents = [];
+            const trackEvents = [];
 
-            var track = inputMidiTracks[i];
+            const track = inputMidiTracks[i];
 
             if (typeof(track.trackEvents) === 'undefined') {
 //        textArea.text += "Midi data track missing trackEvents property\n";
@@ -441,34 +441,34 @@ var Midi = (function() {
                 return;
             }
 
-            var events = track.trackEvents;
-            for (var j = 0; j < events.length; j++) {
-                var event = events[j];
+            const events = track.trackEvents;
+            for (let j = 0; j < events.length; j++) {
+                const event = events[j];
 
                 if (typeof(event.eventTime) === 'undefined') {
 //            textArea.text += "Midi data event missing eventTime property\n";
                     return;
                 }
 
-                var eventTime = event.eventTime;
+                const eventTime = event.eventTime;
 
                 if (typeof(event.eventMessage) === 'undefined') {
 //            textArea.text += "Midi data event missing eventMessage property\n";
                     return;
                 }
 
-                var eventMessage = event.eventMessage;
+                const eventMessage = event.eventMessage;
 
                 if (typeof(eventMessage.messageClass) === 'undefined') {
 //            textArea.text += "Midi data event message missing messageClass property\n";
                     return;
                 }
 
-                var messageClass = eventMessage.messageClass;
+                const messageClass = eventMessage.messageClass;
 
-                var message = null;
-                var statusStr = "";
-                var status = 0;
+                let message = null;
+                let statusStr = "";
+                let status = 0;
                 switch (messageClass) {
                     case "ChannelMessage":
                         statusStr = eventMessage.status;
@@ -513,11 +513,11 @@ var Midi = (function() {
             resultMidiTracks.push(new MIDITrack(trackEvents));
         }
 
-        var midiFile = new MIDIFile(midiDataObject.fileFormat, midiDataObject.midiDivisions, resultMidiTracks);
+        const midiFile = new MIDIFile(midiDataObject.fileFormat, midiDataObject.midiDivisions, resultMidiTracks);
 
 //trace("file before: " + midiFile.toString());
 
-        var encoder = new MIDIEncoder();
+        const encoder = new MIDIEncoder();
         encoder.encodeFile(resultBuffer, midiFile);
 
     }

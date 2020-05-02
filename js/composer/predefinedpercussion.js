@@ -1,5 +1,5 @@
 
-var PredefinedPercussionMotifType = {
+const PredefinedPercussionMotifType = {
     FILL_DOTTED_QUARTER_1: 0,
     FILL_DOTTED_QUARTER_2: 1,
     FILL_DOTTED_QUARTER_3: 2,
@@ -143,8 +143,8 @@ PredefinedPercussionMotifElement.prototype.getNote = function(index, module, def
         return defaultNotes[index % defaultNotes.length];
     }
     if (this.useNamedNotes && this.namedNotes.length > 0) {
-        var namedNoteId = this.namedNotes[index % this.namedNotes.length];
-        var namedNote = module.getNamedNote(namedNoteId);
+        const namedNoteId = this.namedNotes[index % this.namedNotes.length];
+        const namedNote = module.getNamedNote(namedNoteId);
         if (namedNote) {
             return namedNote.getNote();
         }
@@ -156,12 +156,12 @@ PredefinedPercussionMotifElement.prototype.getNote = function(index, module, def
 
 
 PredefinedPercussionMotifElement.prototype.createFlams = function(flamsInfo, module, defaultDrums, result) {
-    var flamLength = getValueOrDefault(flamsInfo, "flamLength", 1.0 / 16.0);
-    var starts = getValueOrDefault(flamsInfo, "starts", [0.0]); // Without displacement
-    var drumIndices = getValueOrDefault(flamsInfo, "drumIndices", [0]);
+    const flamLength = getValueOrDefault(flamsInfo, "flamLength", 1.0 / 16.0);
+    const starts = getValueOrDefault(flamsInfo, "starts", [0.0]); // Without displacement
+    const drumIndices = getValueOrDefault(flamsInfo, "drumIndices", [0]);
 
-    var calcStarts = [];
-    for (var i=0; i<starts.length; i++) {
+    const calcStarts = [];
+    for (let i=0; i<starts.length; i++) {
         calcStarts.push(starts[i] - flamLength);
     }
 
@@ -176,16 +176,16 @@ PredefinedPercussionMotifElement.prototype.createFlams = function(flamsInfo, mod
 
 
 PredefinedPercussionMotifElement.prototype.createRoll = function(rollInfo, module, defaultDrums, result) {
-    var length = getValueOrDefault(rollInfo, "length", 1.0);
-    var start = getValueOrDefault(rollInfo, "start", 0.0);
-    var drumIndex = getValueOrDefault(rollInfo, "drumIndex", 0);
-    var noteLength = getValueOrDefault(rollInfo, "noteLength", 0.25);
+    const length = getValueOrDefault(rollInfo, "length", 1.0);
+    const start = getValueOrDefault(rollInfo, "start", 0.0);
+    const drumIndex = getValueOrDefault(rollInfo, "drumIndex", 0);
+    const noteLength = getValueOrDefault(rollInfo, "noteLength", 0.25);
 
-    var noteCount = Math.round(length / noteLength);
-    var pos = start;
+    const noteCount = Math.round(length / noteLength);
+    let pos = start;
 
-    var starts = [];
-    for (var i=0; i<noteCount; i++) {
+    const starts = [];
+    for (let i=0; i<noteCount; i++) {
         starts.push(pos);
         pos += noteLength;
     }
@@ -200,19 +200,19 @@ PredefinedPercussionMotifElement.prototype.createRoll = function(rollInfo, modul
 
 PredefinedPercussionMotifElement.prototype.getElementsFromPattern = function(patternInfo, module, defaultDrums, result) {
 
-    var starts = patternInfo.starts ? patternInfo.starts : [0];
-    var lengths = patternInfo.lengths ? patternInfo.lengths : [1.0 / 4.0];
-    var lengthMultiplier = patternInfo.lengthMultiplier ? patternInfo.lengthMultiplier : 1.0;
-    var rests = patternInfo.rests ? patternInfo.rests : [0];
-    var ghosts = patternInfo.ghosts ? patternInfo.ghosts : [0];
-    var rolls = patternInfo.rolls ? patternInfo.rolls : [0];
-    var velMults = patternInfo.velMults ? patternInfo.velMults : [1.0];
-    var posShifts = patternInfo.posShifts ? patternInfo.posShifts : [0.0];
-    var flams = patternInfo.flams ? patternInfo.flams : [0];
-    var accents = patternInfo.accents ? patternInfo.accents : [0];
-    var marcatos = patternInfo.marcatos ? patternInfo.marcatos : [0];
-    var drumIndices = patternInfo.drumIndices ? patternInfo.drumIndices : [0];
-    var positionShift = typeof(patternInfo.positionShift) === "undefined" ? 0 : patternInfo.positionShift;
+    const starts = patternInfo.starts ? patternInfo.starts : [0];
+    const lengths = patternInfo.lengths ? patternInfo.lengths : [1.0 / 4.0];
+    const lengthMultiplier = patternInfo.lengthMultiplier ? patternInfo.lengthMultiplier : 1.0;
+    const rests = patternInfo.rests ? patternInfo.rests : [0];
+    const ghosts = patternInfo.ghosts ? patternInfo.ghosts : [0];
+    const rolls = patternInfo.rolls ? patternInfo.rolls : [0];
+    const velMults = patternInfo.velMults ? patternInfo.velMults : [1.0];
+    const posShifts = patternInfo.posShifts ? patternInfo.posShifts : [0.0];
+    const flams = patternInfo.flams ? patternInfo.flams : [0];
+    const accents = patternInfo.accents ? patternInfo.accents : [0];
+    const marcatos = patternInfo.marcatos ? patternInfo.marcatos : [0];
+    const drumIndices = patternInfo.drumIndices ? patternInfo.drumIndices : [0];
+    const positionShift = typeof(patternInfo.positionShift) === "undefined" ? 0 : patternInfo.positionShift;
 
 
     if (positionShift > 0) {
@@ -224,7 +224,7 @@ PredefinedPercussionMotifElement.prototype.getElementsFromPattern = function(pat
         result.push(pme);
     }
 
-    for (var i=0; i<starts.length; i++) {
+    for (let i=0; i<starts.length; i++) {
 
         var pme = new PrimitivePercussionMotifElement();
         pme.rest = rests[i % rests.length] == 1;
@@ -235,7 +235,7 @@ PredefinedPercussionMotifElement.prototype.getElementsFromPattern = function(pat
 
         pme.length = 0.95 * lengths[i % lengths.length] * lengthMultiplier;
         pme.lengthUnit = PositionUnit.BEATS;
-        var strength = this.normalStrength;
+        let strength = this.normalStrength;
         if (flams[i % flams.length] == 1) {
             strength = this.flamStrength;
         } else if (ghosts[i % ghosts.length] == 1) {
@@ -256,13 +256,13 @@ PredefinedPercussionMotifElement.prototype.getElementsFromPattern = function(pat
 };
 
 PredefinedPercussionMotifElement.prototype.getPrimitivePercussionMotifElements = function(module, harmony, harmonyBeatOffset) {
-    var result = [];
+    const result = [];
 
-    var he = harmony.getHarmonyAt(harmonyBeatOffset);
-    var harmonyElementBeatLength = he.getBeatLength();
-    var measureBeatLength = positionUnitToBeats(1, PositionUnit.MEASURES, he.tsNumerator, he.tsDenominator);
+    const he = harmony.getHarmonyAt(harmonyBeatOffset);
+    const harmonyElementBeatLength = he.getBeatLength();
+    const measureBeatLength = positionUnitToBeats(1, PositionUnit.MEASURES, he.tsNumerator, he.tsDenominator);
 
-    var defaultDrums = [MidiDrum.BASS_DRUM_1, MidiDrum.SNARE_DRUM_1, MidiDrum.CLOSED_HIHAT];
+    let defaultDrums = [MidiDrum.BASS_DRUM_1, MidiDrum.SNARE_DRUM_1, MidiDrum.CLOSED_HIHAT];
 
     // Switch for default drums
     switch (this.type) {
@@ -488,7 +488,7 @@ PredefinedPercussionMotifElement.prototype.getPrimitivePercussionMotifElements =
             this.createRoll({start: 3.0, length: 1.0, noteLength: 0.125, drumIndex: 1}, module, defaultDrums, result);
             break;
         case PredefinedPercussionMotifType.MARCH_STANDARD_2:
-            var starts = [0.5, 1.5, 2.5, 3.5];
+            const starts = [0.5, 1.5, 2.5, 3.5];
             this.getElementsFromPattern({
                 starts: starts,
                 lengths: [0.25],

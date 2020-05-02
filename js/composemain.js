@@ -1,65 +1,65 @@
 
 
-var lightServerMode = true;
+const lightServerMode = true;
 
 window.URL = window.URL || window.webkitURL || window.mozURL || window.oURL || window.msURL;
 
-var loaderTimeout = 10;
+const loaderTimeout = 10;
 
-var allLoaded = false;
+let allLoaded = false;
 
-var usingWebGL = false;
+let usingWebGL = false;
 
-var AudioPlayerConstructor = null;
+let AudioPlayerConstructor = null;
 
 if (Modernizr.webaudio) {
     AudioPlayerConstructor = WebAudioPlayer;
 }
 
-var canPlayMp3 = true;
+const canPlayMp3 = true;
 
 
-var loggedIn = false;
-var user = null;
-var userInfo = null;
+let loggedIn = false;
+let user = null;
+let userInfo = null;
 
-var globalRnd = new MersenneTwister();
-var globalGenInfo = new GenInfo();
+const globalRnd = new MersenneTwister();
+const globalGenInfo = new GenInfo();
 
-var settingsDirty = false;
+let settingsDirty = false;
 
-var songSettingsChangedWhileRendering = false;
+let songSettingsChangedWhileRendering = false;
 
-var audioPlayer = null;
+let audioPlayer = null;
 
-var uidManager = new UniqueIdManager();
-
-
-var songSettingsCompInfo = null;
-
-var songSettingsDirty = false;
-
-var asyncOperations = [];
-var asyncOperationCounter = 0;
+const uidManager = new UniqueIdManager();
 
 
-var propertyInfoProvider = new PropertyInfoProvider();
+let songSettingsCompInfo = null;
+
+let songSettingsDirty = false;
+
+let asyncOperations = [];
+let asyncOperationCounter = 0;
 
 
-var visualizer = null;
+const propertyInfoProvider = new PropertyInfoProvider();
 
-var $playButton = null;
-var $stopButton = null;
-var $forwardButton = null;
-var $rewindButton = null;
 
-var $refreshButton = null;
+let visualizer = null;
+
+let $playButton = null;
+let $stopButton = null;
+let $forwardButton = null;
+let $rewindButton = null;
+
+let $refreshButton = null;
 
 function getMainSeed() {
-    var seed = 213124;
+    let seed = 213124;
 
     if (songSettings.seed) {
-        var tempSeed = parseInt(songSettings.seed);
+        const tempSeed = parseInt(songSettings.seed);
 
         if (isNaN(tempSeed)) {
             seed = hashCode(songSettings.seed);
@@ -73,10 +73,10 @@ function getMainSeed() {
 
 
 function getSeedStringsObject(reference, genInfo) {
-    var result = {};
-    for (var prop in reference) {
+    const result = {};
+    for (const prop in reference) {
         if (prop.indexOf("Seed") >= 0) {
-            var seed = genInfo[prop];
+            const seed = genInfo[prop];
             if (typeof(seed) != 'undefined') {
                 result[prop] = "" + seed;
             } else {
@@ -88,11 +88,11 @@ function getSeedStringsObject(reference, genInfo) {
 }
 
 function getSeeds(result, settings) {
-    for (var prop in settings) {
+    for (const prop in settings) {
         if (prop.indexOf("Seed") >= 0) {
-            var seedStr = settings[prop];
+            const seedStr = settings[prop];
             if (seedStr) {
-                var seed = parseInt(seedStr);
+                let seed = parseInt(seedStr);
 
                 if (isNaN(seed)) {
                     seed = hashCode(seedStr);
@@ -112,10 +112,10 @@ function copyWithPropertyInfoProvider(result, settings, source) {
     if (!source) {
         source = settings;
     }
-    var infos = propertyInfoProvider.getGuiPropertyInfos(settings).getAsArray();
-    for (var i=0; i<infos.length; i++) {
-        var info = infos[i];
-        var value = source[info.propertyName];
+    const infos = propertyInfoProvider.getGuiPropertyInfos(settings).getAsArray();
+    for (let i=0; i<infos.length; i++) {
+        const info = infos[i];
+        const value = source[info.propertyName];
         if (!isFunction(value)) {
             result[info.propertyName] = value;
         }
@@ -125,7 +125,7 @@ function copyWithPropertyInfoProvider(result, settings, source) {
 
 
 function getGenInfo() {
-    var result = {};
+    const result = {};
 
     getSeeds(result, songStructureSeedSettings);
     getSeeds(result, songContentSeedSettings);
@@ -141,7 +141,7 @@ function getGenInfo() {
 
 
 function showModalDialog(title, content, options) {
-    var $dialog = $("<div title=\"" + title + "\" >" + content + "</div>");
+    const $dialog = $("<div title=\"" + title + "\" >" + content + "</div>");
 
     $("#dialogsdiv").append($dialog);
 
@@ -162,7 +162,7 @@ function showModalDialog(title, content, options) {
 
 function showConfirmDialog(title, content, yesCaption, noCaption, yesCallback, noCallback) {
 
-    var buttons = {};
+    const buttons = {};
     buttons[yesCaption] = function() {
         $(this).dialog("close");
         if (yesCallback) {
@@ -176,7 +176,7 @@ function showConfirmDialog(title, content, yesCaption, noCaption, yesCallback, n
         }
     };
 
-    var options = {
+    const options = {
         modal: true,
         buttons: buttons
     };
@@ -192,9 +192,9 @@ function setSongSettingsDirty(val) {
     }
 }
 
-var $latestAudioElement = null;
-var exportTimeout = null;
-var tempTempoEvents = null;
+let $latestAudioElement = null;
+let exportTimeout = null;
+let tempTempoEvents = null;
 
 function afterExport(op) {
     stopSong();
@@ -205,9 +205,9 @@ function afterExport(op) {
 
         function updateExportPlayer() {
             if ($latestAudioElement && $latestAudioElement[0]) {
-                var time = $latestAudioElement[0].currentTime;
+                const time = $latestAudioElement[0].currentTime;
                 if (time) {
-                    var beat = predictBeat(tempTempoEvents, time);
+                    const beat = predictBeat(tempTempoEvents, time);
 //                    logit("predicted beat " + beat + " from " + time);
                     visualizer.setCurrentPlayBeatTime(beat);
                 }
@@ -233,8 +233,8 @@ function afterExport(op) {
 }
 
 function joinNotEmpty(arr, str) {
-    var newArr = [];
-    for (var i=0; i<arr.length; i++) {
+    const newArr = [];
+    for (let i=0; i<arr.length; i++) {
         if (arr[i]) {
             newArr.push(arr[i]);
         }
@@ -242,7 +242,7 @@ function joinNotEmpty(arr, str) {
     return newArr.join(str);
 }
 
-var exportSupportArr = [
+const exportSupportArr = [
     (window.ArrayBuffer ? "" : "Array Buffer"),
     (window.DataView ? "" : "Data View"),
     (window.URL ? "" : "URL object"),
@@ -252,21 +252,21 @@ var exportSupportArr = [
 
 function exportMidi() {
 
-    var clientExportSupport = Modernizr.webworkers && Modernizr.blobconstructor && window.URL && window.ArrayBuffer && window.DataView;
+    const clientExportSupport = Modernizr.webworkers && Modernizr.blobconstructor && window.URL && window.ArrayBuffer && window.DataView;
 
     if (lightServerMode && !clientExportSupport) {
         showModalDialog("Midi Export Not Supported by this browser",
             "The browser need support for " + joinNotEmpty(exportSupportArr, ", "));
     } else {
-        var seed = getMainSeed();
-        var genInfo = getGenInfo();
+        const seed = getMainSeed();
+        const genInfo = getGenInfo();
         copyWithPropertyInfoProvider(genInfo, midiExportSettings);
 
         delete genInfo.export2;
 
-        var renderRequestData = {seed: seed, strSeed: songSettings.seed, name: songSettings.name, sectionIndex: -1, genInfo: genInfo};
+        const renderRequestData = {seed: seed, strSeed: songSettings.seed, name: songSettings.name, sectionIndex: -1, genInfo: genInfo};
 
-        var params = {
+        const params = {
             taskType: AsyncServerChildTaskType.EXPORT_MIDI,
             content: renderRequestData,
             caption: "Exporting midi...",
@@ -277,7 +277,7 @@ function exportMidi() {
             },
             id: "task" + asyncOperationCounter};
 
-        var task = null;
+        let task = null;
         if (clientExportSupport) {
             params.taskType = WorkerTaskType.EXPORT_MIDI;
             task = new AsyncWorkerTask(params);
@@ -292,14 +292,14 @@ function exportMidi() {
 
 function exportWav() {
 
-    var clientExportSupport = Modernizr.webworkers && Modernizr.blobconstructor && window.URL && window.ArrayBuffer && window.DataView;
+    const clientExportSupport = Modernizr.webworkers && Modernizr.blobconstructor && window.URL && window.ArrayBuffer && window.DataView;
 
     if (lightServerMode && !clientExportSupport) {
         showModalDialog("Wav Export Not Supported by this browser",
             "The browser need support for " + joinNotEmpty(exportSupportArr, ", "));
     } else {
-        var seed = getMainSeed();
-        var genInfo = getGenInfo();
+        const seed = getMainSeed();
+        const genInfo = getGenInfo();
 
         if (clientExportSupport) {
             copyWithPropertyInfoProvider(genInfo, wavClientExportSettings);
@@ -309,9 +309,9 @@ function exportWav() {
 
         delete genInfo.export2;
 
-        var renderRequestData = {seed: seed, strSeed: songSettings.seed, name: songSettings.name, sectionIndex: -1, genInfo: genInfo};
+        const renderRequestData = {seed: seed, strSeed: songSettings.seed, name: songSettings.name, sectionIndex: -1, genInfo: genInfo};
 
-        var params = {
+        const params = {
             taskType: AsyncServerChildTaskType.EXPORT_WAV,
             content: renderRequestData,
             caption: "Exporting wav...",
@@ -322,7 +322,7 @@ function exportWav() {
             },
             id: "task" + asyncOperationCounter};
 
-        var task = null;
+        let task = null;
         if (clientExportSupport) {
             params.taskType = WorkerTaskType.EXPORT_WAV;
             task = new AsyncWorkerTask(params);
@@ -340,13 +340,13 @@ function exportIT() {
 }
 
 function savePreset() {
-    var seed = getMainSeed();
-    var genInfo = getGenInfo();
+    const seed = getMainSeed();
+    const genInfo = getGenInfo();
     copyWithPropertyInfoProvider(genInfo, mp3ExportSettings);
 
-    var renderRequestData = {seed: seed, sectionIndex: -1, genInfo: genInfo};
+    const renderRequestData = {seed: seed, sectionIndex: -1, genInfo: genInfo};
 
-    var task = new AsyncServerChildTask({
+    const task = new AsyncServerChildTask({
         taskType: AsyncServerChildTaskType.SAVE_PRESET,
         content: renderRequestData,
         caption: "Saving preset...",
@@ -363,14 +363,14 @@ function exportMp3() {
         showModalDialog("Mp3 Export Not Supported",
             "The server doesn't support this operation and you can not do this in the browser yet.");
     } else {
-        var seed = getMainSeed();
-        var genInfo = getGenInfo();
+        const seed = getMainSeed();
+        const genInfo = getGenInfo();
         copyWithPropertyInfoProvider(genInfo, mp3ExportSettings);
 
-        var renderRequestData = {seed: seed, sectionIndex: -1, genInfo: genInfo};
-        var curOperation = false; // getFirstRunningServerTaskWithType(AsyncServerChildTaskType.EXPORT_MP3);
+        const renderRequestData = {seed: seed, sectionIndex: -1, genInfo: genInfo};
+        const curOperation = false; // getFirstRunningServerTaskWithType(AsyncServerChildTaskType.EXPORT_MP3);
 
-        var task = new AsyncServerChildTask({
+        const task = new AsyncServerChildTask({
             taskType: AsyncServerChildTaskType.EXPORT_MP3,
             content: renderRequestData,
             caption: "Exporting mp3...",
@@ -389,14 +389,14 @@ function exportOgg() {
         showModalDialog("Mp3 Export Not Supported",
             "The server doesn't support this operation and you can not do this in the browser yet.");
     } else {
-        var seed = getMainSeed();
-        var genInfo = getGenInfo();
+        const seed = getMainSeed();
+        const genInfo = getGenInfo();
         copyWithPropertyInfoProvider(genInfo, oggExportSettings);
 
-        var renderRequestData = {seed: seed, sectionIndex: -1, genInfo: genInfo};
-        var curOperation = getFirstRunningServerTaskWithType(AsyncServerChildTaskType.EXPORT_OGG);
+        const renderRequestData = {seed: seed, sectionIndex: -1, genInfo: genInfo};
+        const curOperation = getFirstRunningServerTaskWithType(AsyncServerChildTaskType.EXPORT_OGG);
 
-        var task = new AsyncServerChildTask({
+        const task = new AsyncServerChildTask({
             taskType: AsyncServerChildTaskType.EXPORT_OGG,
             content: renderRequestData,
             caption: "Exporting ogg...",
@@ -412,9 +412,9 @@ function exportOgg() {
 
 
 function updateAsyncOperations() {
-    var nextOps = [];
-    for (var i=0; i<asyncOperations.length; i++) {
-        var op = asyncOperations[i];
+    const nextOps = [];
+    for (let i=0; i<asyncOperations.length; i++) {
+        const op = asyncOperations[i];
         op.update();
         if (!op.done && !op.cancelled) {
             nextOps.push(op);
@@ -449,8 +449,8 @@ function logit(str) {
 }
 
 function getFirstRunningServerTaskWithType(type) {
-    for (var i=0; i<asyncOperations.length; i++) {
-        var op = asyncOperations[i];
+    for (let i=0; i<asyncOperations.length; i++) {
+        const op = asyncOperations[i];
         if (op.taskType == type) {
             return op;
         }
@@ -460,9 +460,9 @@ function getFirstRunningServerTaskWithType(type) {
 
 
 function createExportPanel() {
-    var tabCaptions = ["Midi", "Mp3", "Ogg", "IT"];
-    var tabObjects = [midiExportSettings, mp3ExportSettings, oggExportSettings, itExportSettings];
-    var tabObjectPresets = [midiExportSettingsPresets, mp3ExportSettingsPresets, oggExportSettingsPresets, itExportSettingsPresets];
+    const tabCaptions = ["Midi", "Mp3", "Ogg", "IT"];
+    const tabObjects = [midiExportSettings, mp3ExportSettings, oggExportSettings, itExportSettings];
+    const tabObjectPresets = [midiExportSettingsPresets, mp3ExportSettingsPresets, oggExportSettingsPresets, itExportSettingsPresets];
 
     if (lightServerMode) {
         tabCaptions.length = 1;
@@ -491,17 +491,17 @@ function createExportPanel() {
 
 
 function createSongInfoPanel() {
-    var $songInfoDiv = $("#songInfoTabs");
+    const $songInfoDiv = $("#songInfoTabs");
     $songInfoDiv.tabs();
 }
 
 function getSongPartName(i, songStructureInfo) {
 
-    var text = "Part";
+    let text = "Part";
 
-    var indexInfo = songStructureInfo.indexInfos[i];
+    const indexInfo = songStructureInfo.indexInfos[i];
 
-    var songPartType = songStructureInfo.songPartTypes[i];
+    const songPartType = songStructureInfo.songPartTypes[i];
     if (indexInfo.isIntro) {
         text = "Intro";
     } else if (indexInfo.isEnd) {
@@ -541,29 +541,29 @@ function getSongPartName(i, songStructureInfo) {
 }
 
 function updateSongInfoPanel() {
-    var $structureDiv = $("#songInfoTabStructure");
-    var $instrumentsDiv = $("#songInfoTabInstruments");
+    const $structureDiv = $("#songInfoTabStructure");
+    const $instrumentsDiv = $("#songInfoTabInstruments");
 
     $instrumentsDiv.empty();
     $structureDiv.empty();
 
 
-    var songStructureInfo = renderStorage.songStructureInfo;
+    const songStructureInfo = renderStorage.songStructureInfo;
 
-    var rowClasses = ['evenTableRow', 'oddTableRow'];
+    const rowClasses = ['evenTableRow', 'oddTableRow'];
 
     if (songStructureInfo) {
-        var indexInfos = songStructureInfo.indexInfos;
+        const indexInfos = songStructureInfo.indexInfos;
         var htmlArr = [];
         htmlArr.push('<table class="songInfoInstrumentsTable">');
-        var rowIndex = 0;
+        let rowIndex = 0;
 
         function getPropertyTableRow(header, arr) {
-            var rowClass = rowClasses[rowIndex % rowClasses.length];
+            const rowClass = rowClasses[rowIndex % rowClasses.length];
             htmlArr.push('<tr class="' + rowClass + '">');
             htmlArr.push('<td>' + header + '</td>')
-            for (var i=0; i<arr.length; i++) {
-                var text = '' + arr[i];
+            for (let i=0; i<arr.length; i++) {
+                const text = '' + arr[i];
                 htmlArr.push('<td>' + text + '</td>');
             }
             rowIndex++;
@@ -575,7 +575,7 @@ function updateSongInfoPanel() {
             htmlArr.push('<tr class="' + rowClass + '">');
             htmlArr.push('<td>Type</td>')
             for (var i=0; i<indexInfos.length; i++) {
-                var text = getSongPartName(i, songStructureInfo);
+                const text = getSongPartName(i, songStructureInfo);
                 htmlArr.push('<td>' + text + '</td>');
             }
             htmlArr.push('</tr>');
@@ -605,16 +605,16 @@ function updateSongInfoPanel() {
         $structureDiv.append(htmlArr.join(""));
     }
 
-    var channelMaps = renderStorage.channelMaps;
+    const channelMaps = renderStorage.channelMaps;
     if (channelMaps) {
         var htmlArr = [];
         htmlArr.push('<table class="songInfoInstrumentsTable">');
         for (var i=0; i<channelMaps.length-1; i++) {
             var rowClass = rowClasses[i % rowClasses.length];
             htmlArr.push('<tr class="' + rowClass + '">');
-            var chMap = channelMaps[i];
-            var str = MidiProgram.toString(chMap.program);
-            var instrStr = "Unknown";
+            const chMap = channelMaps[i];
+            const str = MidiProgram.toString(chMap.program);
+            let instrStr = "Unknown";
             switch (i) {
                 case 0:
                 case 1:
@@ -652,8 +652,8 @@ function deleteSong(songIndex, callback) {
 
     showConfirmDialog("Really delete?", "Do you really want to delete the song?", "Yes", "No",
         function() {
-            var deleteRequestData = {songIndex: songIndex};
-            var task = new AsyncServerChildTask({
+            const deleteRequestData = {songIndex: songIndex};
+            const task = new AsyncServerChildTask({
                 taskType: AsyncServerChildTaskType.DELETE_SONG,
                 content: deleteRequestData,
                 caption: "Deleting song...",
@@ -670,8 +670,8 @@ function deleteSong(songIndex, callback) {
 }
 
 function renameSong(songIndex, newName, callback) {
-    var deleteRequestData = {newName: newName, songIndex: songIndex};
-    var task = new AsyncServerChildTask({
+    const deleteRequestData = {newName: newName, songIndex: songIndex};
+    const task = new AsyncServerChildTask({
         taskType: AsyncServerChildTaskType.RENAME_SONG,
         content: deleteRequestData,
         caption: "Renaming song...",
@@ -685,14 +685,14 @@ function renameSong(songIndex, newName, callback) {
 }
 
 function overwriteSong(prefix, songInfo) {
-    var seed = getMainSeed();
-    var name = songSettings.name;
-    var genInfo = getGenInfo();
+    const seed = getMainSeed();
+    const name = songSettings.name;
+    const genInfo = getGenInfo();
     copyWithPropertyInfoProvider(genInfo, mp3ExportSettings);
 
-    var owRequestData = {seed: seed, songName: name, prefix: songInfo.prefix, genInfo: genInfo};
+    const owRequestData = {seed: seed, songName: name, prefix: songInfo.prefix, genInfo: genInfo};
 
-    var task = new AsyncServerChildTask({
+    const task = new AsyncServerChildTask({
         taskType: AsyncServerChildTaskType.OVERWRITE_SONG,
         content: owRequestData,
         caption: "Overwriting song...",
@@ -709,11 +709,11 @@ function overwriteSong(prefix, songInfo) {
 }
 
 function completeGenInfo(genInfo) {
-    var refGenInfo = new GenInfo();
-    for (var prop in refGenInfo) {
+    const refGenInfo = new GenInfo();
+    for (const prop in refGenInfo) {
         if (!stringEndsWith(prop, "Seed")) {
-            var refValue = refGenInfo[prop];
-            var value = genInfo[prop];
+            const refValue = refGenInfo[prop];
+            const value = genInfo[prop];
             if (!isFunction(refValue) && typeof(value) === 'undefined') {
                 genInfo[prop] = copyValueDeep(refValue);
 //                logit("Completing gen info " + prop + ": " + refValue);
@@ -725,10 +725,10 @@ function completeGenInfo(genInfo) {
 
 function updateSongSettingsComponent(genInfo, newSongSettings) {
 
-    var tabsId = "songSettingsTab";
+    const tabsId = "songSettingsTab";
 
     completeGenInfo(genInfo);
-    var newValues = [
+    const newValues = [
         newSongSettings,
         getSeedStringsObject(songStructureSeedSettings, genInfo),
         getSeedStringsObject(songContentSeedSettings, genInfo),
@@ -738,7 +738,7 @@ function updateSongSettingsComponent(genInfo, newSongSettings) {
         copyWithPropertyInfoProvider(null, songDetails, genInfo)
     ];
 
-    for (var i=0; i<newValues.length; i++) {
+    for (let i=0; i<newValues.length; i++) {
         SongSettingsComponent.changeComponentValue(newValues[i], songSettingsCompInfo.createdComps, i, tabsId, songSettingsCompInfo.changeListener);
     }
 
@@ -748,16 +748,16 @@ function loadSong(prefix, songInfo, force) {
 
     function loadTheSongNow() {
 
-        var dataFilename = prefix + "/" + songInfo.prefix + ".json";
+        const dataFilename = prefix + "/" + songInfo.prefix + ".json";
 
         $.ajax(dataFilename, {
             complete: function(jqXhr, textStatus) {
                 if (textStatus == "success") {
-                    var response = $.parseJSON(jqXhr.responseText);
+                    const response = $.parseJSON(jqXhr.responseText);
                     if (response) {
 //                            logit(response);
-                        var genInfo = response.genInfo;
-                        var newSongSettings = {name: songInfo.name || "Song", seed: "" + response.seed};
+                        const genInfo = response.genInfo;
+                        const newSongSettings = {name: songInfo.name || "Song", seed: "" + response.seed};
                         // Copy all those properties that are missing from the default GenInfo
                         // This happens when new properties are added and loading an old song
 
@@ -818,7 +818,7 @@ function getUserInfo(onSuccess, onFail, onDone) {
             contentType: "application/json",
             complete: function(jqXhr, textStatus) {
                 if (textStatus == "success") {
-                    var response = $.parseJSON(jqXhr.responseText);
+                    const response = $.parseJSON(jqXhr.responseText);
                     if (onSuccess) {
                         onSuccess(response);
                     }
@@ -843,10 +843,10 @@ function loadMySongsList() {
     } else {
         $('#my-songs-song-list').remove();
 
-        var urlPrefix = "users/" + userToDirName(user);
-        var indexUrl = urlPrefix + "/index.json";
+        const urlPrefix = "users/" + userToDirName(user);
+        const indexUrl = urlPrefix + "/index.json";
 
-        var $mySongsDiv = $("#my-songs-tab");
+        const $mySongsDiv = $("#my-songs-tab");
 
         getUserInfo(
             function(response) {
@@ -865,21 +865,21 @@ function loadMySongsList() {
 
 
 function createLoadButton(buttonId, songInfo, $targetDiv, urlPrefix) {
-    var $loadButton = $targetDiv.find("#" + buttonId);
+    const $loadButton = $targetDiv.find("#" + buttonId);
     $loadButton.button();
     $loadButton.click(function() {
         loadSong(urlPrefix, songInfo);
     });
 }
 function createOverwriteButton(buttonId, songInfo, $targetDiv, urlPrefix) {
-    var $owButton = $targetDiv.find("#" + buttonId);
+    const $owButton = $targetDiv.find("#" + buttonId);
     $owButton.button();
     $owButton.click(function() {
         overwriteSong(urlPrefix, songInfo);
     });
 }
 function createDeleteButton(buttonId, songInfos, songInfoIndex, $targetDiv, urlPrefix) {
-    var $button = $targetDiv.find("#" + buttonId);
+    const $button = $targetDiv.find("#" + buttonId);
     $button.button();
     $button.click(function() {
         deleteSong(songInfoIndex, function() {
@@ -888,36 +888,36 @@ function createDeleteButton(buttonId, songInfos, songInfoIndex, $targetDiv, urlP
     });
 }
 function createRenameButton(buttonId, songInfos, songInfoIndex, $targetDiv, urlPrefix) {
-    var $button = $targetDiv.find("#" + buttonId);
+    const $button = $targetDiv.find("#" + buttonId);
     $button.button();
     $button.click(function() {
     });
 }
 
 function createSongList(info, $targetDiv, urlPrefix, idPrefix, namePrefix, createLoad, createDelete, createRename) {
-    var songs = info.songs;
-    var content = "";
+    const songs = info.songs;
+    let content = "";
     content += '<ol id="' + idPrefix + '-song-list" class="song-list" >';
 
-    var linkStyle = "margin-right: 0.5em;";
+    const linkStyle = "margin-right: 0.5em;";
     for (var i=0; i<songs.length; i++) {
         var songInfo = songs[i];
 
-        var songName = songInfo.name;
+        let songName = songInfo.name;
         if (!songName) {
             songName = namePrefix + " " + (i + 1);
         }
 
-        var tableContent = "<tr><td>" + songName + "</td>";
+        let tableContent = "<tr><td>" + songName + "</td>";
 
-        var columns = 1;
-        var columnCounter = 1;
+        let columns = 1;
+        let columnCounter = 1;
         if (songInfo.soundfonts && songInfo.soundfonts.length > 0) {
-            var defaultSfIndex = songInfo.soundfonts[0];
-            var prefix = urlPrefix + "/" + songInfo.prefix;
-            var midiFilename = prefix + ".mid";
-            var mp3Filename = prefix + "_" + defaultSfIndex + ".mp3";
-            var oggFilename = prefix + "_" + defaultSfIndex + ".ogg";
+            const defaultSfIndex = songInfo.soundfonts[0];
+            const prefix = urlPrefix + "/" + songInfo.prefix;
+            const midiFilename = prefix + ".mid";
+            const mp3Filename = prefix + "_" + defaultSfIndex + ".mp3";
+            const oggFilename = prefix + "_" + defaultSfIndex + ".ogg";
 
             tableContent += '<td><a style="' + linkStyle + '" href="' + midiFilename + '" >Midi</a>';
             tableContent += '<a style="' + linkStyle + '" href="' + mp3Filename + '" >Mp3</a>';
@@ -928,7 +928,7 @@ function createSongList(info, $targetDiv, urlPrefix, idPrefix, namePrefix, creat
         tableContent += "<td>";
         columnCounter += 1;
         if (createDelete) {
-            var deleteButtonId = idPrefix + "-delete-song-button-" + i;
+            const deleteButtonId = idPrefix + "-delete-song-button-" + i;
             tableContent += '<button id="' + deleteButtonId + '" >Delete</button>';
         }
 //        if (createOverwrite) {
@@ -936,11 +936,11 @@ function createSongList(info, $targetDiv, urlPrefix, idPrefix, namePrefix, creat
 //            liContent += '<button id="' + owButtonId + '" >Overwrite</button>';
 //        }
         if (createRename) {
-            var renameButtonId = idPrefix + "-rename-song-button-" + i;
+            const renameButtonId = idPrefix + "-rename-song-button-" + i;
             tableContent += '<button id="' + renameButtonId + '" >Rename</button>';
         }
         if (createLoad) {
-            var loadButtonId = idPrefix + "-load-song-button-" + i;
+            const loadButtonId = idPrefix + "-load-song-button-" + i;
             tableContent += '<button id="' + loadButtonId + '" >Load</button>';
         }
         tableContent += "</td>";
@@ -986,8 +986,8 @@ function createSongList(info, $targetDiv, urlPrefix, idPrefix, namePrefix, creat
 
         content += '<table style="margin: 0px; padding: 0px; border: 0px; width: 100%" class="ui-widget-content" >';
         content += '<colgroup>';
-        var colWidth = 100 / columns;
-        for (var j=0; j<columns; j++) {
+        const colWidth = 100 / columns;
+        for (let j=0; j<columns; j++) {
             content += '<col span="1" style="width: ' + Math.round(colWidth) + '%;">';
         }
         content += "</colgroup>";
@@ -995,7 +995,7 @@ function createSongList(info, $targetDiv, urlPrefix, idPrefix, namePrefix, creat
         content += "</table>";
     }
     content += "</ol>";
-    var $list = $(content);
+    const $list = $(content);
 //        $list.selectable();
 
     $targetDiv.append($list);
@@ -1026,7 +1026,7 @@ function createSongsPanel() {
     if (loggedIn && user) {
         $("#songtabs ul").append($('<li><a href="#my-songs-tab">My Songs</a></li>'));
 
-        var mySongsContent = "";
+        let mySongsContent = "";
 
         mySongsContent += '<button id="save-song-button">Save Current Song</button>';
 
@@ -1036,14 +1036,14 @@ function createSongsPanel() {
 
 
     $("#save-song-button").button().click(function() {
-        var seed = getMainSeed();
-        var name = songSettings.name;
-        var genInfo = getGenInfo();
+        const seed = getMainSeed();
+        const name = songSettings.name;
+        const genInfo = getGenInfo();
         copyWithPropertyInfoProvider(genInfo, mp3ExportSettings);
 
-        var saveRequestData = {seed: seed, songName: name, genInfo: genInfo};
+        const saveRequestData = {seed: seed, songName: name, genInfo: genInfo};
 
-        var task = new AsyncServerChildTask({
+        const task = new AsyncServerChildTask({
             taskType: AsyncServerChildTaskType.SAVE_SONG,
             content: saveRequestData,
             caption: "Saving song...",
@@ -1061,7 +1061,7 @@ function createSongsPanel() {
 
     $("#songtabs").tabs();
 
-    var $examplesDiv = $("#example-songs-tab");
+    const $examplesDiv = $("#example-songs-tab");
 
 
 
@@ -1070,10 +1070,10 @@ function createSongsPanel() {
 //        contentType: "application/json",
         complete: function(jqXhr, textStatus) {
             if (textStatus == "success") {
-                var response = $.parseJSON(jqXhr.responseText);
+                const response = $.parseJSON(jqXhr.responseText);
                 if (response) {
                     createSongList(response, $examplesDiv, "songpresets", "preset", "Song Example", true, false, false);
-                    var songs = response.songs;
+                    const songs = response.songs;
                     if (!renderStorage.renderData && songs.length > 0) {
                         loadPresetSong(songs[0], true);
                     }
@@ -1141,7 +1141,7 @@ function createAccountPanel() {
 
     } else {
         loggedIn = false;
-        var userInfoComp = null;
+        const userInfoComp = null;
         getUserInfo(
             function(response) { // onSuccess
                 if (response._constructorName == "UserInfo") {
@@ -1176,7 +1176,7 @@ function createAccountPanel() {
                 console.log("Failed to get user info in account panel " + textStatus);
             },
             function() { // onDone
-                var html = "<p></p>";
+                let html = "<p></p>";
                 if (loggedIn) {
                     html =
                         '<form action="logout" method="get" id="logout_form">' +
@@ -1195,7 +1195,7 @@ function createAccountPanel() {
                         }
                     });
 
-                    var contentArr = [];
+                    const contentArr = [];
                     userInfoComp.createJQueryStrings(contentArr);
                     html += contentArr.join("");
 
@@ -1225,10 +1225,10 @@ function createAccountPanel() {
 
                 html += '<p><button id="touButton" >Terms of use</button></p>';
 
-                var $html = $(html);
+                const $html = $(html);
 
 
-                var $div = $("#accountDialogDiv");
+                const $div = $("#accountDialogDiv");
                 $div.append($html);
 
                 $updateUserInfoButton = $("#updateUserInfoButton");
@@ -1261,14 +1261,14 @@ function createAccountPanel() {
 
 function createTutorialsPanel() {
 
-    var $tutorialTabs = $("#tutorialtabs");
+    const $tutorialTabs = $("#tutorialtabs");
 
-    var arr = ['<ul>'];
+    const arr = ['<ul>'];
 
 
     arr.push('<li><a href="tutorials/info.html">Info</a></li>');
 
-    for (var i=1; i<=5; i++) {
+    for (let i=1; i<=5; i++) {
         arr.push('<li><a href="tutorials/tutorial_' + i + '.html">Tutorial ' + i + '</a></li>');
     }
 //    <li><a href="tutorials/tutorial_1.html">Tutorial 1</a></li>
@@ -1284,19 +1284,19 @@ function createTutorialsPanel() {
 
 function createPlayerPanel() {
 
-    var $playerDialog = $("#playerDialogDiv");
+    const $playerDialog = $("#playerDialogDiv");
 
     if (AudioPlayerConstructor) {
-        var prefixes = ["wa"];
+        const prefixes = ["wa"];
 
-        var playerButtons = ["rewind", "play", "stop", "forward"];
-        var playerButtonIcons = ["seek-prev", "play", "stop", "seek-next"];
-        for (var j=0; j<prefixes.length; j++) {
-            var prefix = prefixes[j];
-            for (var i=0; i<playerButtons.length; i++) {
-                var $button = $("#" + prefix + playerButtons[i] + "button");
+        const playerButtons = ["rewind", "play", "stop", "forward"];
+        const playerButtonIcons = ["seek-prev", "play", "stop", "seek-next"];
+        for (let j=0; j<prefixes.length; j++) {
+            const prefix = prefixes[j];
+            for (let i=0; i<playerButtons.length; i++) {
+                const $button = $("#" + prefix + playerButtons[i] + "button");
 
-                var icon = playerButtonIcons[i];
+                const icon = playerButtonIcons[i];
                 $button.button({
                     "text": false,
                     "icons": {
@@ -1307,14 +1307,14 @@ function createPlayerPanel() {
         }
 
 
-        var $webAudioPlayerDiv = $("#waPlayerDiv");
+        const $webAudioPlayerDiv = $("#waPlayerDiv");
 
-        var tabCaptions = [AudioPlayerConstructor.prototype.title];
-        var tabObjects = [webAudioPlayerSettings];
+        const tabCaptions = [AudioPlayerConstructor.prototype.title];
+        const tabObjects = [webAudioPlayerSettings];
 
-        var tabObjectPresets = null; // [visualizer3DSettingsPresets];
+        const tabObjectPresets = null; // [visualizer3DSettingsPresets];
 
-        var result = SongSettingsComponent.createTabs($playerDialog, "playerSettingsTab", "player-settings-panel", tabCaptions, tabObjects,
+        const result = SongSettingsComponent.createTabs($playerDialog, "playerSettingsTab", "player-settings-panel", tabCaptions, tabObjects,
             function(comp, oldValue, newValue) {
                 settingsDirty = true;
             }, tabObjectPresets);
@@ -1331,12 +1331,12 @@ function createPlayerPanel() {
 
 
 function createVisualizerSettingsPanel() {
-    var tabCaptions = ["Visualizer", "Interface"];
-    var tabObjects = [visualizer3DSettings, themeSettings];
-    var tabObjectPresets = null; // [visualizer3DSettingsPresets, themeSettingsPresets];
+    const tabCaptions = ["Visualizer", "Interface"];
+    const tabObjects = [visualizer3DSettings, themeSettings];
+    const tabObjectPresets = null; // [visualizer3DSettingsPresets, themeSettingsPresets];
 
-    var id = "visualizerSettingsTab";
-    var cls = "visualizer-settings-panel";
+    const id = "visualizerSettingsTab";
+    const cls = "visualizer-settings-panel";
     SongSettingsComponent.createTabs($("#visualizerSettingsDialogDiv"), id, cls, tabCaptions, tabObjects,
         function(comp, oldValue, newValue) {
             settingsDirty = true;
@@ -1346,12 +1346,12 @@ function createVisualizerSettingsPanel() {
 
 
 function createSongSettingsPanel() {
-    var $songSettingsDialog = $("#songSettingsDialogDiv");
-    var tabCaptions = ["Song", "Structure Seeds", "Content Seeds", "Indices Seeds", "Parameters", "Domains", "Details"];
-    var tabObjects = [songSettings, songStructureSeedSettings, songContentSeedSettings, songIndicesSeedSettings, songParameters, songDomains, songDetails];
-    var tabObjectPresets = [songSettingsPresets, songStructureSeedSettingsPresets, songContentSeedSettingsPresets, songIndicesSeedSettingsPresets, songParametersPresets, songDomainsPresets, songDetailsPresets];
-    var createSeeds = [false, true, true, true, false, false, false];
-    var tabsId = "songSettingsTab";
+    const $songSettingsDialog = $("#songSettingsDialogDiv");
+    const tabCaptions = ["Song", "Structure Seeds", "Content Seeds", "Indices Seeds", "Parameters", "Domains", "Details"];
+    const tabObjects = [songSettings, songStructureSeedSettings, songContentSeedSettings, songIndicesSeedSettings, songParameters, songDomains, songDetails];
+    const tabObjectPresets = [songSettingsPresets, songStructureSeedSettingsPresets, songContentSeedSettingsPresets, songIndicesSeedSettingsPresets, songParametersPresets, songDomainsPresets, songDetailsPresets];
+    const createSeeds = [false, true, true, true, false, false, false];
+    const tabsId = "songSettingsTab";
     return SongSettingsComponent.createTabs($songSettingsDialog, tabsId, "settings-panel", tabCaptions, tabObjects,
         function(comp, oldValue, newValue) {
             settingsDirty = true;
@@ -1366,17 +1366,17 @@ function createSongSettingsPanel() {
 
 function updateGuiFromEditorSettings(dialogs) {
     // Hide the dialogs that should be hidden :)
-    for (var i=0; i<dialogs.length; i++) {
-        var dialog = dialogs[i];
-        var $dialog = $("#" + dialog + "DialogDiv");
-        var pos = editorSettings[dialog + "Position"];
+    for (let i=0; i<dialogs.length; i++) {
+        const dialog = dialogs[i];
+        const $dialog = $("#" + dialog + "DialogDiv");
+        const pos = editorSettings[dialog + "Position"];
         if (pos) {
             $dialog.dialog("option", "position", {my: "left top", at: "left+" + pos[0] + " top+" + pos[1]});
 //            console.log("left : " + left);
         } else {
             logit("Could not find pos for " + dialog);
         }
-        var visible = !!editorSettings[dialog + "Visible"];
+        const visible = !!editorSettings[dialog + "Visible"];
         if (!visible) {
             $dialog.dialog("close");
         }
@@ -1386,12 +1386,12 @@ function updateGuiFromEditorSettings(dialogs) {
 
 function createDialogAndToggle(dialog, caption, width, at) {
 
-    var $buttonsDiv = $("#buttonsDiv");
+    const $buttonsDiv = $("#buttonsDiv");
 
     $buttonsDiv.append($('<input type="checkbox" checked="checked" id="' + dialog + 'DialogShow"/><label class="toggle-button" for="' + dialog + 'DialogShow">' + caption + '</label>'));
 
-    var $toggle = $("#" + dialog + "DialogShow");
-    var $dialog = $("#" + dialog + "DialogDiv");
+    const $toggle = $("#" + dialog + "DialogShow");
+    const $dialog = $("#" + dialog + "DialogDiv");
 
     $dialog.dialog({
 //        dialogClass: "transparent",
@@ -1401,7 +1401,7 @@ function createDialogAndToggle(dialog, caption, width, at) {
         show: {effect: "fade", duration: "fast"},
 
         create: function(event, ui) {
-            var widget = $(this).dialog("widget");
+            const widget = $(this).dialog("widget");
             $(".ui-dialog-titlebar-close span", widget)
                 .removeClass("ui-icon-closethick")
                 .addClass("ui-icon-minusthick");
@@ -1425,7 +1425,7 @@ function createDialogAndToggle(dialog, caption, width, at) {
 //    $dialog.on("dragstop", function(event, ui) {logit("hej")});
 
 
-    var $dialogWidget = $dialog.dialog("widget");
+    const $dialogWidget = $dialog.dialog("widget");
     if (themeSettings.transparentDialogs) {
         $dialogWidget.addClass("transparent");
         $dialog.addClass("very-transparent");
@@ -1490,7 +1490,7 @@ function createDialogAndToggle(dialog, caption, width, at) {
 //        logit("Opening " + dialog);
     });
     $toggle.button().on("change", function() {
-        var dialogOpen = $dialog.dialog("isOpen");
+        const dialogOpen = $dialog.dialog("isOpen");
         if (this.checked && !dialogOpen) {
             $dialog.dialog("open");
         } else if (!this.checked && dialogOpen) {
@@ -1515,7 +1515,7 @@ function stopSong() {
 //    logit("Logged in cookie: " + $.cookie('loggedin'));
 //}
 
-var termsOfUseContent = [
+const termsOfUseContent = [
     '<p>',
     '<ul>',
     '<li>All songs that are generated through this site (abundant-music.com) are public domain by default. Users do not get copyright of any generated song' +
@@ -1609,12 +1609,12 @@ function renderSong(doneFunc, cancelFunc, failFunc) {
 
         songSettingsChangedWhileRendering = false;
 
-        var seed = getMainSeed();
-        var renderRequestData = {seed: seed, sectionIndex: -1, genInfo: getGenInfo()};
+        const seed = getMainSeed();
+        const renderRequestData = {seed: seed, sectionIndex: -1, genInfo: getGenInfo()};
 
 //    logit("Rendeirng with seed " + seed);
 
-        var params = {
+        const params = {
             taskType: WorkerTaskType.RENDER,
             content: renderRequestData,
             caption: "Composing song...",
@@ -1639,7 +1639,7 @@ function renderSong(doneFunc, cancelFunc, failFunc) {
             },
             id: "task" + asyncOperationCounter};
 
-        var task = null;
+        let task = null;
         if (window.Worker) {
             task = new AsyncWorkerTask(params);
         } else {
@@ -1660,20 +1660,20 @@ function renderSong(doneFunc, cancelFunc, failFunc) {
     }
 }
 
-var first = true;
+let first = true;
 function setVisualizerSize() {
-    var w = window.innerWidth;
-    var h = window.innerHeight;
+    let w = window.innerWidth;
+    let h = window.innerHeight;
 
     if (!w || !h) {
-        var $document = $(document);
+        const $document = $(document);
         w = $document.innerWidth();
         h = $document.innerWidth();
     }
     if (first) {
         $body = $("body");
-        var scaler = clamp(Math.min(w, h) / 1000, 0.5, 2);
-        var fontSize = 16 * scaler;
+        const scaler = clamp(Math.min(w, h) / 1000, 0.5, 2);
+        const fontSize = 16 * scaler;
         $body.css("font-size", fontSize + "px");
         first = false;
     }
@@ -1683,7 +1683,7 @@ function setVisualizerSize() {
 
 function sendFeedback() {
 
-    var feedbackStr = $("#feedbackTextArea").val();
+    const feedbackStr = $("#feedbackTextArea").val();
 
     if (feedbackStr) {
         sendSimpleCommand({type: "giveFeedback", feedback: feedbackStr});
@@ -1702,16 +1702,16 @@ function composeSetup1() {
 
 //    logit("user dir name: " + userToDirName(user) + " from " + user);
 
-    var $window = $(window);
-    var $canvasfor2dcontext = $("#canvasfor2dcontext");
+    const $window = $(window);
+    const $canvasfor2dcontext = $("#canvasfor2dcontext");
 
-    var canvasfor2dcontext = $canvasfor2dcontext[0];
+    const canvasfor2dcontext = $canvasfor2dcontext[0];
 
-    var startTime = Date.now();
+    const startTime = Date.now();
 
     if (Modernizr.webgl && !visualizer3DSettings.forceContext2D) {
 //        visualizer = new CanvasVisualizer3D(canvasfor2dcontext, startTime);
-        var webGLOptions = {
+        const webGLOptions = {
             addBloom: visualizer3DSettings.addBloom,
             addSimulatedAA: visualizer3DSettings.addSimulatedAA,
             addVignette: visualizer3DSettings.addVignette
@@ -1769,7 +1769,7 @@ function composeSetup3() {
 
 
 function composeSetup4() {
-    var $feedbackDialogDiv = $("#feedbackDialogDiv");
+    const $feedbackDialogDiv = $("#feedbackDialogDiv");
     if (!loggedIn) {
         $feedbackDialogDiv.empty();
         $feedbackDialogDiv.append("Log in to enable feedback. Thanks!");
@@ -1780,27 +1780,27 @@ function composeSetup4() {
         });
     }
 
-    var dialogs = ["songSettings", "songInfo", "player", "visualizerSettings", "tutorials", "songs", "export", "help", "feedback", "account"];
-    var captions = ["Song Settings" , "Song Info", "Player", "Visual Settings", "Tutorials", "Songs", "Export", "Help/Credits", "Feedback", "Account"];
-    var widths = ["60em", "60em", Modernizr.webaudio ? "45em" : null, "45em", "55em", "45em", "45em", "50em", lightServerMode ? null : "45em", lightServerMode ? null : "40em"];
-    var ats = ["right", "right top", "right", "top", "left", "top", "top", "left", "left", "left"];
+    const dialogs = ["songSettings", "songInfo", "player", "visualizerSettings", "tutorials", "songs", "export", "help", "feedback", "account"];
+    const captions = ["Song Settings" , "Song Info", "Player", "Visual Settings", "Tutorials", "Songs", "Export", "Help/Credits", "Feedback", "Account"];
+    const widths = ["60em", "60em", Modernizr.webaudio ? "45em" : null, "45em", "55em", "45em", "45em", "50em", lightServerMode ? null : "45em", lightServerMode ? null : "40em"];
+    const ats = ["right", "right top", "right", "top", "left", "top", "top", "left", "left", "left"];
 
-    for (var i=0; i<dialogs.length; i++) {
+    for (let i=0; i<dialogs.length; i++) {
 
-        var dialog = dialogs[i];
-        var width = widths[i];
-        var caption = captions[i];
+        const dialog = dialogs[i];
+        const width = widths[i];
+        const caption = captions[i];
         if (width) {
             createDialogAndToggle(dialog, caption, width, ats[i]);
         } else {
             // Remove toggle
-            var $dialog = $("#" + dialog + "DialogDiv");
+            const $dialog = $("#" + dialog + "DialogDiv");
             $dialog.remove();
         }
     }
 
     $refreshButton = $('<button style="margin-left: 1em;">Compose</button>');
-    var $buttonsDiv = $("#buttonsDiv");
+    const $buttonsDiv = $("#buttonsDiv");
     $buttonsDiv.append($refreshButton);
     $refreshButton.button({
             icons: {
@@ -1832,16 +1832,16 @@ function composeSetup4() {
     $forwardButton = $("#waforwardbutton");
     $rewindButton = $("#warewindbutton");
 
-    var audioStepTime = 10;
+    let audioStepTime = 10;
 
     function playerUpdate() {
-        var updateMillis = 500;
+        let updateMillis = 500;
         if (audioPlayer) {
-            var before = Date.now();
+            const before = Date.now();
             audioPlayer.step();
-            var after = Date.now();
+            const after = Date.now();
 
-            var diff = after - before;
+            const diff = after - before;
 
             audioStepTime = 0.95 * audioStepTime + 0.05 * diff;
 
@@ -1958,15 +1958,15 @@ function composeSetup4() {
     }
     checkSettingsChange();
 
-    var prevVisualizerTime = Date.now();
+    let prevVisualizerTime = Date.now();
 
-    var stepCounter = 0;
+    let stepCounter = 0;
 
     function animate() {
         requestAnimationFrame(animate);
 
 //        logit("dhskf " + stepCounter);
-        var paintFps = visualizer3DSettings.context2DFps;
+        let paintFps = visualizer3DSettings.context2DFps;
         if (usingWebGL) {
             paintFps = visualizer3DSettings.webGLFps;
         }
@@ -1980,9 +1980,9 @@ function composeSetup4() {
             }
         }
 
-        var paintModulus = clamp(Math.round(60 / paintFps), 1, 60);
-        var time = Date.now();
-        var dt = time - prevVisualizerTime;
+        const paintModulus = clamp(Math.round(60 / paintFps), 1, 60);
+        const time = Date.now();
+        const dt = time - prevVisualizerTime;
         visualizer.stopMovementMode = visualizer3DSettings.stopMovementMode;
         visualizer.step(dt);
         stepCounter++;

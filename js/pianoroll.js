@@ -29,11 +29,11 @@ PianoRoll.prototype = new GuiComponent();
 
 PianoRoll.prototype.updateNoteLimits = function() {
     if (this.autoNoteLimits && this.renderData != null) {
-        var minLimit = 127;
-        var maxLimit = 0;
-        var events = this.renderData.getEvents();
-        for (var i=0; i<events.length; i++) {
-            var e = events[i];
+        let minLimit = 127;
+        let maxLimit = 0;
+        const events = this.renderData.getEvents();
+        for (let i=0; i<events.length; i++) {
+            const e = events[i];
             if (e instanceof NoteOffEvent || e instanceof NoteOnEvent) {
                 if (!this.visibleChannels || this.visibleChannels[e.renderChannel.id]) {
                     minLimit = Math.min(e.note, minLimit);
@@ -64,16 +64,16 @@ PianoRoll.prototype.getNoteRowsHeight = function() {
 };
 
 PianoRoll.prototype.getNoteRowsWidth = function() {
-    var ches = this.harmony.getConstantHarmonyElements();
-    var harmonyWidth = 0;
-    for (var i=0; i<ches.length; i++) {
-        var e = ches[i];
-        var beats = positionUnitToBeats(e.getLength(), e.getLengthUnit(), e.tsNumerator, e.tsDenominator);
+    const ches = this.harmony.getConstantHarmonyElements();
+    let harmonyWidth = 0;
+    for (let i=0; i<ches.length; i++) {
+        const e = ches[i];
+        const beats = positionUnitToBeats(e.getLength(), e.getLengthUnit(), e.tsNumerator, e.tsDenominator);
         harmonyWidth += beats * this.beatWidth;
     }
-    var dataWidth = 0;
+    let dataWidth = 0;
     if (this.renderData) {
-        var limits = this.renderData.getTimeLimits();
+        const limits = this.renderData.getTimeLimits();
         dataWidth = Math.ceil(limits[1] * this.beatWidth);
     }
 
@@ -99,7 +99,7 @@ PianoRoll.prototype.updateSize = function() {
         // Calculate header height
 
         // Calculate note rows height
-        var rows = this.noteLimits[1] - this.noteLimits[0] + 1;
+        const rows = this.noteLimits[1] - this.noteLimits[0] + 1;
         sum += this.noteRowHeight * rows;
 
         // Calculate footer height
@@ -108,26 +108,26 @@ PianoRoll.prototype.updateSize = function() {
 };
 
 PianoRoll.prototype.paintKeys = function(x, y, context) {
-    var startNote = this.noteLimits[0];
-    var endNote = this.noteLimits[1];
-    var range = endNote - startNote + 1;
-    var totalHeight = this.noteRowHeight * range;
+    const startNote = this.noteLimits[0];
+    const endNote = this.noteLimits[1];
+    const range = endNote - startNote + 1;
+    const totalHeight = this.noteRowHeight * range;
 
-    var whites = [true, false, true, false, true, true, false, true, false, true, false, true];
-    var whiteIndices = [0, 0, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6];
+    const whites = [true, false, true, false, true, true, false, true, false, true, false, true];
+    const whiteIndices = [0, 0, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6];
 
     //    logit("startNote " + startNote + " endNote " + endNote);
-    var border = 2;
+    const border = 2;
     // Paint all white keys first
-    var whiteSize = this.noteRowHeight * (12.0 / 7.0);
+    const whiteSize = this.noteRowHeight * (12.0 / 7.0);
     for (var i=startNote-1; i<=endNote+1; i++) {
         var pitchClass = i % 12;
 
         if (whites[pitchClass]) {
             var keyX = x;
             var index = i - startNote;
-            var lastCIndex = Math.floor(i / 12) * 12;
-            var whiteIndex = whiteIndices[pitchClass];
+            const lastCIndex = Math.floor(i / 12) * 12;
+            const whiteIndex = whiteIndices[pitchClass];
             var keyY = y + totalHeight - (whiteIndex + 0.35) * whiteSize - (lastCIndex - startNote + 1) * this.noteRowHeight;
 
             var keyHeight = whiteSize;
@@ -148,7 +148,7 @@ PianoRoll.prototype.paintKeys = function(x, y, context) {
             var index = i - startNote;
             var keyY = y + totalHeight - (index + 1) * this.noteRowHeight;
             var keyHeight = this.noteRowHeight;
-            var keyWidth = this.keysWidth * 0.6;
+            const keyWidth = this.keysWidth * 0.6;
             context.fillStyle = "#222222";
             context.fillRect(keyX, keyY, keyWidth, keyHeight);
             context.fillStyle = "#000000";
@@ -163,17 +163,17 @@ PianoRoll.prototype.paintKeys = function(x, y, context) {
 PianoRoll.prototype.paintNotes = function(x, y, context) {
     if (this.renderData) {
 
-        var border = 2;
-        var startNote = this.noteLimits[0];
-        var endNote = this.noteLimits[1];
-        var range = endNote - startNote + 1;
-        var totalHeight = this.noteRowHeight * range;
+        const border = 2;
+        const startNote = this.noteLimits[0];
+        const endNote = this.noteLimits[1];
+        const range = endNote - startNote + 1;
+        const totalHeight = this.noteRowHeight * range;
 
         this.renderData.sort();
-        var events = this.renderData.getEvents();
-        var notesOn = {};
-        for (var i=0; i<events.length; i++) {
-            var e = events[i];
+        const events = this.renderData.getEvents();
+        const notesOn = {};
+        for (let i=0; i<events.length; i++) {
+            const e = events[i];
             if (e instanceof NoteOnEvent) {
                 var noteArr = notesOn[e.note];
                 if (!noteArr) {
@@ -184,12 +184,12 @@ PianoRoll.prototype.paintNotes = function(x, y, context) {
             } else if (e instanceof NoteOffEvent) {
                 var noteArr = notesOn[e.note];
                 if (noteArr && noteArr.length > 0) {
-                    var startBeat = noteArr.shift();
+                    const startBeat = noteArr.shift();
                     // Paint the note
-                    var index = e.note - startNote;
-                    var noteX = x + startBeat * this.beatWidth;
-                    var noteY = y + totalHeight - (index + 1) * this.noteRowHeight;
-                    var noteWidth = (e.getTime() - startBeat) * this.beatWidth;
+                    const index = e.note - startNote;
+                    const noteX = x + startBeat * this.beatWidth;
+                    const noteY = y + totalHeight - (index + 1) * this.noteRowHeight;
+                    const noteWidth = (e.getTime() - startBeat) * this.beatWidth;
                     context.fillStyle = "#44ff44";
                     context.fillRect(noteX, noteY,
                         noteWidth, this.noteRowHeight);
@@ -208,11 +208,11 @@ PianoRoll.prototype.paintNotes = function(x, y, context) {
 };
 
 PianoRoll.prototype.paintRows = function(x, y, context) {
-    var startNote = this.noteLimits[0];
-    var endNote = this.noteLimits[1];
+    const startNote = this.noteLimits[0];
+    const endNote = this.noteLimits[1];
 
-    var range = endNote - startNote + 1;
-    var w = this.getNoteRowsWidth();
+    const range = endNote - startNote + 1;
+    const w = this.getNoteRowsWidth();
     for (var i=0; i<range; i++) {
         if (i % 2 == 0) {
             context.fillStyle = "#aaaaaa";
@@ -224,7 +224,7 @@ PianoRoll.prototype.paintRows = function(x, y, context) {
 
     // Paint the beat lines
     var beats = w / this.beatWidth;
-    var currentX = x;
+    let currentX = x;
     context.beginPath();
     for (var i=0; i<beats; i++) {
         currentX = x + i * this.beatWidth;
@@ -235,9 +235,9 @@ PianoRoll.prototype.paintRows = function(x, y, context) {
     context.strokeStyle = "#888888";
     context.stroke();
 
-    var ches = this.harmony.getConstantHarmonyElements();
+    const ches = this.harmony.getConstantHarmonyElements();
 
-    var totalHeight = this.noteRowHeight * range;
+    const totalHeight = this.noteRowHeight * range;
 
     if (this.highlightScales || this.highlightChords) {
 
@@ -245,14 +245,14 @@ PianoRoll.prototype.paintRows = function(x, y, context) {
         for (var i=0; i<ches.length; i++) {
             var e = ches[i];
             var beats = positionUnitToBeats(e.getLength(), e.getLengthUnit(), e.tsNumerator, e.tsDenominator);
-            var scalePitchClasses = e.getPitchClassesFromAbsoluteNotes(e.getScaleAbsoluteNotes());
-            var chordPitchClasses = e.getPitchClassesFromAbsoluteNotes(e.getAbsoluteNotesFromScaleIndices(e.getChordRootPositionScaleIndices()));
-            for (var j=0; j<range; j++) {
-                var note = j + startNote;
-                var pitchClass = note % 12;
-                var highlightScale = arrayContains(scalePitchClasses, pitchClass);
-                var highlightChord = arrayContains(chordPitchClasses, pitchClass);
-                var noteY = y + totalHeight - (j + 1) * this.noteRowHeight;
+            const scalePitchClasses = e.getPitchClassesFromAbsoluteNotes(e.getScaleAbsoluteNotes());
+            const chordPitchClasses = e.getPitchClassesFromAbsoluteNotes(e.getAbsoluteNotesFromScaleIndices(e.getChordRootPositionScaleIndices()));
+            for (let j=0; j<range; j++) {
+                const note = j + startNote;
+                const pitchClass = note % 12;
+                const highlightScale = arrayContains(scalePitchClasses, pitchClass);
+                const highlightChord = arrayContains(chordPitchClasses, pitchClass);
+                const noteY = y + totalHeight - (j + 1) * this.noteRowHeight;
                 if (highlightChord && this.highlightChords) {
                     context.fillStyle = "#ffff00";
                     context.fillRect(currentX, noteY, beats * this.beatWidth, this.noteRowHeight);
@@ -294,13 +294,13 @@ PianoRoll.prototype.paint = function(offsetX, offsetY, context) {
     context.fillRect(offsetX, offsetY, this.width, this.height);
 
 
-    var keysY = offsetY;
+    const keysY = offsetY;
     if (this.showKeys) {
         this.paintKeys(offsetX, keysY, context);
     }
     
-    var rowsX = offsetX;
-    var rowsY = keysY;
+    let rowsX = offsetX;
+    const rowsY = keysY;
     if (this.showKeys) {
         rowsX += this.keysWidth;
     }

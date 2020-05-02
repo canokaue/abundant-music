@@ -15,21 +15,21 @@ MidiSynth.prototype.synthesizeBatch = function(midiData, progressFunc) {
 
 //    var midiEvents = midiData.tracks[0];
 
-    var events = midiData.midiTracks[0].trackEvents;
+    const events = midiData.midiTracks[0].trackEvents;
 
-    var midiDivisions = midiData.midiDivisions;
+    const midiDivisions = midiData.midiDivisions;
 
 
-    var controlFreq = 200; // Hz
+    const controlFreq = 200; // Hz
 
-    var bufferLen = Math.max(1, Math.round(this.sampleFreq / controlFreq));
+    const bufferLen = Math.max(1, Math.round(this.sampleFreq / controlFreq));
 
 //    logit("Control freq of " + controlFreq + " gives a buffer size " + bufferLen);
 
 
-    var channelBuffers = [];
-    var dirtyChannelBuffers = [];
-    var midiChannelCount = 32;
+    const channelBuffers = [];
+    const dirtyChannelBuffers = [];
+    const midiChannelCount = 32;
     for (var i=0; i<midiChannelCount; i++) {
         channelBuffers[i] = [];
         dirtyChannelBuffers[i] = false;
@@ -37,10 +37,10 @@ MidiSynth.prototype.synthesizeBatch = function(midiData, progressFunc) {
 
     // Check if there is a set tempo event at time 0
     // Also get the max tick to calculate buffer length
-    var currentMicrosPerQuarter = 500000; // Default is 120 bpm
-    var tempMicrosPerQuarter = currentMicrosPerQuarter; // Use a temp for calculating song length
-    var tempTick = 0;
-    var tempSeconds = 0;
+    let currentMicrosPerQuarter = 500000; // Default is 120 bpm
+    let tempMicrosPerQuarter = currentMicrosPerQuarter; // Use a temp for calculating song length
+    let tempTick = 0;
+    let tempSeconds = 0;
     for (var i=0; i<events.length; i++) {
         var e = events[i];
         var eventMessage = e.eventMessage;
@@ -52,28 +52,28 @@ MidiSynth.prototype.synthesizeBatch = function(midiData, progressFunc) {
             tempMicrosPerQuarter = eventMessage.microsPerQuarter;
 //            logit("Tempo at " + tempSeconds + " set to " + (1000000 * 60) / tempMicrosPerQuarter);
         }
-        var micros = tempMicrosPerQuarter * (e.eventTime / midiDivisions);
-        var seconds = micros / 1000000;
+        const micros = tempMicrosPerQuarter * (e.eventTime / midiDivisions);
+        const seconds = micros / 1000000;
         tempSeconds += seconds;
         tempTick += e.eventTime;
     }
-    var maxTick = tempTick;
+    const maxTick = tempTick;
 
     // We now know the length of the song
-    var endSeconds = 1;
-    var totalBufferLen = Math.round(this.sampleFreq * (tempSeconds + endSeconds));
+    const endSeconds = 1;
+    const totalBufferLen = Math.round(this.sampleFreq * (tempSeconds + endSeconds));
 
 //    logit("Total buffer length: " + totalBufferLen);
 
-    var mixerBuffer = [];
+    const mixerBuffer = [];
 
-    var result = [];
+    const result = [];
     for (var i=0; i<this.channels; i++) {
         result[i] = [];
         mixerBuffer[i] = createFilledArray(bufferLen, 0);
     }
 
-    var bufferLenLeft = totalBufferLen;
+    let bufferLenLeft = totalBufferLen;
 
 
 //    logit("Max tick " + maxTick);
@@ -81,32 +81,32 @@ MidiSynth.prototype.synthesizeBatch = function(midiData, progressFunc) {
 //    logit("Init tempo is " + currentMicrosPerQuarter);
 //    logit("Bpm: " + (1000000 * 60) / currentMicrosPerQuarter);
 
-    var bufferLenSeconds = bufferLen / this.sampleFreq;
+    const bufferLenSeconds = bufferLen / this.sampleFreq;
 
-    var currentBufferTimeSeconds = 0;
-    var currentMidiTick = 0;
-    var currentMidiTickSeconds = 0;
-    var midiDataIndex = 0;
+    let currentBufferTimeSeconds = 0;
+    let currentMidiTick = 0;
+    let currentMidiTickSeconds = 0;
+    let midiDataIndex = 0;
 
-    var secondsPerMicros = 1 / 1000000;
+    const secondsPerMicros = 1 / 1000000;
 
-    var bufferIndex = 0;
+    let bufferIndex = 0;
 
-    var progPeriod = 22050;
-    var progPhase = 0;
+    const progPeriod = 22050;
+    let progPhase = 0;
 
     while (bufferLenLeft > 0) {
 
-        var nextBufferTimeSeconds = currentBufferTimeSeconds + bufferLenSeconds;
+        const nextBufferTimeSeconds = currentBufferTimeSeconds + bufferLenSeconds;
 
-        var secondsPerMidiTick = secondsPerMicros * (currentMicrosPerQuarter / midiDivisions);
+        const secondsPerMidiTick = secondsPerMicros * (currentMicrosPerQuarter / midiDivisions);
 
-        var nextMicrosPerQuarter = currentMicrosPerQuarter;
+        let nextMicrosPerQuarter = currentMicrosPerQuarter;
         // Take care of midi messages
         for (var i=midiDataIndex; i<events.length; i++) {
             var e = events[i];
-            var eventTime = e.eventTime;
-            var stepSeconds = secondsPerMidiTick * eventTime;
+            const eventTime = e.eventTime;
+            const stepSeconds = secondsPerMidiTick * eventTime;
             if (stepSeconds + currentMidiTickSeconds < nextBufferTimeSeconds) {
                 // This midi event should be taken care of
                 currentMidiTick += eventTime;
@@ -118,7 +118,7 @@ MidiSynth.prototype.synthesizeBatch = function(midiData, progressFunc) {
                 // Handle midi message here
                 switch (eventMessage.messageClass) {
                     case "ChannelMessage":
-                        var statusStr = eventMessage.status;
+                        let statusStr = eventMessage.status;
 //                        status = MessageStatus.CONTROL_CHANGE;
                         switch (statusStr) {
                             case "CONTROL_CHANGE":
@@ -134,7 +134,7 @@ MidiSynth.prototype.synthesizeBatch = function(midiData, progressFunc) {
                         switch (statusStr) {
                             case "NOTE_ON":
                                 // Create a new voice
-                                var newVoice = new MidiSynthVoice(this.sampleFreq, bufferLen);
+                                const newVoice = new MidiSynthVoice(this.sampleFreq, bufferLen);
                                 newVoice.channel = eventMessage.channel;
                                 newVoice.note = eventMessage.data1;
                                 newVoice.velocity = eventMessage.data2;
@@ -145,8 +145,8 @@ MidiSynth.prototype.synthesizeBatch = function(midiData, progressFunc) {
                                 break;
                             case "NOTE_OFF":
                                 // Find the oldest voice with the note
-                                var oldestVoice = null;
-                                var minTime = currentMidiTickSeconds + 100;
+                                let oldestVoice = null;
+                                let minTime = currentMidiTickSeconds + 100;
 //                                logit("Should remove note " + eventMessage.data1 + " on channel " + eventMessage.channel + " minTime " + minTime);
 
                                 for (var j=0; j<this.voices.length; j++) {
@@ -191,12 +191,12 @@ MidiSynth.prototype.synthesizeBatch = function(midiData, progressFunc) {
 
 //        logit("Voice count " + this.voices.length);
 
-        var newVoices = [];
+        const newVoices = [];
         // Gather everything from the voices
         for (var i=0; i<this.voices.length; i++) {
-            var voice = this.voices[i];
+            const voice = this.voices[i];
 
-            var voiceBufArr = channelBuffers[voice.channel];
+            const voiceBufArr = channelBuffers[voice.channel];
 
             if (!dirtyChannelBuffers[voice.channel]) {
                 // Writing for the first time this bufLength step
@@ -223,7 +223,7 @@ MidiSynth.prototype.synthesizeBatch = function(midiData, progressFunc) {
 
         for (var i=0; i<channelBuffers.length; i++) {
             if (dirtyChannelBuffers[i]) {
-                var cBuf = channelBuffers[i];
+                const cBuf = channelBuffers[i];
                 for (var j=0; j<this.channels; j++) {
                     var buf = cBuf[j];
                     for (var k=0; k<buf.length; k++) {
@@ -238,10 +238,10 @@ MidiSynth.prototype.synthesizeBatch = function(midiData, progressFunc) {
 
         // Write to result buffer
 
-        var toWriteLen = Math.min(bufferLen, bufferLenLeft);
+        const toWriteLen = Math.min(bufferLen, bufferLenLeft);
         for (var i=0; i<this.channels; i++) {
             var buf = mixerBuffer[i];
-            var resultBuf = result[i];
+            const resultBuf = result[i];
             for (var j=0; j<toWriteLen; j++) {
                 resultBuf[j + bufferIndex] = buf[j];
             }
@@ -276,13 +276,13 @@ MidiSynth.prototype.synthesizeBatch = function(midiData, progressFunc) {
     // Normalize result
 
     // Find the max value
-    var absMax = 0;
-    var maxIndex = 0;
+    let absMax = 0;
+    let maxIndex = 0;
     for (var j=0; j<this.channels; j++) {
         var buf = result[j];
         buf.length = totalBufferLen;
         for (var k=0; k<buf.length; k++) {
-            var test = Math.abs(buf[k]);
+            const test = Math.abs(buf[k]);
             if (test > absMax) {
                 absMax = test;
                 maxIndex = k;
@@ -290,8 +290,8 @@ MidiSynth.prototype.synthesizeBatch = function(midiData, progressFunc) {
         }
     }
     // Multiply to normalize
-    var newMax = 0.95;
-    var multiplier = newMax * (absMax > 0.001 ? 1 / absMax : 1);
+    const newMax = 0.95;
+    const multiplier = newMax * (absMax > 0.001 ? 1 / absMax : 1);
     if (multiplier != newMax) {
         for (var j=0; j<this.channels; j++) {
             var buf = result[j];
