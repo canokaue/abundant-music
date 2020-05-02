@@ -1,23 +1,24 @@
 
-function EditorProcedure() {
-    this.id = "";
-    this._constructorName = "EditorProcedure";
+class EditorProcedure {
+    constructor() {
+        this.id = "";
+        this._constructorName = "EditorProcedure";
+    }
+    getProcedure(module) {
+        return function () { };
+    }
 }
 
-EditorProcedure.prototype.getProcedure = function(module) {
-    return function() {};
-};
 
-function CustomEditorProcedure() {
-    EditorProcedure.call(this);
-    this.procedureText = "";
-    
-    this._constructorName = "CustomEditorProcedure";
+class CustomEditorProcedure extends EditorProcedure {
+    constructor() {
+        super()
+        this.procedureText = "";
+        this._constructorName = "CustomEditorProcedure";
+    }
+    getProcedure(module) {
+        return function () { eval(this.procedureText); };
+    }
 }
 
-CustomEditorProcedure.prototype = new EditorProcedure();
-
-CustomEditorProcedure.prototype.getProcedure = function(module) {
-    return function() {eval(this.procedureText)};
-};
 
