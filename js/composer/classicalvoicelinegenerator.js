@@ -1,18 +1,16 @@
-
-
-function ClassicalVoiceLineState() {
-    this.stateIndex = 0;
+class ClassicalVoiceLineState {
+    constructor() {
+        this.stateIndex = 0;
+    }
+    copy() {
+        const result = new ClassicalVoiceLineState();
+        result.stateIndex = this.stateIndex;
+        return result;
+    }
+    toString() {
+        return `CVLS{stateIndex: ${this.stateIndex}}`;
+    }
 }
-
-ClassicalVoiceLineState.prototype.copy = function() {
-    const result = new ClassicalVoiceLineState();
-    result.stateIndex = this.stateIndex;
-    return result;
-};
-
-ClassicalVoiceLineState.prototype.toString = function() {
-    return `CVLS{stateIndex: ${this.stateIndex}}`;
-};
 
 
 function ClassicalVoiceLineGenerator(options) {
