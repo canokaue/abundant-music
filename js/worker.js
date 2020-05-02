@@ -5,14 +5,15 @@ function logit(str) {
     that.postMessage({type: "log", data: str});
 }
 
-
 //importScripts("composeworkersource.js");
 importScripts(
-    "composer/composeeditoronlinesource.js",
     "composer/geninfo.js",
     "composer/random.js",
     "composer/mersennetwister.js",
     "composer/utils.js",
+    "composer/simplemodulegeneratorphasegroup.js",
+    "composer/songpart.js",
+    "composer/melodyoffset.js",
     "composer/constants.js",
     "composer/interpolation.js",
     "composer/splineinterpolation.js",
