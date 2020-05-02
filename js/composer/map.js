@@ -4,55 +4,7 @@ function MapClass(linkEntries) {
     this.current = undefined;
     this.size = 0;
     this.isLinked = true;
-
-    if(linkEntries === false)
-        this.disableLinking();
 }
-
-MapClass.from = function(obj, foreignKeys, linkEntries) {
-    const map = new MapClass(linkEntries);
-
-    for(const prop in obj) {
-        if(foreignKeys || obj.hasOwnProperty(prop))
-            map.put(prop, obj[prop]);
-    }
-
-    return map;
-};
-
-MapClass.noop = function() {
-    return this;
-};
-
-MapClass.illegal = function() {
-    throw new Error('can\'t do this with unlinked maps');
-};
-
-MapClass.prototype.disableLinking = function() {
-    this.isLinked = false;
-    this.link = MapClass.noop;
-    this.unlink = MapClass.noop;
-    this.disableLinking = MapClass.noop;
-    this.next = MapClass.illegal;
-    this.key = MapClass.illegal;
-    this.value = MapClass.illegal;
-    this.removeAll = MapClass.illegal;
-    this.each = MapClass.illegal;
-    this.flip = MapClass.illegal;
-    this.drop = MapClass.illegal;
-    this.listKeys = MapClass.illegal;
-    this.listValues = MapClass.illegal;
-
-    return this;
-};
-
-MapClass.prototype.hash = function(value) {
-    return value instanceof Object ? (value.__hash ||
-        (value.__hash = 'object ' + ++arguments.callee.current)) :
-    (typeof value) + ' ' + String(value);
-};
-
-MapClass.prototype.hash.current = 0;
 
 MapClass.prototype.link = function(entry) {
     if(this.size === 0) {
@@ -221,47 +173,10 @@ MapClass.prototype.toString = function() {
     return string;
 };
 
-MapClass.reverseIndexTableFrom = function(array, linkEntries) {
-    const map = new MapClass(linkEntries);
-
-    for(let i = 0, len = array.length; i < len; ++i) {
-        const entry = array[i], list = map.get(entry);
-
-        if(list) list.push(i);
-        else map.put(entry, [i]);
-    }
-
-    return map;
+MapClass.prototype.hash = function(value) {
+    return value instanceof Object ? (value.__hash ||
+        (value.__hash = 'object ' + ++arguments.callee.current)) :
+    (typeof value) + ' ' + String(value);
 };
 
-MapClass.cross = function(map1, map2, func, thisArg) {
-    let linkedMapClass, otherMapClass;
-
-    if(map1.isLinked) {
-        linkedMapClass = map1;
-        otherMapClass = map2;
-    }
-    else if(map2.isLinked) {
-        linkedMapClass = map2;
-        otherMapClass = map1;
-    }
-    else MapClass.illegal();
-
-    for(let i = linkedMapClass.size; i--; linkedMapClass.next()) {
-        const key = linkedMapClass.key();
-        if(otherMapClass.contains(key))
-            func.call(thisArg, key, map1.get(key), map2.get(key));
-    }
-
-    return thisArg;
-};
-
-MapClass.uniqueArray = function(array) {
-    const map = new MapClass;
-
-    for(let i = 0, len = array.length; i < len; ++i)
-        map.put(array[i]);
-
-    return map.listKeys();
-};
-
+MapClass.prototype.hash.current = 0;
