@@ -44,10 +44,7 @@ function ClassicalVoiceLineGenerator(options) {
     this.maxAbsoluteHintDistances = getValueOrDefault(options, "maxAbsoluteHintDistances", [[6], null, null, [10]]); // Hard limit
 
     this.penaltyMaxAbsoluteHintDistances = getValueOrDefault(options, "penaltyMaxAbsoluteHintDistances", [[3], null, null, [3]]); // Soft limit
-//    this.hintDistancePenalties = getValueOrDefault(options, "hintDistancePenalties", [[0.3], [0.2], [0.2], [0.2]]);
     this.hintDistancePenalties = getValueOrDefault(options, "hintDistancePenalties", [[0.5], [0.5], [0.5], [0.5]]);
-
-
 
     // Pitch class constraints
     this.chordRootPitchClassConstraints = getValueOrDefault(options, "chordRootPitchClassConstraints", [null, null, null, null]);
