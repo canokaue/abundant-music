@@ -81,7 +81,6 @@ ChromaticOscillationHarmonyGenerator.prototype.isGoalState = function(state) {
         if ((tuple[0] % 12) == (harmony.baseNote % 12) &&
             (tuple[1] % 7) == (harmony.chordRoot % 12) &&
             (tuple[2] % 7) == (harmony.scaleMode % 7)) {
-//            logit("Was goal: " + JSON.stringify(harmony) + " " + state.mode);
             return true;
         }
     }
@@ -95,15 +94,9 @@ ChromaticOscillationHarmonyGenerator.prototype.isInvalidState = function(state) 
 
 ChromaticOscillationHarmonyGenerator.prototype.getSuccessors = function(state, states, likelihoods, costs) {
 
+    if (state.mode === 1)
+        this.getStartStates(states, likelihoods, costs);
 
-    switch (state.mode) {
-        case 1:
-            this.getStartStates(states, likelihoods, costs);
-        default:
-            break;
-    }
-
-    const rootProgressions = [0, 1, 2, 3, 4, 5, 6];
     const rootProgressionLikelihoods = [1, 1, 1, 1, 1, 1, 1];
     const rootProgressionCosts = [0, 0, 0, 0, 0, 0, 0];
     const modeProgressions = [1, 2, 3, 4, 5, 6];
@@ -126,15 +119,11 @@ ChromaticOscillationHarmonyGenerator.prototype.getSuccessors = function(state, s
         cost += costs[index % costs.length];
     }
 
-//    for (let i=0; i<rootProgressions.length; i++) {
-//        var rp = rootProgressions[i];
     const rp = 0;
     for (let j=0; j<modeProgressions.length; j++) {
         const mp = modeProgressions[j];
         let newState = state.copy();
         let harmony = newState.harmony;
-        let oldChordRoot = harmony.chordRoot;
-        const oldScaleMode = harmony.scaleMode;
         harmony.chordRoot = positiveMod(harmony.chordRoot + rp, 7);
         harmony.scaleMode = positiveMod(harmony.scaleMode + mp, 7);
         newState.mode = (rp == 0 && mp == 0) ? 0 : 1;
@@ -161,8 +150,6 @@ ChromaticOscillationHarmonyGenerator.prototype.getSuccessors = function(state, s
         const sp = scaleProgressions[j];
         let newState = state.copy();
         let harmony = newState.harmony;
-        let oldChordRoot = harmony.chordRoot;
-        const oldBaseNote = harmony.baseNote;
         harmony.chordRoot = positiveMod(harmony.chordRoot + rp, 7);
         harmony.baseNote = ((harmony.baseNote + sp) % 12) + 60;;
         newState.mode = (rp == 0 && sp == 0) ? 0 : 1;
@@ -180,23 +167,9 @@ ChromaticOscillationHarmonyGenerator.prototype.getSuccessors = function(state, s
             lik *= 0.001 / (7 * 11);
             cost += 20;
         }
-
-//            logit(oldChordRoot + " -> " + harmony.chordRoot + " " + oldScaleMode + " -> " + harmony.scaleMode + " " + lik + " " + cost);
         likelihoods.push(lik);
         costs.push(cost);
     }
-
-//    }
-//    for (let i=0; i<likelihoods.length; i++) {
-//        if (typeof(likelihoods[i]) == "undefined") {
-//            logit("undef like");
-//        }
-//    }
-//    for (let i=0; i<costs.length; i++) {
-//        if (typeof(costs[i]) == "undefined") {
-//            logit("undef cost");
-//        }
-//    }
 };
 
 
