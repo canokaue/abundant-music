@@ -6,11 +6,7 @@ function logit(str) {
 }
 
 
-importScripts("composeworkersource-min.js");
-
-//importScripts("composeworkersource.js");
-
-//importScripts("midisynthsourceconcat.js");
+importScripts("composeworkersource.js");
 
 importScripts("riffwave.js", "midisynthsource.js", "midisynthenvelope.js", "midisynthfilter.js", "midisynthoscillator.js", "midisynthvoice.js", "midisynthinstrument.js", "midisynth.js");
 
