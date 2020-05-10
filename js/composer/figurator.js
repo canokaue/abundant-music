@@ -251,7 +251,7 @@ class Figurator extends DfsSolver{
                         if (prevToCurrentHorizontalDomain == null) {
                             prevToCurrentHorizontalDomain = {};
                         }
-                        var likelihoodArr = [];
+                        const likelihoodArr = [];
                         const offsets = this.getHorizontalOffsets(prevElement, j, likelihoodArr);
                         for (let i = 0; i < offsets.length; i++) {
                             const absNote = prevElementHarmonyElement.offset(previousAbsNote, prevElement.horizontalDomainOffsetTypes[j], offsets[i], prevElementHarmonyElement);
@@ -294,7 +294,7 @@ class Figurator extends DfsSolver{
                     if (currentToPreviousHorizontalDomain == null) {
                         currentToPreviousHorizontalDomain = {};
                     }
-                    var likelihoodArr = [];
+                    const likelihoodArr = [];
                     const offsets = this.getHorizontalOffsets(currentElement, j, likelihoodArr);
                     var referenceAbsNote = previousAbsNote;
                     if (referenceAbsNote == null &&
@@ -341,7 +341,7 @@ class Figurator extends DfsSolver{
                 case HorizontalRelativeType.NEXT_NOTE:
                 case HorizontalRelativeType.NEXT_VOICE_LINE_ELEMENT:
                     // The next element refers forward
-                    var likelihoodArr = [];
+                    const likelihoodArr = [];
                     const offsets = this.getHorizontalOffsets(currentElement, j, likelihoodArr);
                     var referenceAbsNote = nextAbsNote;
                     if (currentElement.horizontalRelativeTypes[j] == HorizontalRelativeType.NEXT_VOICE_LINE_ELEMENT) {
