@@ -477,60 +477,68 @@ const CountUnit = {
                 return count;
             case CountUnit.HARMONY_ELEMENT_COUNT:
                 return harmony.getCount() * count;
-            case CountUnit.HARMONY_BEATS:
-                var beats = 0;
+            case CountUnit.HARMONY_BEATS: {
+                let beats = 0;
                 for (let i=0; i<harmony.getCount(); i++) {
-                    var he = harmony.get(i);
+                    const he = harmony.get(i);
                     beats += positionUnitToBeats(he.length, he.lengthUnit, he.tsNumerator, he.tsDenominator, null);
                 }
                 return beats * count;
-            case CountUnit.HARMONY_ELEMENT_BEATS:
-                var harmonyIndex = harmony.getHarmonyIndexAt(harmonyBeatOffset);
-                var he = harmony.get(harmonyIndex);
+            }
+            case CountUnit.HARMONY_ELEMENT_BEATS: {
+                const harmonyIndex = harmony.getHarmonyIndexAt(harmonyBeatOffset);
+                const he = harmony.get(harmonyIndex);
                 return count * positionUnitToBeats(he.length, he.lengthUnit, he.tsNumerator, he.tsDenominator, null);
-            case CountUnit.HARMONY_ELEMENT_MEASURES:
-                var harmonyIndex = harmony.getHarmonyIndexAt(harmonyBeatOffset);
-                var he = harmony.get(harmonyIndex);
-                var beats = positionUnitToBeats(he.length, he.lengthUnit, he.tsNumerator, he.tsDenominator, null);
+            }
+            case CountUnit.HARMONY_ELEMENT_MEASURES: {
+                const harmonyIndex = harmony.getHarmonyIndexAt(harmonyBeatOffset);
+                const he = harmony.get(harmonyIndex);
+                const beats = positionUnitToBeats(he.length, he.lengthUnit, he.tsNumerator, he.tsDenominator, null);
                 return count * (beats / he.tsNumerator);
-            case CountUnit.HARMONY_MEASURES:
-                var measures = 0;
+            }
+            case CountUnit.HARMONY_MEASURES: {
+                let measures = 0;
                 for (let i=0; i<harmony.getCount(); i++) {
-                    var he = harmony.get(i);
-                    var beats = positionUnitToBeats(he.length, he.lengthUnit, he.tsNumerator, he.tsDenominator, null);
+                    const he = harmony.get(i);
+                    const beats = positionUnitToBeats(he.length, he.lengthUnit, he.tsNumerator, he.tsDenominator, null);
                     measures += (beats / he.tsNumerator);
                 }
                 return measures * count;
-
-            case CountUnit.PHRASE_ELEMENT_COUNT:
+            }
+            case CountUnit.PHRASE_ELEMENT_COUNT: {
                 const range = harmony.getPhraseRangeAt(harmonyBeatOffset);
                 return count * (range[1] - range[0] + 1);
+            }
             case CountUnit.PLAIN_PLUS_HARMONY_ELEMENT_COUNT:
                 return harmony.getCount() + count;
-            case CountUnit.PLAIN_PLUS_HARMONY_BEATS:
-                var beats = 0;
+            case CountUnit.PLAIN_PLUS_HARMONY_BEATS: {
+                let beats = 0;
                 for (let i=0; i<harmony.getCount(); i++) {
-                    var he = harmony.get(i);
+                    const he = harmony.get(i);
                     beats += positionUnitToBeats(he.length, he.lengthUnit, he.tsNumerator, he.tsDenominator, null);
                 }
                 return beats + count;
-            case CountUnit.PLAIN_PLUS_HARMONY_ELEMENT_BEATS:
-                var harmonyIndex = harmony.getHarmonyIndexAt(harmonyBeatOffset);
-                var he = harmony.get(harmonyIndex);
+            }
+            case CountUnit.PLAIN_PLUS_HARMONY_ELEMENT_BEATS: {
+                const harmonyIndex = harmony.getHarmonyIndexAt(harmonyBeatOffset);
+                const he = harmony.get(harmonyIndex);
                 return count + positionUnitToBeats(he.length, he.lengthUnit, he.tsNumerator, he.tsDenominator, null);
-            case CountUnit.PLAIN_PLUS_HARMONY_ELEMENT_MEASURES:
-                var harmonyIndex = harmony.getHarmonyIndexAt(harmonyBeatOffset);
-                var he = harmony.get(harmonyIndex);
-                var beats = positionUnitToBeats(he.length, he.lengthUnit, he.tsNumerator, he.tsDenominator, null);
+            }
+            case CountUnit.PLAIN_PLUS_HARMONY_ELEMENT_MEASURES: {
+                const harmonyIndex = harmony.getHarmonyIndexAt(harmonyBeatOffset);
+                const he = harmony.get(harmonyIndex);
+                const beats = positionUnitToBeats(he.length, he.lengthUnit, he.tsNumerator, he.tsDenominator, null);
                 return beats / he.tsNumerator + count;
-            case CountUnit.PLAIN_PLUS_HARMONY_MEASURES:
-                var measures = 0;
+            }
+            case CountUnit.PLAIN_PLUS_HARMONY_MEASURES: {
+                let measures = 0;
                 for (let i=0; i<harmony.getCount(); i++) {
-                    var he = harmony.get(i);
-                    var beats = positionUnitToBeats(he.length, he.lengthUnit, he.tsNumerator, he.tsDenominator, null);
+                    const he = harmony.get(i);
+                    const beats = positionUnitToBeats(he.length, he.lengthUnit, he.tsNumerator, he.tsDenominator, null);
                     measures += (beats / he.tsNumerator);
                 }
                 return measures + count;
+            }
         }
         return count;
     }
