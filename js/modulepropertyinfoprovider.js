@@ -1109,15 +1109,15 @@ class ModulePropertyInfoProvider {
             result.addPropertyInfo(this.createProcedureButtonPropertyInfo("Open Player", "openWebAudioStructurePlayer", this.moduleEditor, [obj]));
             let info = this.createObjectListPropertyInfo("sources", "Sources", this.webAudioSourcesUidInfo, [["WebAudioCurveBufferSource", "Curve Buffer Source"]]);
             result.addPropertyInfo(info);
-            let info = this.createObjectListPropertyInfo("envelopes", "Envelopes", this.webAudioEnvelopesUidInfo, [["WebAudioADSREnvelope", "ADSR"]]);
+            info = this.createObjectListPropertyInfo("envelopes", "Envelopes", this.webAudioEnvelopesUidInfo, [["WebAudioADSREnvelope", "ADSR"]]);
             result.addPropertyInfo(info);
-            let info = this.createObjectListPropertyInfo("instruments", "Instruments", this.webAudioInstrumentsUidInfo, [["WebAudioInstrument", "Instrument"]]);
+            info = this.createObjectListPropertyInfo("instruments", "Instruments", this.webAudioInstrumentsUidInfo, [["WebAudioInstrument", "Instrument"]]);
             result.addPropertyInfo(info);
-            let info = this.createObjectListPropertyInfo("channelInfos", "Channel infos", this.webAudioChannelInfosUidInfo, [["WebAudioRenderChannelInfo", "Render Channel Info"]]);
+            info = this.createObjectListPropertyInfo("channelInfos", "Channel infos", this.webAudioChannelInfosUidInfo, [["WebAudioRenderChannelInfo", "Render Channel Info"]]);
             result.addPropertyInfo(info);
-            let info = this.createObjectListPropertyInfo("beforeDestinationNodes", "Nodes before destination", this.webAudioNodesUidInfo, [["WebAudioNodeSpec", "Node"]]);
+            info = this.createObjectListPropertyInfo("beforeDestinationNodes", "Nodes before destination", this.webAudioNodesUidInfo, [["WebAudioNodeSpec", "Node"]]);
             result.addPropertyInfo(info);
-            let info = this.createObjectListPropertyInfo("internalCurves", "Internal curves", this.webAudioCurvesUidInfo, this.getCurveConstructorTexts());
+            info = this.createObjectListPropertyInfo("internalCurves", "Internal curves", this.webAudioCurvesUidInfo, this.getCurveConstructorTexts());
             result.addPropertyInfo(info);
         }
         else if (obj instanceof SionEffect) {
