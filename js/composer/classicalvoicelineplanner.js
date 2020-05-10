@@ -79,13 +79,13 @@ class ClassicalVoiceLinePlanner extends VoiceLinePlanner {
                 }
                 else if (element instanceof ClassicalAdaptiveVoiceLineElement) {
                     if (element.range && element.range.length == 2) {
-                        var lower = harmonyElement.getAbsoluteNoteWithIndexType(element.range[0], element.rangeIndexType);
-                        var upper = harmonyElement.getAbsoluteNoteWithIndexType(element.range[1], element.rangeIndexType);
+                        const lower = harmonyElement.getAbsoluteNoteWithIndexType(element.range[0], element.rangeIndexType);
+                        const upper = harmonyElement.getAbsoluteNoteWithIndexType(element.range[1], element.rangeIndexType);
                         absoluteNoteRange = [lower, upper];
                     }
                     if (element.penaltyRange && element.penaltyRange.length == 2) {
-                        var lower = harmonyElement.getAbsoluteNoteWithIndexType(element.penaltyRange[0], element.rangeIndexType);
-                        var upper = harmonyElement.getAbsoluteNoteWithIndexType(element.penaltyRange[1], element.rangeIndexType);
+                        const lower = harmonyElement.getAbsoluteNoteWithIndexType(element.penaltyRange[0], element.rangeIndexType);
+                        const upper = harmonyElement.getAbsoluteNoteWithIndexType(element.penaltyRange[1], element.rangeIndexType);
                         penaltyAbsoluteNoteRange = [lower, upper];
                     }
                     if (element.hintIndex === null || element.maxHintDistance === null) {
