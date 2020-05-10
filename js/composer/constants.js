@@ -629,7 +629,7 @@ function positionUnitToBeats2(length, unit, harmonyBeatOffset, harmony) {
     // Find the phrase index range
     let phraseStartIndex = 0;
     for (let i=harmonyIndex; i>=0; i--) {
-        var he = harmony.get(i);
+        const he = harmony.get(i);
         if (he.startsPhrase) {
             phraseStartIndex = i;
             break;
@@ -637,7 +637,7 @@ function positionUnitToBeats2(length, unit, harmonyBeatOffset, harmony) {
     }
     let phraseEndIndex = harmony.getCount();
     for (let i=harmonyIndex; i<harmony.getCount(); i++) {
-        var he = harmony.get(i);
+        const he = harmony.get(i);
         if (he.startsPhrase) {
             phraseEndIndex = Math.max(i - 1, harmonyIndex);
             break;

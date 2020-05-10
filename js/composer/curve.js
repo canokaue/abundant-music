@@ -183,8 +183,8 @@ class PredefinedCurve extends Curve {
             case PredefinedCurveType.SAW:
                 result = amplitude * (2.0 * mod((x - phase) * frequency, 1) - 1);
                 break;
-            case PredefinedCurveType.SQUARE:
-                var temp = mod((x - phase) * frequency, 1);
+            case PredefinedCurveType.SQUARE: {
+                const temp = mod((x - phase) * frequency, 1);
                 if (temp < 0.5) {
                     result = amplitude;
                 }
@@ -192,8 +192,9 @@ class PredefinedCurve extends Curve {
                     result = -amplitude;
                 }
                 break;
-            case PredefinedCurveType.TRIANGLE:
-                var temp = mod((x - phase) * frequency, 1);
+            }
+            case PredefinedCurveType.TRIANGLE: {
+                const temp = mod((x - phase) * frequency, 1);
                 if (temp < 0.5) {
                     result = amplitude * (4.0 * temp - 1.0);
                 }
@@ -201,6 +202,7 @@ class PredefinedCurve extends Curve {
                     result = amplitude * (3.0 - 4.0 * temp);
                 }
                 break;
+            }
         }
         result += this.bias;
         if (this.clampUpper) {

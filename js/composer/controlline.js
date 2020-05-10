@@ -164,7 +164,7 @@ class MultiStepControlElement extends PositionedControlElement {
             const endLength = getLength(endIndices, currentBeat, this.elements);
             let renderEnd = false;
             if (stepIndex < startIndices.length) {
-                var index = startIndices[stepIndex];
+                const index = startIndices[stepIndex];
                 beatStep = getLength([index], currentBeat, this.elements);
                 if (currentBeat + beatStep + endLength <= harmonyBeatLength) {
                     beatStep = appendWithIndex(index, currentBeat, this.elements);
@@ -174,7 +174,7 @@ class MultiStepControlElement extends PositionedControlElement {
                 }
             }
             else if (indices.length > 0) {
-                var index = indices[positiveMod(stepIndex - startIndices.length, indices.length)];
+                const index = indices[positiveMod(stepIndex - startIndices.length, indices.length)];
                 beatStep = getLength([index], currentBeat, this.elements);
                 if (currentBeat + beatStep + endLength <= harmonyBeatLength) {
                     beatStep = appendWithIndex(index, currentBeat, this.elements);
@@ -276,7 +276,7 @@ class PrimitiveControlElement extends PositionedControlElement {
             const slotIndices = [];
             const slotFractions = [];
             for (let i = startSlot; i <= endSlot; i++) {
-                var slotFraction = (i - startSlot) / slotCount;
+                const slotFraction = (i - startSlot) / slotCount;
                 slotFractions.push(slotFraction);
                 slotIndices.push(i);
             }
@@ -284,7 +284,7 @@ class PrimitiveControlElement extends PositionedControlElement {
         }
         else {
             for (let i = startSlot; i <= endSlot; i++) {
-                var slotFraction = (i - startSlot) / slotCount;
+                const slotFraction = (i - startSlot) / slotCount;
                 this.renderAtSlot(i, startSlot, endSlot, slotFraction, startBeatTime, endBeatTime, state, slotData);
             }
         }
