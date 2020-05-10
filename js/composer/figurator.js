@@ -253,7 +253,7 @@ class Figurator extends DfsSolver{
         let prevToCurrentHorizontalDomain = null;
         const prevToCurrentHorizontalLikelihoods = {};
         if (prevElement) {
-            for (var j = 0; j < prevElement.horizontalRelativeTypes.length; j++) {
+            for (let j = 0; j < prevElement.horizontalRelativeTypes.length; j++) {
                 var horizontalRelativeType = prevElement.horizontalRelativeTypes[j];
                 switch (horizontalRelativeType) {
                     case HorizontalRelativeType.NEXT_NOTE:
@@ -295,7 +295,7 @@ class Figurator extends DfsSolver{
         // ====================================================
         let currentToPreviousHorizontalDomain = null;
         const currentToPreviousHorizontalLikelihoods = {};
-        for (var j = 0; j < currentElement.horizontalRelativeTypes.length; j++) {
+        for (let j = 0; j < currentElement.horizontalRelativeTypes.length; j++) {
             var horizontalRelativeType = currentElement.horizontalRelativeTypes[j];
             switch (horizontalRelativeType) {
                 case HorizontalRelativeType.PREVIOUS_NOTE:
@@ -345,7 +345,7 @@ class Figurator extends DfsSolver{
         // ====================================================
         let currentToNextHorizontalDomain = null;
         const currentToNextHorizontalLikelihoods = {};
-        for (var j = 0; j < currentElement.horizontalRelativeTypes.length; j++) {
+        for (let j = 0; j < currentElement.horizontalRelativeTypes.length; j++) {
             var horizontalRelativeType = currentElement.horizontalRelativeTypes[j];
             switch (horizontalRelativeType) {
                 case HorizontalRelativeType.NEXT_NOTE:
