@@ -455,6 +455,9 @@ class AudioPlayer {
         }
         return info;
     }
-
-    title = "Player";
 }
+
+// TODO make static field
+AudioPlayer.title = "Player";
+
+

@@ -792,43 +792,43 @@ class GenInfo {
         //    }
 
     }
-
-    phraseGroupTypes_allowedTypes = {"PhraseGroupTypeDataSample": 1};
-    modulatePhraseGroupTypes_allowedTypes = {"PhraseGroupTypeDataSample": 1};
-    introGroupTypes_allowedTypes = {"PhraseGroupTypeDataSample": 1};
-    endGroupTypes_allowedTypes = {"PhraseGroupTypeDataSample": 1};
-    glueGroupTypes_allowedTypes = {"PhraseGroupTypeDataSample": 1};
-    majorDeceptiveRootRndInfos_allowedTypes = {"IntDataSample": 1};
-    minorDeceptiveRootRndInfos_allowedTypes = {"IntDataSample": 1};
-    electronicMelodyInstrInfos_allowedTypes = {"MidiProgramDataSample": 1};
-    electronicInnerFastInstrInfos_allowedTypes = {"MidiProgramDataSample": 1};
-    electronicInnerSlowInstrInfos_allowedTypes = {"MidiProgramDataSample": 1};
-    electronicBassInstrInfos_allowedTypes = {"MidiProgramDataSample": 1};
-    electricMelodyInstrInfos_allowedTypes = {"MidiProgramDataSample": 1};
-    electricInnerFastInstrInfos_allowedTypes = {"MidiProgramDataSample": 1};
-    electricInnerSlowInstrInfos_allowedTypes = {"MidiProgramDataSample": 1};
-    electricBassInstrInfos_allowedTypes = {"MidiProgramDataSample": 1};
-    acousticMelodyInstrInfos_allowedTypes = {"MidiProgramDataSample": 1};
-    acousticInnerFastInstrInfos_allowedTypes = {"MidiProgramDataSample": 1};
-    acousticInnerSlowInstrInfos_allowedTypes = {"MidiProgramDataSample": 1};
-    acousticBassInstrInfos_allowedTypes = {"MidiProgramDataSample": 1};
-    bassDrumRndInfos_allowedTypes = {"MidiDrumDataSample": 1};
-    snareRndInfos_allowedTypes = {"MidiDrumDataSample": 1};
-    crashRndInfos_allowedTypes = {"MidiDrumDataSample": 1};
-    rideRndInfos_allowedTypes = {"MidiDrumDataSample": 1};
-    fillIndexPatternRndInfos_allowedTypes = {"IntListDataSample": 1};
-    songPartStructure_allowedTypes = {"SongPartStructureInfo": 1};
-    songPartStructureRndInfos_allowedTypes = {"SongPartStructureInfoDataSample": 1};
-    majorHarmonicPlans_allowedTypes = {"HarmonicPlanDataSample": 1};
-    minorHarmonicPlans_allowedTypes = {"HarmonicPlanDataSample": 1};
-    majorModulationTargetInfos_allowedTypes = {"ModulationTargetDataSample": 1};
-    minorModulationTargetInfos_allowedTypes = {"ModulationTargetDataSample": 1};
-    melodyMotifIndexPatternInfos_allowedTypes = {"IntList2DDataSample": 1};
-    bassMotifIndexPatternInfos_allowedTypes = {"IntList2DDataSample": 1};
-    songPartTypeOverrideInfos_allowedTypes = {"SongPartTypeOverrideInfo": 1};
-    harmonyElements_allowedTypes = {"SimpleSequenceHarmonyElement": 1, "PhraseHarmonyElement": 1};
-    customMelodyCurveInfos_allowedTypes = {"LinearInterpolatedCustomVoiceLineCurveInfo": 1};
-    customBassCurveInfos_allowedTypes = {"LinearInterpolatedCustomVoiceLineCurveInfo": 1};
-
 }
+// TODO make static fields
+
+GenInfo.prototype.phraseGroupTypes_allowedTypes = {"PhraseGroupTypeDataSample": 1};
+GenInfo.prototype.modulatePhraseGroupTypes_allowedTypes = {"PhraseGroupTypeDataSample": 1};
+GenInfo.prototype.introGroupTypes_allowedTypes = {"PhraseGroupTypeDataSample": 1};
+GenInfo.prototype.endGroupTypes_allowedTypes = {"PhraseGroupTypeDataSample": 1};
+GenInfo.prototype.glueGroupTypes_allowedTypes = {"PhraseGroupTypeDataSample": 1};
+GenInfo.prototype.majorDeceptiveRootRndInfos_allowedTypes = {"IntDataSample": 1};
+GenInfo.prototype.minorDeceptiveRootRndInfos_allowedTypes = {"IntDataSample": 1};
+GenInfo.prototype.electronicMelodyInstrInfos_allowedTypes = {"MidiProgramDataSample": 1};
+GenInfo.prototype.electronicInnerFastInstrInfos_allowedTypes = {"MidiProgramDataSample": 1};
+GenInfo.prototype.electronicInnerSlowInstrInfos_allowedTypes = {"MidiProgramDataSample": 1};
+GenInfo.prototype.electronicBassInstrInfos_allowedTypes = {"MidiProgramDataSample": 1};
+GenInfo.prototype.electricMelodyInstrInfos_allowedTypes = {"MidiProgramDataSample": 1};
+GenInfo.prototype.electricInnerFastInstrInfos_allowedTypes = {"MidiProgramDataSample": 1};
+GenInfo.prototype.electricInnerSlowInstrInfos_allowedTypes = {"MidiProgramDataSample": 1};
+GenInfo.prototype.electricBassInstrInfos_allowedTypes = {"MidiProgramDataSample": 1};
+GenInfo.prototype.acousticMelodyInstrInfos_allowedTypes = {"MidiProgramDataSample": 1};
+GenInfo.prototype.acousticInnerFastInstrInfos_allowedTypes = {"MidiProgramDataSample": 1};
+GenInfo.prototype.acousticInnerSlowInstrInfos_allowedTypes = {"MidiProgramDataSample": 1};
+GenInfo.prototype.acousticBassInstrInfos_allowedTypes = {"MidiProgramDataSample": 1};
+GenInfo.prototype.bassDrumRndInfos_allowedTypes = {"MidiDrumDataSample": 1};
+GenInfo.prototype.snareRndInfos_allowedTypes = {"MidiDrumDataSample": 1};
+GenInfo.prototype.crashRndInfos_allowedTypes = {"MidiDrumDataSample": 1};
+GenInfo.prototype.rideRndInfos_allowedTypes = {"MidiDrumDataSample": 1};
+GenInfo.prototype.fillIndexPatternRndInfos_allowedTypes = {"IntListDataSample": 1};
+GenInfo.prototype.songPartStructure_allowedTypes = {"SongPartStructureInfo": 1};
+GenInfo.prototype.songPartStructureRndInfos_allowedTypes = {"SongPartStructureInfoDataSample": 1};
+GenInfo.prototype.majorHarmonicPlans_allowedTypes = {"HarmonicPlanDataSample": 1};
+GenInfo.prototype.minorHarmonicPlans_allowedTypes = {"HarmonicPlanDataSample": 1};
+GenInfo.prototype.majorModulationTargetInfos_allowedTypes = {"ModulationTargetDataSample": 1};
+GenInfo.prototype.minorModulationTargetInfos_allowedTypes = {"ModulationTargetDataSample": 1};
+GenInfo.prototype.melodyMotifIndexPatternInfos_allowedTypes = {"IntList2DDataSample": 1};
+GenInfo.prototype.bassMotifIndexPatternInfos_allowedTypes = {"IntList2DDataSample": 1};
+GenInfo.prototype.songPartTypeOverrideInfos_allowedTypes = {"SongPartTypeOverrideInfo": 1};
+GenInfo.prototype.harmonyElements_allowedTypes = {"SimpleSequenceHarmonyElement": 1, "PhraseHarmonyElement": 1};
+GenInfo.prototype.customMelodyCurveInfos_allowedTypes = {"LinearInterpolatedCustomVoiceLineCurveInfo": 1};
+GenInfo.prototype.customBassCurveInfos_allowedTypes = {"LinearInterpolatedCustomVoiceLineCurveInfo": 1};
 

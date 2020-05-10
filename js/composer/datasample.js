@@ -80,7 +80,6 @@ class ModulationTargetDataSample extends DataSample{
 }
 
 class SongPartStructureInfoDataSample extends DataSample{
-    data_allowedTypes = {"SongPartStructureInfo": 1};
     
     constructor(options) {
         super(options);
@@ -88,6 +87,8 @@ class SongPartStructureInfoDataSample extends DataSample{
         this._constructorName = "SongPartStructureInfoDataSample";
     }
 }
+// TODO make static field
+SongPartStructureInfoDataSample.prototype.data_allowedTypes = {"SongPartStructureInfo": 1};
 
 class HarmonicPlanDataSample extends DataSample{
     constructor(options) {

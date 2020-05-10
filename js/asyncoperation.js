@@ -246,10 +246,11 @@ class LoadSM2SoundsAsyncOperation extends LoadSamplesAsyncOperation{
             throw ex;
         }
     }
-
-    sm2Loaded = false
-    static _bufferMap = {}; // Indexed by urls
 }
+
+// TODO make static methods
+LoadSM2SoundsAsyncOperation.prototype.sm2Loaded = false
+LoadSM2SoundsAsyncOperation.prototype._bufferMap = {}; // Indexed by urls
 
 class LoadAudioBuffersAsyncOperation extends LoadSamplesAsyncOperation {
     constructor(options) {
@@ -319,9 +320,10 @@ class LoadAudioBuffersAsyncOperation extends LoadSamplesAsyncOperation {
             }
         }
     }
-
-    static _bufferMap = {};
 }
+
+// TODO make static methods
+LoadAudioBuffersAsyncOperation._bufferMap = {};
 
 class AsyncServerChildTask extends AsyncOperation {
     constructor(options) {
