@@ -81,7 +81,7 @@ class RandomDfsStateIterator2 {
         if (this.elements.length > 0) {
             const probDist = getProbabilityDistribution(this.likelihoods);
             const index = sampleIndexIntegerDistribution(this.rnd, probDist);
-            result = this.elements[index];
+            const result = this.elements[index];
             result.stepCost = this.stepCosts[index];
             this.elements.splice(index, 1);
             this.likelihoods.splice(index, 1);
@@ -89,7 +89,7 @@ class RandomDfsStateIterator2 {
             return result;
         }
         else if (this.elements.length == 1) {
-            var result = this.elements[0];
+            const result = this.elements[0];
             result.stepCost = this.stepCosts[0];
             this.elements.length = 0;
             return result;
@@ -213,9 +213,6 @@ class DfsSolver {
             if (node.totalCost < 0.999999 * this.bestSolutionCost) {
                 this.bestSolutionCost = Math.min(node.totalCost, this.bestSolutionCost);
                 this.mlSolutions++;
-                //                        logit(this._constructorName + " Found solution. solution count: " + this.mlSolutions + " this cost: " + node.totalCost + " best cost: " + this.bestSolutionCost + " steps: " + this.steps);
-                //            var result = this.extractSolutionFromMLGoalNode(node);
-                //            logit("___ The solution: " + result + "<br />");
                 return node;
             }
             else {
