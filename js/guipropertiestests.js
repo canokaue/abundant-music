@@ -57,7 +57,7 @@ function testValueComponents() {
             }
             );
             result.addPropertyInfo(info);
-            let info = new GuiPropertyInfo(
+            info = new GuiPropertyInfo(
             {
                 propertyName: "stuff",
                 propertyCaption: "Has enumerable values",
@@ -73,7 +73,7 @@ function testValueComponents() {
             }
             );
             result.addPropertyInfo(info);
-            let info = new GuiPropertyInfo(
+            info = new GuiPropertyInfo(
             {
                 propertyName: "floatStuff",
                 propertyCaption: "Is a float",
@@ -85,7 +85,7 @@ function testValueComponents() {
             }
             );
             result.addPropertyInfo(info);
-            let info = new GuiPropertyInfo(
+            info = new GuiPropertyInfo(
             {
                 propertyName: "floatLimitedStuff",
                 propertyCaption: "Is a limited float",
@@ -105,7 +105,7 @@ function testValueComponents() {
             }
             );
             result.addPropertyInfo(info);
-            let info = new GuiPropertyInfo(
+            info = new GuiPropertyInfo(
             {
                 propertyName: "stringProp",
                 propertyCaption: "Is a string",
@@ -121,7 +121,7 @@ function testValueComponents() {
             }
             );
             result.addPropertyInfo(info);
-            let info = new GuiPropertyInfo(
+            info = new GuiPropertyInfo(
             {
                 propertyName: "stringProp2",
                 propertyCaption: "Is a constrained string",
@@ -138,7 +138,7 @@ function testValueComponents() {
             }
             );
             result.addPropertyInfo(info);
-            let info = new GuiPropertyInfo(
+            info = new GuiPropertyInfo(
             {
                 propertyName: "stringProp3",
                 propertyCaption: "Is another constrained string",
