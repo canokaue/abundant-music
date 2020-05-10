@@ -316,8 +316,6 @@ class SimpleSequenceHarmonyElement extends SequenceHarmonyElement {
         this.endVoiceLineConstraintIndices = []; // 2d array
         this._constructorName = "SimpleSequenceHarmonyElement";
     }
-    voiceLineConstraints_allowedTypes = { "VoiceChordNotesVoiceLinePlannerConstraint": 1 };
-
 
     getConstantHarmonyElements(module, beatOffset) {
         const result = [];
@@ -384,3 +382,6 @@ class SimpleSequenceHarmonyElement extends SequenceHarmonyElement {
         return result;
     }
 }
+
+SimpleSequenceHarmonyElement.prototype.voiceLineConstraints_allowedTypes = { "VoiceChordNotesVoiceLinePlannerConstraint": 1 };
+
