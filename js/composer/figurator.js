@@ -224,7 +224,7 @@ class Figurator extends DfsSolver{
         //        logit("Vertical Offsets: " + JSON.stringify(offsets) + "<br />");
         for (let i = 0; i < offsets.length; i++) {
             const offset = offsets[i];
-            var absNote = harmonyElement.offset(baseAbsNote, currentElement.verticalDomainOffsetType, offset, harmonyElement);
+            const absNote = harmonyElement.offset(baseAbsNote, currentElement.verticalDomainOffsetType, offset, harmonyElement);
             if (verticalDomain == null) {
                 verticalDomain = {};
             }
@@ -254,7 +254,7 @@ class Figurator extends DfsSolver{
                         var likelihoodArr = [];
                         const offsets = this.getHorizontalOffsets(prevElement, j, likelihoodArr);
                         for (let i = 0; i < offsets.length; i++) {
-                            var absNote = prevElementHarmonyElement.offset(previousAbsNote, prevElement.horizontalDomainOffsetTypes[j], offsets[i], prevElementHarmonyElement);
+                            const absNote = prevElementHarmonyElement.offset(previousAbsNote, prevElement.horizontalDomainOffsetTypes[j], offsets[i], prevElementHarmonyElement);
                             // Reinterpret this absolute note in the current harmony
                             if (absNote > 1 && absNote < 127) {
                                 const reinterpreted = harmonyElement.snap(absNote, SnapType.SCALE, harmonyElement);
@@ -307,7 +307,7 @@ class Figurator extends DfsSolver{
                         referenceAbsNote = prevHarmonyElement.getAbsoluteNoteConstantVoiceLineElement(prevVoiceLineElement);
                     }
                     for (let i = 0; i < offsets.length; i++) {
-                        var absNote = harmonyElement.offset(referenceAbsNote, currentElement.horizontalDomainOffsetTypes[j], offsets[i], harmonyElement);
+                        const absNote = harmonyElement.offset(referenceAbsNote, currentElement.horizontalDomainOffsetTypes[j], offsets[i], harmonyElement);
                         //                        logit("______offset " + offsets[i] + " gave abs note " + absNote + "<br />");
                         if (absNote > 1 && absNote < 127) {
                             currentToPreviousHorizontalDomain[absNote] = true;
@@ -362,7 +362,7 @@ class Figurator extends DfsSolver{
                             currentToNextHorizontalDomain = {};
                         }
                         for (let i = 0; i < offsets.length; i++) {
-                            var absNote = harmonyElement.offset(referenceAbsNote, currentElement.horizontalDomainOffsetTypes[j], offsets[i], harmonyElement);
+                            const absNote = harmonyElement.offset(referenceAbsNote, currentElement.horizontalDomainOffsetTypes[j], offsets[i], harmonyElement);
                             //                        logit("______offset " + offsets[i] + " gave abs note " + absNote + "<br />");
                             if (absNote > 1 && absNote < 127) {
                                 currentToNextHorizontalDomain[absNote] = true;
