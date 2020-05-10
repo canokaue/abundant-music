@@ -11,14 +11,14 @@ class JQueryComponent {
         this._constructorName = "JQueryComponent";
     }
     setUniqueId() {
-        let counter = JQueryComponent.counters[this.cssClassName];
+        let counter = this.counters[this.cssClassName];
         if (!counter) {
             counter = 1;
         }
         else {
             counter++;
         }
-        JQueryComponent.counters[this.cssClassName] = counter;
+        this.counters[this.cssClassName] = counter;
         this.id = this.cssClassName + "-" + counter;
     }
     hide() {
