@@ -397,9 +397,9 @@ class Figurator extends DfsSolver{
             const prevPitchClasses = prevHarmonyElement.getPitchClassesFromScaleIndices(prevScaleIndices);
             const prevWasHarmonic = arrayContains(prevPitchClasses, previousAbsNote % 12);
             const isSeventhElement = harmonyElement.isSeventh();
-            if (isSeventhElement) {
-                var seventhPitchClass = harmonyElement.getAbsoluteNoteFromScaleIndex(scaleIndices[3]) % 12;
-            }
+            const seventhPitchClass = isSeventhElement ? 
+                harmonyElement.getAbsoluteNoteFromScaleIndex(scaleIndices[3]) % 12 : null
+
             let prevWasSeventh = false;
             const prevWasSeventhElement = prevHarmonyElement.isSeventh();
             if (prevWasSeventhElement) {
@@ -407,9 +407,11 @@ class Figurator extends DfsSolver{
                 prevWasSeventh = prevSeventhPitchClass == (previousAbsNote % 12);
             }
             let prevPrevWasHarmonic = true;
+            let prevPrevPitchClasses = null;
+
             if (index > 1) {
                 const prevPrevScaleIndices = prevPrevElementHarmonyElement.getChordRootPositionScaleIndices();
-                var prevPrevPitchClasses = prevPrevElementHarmonyElement.getPitchClassesFromScaleIndices(prevPrevScaleIndices);
+                prevPrevPitchClasses = prevPrevElementHarmonyElement.getPitchClassesFromScaleIndices(prevPrevScaleIndices);
                 const prevPrevAbsNote = node.previous.state.absoluteNote;
                 prevPrevWasHarmonic = arrayContains(prevPrevPitchClasses, prevPrevAbsNote % 12);
             }
