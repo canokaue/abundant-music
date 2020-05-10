@@ -220,7 +220,7 @@ class Figurator extends DfsSolver{
             baseAbsNote = harmonyElement.offset(baseAbsNote, currentElement.constantVerticalOffsetType, currentElement.constantVerticalOffset, harmonyElement);
         }
         const verticalLikelihoodArr = [];
-        var offsets = this.getVerticalOffsets(currentElement, verticalLikelihoodArr);
+        const offsets = this.getVerticalOffsets(currentElement, verticalLikelihoodArr);
         //        logit("Vertical Offsets: " + JSON.stringify(offsets) + "<br />");
         for (let i = 0; i < offsets.length; i++) {
             const offset = offsets[i];
@@ -252,7 +252,7 @@ class Figurator extends DfsSolver{
                             prevToCurrentHorizontalDomain = {};
                         }
                         var likelihoodArr = [];
-                        var offsets = this.getHorizontalOffsets(prevElement, j, likelihoodArr);
+                        const offsets = this.getHorizontalOffsets(prevElement, j, likelihoodArr);
                         for (let i = 0; i < offsets.length; i++) {
                             var absNote = prevElementHarmonyElement.offset(previousAbsNote, prevElement.horizontalDomainOffsetTypes[j], offsets[i], prevElementHarmonyElement);
                             // Reinterpret this absolute note in the current harmony
@@ -295,7 +295,7 @@ class Figurator extends DfsSolver{
                         currentToPreviousHorizontalDomain = {};
                     }
                     var likelihoodArr = [];
-                    var offsets = this.getHorizontalOffsets(currentElement, j, likelihoodArr);
+                    const offsets = this.getHorizontalOffsets(currentElement, j, likelihoodArr);
                     var referenceAbsNote = previousAbsNote;
                     if (referenceAbsNote == null &&
                         currentElement.horizontalRelativeTypes[j] == HorizontalRelativeType.PREVIOUS_NOTE) {
@@ -342,7 +342,7 @@ class Figurator extends DfsSolver{
                 case HorizontalRelativeType.NEXT_VOICE_LINE_ELEMENT:
                     // The next element refers forward
                     var likelihoodArr = [];
-                    var offsets = this.getHorizontalOffsets(currentElement, j, likelihoodArr);
+                    const offsets = this.getHorizontalOffsets(currentElement, j, likelihoodArr);
                     var referenceAbsNote = nextAbsNote;
                     if (currentElement.horizontalRelativeTypes[j] == HorizontalRelativeType.NEXT_VOICE_LINE_ELEMENT) {
                         referenceAbsNote = nextHarmonyElement.getAbsoluteNoteConstantVoiceLineElement(nextVoiceLineElement);
