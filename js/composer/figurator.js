@@ -244,7 +244,7 @@ class Figurator extends DfsSolver{
         const prevToCurrentHorizontalLikelihoods = {};
         if (prevElement) {
             for (let j = 0; j < prevElement.horizontalRelativeTypes.length; j++) {
-                var horizontalRelativeType = prevElement.horizontalRelativeTypes[j];
+                const horizontalRelativeType = prevElement.horizontalRelativeTypes[j];
                 switch (horizontalRelativeType) {
                     case HorizontalRelativeType.NEXT_NOTE:
                         // The current element refers forward and influences the possible successors
@@ -286,7 +286,7 @@ class Figurator extends DfsSolver{
         let currentToPreviousHorizontalDomain = null;
         const currentToPreviousHorizontalLikelihoods = {};
         for (let j = 0; j < currentElement.horizontalRelativeTypes.length; j++) {
-            var horizontalRelativeType = currentElement.horizontalRelativeTypes[j];
+            const horizontalRelativeType = currentElement.horizontalRelativeTypes[j];
             switch (horizontalRelativeType) {
                 case HorizontalRelativeType.PREVIOUS_NOTE:
                 case HorizontalRelativeType.PREVIOUS_VOICE_LINE_ELEMENT:
@@ -336,7 +336,7 @@ class Figurator extends DfsSolver{
         let currentToNextHorizontalDomain = null;
         const currentToNextHorizontalLikelihoods = {};
         for (let j = 0; j < currentElement.horizontalRelativeTypes.length; j++) {
-            var horizontalRelativeType = currentElement.horizontalRelativeTypes[j];
+            const horizontalRelativeType = currentElement.horizontalRelativeTypes[j];
             switch (horizontalRelativeType) {
                 case HorizontalRelativeType.NEXT_NOTE:
                 case HorizontalRelativeType.NEXT_VOICE_LINE_ELEMENT:
