@@ -135,11 +135,11 @@ class NoteOnEvent extends RenderEvent {
     toString() {
         return "noteOn(" + this.note + ", " + this.time + ", " + this.onVelocity + ", " + this.renderChannel.id + ")";
     }
-
-    netJSONPropertiesMap = {"time": "t", "type": "y", "note": "n", "onVelocity": "v", "renderChannel": "c"};
-
-    netJSONType = "n";
 }
+
+NoteOnEvent.prototype.netJSONPropertiesMap = {"time": "t", "type": "y", "note": "n", "onVelocity": "v", "renderChannel": "c"};
+NoteOnEvent.prototype.netJSONType = "n";
+
 
 class NoteOffEvent extends RenderEvent {
     constructor(note, time, offVelocity, renderChannel) {
@@ -160,10 +160,10 @@ class NoteOffEvent extends RenderEvent {
     toString() {
         return "noteOff(" + this.note + ", " + this.time + ", " + this.offVelocity + ", " + this.renderChannel.id + ")";
     }
-
-    netJSONPropertiesMap = {"time": "t", "type": "y", "note": "n", "offVelocity": "v", "renderChannel": "c"};
-    netJSONType = "f";
 }
+
+NoteOffEvent.prototype.netJSONPropertiesMap = {"time": "t", "type": "y", "note": "n", "offVelocity": "v", "renderChannel": "c"};
+NoteOffEvent.prototype.netJSONType = "f";
 
 
 class SetControlEvent extends RenderEvent {
@@ -181,11 +181,11 @@ class SetControlEvent extends RenderEvent {
             return super.netJSONTransformProperty(name, value, renderChannelIndices, controlChannelIndices);
         }
     }
-
-    netJSONPropertiesMap = {"time": "t", "type": "y", "value": "v", "controlChannel": "c"};
-
-    netJSONType = "c";
 }
+
+SetControlEvent.prototype.netJSONPropertiesMap = {"time": "t", "type": "y", "value": "v", "controlChannel": "c"};
+SetControlEvent.prototype.netJSONType = "c";
+
 
 class SetTempoEvent extends RenderEvent {
     constructor(bpm, time) {
@@ -196,8 +196,7 @@ class SetTempoEvent extends RenderEvent {
     toString() {
         return "setTempo(" + this.bpm + ", " + this.time + ")";
     }
-
-    netJSONPropertiesMap = {"time": "t", "type": "y", "bpm": "b"};
-
-    netJSONType = "t";
 }
+
+SetTempoEvent.prototype.netJSONPropertiesMap = {"time": "t", "type": "y", "bpm": "b"};
+SetTempoEvent.prototype.netJSONType = "t";
