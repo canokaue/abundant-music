@@ -285,7 +285,7 @@ class Figurator extends DfsSolver{
                 likelihoods = prevToCurrentHorizontalLikelihoods;
             }
             else {
-                var temp = this.intersectDomainAndLikelihoods(domain, prevToCurrentHorizontalDomain, likelihoods, prevToCurrentHorizontalLikelihoods);
+                const temp = this.intersectDomainAndLikelihoods(domain, prevToCurrentHorizontalDomain, likelihoods, prevToCurrentHorizontalLikelihoods);
                 domain = temp[0];
                 likelihoods = temp[1];
             }
@@ -334,7 +334,7 @@ class Figurator extends DfsSolver{
                 likelihoods = currentToPreviousHorizontalLikelihoods;
             }
             else {
-                var temp = this.intersectDomainAndLikelihoods(domain, currentToPreviousHorizontalDomain, likelihoods, currentToPreviousHorizontalLikelihoods);
+                const temp = this.intersectDomainAndLikelihoods(domain, currentToPreviousHorizontalDomain, likelihoods, currentToPreviousHorizontalLikelihoods);
                 domain = temp[0];
                 likelihoods = temp[1];
             }
@@ -390,7 +390,7 @@ class Figurator extends DfsSolver{
                 likelihoods = currentToNextHorizontalLikelihoods;
             }
             else {
-                var temp = this.intersectDomainAndLikelihoods(domain, currentToNextHorizontalDomain, likelihoods, currentToNextHorizontalLikelihoods);
+                const temp = this.intersectDomainAndLikelihoods(domain, currentToNextHorizontalDomain, likelihoods, currentToNextHorizontalLikelihoods);
                 domain = temp[0];
                 likelihoods = temp[1];
             }
