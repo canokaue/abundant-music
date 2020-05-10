@@ -396,11 +396,9 @@ class Figurator extends DfsSolver{
             const prevScaleIndices = prevHarmonyElement.getChordRootPositionScaleIndices();
             const prevPitchClasses = prevHarmonyElement.getPitchClassesFromScaleIndices(prevScaleIndices);
             const prevWasHarmonic = arrayContains(prevPitchClasses, previousAbsNote % 12);
-            let isSeventh = false;
             const isSeventhElement = harmonyElement.isSeventh();
             if (isSeventhElement) {
                 var seventhPitchClass = harmonyElement.getAbsoluteNoteFromScaleIndex(scaleIndices[3]) % 12;
-                isSeventh = seventhPitchClass == (previousAbsNote % 12);
             }
             let prevWasSeventh = false;
             const prevWasSeventhElement = prevHarmonyElement.isSeventh();
@@ -409,17 +407,13 @@ class Figurator extends DfsSolver{
                 prevWasSeventh = prevSeventhPitchClass == (previousAbsNote % 12);
             }
             let prevPrevWasHarmonic = true;
-            let prevLeapSize = 0;
-            let prevLeapDiff = 0;
             if (index > 1) {
                 const prevPrevScaleIndices = prevPrevElementHarmonyElement.getChordRootPositionScaleIndices();
                 var prevPrevPitchClasses = prevPrevElementHarmonyElement.getPitchClassesFromScaleIndices(prevPrevScaleIndices);
                 const prevPrevAbsNote = node.previous.state.absoluteNote;
                 prevPrevWasHarmonic = arrayContains(prevPrevPitchClasses, prevPrevAbsNote % 12);
-                prevLeapDiff = previousAbsNote - prevPrevAbsNote;
-                prevLeapSize = Math.abs(prevLeapDiff);
             }
-            for (var d in likelihoods) {
+            for (let d in likelihoods) {
                 let lik = likelihoods[d];
                 d = parseInt(d, 10);
                 const leapDiff = d - previousAbsNote;
@@ -428,12 +422,12 @@ class Figurator extends DfsSolver{
                     const pitchClass = d % 12;
                     if (!arrayContains(pitchClasses, d) || (prevWasSeventh && pitchClass == seventhPitchClass)) {
                         // Punish leaps into non-harmony or sevenths
-                        var multiplier = 1.0 / (1 + leapSize * 4);
+                        const multiplier = 1.0 / (1 + leapSize * 4);
                         lik = multiplier * lik;
                     }
                     if (!prevWasHarmonic || prevWasSeventh) {
                         // Punish leaps from non-harmony
-                        var multiplier = 1.0 / (1 + leapSize);
+                        const multiplier = 1.0 / (1 + leapSize);
                         lik = multiplier * lik;
                     }
                 }
@@ -442,21 +436,10 @@ class Figurator extends DfsSolver{
                     const threeNHInRowPenalty = 0.1;
                     lik = threeNHInRowPenalty * lik;
                 }
-                if (prevLeapSize > 5) { // Larger than perfect fourth
-                    // Punish large leaps without change in direction using step
-                    if ((leapDiff >= 0 && prevLeapDiff > 0) ||
-                        (leapDiff <= 0 && prevLeapDiff < 0)) {
-                        // Leaping in the same direction (or stays the same)
-                        let prevLeapPenaltyCount = prevLeapSize - 5;
-                        prevLeapPenaltyCount += leapSize;
-                        var multiplier = 1.0 / (1 + prevLeapPenaltyCount);
-                        //                    lik = multiplier * lik;
-                    }
-                }
                 likelihoods[d] = lik;
             }
         }
-        for (var d in likelihoods) {
+        for (const d in likelihoods) {
             resultLikelihoods[d] = likelihoods[d];
         }
         if (this.verbose) {
