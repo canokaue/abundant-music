@@ -206,9 +206,9 @@ const Midi = (function() {
             data.writeByte(0x2f);
             data.writeByte(0);
         }
-
-        END_OF_TRACK = new EndTrackMessage(MetaEventMessageType.END_OF_TRACK);
     }
+    EndTrackMessage.prototype.END_OF_TRACK = new EndTrackMessage(MetaEventMessageType.END_OF_TRACK);
+    
 
     class ProgramChangeMessage extends ChannelMessage {
         constructor(channel, instrument) {
@@ -321,11 +321,10 @@ const Midi = (function() {
             }
             //    logit("Data length: " + data.lengths.length);
         }
-    
-        MIDI_FILE_HEADER_TAG = 0x4D546864; // MThd
-        MIDI_FILE_HEADER_SIZE = 0x00000006;
-        MIDI_TRACK_HEADER_TAG = 0x4D54726B; // MTrk
     }
+    MIDIEncoder.prototype.MIDI_FILE_HEADER_TAG = 0x4D546864; // MThd
+    MIDIEncoder.prototype.MIDI_FILE_HEADER_SIZE = 0x00000006;
+    MIDIEncoder.prototype.MIDI_TRACK_HEADER_TAG = 0x4D54726B; // MTrk
 
     function writeVariableLengthUInt(data, theUInt) {
         const mask = 0xffffff7f;
