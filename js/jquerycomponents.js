@@ -100,10 +100,9 @@ class JQueryComponent {
     }
     disable() {
     }
-
-    static counters = {}
 }
 
+JQueryComponent.prototype.counters = {}
 
 class JQueryButton extends JQueryComponent {
     constructor(options) {
