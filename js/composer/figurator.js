@@ -181,14 +181,6 @@ class Figurator extends DfsSolver{
         const harmonyElement = this.harmony.get(harmonyIndex);
         const voiceLineElement = this.voiceLine.get(harmonyIndex);
         const currentElement = this.cluster[index];
-        let nextElementHarmonyIndex = harmonyIndex;
-        let nextElement = null;
-        if (index < this.cluster.length - 1) {
-            nextElementHarmonyIndex = this.harmonyIndices[index + 1];
-            nextElement = this.cluster[index + 1];
-        }
-        const nextElementHarmonyElement = this.harmony.get(nextElementHarmonyIndex);
-        const nextElementVoiceLineElement = this.voiceLine.get(nextElementHarmonyIndex);
         let prevElementHarmonyIndex = harmonyIndex;
         let prevElement = null;
         if (index > 0) {
@@ -196,10 +188,8 @@ class Figurator extends DfsSolver{
             prevElement = this.cluster[index - 1];
         }
         let prevPrevElementHarmonyIndex = harmonyIndex;
-        let prevPrevElement = null;
         if (index > 1) {
             prevPrevElementHarmonyIndex = this.harmonyIndices[index - 2];
-            prevPrevElement = this.cluster[index - 2];
         }
         const prevElementHarmonyElement = this.harmony.get(prevElementHarmonyIndex);
         const prevPrevElementHarmonyElement = this.harmony.get(prevPrevElementHarmonyIndex);
