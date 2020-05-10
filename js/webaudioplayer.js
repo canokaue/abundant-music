@@ -286,6 +286,7 @@ class WebAudioPlayer extends AudioPlayer {
         this.playingVoices.push(voice);
     }
 
-    title = "Web Audio";
+    
 
 }
+WebAudioPlayer.prototype.title = "Web Audio";

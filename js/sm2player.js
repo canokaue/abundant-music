@@ -81,5 +81,6 @@ class SoundManager2Player extends AudioPlayer{
         }, Math.round(delaySeconds * 1000));
     }
 
-    title = "Sound Manager 2 (Web Audio not detected)";
+    
 }
+SoundManager2Player.prototype.title = "Sound Manager 2 (Web Audio not detected)";
