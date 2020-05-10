@@ -1217,9 +1217,9 @@ class ModulePropertyInfoProvider {
             ["SionChorusEffect", "Chorus"], ["SionDistortionEffect", "Distortion"], ["SionCompressorEffect", "Compressor"],
             ["SionWaveShaperEffect", "Wave shape"], ["SionSerialEffect", "Serial"]
             ];
-            let info = this.createObjectListPropertyInfo("effects", "Effects", this.sionEffectsUidInfo, effectStuff);
+            info = this.createObjectListPropertyInfo("effects", "Effects", this.sionEffectsUidInfo, effectStuff);
             result.addPropertyInfo(info);
-            let info = this.createObjectListPropertyInfo("masterEffects", "Master effects", this.sionMasterEffectsUidInfo, effectStuff);
+            info = this.createObjectListPropertyInfo("masterEffects", "Master effects", this.sionMasterEffectsUidInfo, effectStuff);
             result.addPropertyInfo(info);
         }
         else if (obj instanceof InitialMidiControllerMessage) {
@@ -1625,11 +1625,11 @@ class ModulePropertyInfoProvider {
                 ["ClassicalAdaptiveVoiceLine", "Classical Adaptive Line"]
                 ]);
                 result.addPropertyInfo(info);
-                let info = this.createObjectListPropertyInfo("renderLines", "Render Lines", this.renderLinesUidInfo, [["PrimitiveRenderLine", "Simple Render Line"]]);
+                info = this.createObjectListPropertyInfo("renderLines", "Render Lines", this.renderLinesUidInfo, [["PrimitiveRenderLine", "Simple Render Line"]]);
                 result.addPropertyInfo(info);
-                let info = this.createObjectListPropertyInfo("suspAntStrategies", "Suspension/Anticipation Strategies", this.suspAntStrategiesUidInfo, [["SimpleSuspAntStrategy", "Simple Strategy"]]);
+                info = this.createObjectListPropertyInfo("suspAntStrategies", "Suspension/Anticipation Strategies", this.suspAntStrategiesUidInfo, [["SimpleSuspAntStrategy", "Simple Strategy"]]);
                 result.addPropertyInfo(info);
-                let info = this.createObjectListPropertyInfo("controlLines", "Control Lines", this.controlLinesUidInfo, [["PrimitiveControlLine", "Simple"]]);
+                info = this.createObjectListPropertyInfo("controlLines", "Control Lines", this.controlLinesUidInfo, [["PrimitiveControlLine", "Simple"]]);
                 result.addPropertyInfo(info);
                 result.addPropertyInfo(this.createObjectListPropertyInfo("modifiers", "Section Modifiers", this.sectionModifiersUidInfo, this.getSectionModifierConstructorTexts()));
             }
@@ -1672,7 +1672,7 @@ class ModulePropertyInfoProvider {
             result.addPropertyInfo(this.createPreviewPropertyInfo("HarmonyPreviewComponent"));
             let info = this.createObjectListPropertyInfo("harmonyElements", "Harmony Elements", this.harmonyElementsUidInfo, this.getHarmonyElementConstructorTexts());
             result.addPropertyInfo(info);
-            let info = this.createObjectListPropertyInfo("modifiers", "Modifiers", this.harmonyModifiersUidInfo, this.getHarmonyModifierConstructorTexts());
+            info = this.createObjectListPropertyInfo("modifiers", "Modifiers", this.harmonyModifiersUidInfo, this.getHarmonyModifierConstructorTexts());
             result.addPropertyInfo(info);
         }
         else if (obj instanceof HarmonyElement) {
@@ -1894,7 +1894,7 @@ class ModulePropertyInfoProvider {
                     ["VersatilePercussionMotifZone", "Versatile"]
                 ]);
                 result.addPropertyInfo(info);
-                let info = this.createObjectListPropertyInfo("elements", "Elements", this.percussionMotifElementsUidInfo, [
+                info = this.createObjectListPropertyInfo("elements", "Elements", this.percussionMotifElementsUidInfo, [
                     ["PrimitivePercussionMotifElement", "Primitive"],
                     ["PredefinedPercussionMotifElement", "Predefined"]
                 ]);
@@ -1926,7 +1926,7 @@ class ModulePropertyInfoProvider {
             ]);
             result.addPropertyInfo(info);
             // Motif zones
-            let info = this.createObjectListPropertyInfo("motifZones", "Motif Zones", this.motifZonesUidInfo, [["SimpleVerticalRelativeMotifZone", "Simple Vertical Zone"],
+            info = this.createObjectListPropertyInfo("motifZones", "Motif Zones", this.motifZonesUidInfo, [["SimpleVerticalRelativeMotifZone", "Simple Vertical Zone"],
             ["SimpleHorizontalRelativeMotifZone", "Simple Horizontal Zone"],
             ["AdaptiveConnectMotifZone", "Adaptive Connect"],
             ["AdaptiveEmbellishMotifZone", "Adaptive Embellish"]
