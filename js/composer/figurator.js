@@ -296,7 +296,7 @@ class Figurator extends DfsSolver{
                     }
                     const likelihoodArr = [];
                     const offsets = this.getHorizontalOffsets(currentElement, j, likelihoodArr);
-                    var referenceAbsNote = previousAbsNote;
+                    let referenceAbsNote = previousAbsNote;
                     if (referenceAbsNote == null &&
                         currentElement.horizontalRelativeTypes[j] == HorizontalRelativeType.PREVIOUS_NOTE) {
                         const previousNote = this.previousNotes.get(currentElement);
@@ -343,7 +343,7 @@ class Figurator extends DfsSolver{
                     // The next element refers forward
                     const likelihoodArr = [];
                     const offsets = this.getHorizontalOffsets(currentElement, j, likelihoodArr);
-                    var referenceAbsNote = nextAbsNote;
+                    let referenceAbsNote = nextAbsNote;
                     if (currentElement.horizontalRelativeTypes[j] == HorizontalRelativeType.NEXT_VOICE_LINE_ELEMENT) {
                         referenceAbsNote = nextHarmonyElement.getAbsoluteNoteConstantVoiceLineElement(nextVoiceLineElement);
                         //                    logit("______getting abs note from previous voice line " + referenceAbsNote + "<br />");
