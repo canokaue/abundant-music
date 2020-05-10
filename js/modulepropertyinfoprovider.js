@@ -896,38 +896,38 @@ class ModulePropertyInfoProvider {
             let info = this.createObjectListInTabPropertyInfo("renderers", "Renderers", this.renderersUidInfo, [["WebAudioRenderer", "WebAudio"], ["MidiRenderer", "Midi"], ["WaveRenderer", "Wav"],
             ["JsonRenderer", "JSON"], ["PianoRollRenderer", "Piano Roll"], ["SionRenderer", "Sion"]]);
             result.addPropertyInfo(info);
-            let info = this.createObjectListInTabPropertyInfo("structures", "Structures", this.structuresUidInfo, [["Structure", "Structure"]]);
+            info = this.createObjectListInTabPropertyInfo("structures", "Structures", this.structuresUidInfo, [["Structure", "Structure"]]);
             result.addPropertyInfo(info);
-            let info = this.createObjectListInTabPropertyInfo("sections", "Sections", this.sectionsUidInfo, [["Section", "Section"]]);
+            info = this.createObjectListInTabPropertyInfo("sections", "Sections", this.sectionsUidInfo, [["Section", "Section"]]);
             result.addPropertyInfo(info);
-            let info = this.createObjectListInTabPropertyInfo("harmony", "Harmony", this.harmonyUidInfo, [["ConstantHarmonicRythm", "Harmonic Rythm"]]);
+            info = this.createObjectListInTabPropertyInfo("harmony", "Harmony", this.harmonyUidInfo, [["ConstantHarmonicRythm", "Harmonic Rythm"]]);
             result.addPropertyInfo(info);
-            let info = this.createObjectListInTabPropertyInfo("motifs", "Motifs", this.motifsUidInfo, [["Motif", "Motif"]], "motifs", "Motifs");
+            info = this.createObjectListInTabPropertyInfo("motifs", "Motifs", this.motifsUidInfo, [["Motif", "Motif"]], "motifs", "Motifs");
             result.addPropertyInfo(info);
-            let info = this.createObjectListInTabPropertyInfo("namedNotes", "Named Notes", this.namedNotesUidInfo, [["SimpleNamedNote", "Simple"], ["MidiDrumNamedNote", "Midi Drum"]], "motifs", "Motifs");
+            info = this.createObjectListInTabPropertyInfo("namedNotes", "Named Notes", this.namedNotesUidInfo, [["SimpleNamedNote", "Simple"], ["MidiDrumNamedNote", "Midi Drum"]], "motifs", "Motifs");
             result.addPropertyInfo(info);
-            let info = this.createObjectListInTabPropertyInfo("percussionMotifs", "Percussion Motifs", this.percussionMotifsUidInfo, [
+            info = this.createObjectListInTabPropertyInfo("percussionMotifs", "Percussion Motifs", this.percussionMotifsUidInfo, [
                 ["PercussionMotif", "Motif"],
                 ["SingleElementPercussionMotif", "Single Element Motif"],
             ], "motifs", "Motifs");
             result.addPropertyInfo(info);
-            let info = this.createObjectListInTabPropertyInfo("rythms", "Rythms", this.rythmsUidInfo, [["Rythm", "Rythm"]]);
+            info = this.createObjectListInTabPropertyInfo("rythms", "Rythms", this.rythmsUidInfo, [["Rythm", "Rythm"]]);
             result.addPropertyInfo(info);
-            let info = this.createObjectListInTabPropertyInfo("curves", "Curves", this.curvesUidInfo, this.getCurveConstructorTexts());
+            info = this.createObjectListInTabPropertyInfo("curves", "Curves", this.curvesUidInfo, this.getCurveConstructorTexts());
             result.addPropertyInfo(info);
-            let info = this.createObjectListInTabPropertyInfo("voiceLinePlanners", "Voice Line Planners", this.voiceLinePlannersUidInfo, [["ClassicalVoiceLinePlanner", "Classical"]], "planners", "Planners");
+            info = this.createObjectListInTabPropertyInfo("voiceLinePlanners", "Voice Line Planners", this.voiceLinePlannersUidInfo, [["ClassicalVoiceLinePlanner", "Classical"]], "planners", "Planners");
             result.addPropertyInfo(info);
-            let info = this.createObjectListInTabPropertyInfo("figurationPlanners", "Figuration Planners", this.figurationPlannersUidInfo, [["ClassicalFigurationPlanner", "Classical"]], "planners", "Planners");
+            info = this.createObjectListInTabPropertyInfo("figurationPlanners", "Figuration Planners", this.figurationPlannersUidInfo, [["ClassicalFigurationPlanner", "Classical"]], "planners", "Planners");
             result.addPropertyInfo(info);
-            let info = this.createObjectListInTabPropertyInfo("renderChannels", "Render Channels", this.renderChannelsUidInfo, [["RenderChannel", "Render Channel"]], "channels", "Channels");
+            info = this.createObjectListInTabPropertyInfo("renderChannels", "Render Channels", this.renderChannelsUidInfo, [["RenderChannel", "Render Channel"]], "channels", "Channels");
             result.addPropertyInfo(info);
-            let info = this.createObjectListInTabPropertyInfo("controlChannels", "Control Channels", this.controlChannelsUidInfo, [
+            info = this.createObjectListInTabPropertyInfo("controlChannels", "Control Channels", this.controlChannelsUidInfo, [
                 ["DoubleControlChannel", "Double Channel"],
                 ["IntegerControlChannel", "Integer Channel"],
                 ["BooleanControlChannel", "Boolean Channel"]
             ], "channels", "Channels");
             result.addPropertyInfo(info);
-            let info = this.createObjectListInTabPropertyInfo("variables", "Variables and Value Functions", this.variablesUidInfo, [
+            info = this.createObjectListInTabPropertyInfo("variables", "Variables and Value Functions", this.variablesUidInfo, [
                 ["SimpleIntegerEditorVariable", "Integer Variable"],
                 ["SimpleDoubleEditorVariable", "Double Variable"],
                 ["SimpleBooleanEditorVariable", "Boolean Variable"],
@@ -943,7 +943,7 @@ class ModulePropertyInfoProvider {
                 ["SimpleEnumEditorVariable", "Enum Variable"]
             ], "variables", "Variables/Procedures");
             result.addPropertyInfo(info);
-            let info = this.createObjectListInTabPropertyInfo("procedures", "Procedures", this.proceduresUidInfo, [
+            info = this.createObjectListInTabPropertyInfo("procedures", "Procedures", this.proceduresUidInfo, [
                 ["CustomEditorProcedure", "Custom"]
             ], "variables", "Variables/Procedures");
             result.addPropertyInfo(info);
