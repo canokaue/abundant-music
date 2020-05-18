@@ -1,5 +1,3 @@
-
-
 class MotifRenderElement extends PositionedRenderElement {
     constructor() {
         super()
@@ -41,7 +39,6 @@ class MotifRenderElement extends PositionedRenderElement {
                     const nextHarmonyIndex = harmony.getHarmonyIndexAt(currentTime + beatLength);
                     if (nextHarmonyIndex != harmonyIndex || currentTime + beatLength > harmonyBeatLength) {
                         // Cuts harmony border
-                        //                    var startHarmonyBeat = harmony.getBeatLengthUntilIndex(harmonyIndex);
                         const endHarmonyBeat = harmony.getBeatLengthUntilIndex(harmonyIndex + 1);
                         const overlapBeats = currentTime + beatLength - endHarmonyBeat;
                         if (overlapBeats > 0) {
@@ -172,30 +169,19 @@ class MotifRenderElement extends PositionedRenderElement {
         }
         // Set the position fraction for all clusters
         for (let i = 0; i < searchClusters.length; i++) {
-            var cluster = searchClusters[i];
-            const clusterPosition = 0;
-            const positions = [];
-            for (var j = 0; j < cluster.length; j++) {
-                positions[j] = clusterPosition;
-                // Need length of voice element here...
-            }
-            // clusterPosition now contains the length of the cluster
-            let clusterLength = clusterPosition;
-            if (clusterLength < 0.000001) {
-                clusterLength = cluster.length; // Just use the index as fraction
-            }
-            for (var j = 0; j < cluster.length; j++) {
-                cluster[j].clusterPositionFraction = positions[j] / clusterLength;
+            const cluster = searchClusters[i];
+            for (let j = 0; j < cluster.length; j++) {
+                cluster[j].clusterPositionFraction = 0;
             }
         }
         const theSeed = theMotif.useExternalSeed ? this.seed : theMotif.seed;
         const rnd = new MersenneTwister(theSeed);
         // Perform the search
         for (let i = 0; i < searchClusters.length; i++) {
-            var cluster = searchClusters[i];
+            const cluster = searchClusters[i];
             //        logit("Searching in cluster " + i + " " + cluster + " with size " + cluster.length + "<br />");
             const harmonyIndices = [];
-            for (var j = 0; j < cluster.length; j++) {
+            for (let j = 0; j < cluster.length; j++) {
                 harmonyIndices.push(elementHarmonyIndices.get(cluster[j]));
             }
             const defaultOptions = {
@@ -231,7 +217,7 @@ class MotifRenderElement extends PositionedRenderElement {
                 if (solution.length != cluster.length) {
                     logit("Mitchmatch between solution and cluster lengths " + solution.length + " " + cluster.length + "<br />");
                 }
-                for (var j = 0; j < cluster.length; j++) {
+                for (let j = 0; j < cluster.length; j++) {
                     if (typeof (solution[j]) === 'string') {
                         logit("abs note is a string!!!");
                     }
