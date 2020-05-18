@@ -122,13 +122,10 @@ class HarmonyGenerator extends DfsSolver{
             const state = node.state;
             if (toBeatStrength > fromBeatStrength) {
                 const fromHarmony = state.harmony;
-                //            logit("Checking " + fromBeatStrength + " " + toBeatStrength + " " + fromHarmony.toRomanString());
                 for (let i = 0; i < possibleNextStates.length; i++) {
                     const toHarmony = possibleNextStates[i].harmony;
                     const cost = this.calculateBeatStrengthRepetitionCost(fromHarmony, fromBeatStrength, toHarmony, toBeatStrength);
                     if (cost > 0) {
-                        //                    var likelihood = possibleNextStateLikelihoods[i];
-                        //                    possibleNextStateLikelihoods[i] = likelihood * multiplier;
                         possibleNextStateCosts[i] += cost;
                     }
                 }
@@ -170,21 +167,21 @@ class HarmonyGenerator extends DfsSolver{
             triadCost = triadCosts[positiveMod(harmony.chordRoot, 7) % triadCosts.length];
         }
         if (seventhLikelihood > 0) {
-            var stateCopy = copyValueDeep(state);
+            const stateCopy = copyValueDeep(state);
             stateCopy.harmony.addSeventh();
             resultStates.push(stateCopy);
             resultLikelihoods.push(likelihood * seventhLikelihood);
             resultCosts.push(cost + seventhCost);
         }
         if (triadLikelihood > 0) {
-            var stateCopy = copyValueDeep(state);
+            const stateCopy = copyValueDeep(state);
             stateCopy.harmony.removeSeventh();
             resultStates.push(stateCopy);
             resultLikelihoods.push(likelihood * triadLikelihood);
             resultCosts.push(cost + triadCost);
         }
         if (seventhLikelihood == 0 && triadLikelihood == 0) {
-            var stateCopy = copyValueDeep(state);
+            const stateCopy = copyValueDeep(state);
             resultStates.push(stateCopy);
             resultLikelihoods.push(likelihood);
             resultCosts.push(cost);
@@ -261,7 +258,7 @@ class HarmonyGenerator extends DfsSolver{
             const isMixture = chord.scaleType != fromHarmony.scaleType &&
                 (chord.scaleType == ScaleType.MAJOR || fromHarmony.scaleType == ScaleType.MAJOR);
             if (!isSus && !isMixture && possibleRoots) {
-                var index = possibleRoots.indexOf(chordRoot);
+                const index = possibleRoots.indexOf(chordRoot);
                 if (index >= 0) {
                     if (possibleInversions) {
                         const inversions = possibleInversions[index];
@@ -279,10 +276,8 @@ class HarmonyGenerator extends DfsSolver{
             }
             if (!isMixture && isSus) {
                 if (possibleSusRoots) {
-                    var index = possibleSusRoots.indexOf(chordRoot);
-                    if (index >= 0) {
-                    }
-                    else {
+                    const index = possibleSusRoots.indexOf(chordRoot);
+                    if (index < 0) {
                         ok = false;
                     }
                 }
@@ -297,10 +292,6 @@ class HarmonyGenerator extends DfsSolver{
                     // Scale types
                     if (!arrayContains(possibleMixtureRoots, chordRoot)) {
                         ok = false;
-                        //                    logit(" removed " + possibleMixtureRoots + " : " + chordRoot);
-                    }
-                    else {
-                        //                    logit(" keeping mixture chord! " + ok);
                     }
                 }
                 else {

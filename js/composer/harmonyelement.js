@@ -57,13 +57,6 @@ class SwitchHarmonyElement extends HarmonyElement {
         const result = [];
         const index = getValueOrExpressionValue(this, "index", module);
         const indexedElements = this.indexedElements; // getValueOrExpressionValue(this, "indexedElements", module);
-        //    if (this.indexExpression) {
-        ////        console.log(this._constructorName + " using index " + index + " on " + indexedElements + " " + this.indexExpression);
-        //        var v = module.getVariable(this.indexExpression);
-        //        if (v) {
-        //            logit("index var " + v.id + " " + v.value + " " + this.indexUseExpression + " " + index);
-        //        }
-        //    }
         if (indexedElements.length > 0) {
             const harmony = indexedElements[index % indexedElements.length];
             if (harmony) {
@@ -305,20 +298,20 @@ class ConstantHarmonyElement extends HarmonyElement {
             const modeResult = arrayCopy(result);
             if (scaleMode > 0) {
                 // Shift everything left
-                const first = modeResult.shift(); // Remove first element
+                modeResult.shift(); // Remove first element
                 //            if (first != 0) {
                 //                logit("First scale offset not zero. This will not be pretty :) " + this._constructorName);
                 //            }
                 modeResult.push(12);
                 const toSub = modeResult[0];
-                for (var j = 0; j < modeResult.length; j++) {
+                for (let j = 0; j < modeResult.length; j++) {
                     modeResult[j] = Math.abs(modeResult[j] - toSub);
                 }
             }
             else {
                 const last = modeResult.pop();
                 const toAdd = 12 - last;
-                for (var j = 0; j < modeResult.length; j++) {
+                for (let j = 0; j < modeResult.length; j++) {
                     modeResult[j] = modeResult[j] + toAdd;
                 }
                 modeResult.unshift(0);
@@ -619,7 +612,6 @@ class ConstantHarmonyElement extends HarmonyElement {
         return result;
     }
     getAbsoluteNoteFromChordBassIndex(index) {
-        //    var theChord = this.getChordRootPositionScaleIndices();
         const chordOffsets = this.getChordRootPositionAbsoluteOffsets();
         const first = chordOffsets[0];
         for (let i = 0; i < chordOffsets.length; i++) {
@@ -630,7 +622,6 @@ class ConstantHarmonyElement extends HarmonyElement {
     }
     getAbsoluteNoteFromChordRootIndex(index, maxCount) {
         const chordOffsets = this.getChordRootPositionAbsoluteOffsets(maxCount);
-        //var theChord = this.getChordRootPositionScaleIndices();
         const first = chordOffsets[0];
         for (let i = 0; i < chordOffsets.length; i++) {
             chordOffsets[i] -= first;
@@ -840,39 +831,8 @@ class ConstantHarmonyElement extends HarmonyElement {
         return result;
     }
     getAbsoluteNoteConstantVoiceLineElement(e) {
-        // public int getAbsoluteNote(ConstantVoiceLineElement e) {
         let result = this.getAbsoluteNoteWithIndexType(e.index, e.indexType);
-        //    var beforeSnap = result;
-        //    var beforeSnapPitchClass = beforeSnap % 12;
         result = this.snap(result, e.snapType, this);
-        //    switch (e.snapType) {
-        //        case SnapType.NONE:
-        //            break;
-        //        case SnapType.SCALE:
-        //            var pitchClasses = this.getPitchClasses(this.baseNote, this.getScale());
-        //            result = this.getClosestNoteWithPitchClasses(result, pitchClasses);
-        //            break;
-        //        case SnapType.CHORD:
-        //            var scaleIndices = this.getChordRootPositionScaleIndices();
-        //            var pitchClasses = this.getPitchClassesFromScaleIndices(scaleIndices);
-        //            result = this.getClosestNoteWithPitchClasses(result, pitchClasses);
-        //            break;
-        //    }
-        //    var scalePitchClasses = this.getPitchClassesFromAbsoluteNotes(this.getScaleAbsoluteNotes());
-        //    var chordOffsets = this.getChordRootPositionScaleIndices();
-        //    var chordAbsOffsets = this.getChordRootPositionAbsoluteOffsets();
-        //    var chordPitchClasses = this.getPitchClasses(this.baseNote, chordAbsOffsets);
-        //    var resultPitchClass = result % 12;
-        //    logit("Getting VL absolute note. Index: " + e.index +
-        //        " index type: " + e.indexType +
-        //        " snap type: " + e.snapType +
-        //        " before snap: " + beforeSnap +
-        //        " before snap pitch class: " + beforeSnapPitchClass +
-        //        " after snap: " + result +
-        //        " after snap pitch class: " + resultPitchClass +
-        //        " chord pitch classes: " + chordPitchClasses +
-        //        " scale pitch classes: " + scalePitchClasses +
-        //        "<br />");
         return result + 12 * e.octaves;
     }
     snap(absoluteNote, snapType, harmonyElement) {
@@ -880,44 +840,50 @@ class ConstantHarmonyElement extends HarmonyElement {
         switch (snapType) {
             case SnapType.NONE:
                 break;
-            case SnapType.SCALE:
-                var pitchClasses = harmonyElement.getPitchClasses(harmonyElement.baseNote, harmonyElement.getScale());
+            case SnapType.SCALE: {
+                const pitchClasses = harmonyElement.getPitchClasses(harmonyElement.baseNote, harmonyElement.getScale());
                 result = harmonyElement.getClosestNoteWithPitchClasses(result, pitchClasses);
                 break;
-            case SnapType.CHORD:
+            }
+            case SnapType.CHORD: {
                 const scaleIndices = harmonyElement.getChordRootPositionScaleIndices();
-                var pitchClasses = harmonyElement.getPitchClassesFromScaleIndices(scaleIndices);
+                const pitchClasses = harmonyElement.getPitchClassesFromScaleIndices(scaleIndices);
                 result = harmonyElement.getClosestNoteWithPitchClasses(result, pitchClasses);
                 break;
+            }
         }
         return result;
     }
     offset(absoluteNote, offsetType, offset, harmonyElement) {
         let result = absoluteNote;
         switch (offsetType) {
-            case OffsetType.SCALE:
-                var indexChr = harmonyElement
+            case OffsetType.SCALE: {
+                const indexChr = harmonyElement
                     .getScaleIndexAndChromaticOffsetForAbsoluteNote(result);
                 const scaleIndex = indexChr[0] + offset;
-                // logit("Absolute note " + absoluteNote + " gives scale index: " + scaleIndex + "<br />");
                 const absNote = harmonyElement.getAbsoluteNoteFromScaleIndex(scaleIndex);
                 result = absNote;
                 break;
+            }
             case OffsetType.HALF_STEP:
                 result = absoluteNote + offset;
                 break;
-            case OffsetType.CHORD:
-                var indexChr = harmonyElement.getChordRootIndexAndChromaticOffsetForAbsoluteNote(result);
+            case OffsetType.CHORD: {
+                const indexChr = harmonyElement.getChordRootIndexAndChromaticOffsetForAbsoluteNote(result);
                 result = harmonyElement.getAbsoluteNoteFromChordRootIndex(indexChr[0] + offset);
                 break;
-            case OffsetType.CHORD_TRIAD_ONLY:
-                var indexChr = harmonyElement.getChordRootIndexAndChromaticOffsetForAbsoluteNote(result, 3);
+            }
+            case OffsetType.CHORD_TRIAD_ONLY: {
+
+                const indexChr = harmonyElement.getChordRootIndexAndChromaticOffsetForAbsoluteNote(result, 3);
                 result = harmonyElement.getAbsoluteNoteFromChordRootIndex(indexChr[0] + offset);
                 break;
-            case OffsetType.CHORD_SEVENTH_ONLY:
-                var indexChr = harmonyElement.getChordRootIndexAndChromaticOffsetForAbsoluteNote(result, 4);
+            }
+            case OffsetType.CHORD_SEVENTH_ONLY: {
+                const indexChr = harmonyElement.getChordRootIndexAndChromaticOffsetForAbsoluteNote(result, 4);
                 result = harmonyElement.getAbsoluteNoteFromChordRootIndex(indexChr[0] + offset);
                 break;
+            }
             case OffsetType.OCTAVE:
                 result = absoluteNote + offset * 12;
                 break;

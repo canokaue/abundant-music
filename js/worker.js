@@ -99,9 +99,7 @@ function render(data, progressMultiplier) {
 
     const content = data.content;
 
-//                        logit("Worker is composing with seed " + content.seed);
     const seed = content.seed;
-    const sectionIndex = content.sectionIndex;
 
     const rnd = new MersenneTwister(seed);
     const genInfo = content.genInfo;
@@ -247,10 +245,10 @@ self.addEventListener('message', function(e) {
         }
 //        self.close();
     } catch (exc) {
+        console.error(exc);
         logit("Exception in worker " + exc + " ");
         console.error(exc);
 
         self.postMessage({type: "error", data: exc.toString()});
-//        self.close();
     }
 }, false);

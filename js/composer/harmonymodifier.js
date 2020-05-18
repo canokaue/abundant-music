@@ -29,18 +29,14 @@ class SuspendHarmonyModifier extends HarmonyModifier{
         if (active && elements.length > 0) {
             const seed = getValueOrExpressionValue(this, "seed", module);
             let probs = getValueOrExpressionValue(this, "suspendProbabilities", module);
-            const allowDissonantPreparation = false;
-            const allowConsonantSuspension = false;
             const allowStartsWeak = false;
-            const allowAnticipateResolution = false; // This translates into a non-doubling constraint
-            const allowAnticipateResolutionWithBass = true;
             const minBeatLength = 2;
             const infos = [];
             let currentBeat = 0;
             const measureBeatLength = positionUnitToBeats(1, PositionUnit.MEASURES, elements[0].tsNumerator, elements[0].tsDenominator);
             const minSecondLength = 2;
             for (let i = 0; i < result.length - 1; i++) {
-                var info = {};
+                const info = {};
                 const first = result[i];
                 const second = result[i + 1];
                 const firstLength = first.getBeatLength();
@@ -68,10 +64,10 @@ class SuspendHarmonyModifier extends HarmonyModifier{
                 ok = ok && secondBeatLength >= minBeatLength;
                 if (ok) {
                     // Add all pairs of notes
-                    for (var j = 0; j < firstPitchClasses.length; j++) {
+                    for (let j = 0; j < firstPitchClasses.length; j++) {
                         const firstPc = firstPitchClasses[j];
                         const closestPc = first.getClosestNoteWithPitchClasses(firstPc + 24, secondPitchClasses) % 12;
-                        if (closestPc == firstPc && !allowConsonantSuspension) {
+                        if (closestPc == firstPc) {
                             // The note was part of the second chord and we do not allow consonant suspensions
                             continue;
                         }
@@ -103,7 +99,7 @@ class SuspendHarmonyModifier extends HarmonyModifier{
             }
             const rnd = new MersenneTwister(seed);
             for (let i = 0; i < infos.length; i++) {
-                var info = infos[i];
+                const info = infos[i];
                 if (rnd.random() < probs[i % probs.length]) {
                     let maxCount = 1;
                     if (rnd.random() < this.doubleSuspendProbabilities[i % this.doubleSuspendProbabilities.length]) {
@@ -114,11 +110,11 @@ class SuspendHarmonyModifier extends HarmonyModifier{
                     }
                     const toSample = Math.min(info.pairs.length, maxCount);
                     const rndInfos = [];
-                    for (var j = 0; j < info.pairs.length; j++) {
+                    for (let j = 0; j < info.pairs.length; j++) {
                         rndInfos.push({ data: j, likelihood: 1 });
                     }
                     const indices = sampleNDataWithoutReplacement(rndInfos, toSample, rnd);
-                    for (var j = 0; j < indices.length; j++) {
+                    for (let j = 0; j < indices.length; j++) {
                         const pair = info.pairs[indices[j]]; // info.pairs[Math.floor(rnd.random() * info.pairs.length)];
                         const constraint = new SuspendVoiceLinePlannerConstraint();
                         constraint.onPattern = copyValueDeep(this.voiceLineOnPattern);
@@ -131,11 +127,7 @@ class SuspendHarmonyModifier extends HarmonyModifier{
                         //                    logit(this._constructorName + " adding constraint at " + (i+1) + " pair: " + JSON.stringify(pair));
                     }
                 }
-                //            for (var j=0; j<info.pairs.length; j++) {
-                //
-                //            }
             }
-            //        logit(this._constructorName + " " + JSON.stringify(infos));
         }
         return result;
     }
@@ -168,12 +160,10 @@ class RandomShortenHarmonyModifier extends HarmonyModifier {
             const cumulative = getProbabilityDistribution(fixLikelihoods(likelihoods));
             const rnd = new MersenneTwister(this.seed);
             function getBadRepeatArray(elements) {
-                const measureStarts = [];
                 let currentBeat = 0;
                 const harmony = new ConstantHarmonicRythm(elements);
                 const measureLength = positionUnitToBeats2(1, PositionUnit.MEASURES, currentBeat, harmony);
                 const crossesArr = [];
-                //            var beatStarts = [];
                 const numerator = elements[0].tsNumerator;
                 const startBeatStrengths = HarmonyGenerator.prototype.getStartBeatStrengthsFromHarmonyElements(module, elements, 0, numerator);
                 for (let i = 0; i < elements.length; i++) {
@@ -354,7 +344,7 @@ class ModeMixtureHarmonyModifier extends HarmonyModifier {
             const prevElement = elements[index - 1];
             const prevRootPitchClass = prevElement.getAbsoluteNoteFromChordRootIndex(0) % 12;
             for (let i = 0; i < fromRoots.length; i++) {
-                var possiblePitchClass = prevElement.getAbsoluteNoteFromScaleIndex(fromRoots[i]) % 12;
+                const possiblePitchClass = prevElement.getAbsoluteNoteFromScaleIndex(fromRoots[i]) % 12;
                 if (possiblePitchClass == prevRootPitchClass) {
                     ok = true;
                     break;
@@ -364,7 +354,7 @@ class ModeMixtureHarmonyModifier extends HarmonyModifier {
         if (ok) {
             ok = false;
             for (let i = 0; i < roots.length; i++) {
-                var possiblePitchClass = element.getAbsoluteNoteFromScaleIndex(roots[i]) % 12;
+                const possiblePitchClass = element.getAbsoluteNoteFromScaleIndex(roots[i]) % 12;
                 if (possiblePitchClass == rootPitchClass) {
                     ok = true;
                     break;
