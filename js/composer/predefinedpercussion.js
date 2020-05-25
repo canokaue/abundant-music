@@ -193,7 +193,7 @@ class PredefinedPercussionMotifElement extends PercussionMotifElement {
         const drumIndices = patternInfo.drumIndices ? patternInfo.drumIndices : [0];
         const positionShift = typeof (patternInfo.positionShift) === "undefined" ? 0 : patternInfo.positionShift;
         if (positionShift > 0) {
-            var pme = new PrimitivePercussionMotifElement();
+            const pme = new PrimitivePercussionMotifElement();
             pme.rest = true;
             pme.length = positionShift * lengthMultiplier;
             pme.startTime = 0;
@@ -201,7 +201,7 @@ class PredefinedPercussionMotifElement extends PercussionMotifElement {
             result.push(pme);
         }
         for (let i = 0; i < starts.length; i++) {
-            var pme = new PrimitivePercussionMotifElement();
+            const pme = new PrimitivePercussionMotifElement();
             pme.rest = rests[i % rests.length] == 1;
             pme.note = this.getNote(drumIndices[i % drumIndices.length], module, defaultDrums);
             pme.startTime = starts[i % starts.length] * lengthMultiplier + positionShift + posShifts[i % posShifts.length];
@@ -336,9 +336,9 @@ class PredefinedPercussionMotifElement extends PercussionMotifElement {
             case PredefinedPercussionMotifType.FILL_EIGHTS_5:
             case PredefinedPercussionMotifType.FILL_EIGHTS_6:
             case PredefinedPercussionMotifType.FILL_EIGHTS_7:
-            case PredefinedPercussionMotifType.FILL_EIGHTS_8:
-                var accents = [0];
-                var rests = [0];
+            case PredefinedPercussionMotifType.FILL_EIGHTS_8: {
+                let accents = [0];
+                let rests = [0];
                 switch (this.type) {
                     case PredefinedPercussionMotifType.FILL_EIGHTS_2:
                         accents = [1, 0, 0, 1, 0, 0, 1, 0];
@@ -369,11 +369,12 @@ class PredefinedPercussionMotifElement extends PercussionMotifElement {
                     rests: rests
                 }, module, defaultDrums, result);
                 break;
+            }
             case PredefinedPercussionMotifType.FILL_QUARTER_TRIPLET_1:
             case PredefinedPercussionMotifType.FILL_QUARTER_TRIPLET_2:
-            case PredefinedPercussionMotifType.FILL_QUARTER_TRIPLET_3:
-                var accents = [0];
-                var rests = [0];
+            case PredefinedPercussionMotifType.FILL_QUARTER_TRIPLET_3: {
+                let accents = [0];
+                const rests = [0];
                 switch (this.type) {
                     case PredefinedPercussionMotifType.FILL_QUARTER_TRIPLET_2:
                         accents = [1, 0, 1, 0, 1, 0];
@@ -389,6 +390,7 @@ class PredefinedPercussionMotifElement extends PercussionMotifElement {
                     rests: rests
                 }, module, defaultDrums, result);
                 break;
+            }
             case PredefinedPercussionMotifType.MARCH_STANDARD_1:
             case PredefinedPercussionMotifType.MARCH_STANDARD_2:
             case PredefinedPercussionMotifType.MARCH_STANDARD_3:
