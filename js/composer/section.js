@@ -40,20 +40,20 @@ class AbstractSection {
                 logit("Failed to concretize section... " + concreteSection._constructorName + " <br />");
                 continue;
             }
-            for (var j = 0; j < this.modifiers.length; j++) {
-                var sm = this.modifiers[j];
+            for (let j = 0; j < this.modifiers.length; j++) {
+                const sm = this.modifiers[j];
                 concreteSection = sm.modifySection(concreteSection, state);
             }
             state.oldSectionTime = state.sectionTime;
             if (concreteSection.active) {
                 concreteSection.renderBatch(state);
             }
-            for (var j = 0; j < this.modifiers.length; j++) {
-                var sm = this.modifiers[j];
+            for (let j = 0; j < this.modifiers.length; j++) {
+                const sm = this.modifiers[j];
                 sm.beforeSectionFinalized(concreteSection, state);
             }
-            for (var j = 0; j < this.modifiers.length; j++) {
-                var sm = this.modifiers[j];
+            for (let j = 0; j < this.modifiers.length; j++) {
+                const sm = this.modifiers[j];
                 sm.sectionRendered(concreteSection, state);
             }
         }
@@ -155,7 +155,7 @@ class Section extends AbstractSection {
         }
         else {
             for (let i = 0; i < voiceLines.length; i++) {
-                var line = voiceLines[i];
+                const line = voiceLines[i];
                 if (line instanceof DoubledVoiceLine) {
                     // Doubled voice lines are dealt with when there are only ConstantVoiceLineElements (and undefined) left
                     continue;
@@ -178,7 +178,7 @@ class Section extends AbstractSection {
         }
         // After all the planning is done, take care of the voice lines that are derived from other lines
         for (let i = 0; i < voiceLines.length; i++) {
-            var line = voiceLines[i];
+            const line = voiceLines[i];
             if (line instanceof DoubledVoiceLine) {
                 const doubled = line.doubleVoiceLine(result);
                 if (doubled) {
@@ -197,7 +197,7 @@ class Section extends AbstractSection {
         state.section = this;
         state.oldSectionTime = state.sectionTime;
         for (let i = 0; i < this.modifiers.length; i++) {
-            var sm = this.modifiers[i];
+            const sm = this.modifiers[i];
             state.section = sm.modifySection(state.section, state);
         }
         const harmonyId = getValueOrExpressionValue(state.section, "harmonicRythm", state.module);
@@ -212,7 +212,7 @@ class Section extends AbstractSection {
             //        logit(harmonyElements);
             state.constantHarmony = chr;
             for (let i = 0; i < this.modifiers.length; i++) {
-                var sm = this.modifiers[i];
+                const sm = this.modifiers[i];
                 state.constantHarmony = sm.modifyConstantHarmony(state.constantHarmony, state);
             }
             // Modify the voice line before planning
@@ -220,13 +220,15 @@ class Section extends AbstractSection {
             // Plan the voices
             state.plannedVoiceLines = this.planVoices(state.constantHarmony, state.voiceLines, state.module);
             for (let i = 0; i < this.modifiers.length; i++) {
-                var sm = this.modifiers[i];
+                const sm = this.modifiers[i];
                 state.plannedVoiceLines = sm.modifyPlannedVoiceLines(state.plannedVoiceLines, state);
             }
+
+            let che = null
             for (let i = 0; i < state.constantHarmony.getCount(); i++) {
-                var che = state.constantHarmony.get(i);
-                for (var j = 0; j < che.sectionModifiers.length; j++) {
-                    var sm = che.sectionModifiers[j];
+                che = state.constantHarmony.get(i);
+                for (let j = 0; j < che.sectionModifiers.length; j++) {
+                    const sm = che.sectionModifiers[j];
                     state.plannedVoiceLines = sm.modifyPlannedVoiceLines(state.plannedVoiceLines, state);
                 }
             }
@@ -238,22 +240,22 @@ class Section extends AbstractSection {
             // logit("Setting tempo event " + state.sectionTempo + " <br />");
             for (let i = 0; i < state.renderLines.length; i++) {
                 //            logit("Rendering line " + i);
-                var line = state.renderLines[i];
+                const line = state.renderLines[i];
                 line.renderBatch(state);
             }
-            for (var j = 0; j < che.sectionModifiers.length; j++) {
-                var sm = che.sectionModifiers[j];
+            for (let j = 0; j < che.sectionModifiers.length; j++) {
+                const sm = che.sectionModifiers[j];
                 sm.beforeControlRender(state);
             }
             perfTimer2.start();
             //        logit("fsdf " + state.controlLines.length);
             for (let i = 0; i < state.controlLines.length; i++) {
-                var line = state.controlLines[i];
+                const line = state.controlLines[i];
                 line.renderBatch(state);
             }
             perfTimer2.pause();
-            for (var j = 0; j < che.sectionModifiers.length; j++) {
-                var sm = che.sectionModifiers[j];
+            for (let j = 0; j < che.sectionModifiers.length; j++) {
+                const sm = che.sectionModifiers[j];
                 sm.afterControlRender(state);
             }
             switch (sectionTempoMode) {
@@ -264,17 +266,17 @@ class Section extends AbstractSection {
                 case SectionTempoMode.CONTROL_CHANNEL:
                     const tempoCh = state.module.getControlChannel(this.tempoChannel);
                     if (tempoCh) {
-                        var slotData = state.controlSlotDatas[tempoCh.id];
+                        const slotData = state.controlSlotDatas[tempoCh.id];
                         if (slotData) {
                             const sectionLength = state.constantHarmony.getBeatLength();
                             const slotBeatFraction = 1.0 / tempoCh.slotsPerBeat;
                             let oldTempo = 0;
                             for (let i = 0; i < sectionLength; i++) {
-                                for (var j = 0; j < tempoCh.slotsPerBeat; j++) {
+                                for (let j = 0; j < tempoCh.slotsPerBeat; j++) {
                                     const slot = i * tempoCh.slotsPerBeat + j;
-                                    var tempoValue = tempoCh.readDouble(slot, slotData);
+                                    const tempoValue = tempoCh.readDouble(slot, slotData);
                                     const beat = i + slotBeatFraction * j;
-                                    var newTempo = Math.round(theTempo * tempoValue);
+                                    const newTempo = Math.round(theTempo * tempoValue);
                                     if (newTempo > 10 && newTempo != oldTempo) {
                                         state.data.addEvent(new SetTempoEvent(newTempo, state.sectionTime + beat));
                                         //                                    logit("Setting tempo to " + newTempo + " value: " + tempoValue + " slot: " + slot);
@@ -287,8 +289,8 @@ class Section extends AbstractSection {
                             }
                         }
                         else {
-                            var tempoValue = tempoCh.readDouble(0);
-                            var newTempo = Math.round(theTempo * tempoValue);
+                            const tempoValue = tempoCh.readDouble(0);
+                            const newTempo = Math.round(theTempo * tempoValue);
                             state.data.addEvent(new SetTempoEvent(newTempo, state.sectionTime));
                             //                        logit("Could not find slot data for channel " + this.tempoChannel);
                         }
@@ -302,7 +304,7 @@ class Section extends AbstractSection {
             const beatLength = state.constantHarmony.getBeatLength();
             for (let i = 0; i < state.module.controlChannels.length; i++) {
                 const ch = state.module.controlChannels[i];
-                var slotData = state.controlSlotDatas[ch.id];
+                let slotData = state.controlSlotDatas[ch.id];
                 if (!slotData) {
                     //                logit("Could not find any slot data for " + ch.id);
                     slotData = ch.createSlotData(beatLength);
@@ -310,18 +312,18 @@ class Section extends AbstractSection {
                 }
             }
             for (const ctrlCh in state.controlSlotDatas) {
-                var slotData = state.controlSlotDatas[ctrlCh];
+                const slotData = state.controlSlotDatas[ctrlCh];
                 const channel = state.module.getControlChannel(ctrlCh);
                 const ctrlEvents = channel.getControlEvents(slotData, state.sectionTime);
                 //            logit("Got " + ctrlEvents.length + " control events from " + ctrlCh);
                 addAll(state.data.addEvents(ctrlEvents));
             }
             for (let i = 0; i < this.modifiers.length; i++) {
-                var sm = this.modifiers[i];
+                const sm = this.modifiers[i];
                 sm.beforeSectionFinalized(state.section, state);
             }
             for (let i = 0; i < this.modifiers.length; i++) {
-                var sm = this.modifiers[i];
+                const sm = this.modifiers[i];
                 sm.sectionRendered(state.section, state);
             }
             // Step forward the section time

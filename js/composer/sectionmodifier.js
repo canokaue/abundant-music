@@ -140,14 +140,14 @@ class SetVariableValueSectionModifier extends SectionModifier {
     modifySection(section, state) {
         try {
             this.hasBeenSet = false;
-            var temp = null;
+            let temp = null;
             if (this.valueExpression) {
                 temp = getExpressionValue(this.valueExpression, state.module);
             }
             else {
                 temp = this.value;
             }
-            if (!(typeof (temp) === 'undefined') && temp != null) {
+            if (typeof (temp) !== 'undefined' && temp != null) {
                 const theVariable = state.module.getVariable(this.variable);
                 if (theVariable) {
                     if (typeof (theVariable[this.variableProperty]) === 'undefined') {
@@ -166,8 +166,7 @@ class SetVariableValueSectionModifier extends SectionModifier {
         catch (ex) {
             logit("" + ex);
             logit(this._constructorName + " Error in modifySection " + this.valueExpression);
-            var temp = getExpressionValue(this.valueExpression, state.module);
-            //        logit(this._constructorName + " temp " + temp);
+            getExpressionValue(this.valueExpression, state.module);
         }
         return section;
     }
