@@ -1843,9 +1843,6 @@ function createMelodyShapeInfos(genData, genInfo, sectionInfos) {
     for (let i=0; i<melodyShapeCount; i++) {
         const melodyRndInfos = copyValueDeep(rndInfos);
 
-        const startLevels = getLevels(i, genInfo.melodyStartLevels, [-2, -1, 0, 1, 2]);
-        const endLevels = getLevels(i, genInfo.melodyEndLevels, [-2, -1, 0, 1, 2]);
-
         let ampRange = [6, 12];
         let biasRange = [68, 76];
         if (genInfo.melodyShapeAmpRanges.length > 0) {
@@ -1928,12 +1925,6 @@ function createChannelInstruments(genData, genInfo, sectionInfos) {
         instrRnd);
 
     switch (instrType) {
-        case SimpleModuleGeneratorInstrumentSetType.ACOUSTIC:
-            melodyInstrumentInfos = acousticMelodyInstrInfos;
-            inner1InstrumentInfos = acousticInnerFastInstrInfos;
-            inner2InstrumentInfos = acousticInnerSlowInstrInfos;
-            bassInstrumentInfos = acousticBassInstrInfos;
-            break;
         case SimpleModuleGeneratorInstrumentSetType.ELECTRIC:
             melodyInstrumentInfos = electricMelodyInstrInfos;
             inner1InstrumentInfos = electricInnerFastInstrInfos;
@@ -2000,8 +1991,6 @@ function createMotifDistributionInfos(genData, genInfo, sectionInfos) {
     const innerHarmPuncRnd = createOrGetRandom(genInfo, "innerHarmonyPunctationSeed");
 
     const motifDistributionCount = genInfo.motifDistributionCount;
-
-    const melodyIntensities = genInfo.songStructureInfo.melodyMotifDistributionRythmIntensities;
 
     const melodyMotifCount = 4;
 
@@ -2616,8 +2605,6 @@ const PhraseGroupEffectType = {
         const infos = getValueOrDefault(options, "infos", []);
         const indices = getValueOrDefault(options, "indices", []);
         const id = getValueOrDefault(options, "id", "theId");
-        const constraints1 = getValueOrDefault(options, "constraints1", []);
-        const constraints2 = getValueOrDefault(options, "constraints2", []);
 
         let xValues1 = [0, 1];
         let yValues1 = [1, 1];
@@ -2797,7 +2784,7 @@ function createEffectChangeInfos(genData, genInfo, sectionInfos) {
     ];
 
     for (let i=0; i<instrumentEffectCapabilitiesArr.length; i++) {
-        var arr = instrumentEffectCapabilitiesArr[i];
+        const arr = instrumentEffectCapabilitiesArr[i];
         const caps = arr[1];
         const probs = arr[2];
         for (let j=0; j<caps.length; j++) {
@@ -2820,12 +2807,12 @@ function createEffectChangeInfos(genData, genInfo, sectionInfos) {
 
     const instrumentEffectCapabilities = {};
     for (let i=0; i<instrumentEffectCapabilitiesArr.length; i++) {
-        var arr = instrumentEffectCapabilitiesArr[i];
+        const arr = instrumentEffectCapabilitiesArr[i];
         instrumentEffectCapabilities[arr[0]] = arr[1];
     }
     const instrumentEffectProbs = {};
     for (let i=0; i<instrumentEffectCapabilitiesArr.length; i++) {
-        var arr = instrumentEffectCapabilitiesArr[i];
+        const arr = instrumentEffectCapabilitiesArr[i];
         instrumentEffectProbs[arr[0]] = arr[2];
     }
 
@@ -2862,9 +2849,6 @@ function createEffectChangeInfos(genData, genInfo, sectionInfos) {
                         minValue = 55 / 127.0;
                         break;
                     case "inner1":
-                        maxValue = 65 / 127.0;
-                        minValue = 30 / 127.0;
-                        break;
                     case "inner2":
                         maxValue = 65 / 127.0;
                         minValue = 30 / 127.0;
