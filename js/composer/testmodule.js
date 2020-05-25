@@ -2967,15 +2967,15 @@ function createEffectChangeInfos(genData, genInfo, sectionInfos) {
             const infoCount = 3;
 
             switch (effect) {
-                case "Pan":
-                    var capIndex = caps.indexOf(InstrumentCapabilityProperty.PAN_CHANGE);
+                case "Pan": {
+                    const capIndex = caps.indexOf(InstrumentCapabilityProperty.PAN_CHANGE);
                     if (capIndex >= 0) {
                         const slidePan = rnd.random() < probs[capIndex];
                         if (slidePan) {
 //                            logit("pan change " + prefix + " i: " + i);
                             for (let j=0; j<infoCount; j++) {
-                                var xyValues = sampleData(xyValuesRndInfos, rnd);
-                                var lengthLengthUnit = sampleData(lengthLengthUnitRndInfos, rnd);
+                                const xyValues = sampleData(xyValuesRndInfos, rnd);
+                                const lengthLengthUnit = sampleData(lengthLengthUnitRndInfos, rnd);
                                 arr.push(getEffectInfo(
                                     {
                                         id: prefix + effect + "SequentialEffectAdd" + i,
@@ -2990,14 +2990,15 @@ function createEffectChangeInfos(genData, genInfo, sectionInfos) {
                     }
 
                     break;
-                case "FilterF":
-                    var capIndex = caps.indexOf(InstrumentCapabilityProperty.FILTER_FREQ_CHANGE);
+                }
+                case "FilterF": {
+                    const capIndex = caps.indexOf(InstrumentCapabilityProperty.FILTER_FREQ_CHANGE);
                     if (capIndex >= 0) {
                         const slideF = rnd.random() < probs[capIndex];
                         if (slideF) {
                             for (let j=0; j<infoCount; j++) {
-                                var xyValues = sampleData(xyValuesRndInfos, rnd);
-                                var lengthLengthUnit = sampleData(lengthLengthUnitRndInfos, rnd);
+                                const xyValues = sampleData(xyValuesRndInfos, rnd);
+                                const lengthLengthUnit = sampleData(lengthLengthUnitRndInfos, rnd);
                                 arr.push(getEffectInfo(
                                     {
                                         id: prefix + effect + "SequentialEffectAdd" + i,
@@ -3011,13 +3012,14 @@ function createEffectChangeInfos(genData, genInfo, sectionInfos) {
                         }
                     }
                     break;
-                case "FilterQ":
-                    var capIndex = caps.indexOf(InstrumentCapabilityProperty.FILTER_BW_CHANGE);
+                }
+                case "FilterQ": {
+                    const capIndex = caps.indexOf(InstrumentCapabilityProperty.FILTER_BW_CHANGE);
                     if (capIndex >= 0) {
                         const slideQ = rnd.random() < probs[capIndex];
                         for (let j=0; j<infoCount; j++) {
-                            var xyValues = sampleData(xyValuesRndInfos, rnd);
-                            var lengthLengthUnit = sampleData(lengthLengthUnitRndInfos, rnd);
+                            const xyValues = sampleData(xyValuesRndInfos, rnd);
+                            const lengthLengthUnit = sampleData(lengthLengthUnitRndInfos, rnd);
                             if (slideQ) {
                                 arr.push(getEffectInfo(
                                     {
@@ -3043,6 +3045,7 @@ function createEffectChangeInfos(genData, genInfo, sectionInfos) {
                         }
                     }
                     break;
+                }
             }
         }
 
@@ -4389,19 +4392,6 @@ function createPhraseGroupInfo(rnd, genInfo, module) {
                         });
                     }
 
-//                    if (pInfo.overridePhraseGroupType) {
-//                        modArr.push(function(mods) {
-//                            var indexInfo = findMod("indexInfoVar", mods);
-//                            var index = indexInfo.phraseGroupIndex;
-//
-//                            var phraseTypes = [];
-//                            getPhraseTypesFromGroupType(pInfo.phraseGroupType, phraseTypes);
-//                            if (phraseTypes.length > 0) {
-//                                setMod("harmonyPhraseTypeVar", "" + phraseTypes[index % phraseTypes.length], mods);
-//                            }
-//                        });
-//                    }
-
                     if (pInfo.overrideScaleBaseNote) {
                         modArr.push(function(mods) {
                             setMod("harmonyScaleBaseVar", "" + pInfo.scaleBaseNote, mods);
@@ -4548,16 +4538,16 @@ function createPhraseGroupInfo(rnd, genInfo, module) {
     const phraseGroupSimilarityRnd = createOrGetRandom(genInfo, "phraseGroupSimilaritySeed");
 
     for (let i=0; i<groupPattern.length; i++) {
-        var index = groupPattern[i];
-        var groupType = groupTypeMap[index];
+        const index = groupPattern[i];
+        let groupType = groupTypeMap[index];
 
         var modifiers = modifierFunctions[i];
 
         const harmonyIndices = groupHarmonyElementIndices[i];
 
-        var sptoInfo = null;
+        let sptoInfo = null;
         for (let j=0; j<genInfo.songPartTypeOverrideInfos.length; j++) {
-            var sptoTemp = genInfo.songPartTypeOverrideInfos[j];
+            const sptoTemp = genInfo.songPartTypeOverrideInfos[j];
             if (sptoTemp.partType == index) {
                 sptoInfo = sptoTemp;
                 break;
@@ -4570,11 +4560,9 @@ function createPhraseGroupInfo(rnd, genInfo, module) {
             if (!customPhraseTypes) {
                 logit("Failed to clone custom phrase types " + sptoInfo.customPhraseTypes.join(", "));
             }
-//            logit("Using custom phrase types " + JSON.stringify(sptoInfo.customPhraseTypes) + " at " + i);
         }
 
-//        var groupModulate = groupModulates[i];
-        var groupModulationTarget = groupModulationTargets[i];
+        const groupModulationTarget = groupModulationTargets[i];
         const groupScaleType = groupScaleTypes[i];
         const groupScaleBase = groupScaleBases[i];
 
@@ -4594,7 +4582,6 @@ function createPhraseGroupInfo(rnd, genInfo, module) {
             }
         }
 
-//        var scaleType = groupScaleTypeMap[index];
         let withinGroupSames = withinGroupSameInfosMap[index];
 
         let indicesForGroupType = groupIndices[index];
@@ -4604,7 +4591,7 @@ function createPhraseGroupInfo(rnd, genInfo, module) {
         }
 
         if (typeof(withinGroupSames) === 'undefined' || typeof(groupType) === 'undefined') {
-            var sameCount = Math.floor(groupPropertyRndInfos.length *
+            const sameCount = Math.floor(groupPropertyRndInfos.length *
                 (genInfo.withinPhraseGroupSimilarBias + phraseGroupSimilarityRnd.random() * genInfo.withinPhraseGroupSimilarRandomFraction));
             const withinTempRndInfos = copyValueDeep(groupPropertyRndInfos);
 
@@ -4696,13 +4683,13 @@ function createPhraseGroupInfo(rnd, genInfo, module) {
         function addGlueGroup(scaleType, scaleBase, majorModTarget, minorModTarget, withinGroupSames, renderAmountBias, renderAmountMult, isPrefix, isPostfix) {
             const glueGroupType = sampleData(glueGroupTypes, glueRnd);
 
-            var glueHarmonyCount =
+            let glueHarmonyCount =
                 glueGroupType == SimpleModuleGeneratorPhraseGroupType.SINGLE_TONIC_PROLONG ?
                     2 + Math.floor(glueRnd.random() * 4) :
                     4 + Math.floor(glueRnd.random() * 3);
 
             const isProlong = glueGroupType == SimpleModuleGeneratorPhraseGroupType.SINGLE_TONIC_PROLONG;
-            var glueHarmonyCount = sampleData([
+            glueHarmonyCount = sampleData([
                 {data: 1, likelihood: isProlong ? 1    : 0},
                 {data: 2, likelihood: isProlong ? 1    : 0},
                 {data: 3, likelihood: isProlong ? 1    : 0},
@@ -4747,7 +4734,6 @@ function createPhraseGroupInfo(rnd, genInfo, module) {
 
 
             const glueRenderAmount = renderAmountBias + renderAmountMult * glueRnd.random();
-            const glueMelodyOn = false; // rnd.random() < 0.2;
             addActualGroup(glueRenderAmount, glueRnd.genrand_int31(), scaleType, glueGroupType, scaleBase, majorModTarget, minorModTarget, withinGroupSames,
                 [function(mods) {
                     setMod("harmonyNoteCountVar", "" + glueHarmonyCount, mods);
@@ -4771,14 +4757,9 @@ function createPhraseGroupInfo(rnd, genInfo, module) {
 
         const hasPrefixGlue = glueRnd.random() < prefixGroupProbs[i];
         if (hasPrefixGlue) {
-            var biasMult = prefixGroupRenderAmountBiasMults[i];
+            const biasMult = prefixGroupRenderAmountBiasMults[i];
             addGlueGroup(groupScaleType, groupScaleBase, -1, -1, withinGroupSames, biasMult[0], biasMult[1], true, false);
         }
-
-//        var modifiers = [];
-
-//        logit("Adding acutal group with modifers ");
-//        logit(modifiers);
 
         if (groupType == SimpleModuleGeneratorPhraseGroupType.CUSTOM) {
             if (customPhraseTypes) {
@@ -4818,7 +4799,7 @@ function createPhraseGroupInfo(rnd, genInfo, module) {
                 postfixScaleType = groupScaleTypes[i+1];
                 postfixScaleBase = groupScaleBases[i+1];
             }
-            var biasMult = postfixGroupRenderAmountBiasMults[i];
+            const biasMult = postfixGroupRenderAmountBiasMults[i];
             addGlueGroup(postfixScaleType, postfixScaleBase, -1, -1, withinGroupSames, biasMult[0], biasMult[1], false, true);
         }
 
@@ -4834,14 +4815,9 @@ function createPhraseGroupInfo(rnd, genInfo, module) {
         }
     }
 
-//    logit("harmony element indices: " + JSON.stringify(harmonyElementIndices));
-
     // Create differences and sames between groups
     // Groups with the same group type index are supposed to be very similar while groups with different group type indices should
     // be different instead.
-
-//    logit("groupIndices: " + JSON.stringify(groupIndices));
-
 
 
     // Sample what should be the same for groups with the same group type index
@@ -4852,15 +4828,15 @@ function createPhraseGroupInfo(rnd, genInfo, module) {
 
     const groupSameInfos = [];
     for (let groupTypeIndex in groupTypeMap) {
-        var groupType = groupTypeMap[groupTypeIndex];
+        const groupType = groupTypeMap[groupTypeIndex];
         groupTypeIndex = parseInt(groupTypeIndex);
         const sameGroupTypeIndices = groupIndices[groupTypeIndex];
         if (sameGroupTypeIndices.length > 1) {
-            var rndInfosCopy = copyValueDeep(groupPropertyRndInfos);
-            var sameCount = Math.floor(groupPropertyRndInfos.length * (genInfo.samePhraseGroupIndexSimilarBias +
+            const rndInfosCopy = copyValueDeep(groupPropertyRndInfos);
+            const sameCount = Math.floor(groupPropertyRndInfos.length * (genInfo.samePhraseGroupIndexSimilarBias +
                 genInfo.samePhraseGroupIndexSimilarRandomFraction * groupSimilarityRnd.random()));
             const sames = sampleNDataWithoutReplacement(rndInfosCopy, sameCount, groupSimilarityRnd, true);
-            var info = {
+            const info = {
                 groupIndices: sameGroupTypeIndices,
                 properties: sames
             };
@@ -4895,14 +4871,14 @@ function createPhraseGroupInfo(rnd, genInfo, module) {
                 const sameGroupTypeIndices2 = groupIndices[groupTypeIndex2];
 
                 // For each pair of the actual indices, add a
-                var rndInfosCopy = copyValueDeep(groupPropertyRndInfos);
+                const rndInfosCopy = copyValueDeep(groupPropertyRndInfos);
                 const diffCount = Math.floor(groupPropertyRndInfos.length * (genInfo.differentPhraseGroupIndexDifferentBias +
                     genInfo.differentPhraseGroupIndexDifferentRandomFraction * groupDifferenceRnd.random()));
                 const diffs = sampleNDataWithoutReplacement(rndInfosCopy, diffCount, groupDifferenceRnd, true);
 
                 for (let i=0; i<sameGroupTypeIndices1.length; i++) {
                     for (let j=0; j<sameGroupTypeIndices2.length; j++) {
-                        var info = {
+                        const info = {
                             groupIndices: [sameGroupTypeIndices1[i], sameGroupTypeIndices2[j]],
                             properties: diffs
                         };
