@@ -14,8 +14,8 @@ class ControlLine {
         const lines = this.getPrimitiveControlLines(state.module, state.constantHarmony);
         const allElements = [];
         const allChannels = [];
-        for (let j = 0; j < lines.length; j++) {
-            const controlLine = lines[j];
+
+        for (const controlLine of lines) {
             const controlChannel = state.module.getControlChannel(controlLine.channel);
             if (!controlChannel) {
                 logit(" could not find control channel " + controlLine.channel);
@@ -27,6 +27,7 @@ class ControlLine {
             }
             addAll(allElements, elements);
         }
+
         const beatLength = state.constantHarmony.getBeatLength();
         for (let i = 0; i < allElements.length; i++) {
             const e = allElements[i];
@@ -50,10 +51,11 @@ class PrimitiveControlLine extends ControlLine{
     }
     getPrimitiveControlElements(module, harmony) {
         const result = [];
-        for (let i = 0; i < this.controlElements.length; i++) {
-            const e = this.controlElements[i];
+
+        for (const e of this.controlElements) {
             addAll(result, e.getPrimitiveControlElements(module, harmony));
         }
+
         return result;
     }
     addControlElement(e) {
@@ -113,22 +115,24 @@ class MultiStepControlElement extends PositionedControlElement {
         const that = this;
         function getLength(testIndices, beatOffset, elements) {
             let result = 0;
-            for (let i = 0; i < testIndices.length; i++) {
-                const index = testIndices[i];
+
+            for (const index of testIndices) {
                 if (index < elements.length) {
                     const element = elements[index];
                     const primitiveElements = element.getPrimitiveControlElements(module, harmony);
                     let maxEndBeat = 0;
-                    for (let j = 0; j < primitiveElements.length; j++) {
-                        const pElement = primitiveElements[j];
+
+                    for (const pElement of primitiveElements) {
                         const endBeat = positionUnitToBeats2(pElement.endTime, pElement.endTimeUnit, result, harmony);
                         //                    logit("   endBeat in getLength(): " + endBeat + " pElement.endTime: " + pElement.endTime + " pElement.endTimeUnit: " + pElement.endTimeUnit);
                         //                    logit("    " + JSON.stringify(pElement));
                         maxEndBeat = Math.max(maxEndBeat, endBeat);
                     }
+
                     result += maxEndBeat;
                 }
             }
+
             return result;
         }
         function appendWithIndex(index, beatOffset, elements) {
@@ -141,8 +145,8 @@ class MultiStepControlElement extends PositionedControlElement {
                 element = copyObjectDeep(element);
                 const primitiveElements = element.getPrimitiveControlElements(module, harmony);
                 let maxEndBeat = 0;
-                for (let i = 0; i < primitiveElements.length; i++) {
-                    const pElement = primitiveElements[i];
+
+                for (const pElement of primitiveElements) {
                     // Shift the position
                     const startBeat = positionUnitToBeats2(pElement.startTime, pElement.startTimeUnit, 0, harmony);
                     const endBeat = positionUnitToBeats2(pElement.endTime, pElement.endTimeUnit, 0, harmony);
@@ -153,6 +157,7 @@ class MultiStepControlElement extends PositionedControlElement {
                     result.push(pElement);
                     maxEndBeat = Math.max(maxEndBeat, endBeat);
                 }
+
                 return Math.max(1, maxEndBeat);
             }
             return beatStep;
@@ -233,8 +238,8 @@ class MultiParallelControlElement extends PositionedControlElement {
                 let element = elements[index];
                 element = copyObjectDeep(element);
                 const primitiveElements = element.getPrimitiveControlElements(module, harmony);
-                for (let i = 0; i < primitiveElements.length; i++) {
-                    const pElement = primitiveElements[i];
+
+                for (const pElement of primitiveElements) {
                     // Shift the position
                     const startBeat = positionUnitToBeats2(pElement.startTime, pElement.startTimeUnit, 0, harmony);
                     const endBeat = positionUnitToBeats2(pElement.endTime, pElement.endTimeUnit, 0, harmony);

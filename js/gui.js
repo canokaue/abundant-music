@@ -89,18 +89,19 @@ class VerticalLayoutManager extends LayoutManager {
                 break;
             case "even":
                 let sum = 0;
-                for (let i = 0; i < components.length; i++) {
-                    let c = components[i];
+
+                for (let c of components) {
                     sum += c.height;
                 }
+
                 const space = Math.max(0, contentHeight - sum);
                 if (components.length > 1) {
                     step = space / (components.length - 1);
                 }
                 break;
         }
-        for (let i = 0; i < components.length; i++) {
-            let c = components[i];
+
+        for (let c of components) {
             c.y = currentY;
             currentY += c.height + step;
             if (!keepX) {
@@ -132,12 +133,14 @@ class HorizontalLayoutManager extends LayoutManager {
             case "none":
                 break;
             case "even":
-            case "even2": // also adds space at start and end
+            case // also adds space at start and end
+            "even2":
                 let sum = 0;
-                for (let i = 0; i < components.length; i++) {
-                    let c = components[i];
+
+                for (let c of components) {
                     sum += c.width;
                 }
+
                 const space = Math.max(0, contentWidth - sum);
                 if (distribution == "even") {
                     if (components.length > 1) {
@@ -150,8 +153,8 @@ class HorizontalLayoutManager extends LayoutManager {
                 }
                 break;
         }
-        for (let i = 0; i < components.length; i++) {
-            let c = components[i];
+
+        for (let c of components) {
             if (stepBefore) {
                 currentX += step;
             }
@@ -179,8 +182,8 @@ class CardLayoutManager extends LayoutManager {
         const rect = this.component.getContentRect();
         const contentWidth = rect[2];
         const contentHeight = rect[3];
-        for (let i = 0; i < this.component.components.length; i++) {
-            const c = this.component.components[i];
+
+        for (const c of this.component.components) {
             c.x = calculateAlignment(0, contentWidth, c.width, c.alignmentX);
             c.y = calculateAlignment(0, contentHeight, c.height, c.alignmentY);
         }
@@ -215,8 +218,7 @@ class GuiComponent {
             this.layoutManager.layout();
         }
         if (layoutChildren) {
-            for (let i = 0; i < this.components.length; i++) {
-                const c = this.components[i];
+            for (const c of this.components) {
                 c.layout(layoutChildren);
             }
         }
@@ -228,10 +230,10 @@ class GuiComponent {
         if (!offsetY) {
             offsetY = 0;
         }
+
         //    context.fillStyle = "#ff0000";
         //    context.fillRect(this.x + offsetX, this.y + offsetY, this.width, this.height);
-        for (let i = 0; i < this.components.length; i++) {
-            const c = this.components[i];
+        for (const c of this.components) {
             const ox = this.x + offsetX;
             const oy = this.y + offsetY;
             c.paint(ox, oy, context);
@@ -244,8 +246,8 @@ class GuiComponent {
         if (!offsetY) {
             offsetY = 0;
         }
-        for (let i = 0; i < this.components.length; i++) {
-            const c = this.components[i];
+
+        for (const c of this.components) {
             const ox = this.x + offsetX;
             const oy = this.y + offsetY;
             c.step(ox, oy);
@@ -369,8 +371,8 @@ class Button extends GuiComponent {
     }
     setToggled() {
         this.toggled = true;
-        for (let i = 0; i < this.buttonGroup.length; i++) {
-            const b = this.buttonGroup[i];
+
+        for (const b of this.buttonGroup) {
             if (b != this) {
                 b.toggled = false;
             }
@@ -392,8 +394,8 @@ class Button extends GuiComponent {
                     this.setToggled();
                 }
             }
-            for (let i = 0; i < this.clickHandlers.length; i++) {
-                let h = this.clickHandlers[i];
+
+            for (let h of this.clickHandlers) {
                 h(this);
             }
         }
@@ -406,14 +408,13 @@ class Button extends GuiComponent {
         this.over = rectContains(rect, [Input.mouseX, Input.mouseY]);
         if (!overBefore && this.over) {
             Sound.play(Sound.MOUSE_OVER_ID);
-            for (let i = 0; i < this.enterHandlers.length; i++) {
-                let h = this.enterHandlers[i];
+
+            for (let h of this.enterHandlers) {
                 h(this);
             }
         }
         if (overBefore && !this.over) {
-            for (let i = 0; i < this.leaveHandlers.length; i++) {
-                let h = this.leaveHandlers[i];
+            for (let h of this.leaveHandlers) {
                 h(this);
             }
         }

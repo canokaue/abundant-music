@@ -53,12 +53,13 @@ class IndexedVoiceLinePlannerConstraintZone extends AbstractVoiceLinePlannerCons
         const constraintCount = this.constraints.length;
         if (constraintCount > 0) {
             const harmonyCount = harmony.getCount();
-            for (let i = 0; i < this.globalIndices.length; i++) {
-                const cIndex = this.globalIndices[i];
+
+            for (const cIndex of this.globalIndices) {
                 for (let j = 0; j < harmonyCount; j++) {
                     this.checkAndAddConstraint(cIndex, resultConstraints, j);
                 }
             }
+
             if (this.indexPattern.length > 0) {
                 for (let i = 0; i < harmonyCount; i++) {
                     const cIndex = getItemFromArrayWithStartEndItems(0, this.indexPattern, harmonyCount, i, this.startIndexPattern, this.endIndexPattern);
@@ -177,8 +178,8 @@ class MinVoiceLinePlannerConstraint extends VoiceLinePlannerConstraint{
     }
     getCheckCostSteps() {
         const result = [];
-        for (let i = 0; i < this.constraints.length; i++) {
-            const c = this.constraints[i];
+
+        for (const c of this.constraints) {
             const steps = c.getCheckCostSteps();
             for (let j = 0; j < steps.length; j++) {
                 if (!arrayContains(result, steps[j])) {
@@ -186,6 +187,7 @@ class MinVoiceLinePlannerConstraint extends VoiceLinePlannerConstraint{
                 }
             }
         }
+
         return result;
     }
     zeroStepCost(harmonyIndex, stateIndex, planner) {
@@ -193,10 +195,11 @@ class MinVoiceLinePlannerConstraint extends VoiceLinePlannerConstraint{
             return 0;
         }
         let result = 99999999;
-        for (let i = 0; i < this.constraints.length; i++) {
-            const c = this.constraints[i];
+
+        for (const c of this.constraints) {
             result = Math.min(result, c.zeroStepCost(harmonyIndex, stateIndex, planner));
         }
+
         return result;
     }
     oneStepCost(harmonyIndex, prevStateIndex, stateIndex, planner) {
@@ -204,10 +207,11 @@ class MinVoiceLinePlannerConstraint extends VoiceLinePlannerConstraint{
             return 0;
         }
         let result = 99999999;
-        for (let i = 0; i < this.constraints.length; i++) {
-            const c = this.constraints[i];
+
+        for (const c of this.constraints) {
             result = Math.min(result, c.oneStepCost(harmonyIndex, prevStateIndex, stateIndex, planner));
         }
+
         return result;
     }
     twoStepCost(harmonyIndex, prevPrevStateIndex, prevStateIndex, stateIndex, planner) {
@@ -215,10 +219,11 @@ class MinVoiceLinePlannerConstraint extends VoiceLinePlannerConstraint{
             return 0;
         }
         let result = 99999999;
-        for (let i = 0; i < this.constraints.length; i++) {
-            const c = this.constraints[i];
+
+        for (const c of this.constraints) {
             result = Math.min(result, c.twoStepCost(harmonyIndex, prevPrevStateIndex, prevStateIndex, stateIndex, planner));
         }
+
         return result;
     }
 }
@@ -382,14 +387,15 @@ class LeapRangeVoiceLinePlannerConstraint extends VoiceLinePlannerConstraint{
             }
             return count;
         }
-        for (let i = 0; i < this.voiceIndices.length; i++) {
-            const voiceIndex = this.voiceIndices[i];
+
+        for (const voiceIndex of this.voiceIndices) {
             if (voiceIndex < absNotes.length) {
                 const fromAbs = prevAbsNotes[voiceIndex];
                 const toAbs = absNotes[voiceIndex];
                 stepCost += getCostCount(this.range, fromAbs, toAbs) * this.penaltyFactor;
             }
         }
+
         return stepCost;
     }
 }

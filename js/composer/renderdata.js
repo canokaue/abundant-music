@@ -9,8 +9,8 @@ class RenderData {
         const renderChannelNames = [];
         const controlChannelIndices = {};
         const controlChannelNames = [];
-        for (let i = 0; i < this.events.length; i++) {
-            const e = this.events[i];
+
+        for (const e of this.events) {
             if (e.renderChannel) {
                 const index = renderChannelIndices[e.renderChannel.id];
                 if (typeof (index) === 'undefined') {
@@ -26,6 +26,7 @@ class RenderData {
                 }
             }
         }
+
         resultArr.push("\"renderChannelNames\": " + JSON.stringify(renderChannelNames) + ",");
         resultArr.push("\"controlChannelNames\": " + JSON.stringify(controlChannelNames) + ",");
         resultArr.push("\"events\": [");
@@ -61,19 +62,20 @@ class RenderData {
     getTimeLimits() {
         let minTime = this.events.length == 0 ? 0 : 99999999;
         let maxTime = this.events.length == 0 ? 0 : -99999999;
-        for (let i = 0; i < this.events.length; i++) {
-            const e = this.events[i];
+
+        for (const e of this.events) {
             const t = e.getTime();
             minTime = Math.min(minTime, t);
             maxTime = Math.max(maxTime, t);
         }
+
         return [minTime, maxTime];
     }
     splitOnTime(time) {
         const before = new RenderData();
         const after = new RenderData();
-        for (let i = 0; i < this.events.length; i++) {
-            const e = this.events[i];
+
+        for (const e of this.events) {
             if (e.getTime() >= time) {
                 after.events.push(e);
             }
@@ -81,6 +83,7 @@ class RenderData {
                 before.events.push(e);
             }
         }
+
         const result = [before, after];
         return result;
     }

@@ -27,8 +27,8 @@ class MidiSynth {
         let tempMicrosPerQuarter = currentMicrosPerQuarter; // Use a temp for calculating song length
         let tempTick = 0;
         let tempSeconds = 0;
-        for (let i = 0; i < events.length; i++) {
-            const e = events[i];
+
+        for (const e of events) {
             const eventMessage = e.eventMessage;
             if (eventMessage.messageClass == "SetTempoMessage") {
                 if (tempTick == 0) {
@@ -43,6 +43,7 @@ class MidiSynth {
             tempSeconds += seconds;
             tempTick += e.eventTime;
         }
+
         const maxTick = tempTick;
         // We now know the length of the song
         const endSeconds = 1;
@@ -115,9 +116,9 @@ class MidiSynth {
                                     // Find the oldest voice with the note
                                     let oldestVoice = null;
                                     let minTime = currentMidiTickSeconds + 100;
+
                                     //                                logit("Should remove note " + eventMessage.data1 + " on channel " + eventMessage.channel + " minTime " + minTime);
-                                    for (let j = 0; j < this.voices.length; j++) {
-                                        const v = this.voices[j];
+                                    for (const v of this.voices) {
                                         if (v.mode == MidiSynthVoiceMode.ON &&
                                             v.channel == eventMessage.channel &&
                                             v.note == eventMessage.data1) {
@@ -127,6 +128,7 @@ class MidiSynth {
                                             }
                                         }
                                     }
+
                                     if (oldestVoice) {
                                         oldestVoice.noteOff();
                                     }
@@ -159,9 +161,9 @@ class MidiSynth {
             }
             //        logit("Voice count " + this.voices.length);
             const newVoices = [];
+
             // Gather everything from the voices
-            for (let i = 0; i < this.voices.length; i++) {
-                const voice = this.voices[i];
+            for (const voice of this.voices) {
                 const voiceBufArr = channelBuffers[voice.channel];
                 if (!dirtyChannelBuffers[voice.channel]) {
                     // Writing for the first time this bufLength step
@@ -178,6 +180,7 @@ class MidiSynth {
                     //                logit("Removing voice ");
                 }
             }
+
             this.voices = newVoices;
             // Apply channel filters
             // Mixer

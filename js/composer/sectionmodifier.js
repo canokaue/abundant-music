@@ -44,8 +44,8 @@ class NoteVelocitiesSectionModifier extends SectionModifier {
         }
         const curveMultiplier = getValueOrExpressionValue(this, "curveMultiplier", state.module);
         const curveBias = getValueOrExpressionValue(this, "curveBias", state.module);
-        for (let i = 0; i < events.length; i++) {
-            const e = events[i];
+
+        for (const e of events) {
             if (e.time >= state.oldSectionTime && e instanceof NoteOnEvent) {
                 if (!this.channel || e.renderChannel.id == this.channel) {
                     let time = e.time;
@@ -79,8 +79,8 @@ class ConditionalSuspendSectionModifier extends SectionModifier {
             const prevVles = [];
             const pitchClasses = [];
             const prevPitchClasses = [];
-            for (let i = 0; i < voiceLines.length; i++) {
-                const vl = voiceLines[i];
+
+            for (const vl of voiceLines) {
                 const prevVle = vl.get(this.harmonyIndex);
                 const prevAbsNote = state.constantHarmony.get(this.harmonyIndex).getAbsoluteNoteConstantVoiceLineElement(prevVle);
                 const vle = vl.get(this.harmonyIndex + 1);
@@ -91,11 +91,11 @@ class ConditionalSuspendSectionModifier extends SectionModifier {
                 pitchClasses.push(absNote % 12);
                 prevPitchClasses.push(prevAbsNote % 12);
             }
+
             //        logit("prevAbsnotes: " + JSON.stringify(prevAbsNotes) + " absNotes: " + JSON.stringify(absNotes));
             //        logit("prevPitches: " + JSON.stringify(prevPitchClasses) + " pitches: " + JSON.stringify(pitchClasses));
             //        logit("suspendPairs: " + JSON.stringify(this.suspendPitchClassPairs));
-            for (let j = 0; j < this.suspendPitchClassPairs.length; j++) {
-                const pair = this.suspendPitchClassPairs[j];
+            for (const pair of this.suspendPitchClassPairs) {
                 for (let i = 0; i < absNotes.length; i++) {
                     const prevAbs = prevAbsNotes[i];
                     const prevPc = prevAbs % 12;

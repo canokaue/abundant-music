@@ -315,10 +315,11 @@ class SplitZoneCollection {
         // The intensity determines what is over and under 0.5 in the function
         // Mean note length = 1 / beatIntensity
         let totalTicksLength = 0.0;
-        for (let i = 0; i < input.length; i++) {
-            const noteRythmElement = input[i];
+
+        for (const noteRythmElement of input) {
             totalTicksLength += positionUnitToBeats(noteRythmElement.length, noteRythmElement.lengthUnit, numerator, denominator);
         }
+
         const meanNoteLength = totalTicksLength / noteCount;
         // When the function is 1.0, the note length should be half the size of
         // the meanNoteLength,
@@ -363,8 +364,8 @@ class SplitZoneCollection {
         // Use the center tick
         beatPosition += 0.5 * positionUnitToBeats(input[bestSplitIndex].length, input[bestSplitIndex].lengthUnit, numerator, denominator);
         const applicable = [];
-        for (let i = 0; i < this.zones.length; i++) {
-            const z = this.zones[i];
+
+        for (const z of this.zones) {
             let applications = applicationMap.get(z);
             if (typeof (applications) === 'undefined') {
                 applications = 0;
@@ -378,6 +379,7 @@ class SplitZoneCollection {
                 applicable.push(z);
             }
         }
+
         if (applicable.length == 0) {
             // Use default strategy
             result = this.split(this.defaultSplitStrategy, this.defaultDottedSplitStrategy, this.defaultTripletSplitStrategy, minLengthTicks, bestSplitIndex, input, this.defaultVelocityMultipliers, this.defaultDottedVelocityMultipliers, this.defaultTripletVelocityMultipliers, numerator, denominator);

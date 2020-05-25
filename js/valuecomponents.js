@@ -105,14 +105,15 @@ class BooleanSelectComponent extends GuiPropertySelectComponent{
     getValuesAndNames() {
         const result = [];
         const values = [true, false];
-        for (let i = 0; i < values.length; i++) {
-            const value = values[i];
+
+        for (const value of values) {
             let displayValue = value;
             if (this.propertyInfo.displayFunction) {
                 displayValue = this.propertyInfo.displayFunction.call(this, this.object, this.propertyInfo.propertyName, value);
             }
             result.push([value, displayValue]);
         }
+
         return result;
     }
 }
@@ -210,8 +211,8 @@ class IntegerList2DTextComponent extends GuiPropertyTextComponent{
         textValue = $.trim(textValue);
         const intArrs = [];
         const arrayTexts = textValue.split(",");
-        for (let j = 0; j < arrayTexts.length; j++) {
-            const arrayText = arrayTexts[j];
+
+        for (const arrayText of arrayTexts) {
             const textArray = arrayText.split(" ");
             const intArr = [];
             for (let i = 0; i < textArray.length; i++) {
@@ -236,6 +237,7 @@ class IntegerList2DTextComponent extends GuiPropertyTextComponent{
                 intArrs.push(intArr);
             }
         }
+
         this.setError(error, errorMessage);
         if (!error) {
             this.setValueVerify(intArrs);
@@ -327,8 +329,8 @@ class FloatList2DTextComponent extends GuiPropertyTextComponent {
         const floatArrs = [];
         if (textValue != "") {
             const arrayTexts = textValue.split(",");
-            for (let j = 0; j < arrayTexts.length; j++) {
-                const arrayText = arrayTexts[j];
+
+            for (const arrayText of arrayTexts) {
                 const textArray = arrayText.split(" ");
                 const floatArr = [];
                 for (let i = 0; i < textArray.length; i++) {
@@ -350,6 +352,7 @@ class FloatList2DTextComponent extends GuiPropertyTextComponent {
                 }
                 floatArrs.push(floatArr);
             }
+
             this.setError(error, errorMessage);
         }
         if (!error) {
@@ -577,8 +580,7 @@ class GuiObjectComponent extends GuiPropertyComponent {
         let instanceText = null;
         const constructorInfos = propInfo.objectInfo.constructorInfos;
         if (constructorInfos.length > 1) {
-            for (let i = 0; i < constructorInfos.length; i++) {
-                const ci = constructorInfos[i];
+            for (const ci of constructorInfos) {
                 if (ci.nameIsConstructor && ci.name == value._constructorName) {
                     instanceText = ci.text;
                     break;

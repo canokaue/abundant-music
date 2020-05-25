@@ -55,8 +55,7 @@ class GuiObjectListComponent extends GuiAbstractListComponent {
                 let instanceText = null;
                 const constructorInfos = propInfo.listInfo.constructorInfos;
                 if (constructorInfos.length > 1) {
-                    for (let i = 0; i < constructorInfos.length; i++) {
-                        const ci = constructorInfos[i];
+                    for (const ci of constructorInfos) {
                         if (ci.nameIsConstructor && ci.name == valueItem._constructorName) {
                             instanceText = ci.text;
                             break;
@@ -73,8 +72,8 @@ class GuiObjectListComponent extends GuiAbstractListComponent {
                 newComponent.changeListeners.push((c, oldValue, newValue) => {
                     that.callChangeListeners();
                     const items = that.getSelectedItems();
-                    for (let i = 0; i < items.length; i++) {
-                        const item = items[i];
+
+                    for (const item of items) {
                         const valueItem = $(item).data("value");
                         const rArr = [];
                         that.getListItemContentHtml(valueItem, rArr);

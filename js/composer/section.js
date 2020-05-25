@@ -34,26 +34,27 @@ class AbstractSection {
     }
     renderBatch(state) {
         const sections = this.getConcreteSections(state);
-        for (let i = 0; i < sections.length; i++) {
-            let concreteSection = sections[i];
+
+        for (let concreteSection of sections) {
             if (!(concreteSection instanceof Section)) {
                 logit("Failed to concretize section... " + concreteSection._constructorName + " <br />");
                 continue;
             }
-            for (let j = 0; j < this.modifiers.length; j++) {
-                const sm = this.modifiers[j];
+
+            for (const sm of this.modifiers) {
                 concreteSection = sm.modifySection(concreteSection, state);
             }
+
             state.oldSectionTime = state.sectionTime;
             if (concreteSection.active) {
                 concreteSection.renderBatch(state);
             }
-            for (let j = 0; j < this.modifiers.length; j++) {
-                const sm = this.modifiers[j];
+
+            for (const sm of this.modifiers) {
                 sm.beforeSectionFinalized(concreteSection, state);
             }
-            for (let j = 0; j < this.modifiers.length; j++) {
-                const sm = this.modifiers[j];
+
+            for (const sm of this.modifiers) {
                 sm.sectionRendered(concreteSection, state);
             }
         }
@@ -124,21 +125,23 @@ class Section extends AbstractSection {
     }
     generateVoiceLineHarmonies(chr, voiceLines, module) {
         const result = {};
-        for (let j = 0; j < voiceLines.length; j++) {
-            const voiceLine = voiceLines[j];
+
+        for (const voiceLine of voiceLines) {
             let strategy = null;
-            for (let i = 0; i < this.suspAntStrategies.length; i++) {
-                const s = this.suspAntStrategies[i];
+
+            for (const s of this.suspAntStrategies) {
                 if (arrayContains(s.voiceLines, voiceLine.id)) {
                     strategy = s;
                     break;
                 }
             }
+
             if (strategy) {
                 result[voiceLine.id] = strategy.createVoiceLineHarmony(voiceLine, chr, module);
                 //            logit("voice line harmonies: " + valueToJson(result).join("") + "<br />");
             }
         }
+
         return result;
     }
     planVoices(chr, voiceLines, module) {
@@ -154,8 +157,7 @@ class Section extends AbstractSection {
             }
         }
         else {
-            for (let i = 0; i < voiceLines.length; i++) {
-                const line = voiceLines[i];
+            for (const line of voiceLines) {
                 if (line instanceof DoubledVoiceLine) {
                     // Doubled voice lines are dealt with when there are only ConstantVoiceLineElements (and undefined) left
                     continue;
@@ -163,9 +165,9 @@ class Section extends AbstractSection {
                 const lineElements = line.getSingleStepVoiceLineElements(chr, module);
                 const newLine = new ConstantVoiceLine();
                 newLine.id = line.id; // So we can find it later by using the same
+
                 // original name
-                for (let j = 0; j < lineElements.length; j++) {
-                    const e = lineElements[j];
+                for (const e of lineElements) {
                     if (e instanceof ConstantVoiceLineElement || e instanceof UndefinedVoiceLineElement) {
                         newLine.add(e);
                     }
@@ -173,12 +175,13 @@ class Section extends AbstractSection {
                         logit("Only supports Constant voice line elements when no voice line planner is selected");
                     }
                 }
+
                 result.push(newLine);
             }
         }
+
         // After all the planning is done, take care of the voice lines that are derived from other lines
-        for (let i = 0; i < voiceLines.length; i++) {
-            const line = voiceLines[i];
+        for (const line of voiceLines) {
             if (line instanceof DoubledVoiceLine) {
                 const doubled = line.doubleVoiceLine(result);
                 if (doubled) {
@@ -186,6 +189,7 @@ class Section extends AbstractSection {
                 }
             }
         }
+
         // logit("planned voices in section: " + result + "<br />");
         return result;
     }
@@ -196,10 +200,11 @@ class Section extends AbstractSection {
         // Need a place to store modified sections
         state.section = this;
         state.oldSectionTime = state.sectionTime;
-        for (let i = 0; i < this.modifiers.length; i++) {
-            const sm = this.modifiers[i];
+
+        for (const sm of this.modifiers) {
             state.section = sm.modifySection(state.section, state);
         }
+
         const harmonyId = getValueOrExpressionValue(state.section, "harmonicRythm", state.module);
         const harmony = state.module.getHarmony(harmonyId);
         if (harmony) {
@@ -211,24 +216,25 @@ class Section extends AbstractSection {
             //        logit(" constant harmony in section: " + chr.get(0).tsNumerator);
             //        logit(harmonyElements);
             state.constantHarmony = chr;
-            for (let i = 0; i < this.modifiers.length; i++) {
-                const sm = this.modifiers[i];
+
+            for (const sm of this.modifiers) {
                 state.constantHarmony = sm.modifyConstantHarmony(state.constantHarmony, state);
             }
+
             // Modify the voice line before planning
             state.voiceLines = state.section.voiceLines;
             // Plan the voices
             state.plannedVoiceLines = this.planVoices(state.constantHarmony, state.voiceLines, state.module);
-            for (let i = 0; i < this.modifiers.length; i++) {
-                const sm = this.modifiers[i];
+
+            for (const sm of this.modifiers) {
                 state.plannedVoiceLines = sm.modifyPlannedVoiceLines(state.plannedVoiceLines, state);
             }
 
             let che = null
             for (let i = 0; i < state.constantHarmony.getCount(); i++) {
                 che = state.constantHarmony.get(i);
-                for (let j = 0; j < che.sectionModifiers.length; j++) {
-                    const sm = che.sectionModifiers[j];
+
+                for (const sm of che.sectionModifiers) {
                     state.plannedVoiceLines = sm.modifyPlannedVoiceLines(state.plannedVoiceLines, state);
                 }
             }
@@ -236,28 +242,31 @@ class Section extends AbstractSection {
             state.voiceLineHarmonies = this.generateVoiceLineHarmonies(state.constantHarmony, state.plannedVoiceLines, state.module);
             state.renderLines = state.section.renderLines;
             state.controlLines = state.section.controlLines;
+
             // Add section tempo
             // logit("Setting tempo event " + state.sectionTempo + " <br />");
-            for (let i = 0; i < state.renderLines.length; i++) {
-                //            logit("Rendering line " + i);
-                const line = state.renderLines[i];
+            //            logit("Rendering line " + i);
+            for (const line of state.renderLines) {
                 line.renderBatch(state);
             }
-            for (let j = 0; j < che.sectionModifiers.length; j++) {
-                const sm = che.sectionModifiers[j];
+
+            for (const sm of che.sectionModifiers) {
                 sm.beforeControlRender(state);
             }
+
             perfTimer2.start();
+
             //        logit("fsdf " + state.controlLines.length);
-            for (let i = 0; i < state.controlLines.length; i++) {
-                const line = state.controlLines[i];
+            for (const line of state.controlLines) {
                 line.renderBatch(state);
             }
+
             perfTimer2.pause();
-            for (let j = 0; j < che.sectionModifiers.length; j++) {
-                const sm = che.sectionModifiers[j];
+
+            for (const sm of che.sectionModifiers) {
                 sm.afterControlRender(state);
             }
+
             switch (sectionTempoMode) {
                 case SectionTempoMode.CONSTANT:
                     state.data.addEvent(new SetTempoEvent(theTempo, state.sectionTime));
@@ -302,8 +311,8 @@ class Section extends AbstractSection {
                     break;
             }
             const beatLength = state.constantHarmony.getBeatLength();
-            for (let i = 0; i < state.module.controlChannels.length; i++) {
-                const ch = state.module.controlChannels[i];
+
+            for (const ch of state.module.controlChannels) {
                 let slotData = state.controlSlotDatas[ch.id];
                 if (!slotData) {
                     //                logit("Could not find any slot data for " + ch.id);
@@ -311,6 +320,7 @@ class Section extends AbstractSection {
                     state.controlSlotDatas[ch.id] = slotData;
                 }
             }
+
             for (const ctrlCh in state.controlSlotDatas) {
                 const slotData = state.controlSlotDatas[ctrlCh];
                 const channel = state.module.getControlChannel(ctrlCh);
@@ -318,14 +328,15 @@ class Section extends AbstractSection {
                 //            logit("Got " + ctrlEvents.length + " control events from " + ctrlCh);
                 addAll(state.data.addEvents(ctrlEvents));
             }
-            for (let i = 0; i < this.modifiers.length; i++) {
-                const sm = this.modifiers[i];
+
+            for (const sm of this.modifiers) {
                 sm.beforeSectionFinalized(state.section, state);
             }
-            for (let i = 0; i < this.modifiers.length; i++) {
-                const sm = this.modifiers[i];
+
+            for (const sm of this.modifiers) {
                 sm.sectionRendered(state.section, state);
             }
+
             // Step forward the section time
             state.sectionTime += state.constantHarmony.getBeatLength();
             //        logit("SEction time: " + state.sectionTime + " " + state.constantHarmony.getBeatLength());

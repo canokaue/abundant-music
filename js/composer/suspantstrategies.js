@@ -89,8 +89,8 @@ class SimpleSuspAntStrategy extends SuspAntStrategy{
         let newIncreasedBeatLength = toIncreaseBeatLength;
         let newDecreasedBeatLength = toDecreaseBeatLength;
         const minBeatLength = positionUnitToBeats2(this.minLength, this.minLengthUnit, harmonyBeatOffset, harmony);
-        for (let i = 0; i < this.possibleLengthIncrements.length; i++) {
-            const testLength = this.possibleLengthIncrements[i];
+
+        for (const testLength of this.possibleLengthIncrements) {
             const testBeats = positionUnitToBeats2(testLength, this.possibleLengthIncrementUnit, harmonyBeatOffset, harmony);
             if (!arrayContains(this.possibleNewLengths, toDecreaseBeatLength - testBeats)) {
                 continue;
@@ -104,6 +104,7 @@ class SimpleSuspAntStrategy extends SuspAntStrategy{
                 break;
             }
         }
+
         return [newIncreasedBeatLength, newDecreasedBeatLength];
     }
 }

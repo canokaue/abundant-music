@@ -318,12 +318,13 @@ class AdaptiveEmbellishMotifZone extends MotifZone {
     applyMotifZone(elements, module) {
         const result = [];
         const nonRestElements = [];
-        for (let i = 0; i < elements.length; i++) {
-            const e = elements[i];
+
+        for (const e of elements) {
             if (!e.rest) {
                 nonRestElements.push(e);
             }
         }
+
         let nonRestCounter = 0;
         const nonRestsCount = nonRestElements.length;
         const theVerticalIndices = getValueOrExpressionValue(this, "verticalIndices", module);

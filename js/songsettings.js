@@ -782,14 +782,12 @@ const allLoadSaveSongSettings = [
 
 
 function loadSettingsFromLocalStorage() {
-    for (let i=0; i<allSettings.length; i++) {
-        const settings = allSettings[i];
+    for (const settings of allSettings) {
         settings.loadFromLocalStorage();
     }
 }
 function saveSettingsToLocalStorage() {
-    for (let i=0; i<allSettings.length; i++) {
-        const settings = allSettings[i];
+    for (const settings of allSettings) {
         if (settings.dirty) {
             settings.saveToLocalStorage();
             settings.dirty = false;

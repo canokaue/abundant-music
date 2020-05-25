@@ -77,10 +77,11 @@ class AudioPlayer {
                 const controlBeforeAfter = this.splitSortedEvents(this.controlEvents, this.playSeconds + dSeconds);
                 const newControlEvents = controlBeforeAfter[0];
                 this.controlEvents = controlBeforeAfter[1];
-                for (let i = 0; i < newControlEvents.length; i++) {
-                    const cEvent = newControlEvents[i];
+
+                for (const cEvent of newControlEvents) {
                     this.scheduleControl(cEvent);
                 }
+
                 // Schedule notes
                 //            logit(" spliiting on " + (this.playSeconds + lookaheadSeconds));
                 const notesBeforeAfter = this.splitSortedNotes(this.notes, this.playSeconds + lookaheadSeconds, 128);
@@ -105,20 +106,21 @@ class AudioPlayer {
     }
     stopAllPlayingVoices() {
         // All voices that are connected to the graph should be stopped and disconnected
-        for (let i = 0; i < this.playingVoices.length; i++) {
-            const v = this.playingVoices[i];
+        for (const v of this.playingVoices) {
             this.stopVoice(v);
         }
+
         this.playingVoices = [];
     }
     updateVoices() {
         const newPlaying = [];
-        for (let i = 0; i < this.playingVoices.length; i++) {
-            const v = this.playingVoices[i];
+
+        for (const v of this.playingVoices) {
             if (this.updateVoice(v)) {
                 newPlaying.push(v);
             }
         }
+
         this.playingVoices = newPlaying;
     }
     noteToFrequency(note) {
@@ -151,9 +153,9 @@ class AudioPlayer {
     }
     setChannelMaps(maps) {
         this.channelMaps = {};
+
         //    this.bufferInfos = {};
-        for (let i = 0; i < maps.length; i++) {
-            const map = maps[i];
+        for (const map of maps) {
             this.channelMaps[map.renderChannel] = map;
         }
     }
@@ -231,8 +233,8 @@ class AudioPlayer {
         let result = 0;
         let currentTempo = 120;
         let prevBeat = 0;
-        for (let i = 0; i < tempoEvents.length; i++) {
-            const e = tempoEvents[i];
+
+        for (const e of tempoEvents) {
             if (e.t < beat) {
                 let diff = e.t - prevBeat;
                 let dt = this.beatsToSeconds(diff, currentTempo);
@@ -244,6 +246,7 @@ class AudioPlayer {
                 break;
             }
         }
+
         if (beat > prevBeat) {
             let diff = beat - prevBeat;
             let dt = this.beatsToSeconds(diff, currentTempo);
@@ -351,13 +354,14 @@ class AudioPlayer {
         const noteLength = (noteData.offTime - noteData.onTime);
         const lengthMillis = 1000 * noteLength;
         let bestLength = lengths[0];
+
         // Find the best length
-        for (let i = 0; i < lengths.length; i++) {
-            const length = lengths[i];
+        for (const length of lengths) {
             if (length <= lengthMillis) {
                 bestLength = length;
             }
         }
+
         //    logit("bestLength " + bestLength + " for length: " + lengthMillis + " " + (noteData.offEvent.t - noteData.onEvent.t));
         const id = this.getBufferInfoId(noteData);
         let bufferInfo = this.bufferInfos[id];

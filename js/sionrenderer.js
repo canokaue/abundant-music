@@ -189,13 +189,14 @@ class SionInstrumentChannelMap {
     getMML(effectArr) {
         const sendArr = [0, 0, 0, 0, 0, 0, 0, 0];
         sendArr[0] = this.masterVolume;
-        for (let i = 0; i < this.effectSends.length; i++) {
-            const effectSend = this.effectSends[i];
+
+        for (const effectSend of this.effectSends) {
             const index = getObjectIndexWithId(effectSend.effect, effectArr);
             if (index >= 0 && index < sendArr.length) {
                 sendArr[index + 1] = effectSend.sendLevel;
             }
         }
+
         return this.instrument.getMMLSelect() + " @v" + sendArr.join(",");
     }
 }
@@ -219,10 +220,11 @@ class SionSerialEffect extends SionEffect {
     }
     getMML() {
         let result = "";
-        for (let i = 0; i < this.effects.length; i++) {
-            const effect = this.effects[i];
+
+        for (const effect of this.effects) {
             result += effect.getMML();
         }
+
         return result;
     }
 }
@@ -433,8 +435,8 @@ class SionRenderer {
         let suitableTrack = null;
         let bestRestLength = 9999999;
         let restLength = 0;
-        for (let i = 0; i < tracks.length; i++) {
-            const track = tracks[i];
+
+        for (const track of tracks) {
             if (track.channel == channelId && track.mapping == theMapping) {
                 const lastNoff = track.noteOnOffs[track.noteOnOffs.length - 1];
                 const diffTime = noff.on.time - lastNoff.off.time;
@@ -445,6 +447,7 @@ class SionRenderer {
                 }
             }
         }
+
         if (!suitableTrack) {
             suitableTrack = {
                 channel: channelId,
@@ -476,8 +479,8 @@ class SionRenderer {
             noteArrMap[event.note] = noteArr;
         }
         let theMapping = null;
-        for (let i = 0; i < this.mappings.length; i++) {
-            const mapping = this.mappings[i];
+
+        for (const mapping of this.mappings) {
             if (mapping.renderChannel == event.renderChannel.id) {
                 if (mapping.instrument.isPercussion) {
                     const namedNote = module.getNamedNote(mapping.instrument.percussionNote);
@@ -490,19 +493,22 @@ class SionRenderer {
                 }
             }
         }
+
         if (theMapping == null) {
             logit("Could not find mapping for event " + event + "<br />");
         }
         if (event.type == "noteOn") {
             noteArr.push(event);
         }
-        else { // Note off
+        else {
+            // Note off
             let onEvent = null;
-            for (let i = 0; i < noteArr.length; i++) {
-                const otherEvent = noteArr[i];
+
+            for (const otherEvent of noteArr) {
                 onEvent = otherEvent;
                 break;
             }
+
             if (!onEvent) {
                 logit("Could not find matching note on for note off");
             }
@@ -530,15 +536,17 @@ class SionRenderer {
         // { channel: "ch1", noteOnOffs: [] }
         const tracks = [];
         const noteOnMaps = {};
-        for (let i = 0; i < renderData.events.length; i++) {
-            const event = renderData.events[i];
+
+        for (const event of renderData.events) {
             this.processEvent(event, noteOnMaps, tracks, module);
         }
+
         let masterEffectString = "";
-        for (let i = 0; i < this.masterEffects.length; i++) {
-            let effect = this.masterEffects[i];
+
+        for (let effect of this.masterEffects) {
             masterEffectString += effect.getMML();
         }
+
         if (masterEffectString) {
             masterEffectString = "#EFFECT0{" + masterEffectString + "}";
             resultArr.push(masterEffectString);
@@ -556,8 +564,8 @@ class SionRenderer {
                 resultArr.push(spec);
             }
         }
-        for (let i = 0; i < tracks.length; i++) {
-            const track = tracks[i];
+
+        for (const track of tracks) {
             const onOffs = track.noteOnOffs;
             let trackString = "";
             // var trackChannel = track.channel;
@@ -572,12 +580,14 @@ class SionRenderer {
             if (theMapping) {
                 trackString += theMapping.getMML(this.effects) + " ";
             }
-            for (let j = 0; j < onOffs.length; j++) {
-                const onOff = onOffs[j];
+
+            for (const onOff of onOffs) {
                 trackString += this.getOnOffMML(onOff);
             }
+
             resultArr.push(trackString);
         }
+
         // return resultArr[0] + "; " + resultArr[1] + "; " + resultArr[2];  
         return resultArr.join("; ");
     }

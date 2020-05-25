@@ -2,14 +2,14 @@
 
 function gatherEventsWithType(events, type) {
     const result = [];
-    for (let i=0; i<events.length; i++) {
-        const e = events[i];
 
-//        console.log(e);
+    for (const e of events) {
+        //        console.log(e);
         if (e.y == type) {
             result.push(e);
         }
     }
+
     return result;
 }
 
@@ -23,16 +23,13 @@ function secondsToBeats(seconds, tempo) {
 }
 
 function predictBeat(tempoEvents, time) {
-
     let currentTempo = 120;
 
     let currentSeconds = 0;
 
     let currentBeat = 0;
 
-    for (let i=0; i<tempoEvents.length; i++) {
-        const e = tempoEvents[i];
-
+    for (const e of tempoEvents) {
         const beatStep = e.t - currentBeat;
 
         const secondsStep = beatsToSeconds(beatStep, currentTempo);
@@ -49,6 +46,7 @@ function predictBeat(tempoEvents, time) {
 
         currentTempo = e.b;
     }
+
     if (time > currentSeconds) {
         const diff = time - currentSeconds;
         const dt = secondsToBeats(diff, currentTempo);
@@ -67,10 +65,9 @@ function gatherNotesFromEvents(events) {
     let currentTime = 0; // Seconds
 
     let currentBeat = 0;
-    for (let i=0; i<events.length; i++) {
-        const e = events[i];
 
-//        console.log(e);
+    for (const e of events) {
+        //        console.log(e);
 
         const beatStep = e.t - currentBeat;
         if (beatStep < 0) {
@@ -98,14 +95,15 @@ function gatherNotesFromEvents(events) {
                     logit("Found note off without noteOn");
                 } else {
                     let minTimeData = null;
-                    for (let j=0; j<current.length; j++) {
-                        const c = current[j];
+
+                    for (const c of current) {
                         if (e.n == c.onEvent.n) {
                             if (!minTimeData || c.onEvent.t < minTimeData.onEvent.t) {
                                 minTimeData = c;
                             }
                         }
                     }
+
                     if (!minTimeData) {
                         logit("Failed to find matching noteOn event");
                     } else {
@@ -134,6 +132,6 @@ function gatherNotesFromEvents(events) {
         }
         currentBeat = e.t;
     }
-    return notesDone;
 
+    return notesDone;
 }

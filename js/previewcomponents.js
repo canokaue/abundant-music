@@ -200,8 +200,8 @@ class RythmPreviewComponent extends PianoRollPreviewComponent {
         dummyChannel.id = "dummyChannel";
         const renderData = new RenderData();
         let currentTime = 0;
-        for (let i = 0; i < elements.length; i++) {
-            const element = elements[i];
+
+        for (const element of elements) {
             const beatLength = positionUnitToBeats(element.length, element.lengthUnit, this.previewNumerator, this.previewDenominator);
             //        logit("Beat length: " + beatLength + " element length: " + element.length + " unit: " + PositionUnit.toString(element.lengthUnit));
             if (!element.rest) {
@@ -213,6 +213,7 @@ class RythmPreviewComponent extends PianoRollPreviewComponent {
             //        logit("Current time: " + currentTime + "<br />");
             currentTime += beatLength;
         }
+
         // Create a piano roll
         const options = {
             renderData: renderData,
@@ -362,8 +363,8 @@ class StructurePreviewComponent extends PianoRollPreviewComponent {
         const result = [];
         const maxWidth = 800;
         let beatWidth = 50;
-        for (let i = 0; i < structure.references.length; i++) {
-            const ref = structure.references[i];
+
+        for (const ref of structure.references) {
             if (!ref.active) {
                 continue;
             }
@@ -379,6 +380,7 @@ class StructurePreviewComponent extends PianoRollPreviewComponent {
             }
             beatWidth = Math.min(beatWidth, Math.round(Math.min(50, maxWidth / maxTime)));
         }
+
         for (let i = 0; i < renderDatas.length; i++) {
             const options = {
                 renderData: renderDatas[i],

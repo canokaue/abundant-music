@@ -282,8 +282,7 @@ const Midi = (() => {
         constructor() {
         }
         encodeEvents(data, events) {
-            for (let i = 0; i < events.length; i++) {
-                const event = events[i];
+            for (const event of events) {
                 event.encode(data);
             }
         }
@@ -374,7 +373,6 @@ const Midi = (() => {
         inputMidiTracks.push({});
 
         for (let i = 0; i < inputMidiTracks.length - 1; i++) {
-
             const trackEvents = [];
 
             const track = inputMidiTracks[i];
@@ -384,9 +382,8 @@ const Midi = (() => {
             }
 
             const events = track.trackEvents;
-            for (let j = 0; j < events.length; j++) {
-                const event = events[j];
 
+            for (const event of events) {
                 if (typeof(event.eventTime) === 'undefined') {
                     return;
                 }
@@ -447,8 +444,8 @@ const Midi = (() => {
                 } else {
                     logit("message was " + message + " " + messageClass);
                 }
-
             }
+
             resultMidiTracks.push(new MIDITrack(trackEvents));
         }
 

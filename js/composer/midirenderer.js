@@ -28,20 +28,21 @@ class MidiRenderer {
         const quarterTicks = 192;
         const emptyChannels = {};
         const controlChannelMaps = {};
-        for (let i = 0; i < this.controlChannelMaps.length; i++) {
-            const map = this.controlChannelMaps[i];
+
+        for (const map of this.controlChannelMaps) {
             controlChannelMaps[map.controlChannel] = map;
             //        logit("Adding control channel map " + map.controlChannel);
         }
+
         const channelMaps = {};
-        for (let i = 0; i < this.channelMaps.length; i++) {
-            const map = this.channelMaps[i];
+
+        for (const map of this.channelMaps) {
             channelMaps[map.renderChannel] = map;
             emptyChannels[map.channel] = true;
         }
+
         // Avoid adding events to channels that have no notes
-        for (let i = 0; i < events.length; i++) {
-            const event = events[i];
+        for (const event of events) {
             if (event.type == "noteOn" || event.type == "noteOff") {
                 const channelMap = channelMaps[event.renderChannel.id];
                 if (channelMap) {
@@ -49,10 +50,11 @@ class MidiRenderer {
                 }
             }
         }
+
         const sentProgramChanges = {};
+
         // Set all initial programs
-        for (let i = 0; i < this.channelMaps.length; i++) {
-            const map = this.channelMaps[i];
+        for (const map of this.channelMaps) {
             if (!emptyChannels[map.channel]) {
                 if (!sentProgramChanges[map.channel]) {
                     const trackEvent = {
@@ -66,9 +68,9 @@ class MidiRenderer {
                     trackEvents.push(trackEvent);
                     sentProgramChanges[map.channel] = true;
                 }
+
                 // Add some initial control values
-                for (let j = 0; j < map.initialControllerMessages.length; j++) {
-                    const message = map.initialControllerMessages[j];
+                for (const message of map.initialControllerMessages) {
                     const controllerType = MidiControllerType.getValue(message.type);
                     if (options.exportEffects && message.type != MidiControllerType.VOLUME ||
                         options.exportVolume && message.type == MidiControllerType.VOLUME) {
@@ -94,9 +96,10 @@ class MidiRenderer {
                 //            logit("Channel " + map.channel + " was empty");
             }
         }
+
         let ticks = 0;
-        for (let i = 0; i < events.length; i++) {
-            const event = events[i];
+
+        for (const event of events) {
             const deltaTime = event.time - time;
             const eventTime = Math.round(quarterTicks * deltaTime);
             ticks += eventTime;
@@ -186,6 +189,7 @@ class MidiRenderer {
                 time = event.time;
             }
         }
+
         // Add the end of track event
         trackEvents.push({
             eventTime: quarterTicks,

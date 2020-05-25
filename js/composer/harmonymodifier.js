@@ -64,15 +64,14 @@ class SuspendHarmonyModifier extends HarmonyModifier{
                 ok = ok && secondBeatLength >= minBeatLength;
                 if (ok) {
                     // Add all pairs of notes
-                    for (let j = 0; j < firstPitchClasses.length; j++) {
-                        const firstPc = firstPitchClasses[j];
+                    for (const firstPc of firstPitchClasses) {
                         const closestPc = first.getClosestNoteWithPitchClasses(firstPc + 24, secondPitchClasses) % 12;
                         if (closestPc == firstPc) {
                             // The note was part of the second chord and we do not allow consonant suspensions
                             continue;
                         }
-                        for (let k = 0; k < secondPitchClasses.length; k++) {
-                            const secondPc = secondPitchClasses[k];
+
+                        for (const secondPc of secondPitchClasses) {
                             const distance = first.lowerPitchClassDistance(firstPc, secondPc);
                             if (firstPc == secondPc) {
                                 logit(" bad closest? " + closestPc + " " + firstPc + " " + secondPc);
@@ -185,8 +184,8 @@ class RandomShortenHarmonyModifier extends HarmonyModifier {
                 return crossesArr;
             }
             const crossBefore = getBadRepeatArray(result);
-            for (let j = 0; j < this.totalBeats.length; j++) {
-                const beatsToTest = this.totalBeats[j];
+
+            for (const beatsToTest of this.totalBeats) {
                 //            logit("Testing " + beatsToTest + " <br />");
                 let success = false;
                 for (let i = 0; i < this.maxAttempts; i++) {
@@ -279,11 +278,12 @@ class AppendHarmonyModifier extends HarmonyModifier {
         if (!this.active) {
             return result;
         }
-        for (let i = 0; i < this.elements.length; i++) {
-            const e = this.elements[i];
+
+        for (const e of this.elements) {
             const toAppend = e.getConstantHarmonyElements(module);
             addAll(result, toAppend);
         }
+
         return result;
     }
 }
@@ -309,10 +309,11 @@ class PartialHarmonyModifier extends HarmonyModifier {
             return result;
         }
         const ranges = this.getModifierIndexRanges(elements, module);
-        for (let i = 0; i < ranges.length; i++) {
-            const range = ranges[i];
+
+        for (const range of ranges) {
             this.modifyIndexRange(range, result, module);
         }
+
         return result;
     }
 }

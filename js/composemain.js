@@ -413,13 +413,14 @@ function exportOgg() {
 
 function updateAsyncOperations() {
     const nextOps = [];
-    for (let i=0; i<asyncOperations.length; i++) {
-        const op = asyncOperations[i];
+
+    for (const op of asyncOperations) {
         op.update();
         if (!op.done && !op.cancelled) {
             nextOps.push(op);
         }
     }
+
     asyncOperations = nextOps;
     if (asyncOperations.length > 0) {
         setTimeout(updateAsyncOperations, 500);
@@ -448,12 +449,12 @@ function logit(str) {
 }
 
 function getFirstRunningServerTaskWithType(type) {
-    for (let i=0; i<asyncOperations.length; i++) {
-        const op = asyncOperations[i];
+    for (const op of asyncOperations) {
         if (op.taskType == type) {
             return op;
         }
     }
+
     return null;
 }
 
@@ -1285,8 +1286,8 @@ function createPlayerPanel() {
 
         const playerButtons = ["rewind", "play", "stop", "forward"];
         const playerButtonIcons = ["seek-prev", "play", "stop", "seek-next"];
-        for (let j=0; j<prefixes.length; j++) {
-            const prefix = prefixes[j];
+
+        for (const prefix of prefixes) {
             for (let i=0; i<playerButtons.length; i++) {
                 const $button = $("#" + prefix + playerButtons[i] + "button");
 
@@ -1360,8 +1361,7 @@ function createSongSettingsPanel() {
 
 function updateGuiFromEditorSettings(dialogs) {
     // Hide the dialogs that should be hidden :)
-    for (let i=0; i<dialogs.length; i++) {
-        const dialog = dialogs[i];
+    for (const dialog of dialogs) {
         const $dialog = $("#" + dialog + "DialogDiv");
         const pos = editorSettings[dialog + "Position"];
         if (pos) {

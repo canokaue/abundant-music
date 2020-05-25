@@ -125,12 +125,13 @@ const SongSettingsComponent = (() => {
     function getAllChildrenWithTest(index, createdComps, test) {
         const result = [];
         const comp = createdComps[index];
-        for (let j=0; j<comp.children.length; j++) {
-            const child = comp.children[j];
+
+        for (const child of comp.children) {
             if (test(child)) {
                 result.push(child);
             }
         }
+
         return result;
     }
 
@@ -143,7 +144,6 @@ const SongSettingsComponent = (() => {
 
 
     function addSideButtons(comp, index) {
-
         function addSeedButtonsEventHandlers(child, $clearButton, $randomizeButton, $explicitButton) {
             const propInfo = child.propertyInfo;
             $clearButton.click(() => {
@@ -175,13 +175,11 @@ const SongSettingsComponent = (() => {
             });
         }
 
-        for (let i=0; i<comp.children.length; i++) {
-            const child = comp.children[i];
-
-//            var test = stringEndsWith(child.propertyInfo.propertyName.toLowerCase(), "likelihoods");
-//            if (test) {
-//                logit(child.propertyInfo.propertyName + " was seed or etc" + test);
-//            }
+        for (const child of comp.children) {
+            //            var test = stringEndsWith(child.propertyInfo.propertyName.toLowerCase(), "likelihoods");
+            //            if (test) {
+            //                logit(child.propertyInfo.propertyName + " was seed or etc" + test);
+            //            }
 
 
             if (compIsLikelihoodOrProbEtc(child)) {
@@ -207,7 +205,6 @@ const SongSettingsComponent = (() => {
                 if (isNaN(value)) {
 
                 } else {
-
                     const $ctrlSlider = $("<div style=\"width: 10em; margin-right: 1em; height: 1em; display: inline-block; font-size: 60%\"  class=\"ctrl-slider\"></div>");
                     child.$component.append($ctrlSlider);
 
@@ -228,8 +225,8 @@ const SongSettingsComponent = (() => {
                     });
 
                     const values = [0, 1];
-                    for (let j=0; j<values.length; j++) {
-                        let value = values[j];
+
+                    for (let value of values) {
                         const $valueButton = $("<button style=\"height: 3em; font-size: 60%\" title=\"Set to zero\" class=\"zero-ctrl-button\">" + value + "</button>");
                         child.$component.append($valueButton);
                         $valueButton.button();
@@ -242,7 +239,6 @@ const SongSettingsComponent = (() => {
                             };
                         })());
                     }
-
                 }
 
             }
@@ -267,13 +263,11 @@ const SongSettingsComponent = (() => {
                 }
                 addSeedButtonsEventHandlers(child, $clearButton, $randomizeButton, $explicitButton);
             }
-
         }
     }
 
 
     function createTabs($parent, tabsId, tabsClass, tabCaptions, tabObjects, changeListener, presets, addSeeds) {
-
         if (!addSeeds) {
             addSeeds = [];
         }
@@ -295,8 +289,8 @@ const SongSettingsComponent = (() => {
         if (presets) {
             for (let i=0; i<presets.length; i++) {
                 const preset = presets[i];
-                for (let j=0; j<preset.items.length; j++) {
-                    const item = preset.items[j];
+
+                for (const item of preset.items) {
                     uidManager.addUniqueId(uidManager, tabsId + i, item.name);
                 }
             }
@@ -410,8 +404,8 @@ const SongSettingsComponent = (() => {
                     content += "<select class=\"preset-name-select ui-corner-all\" >";
                     if (presets) {
                         const preset = presets[index];
-                        for (let i=0; i<preset.items.length; i++) {
-                            const item = preset.items[i];
+
+                        for (const item of preset.items) {
                             content += "<option value=\"" + item.name + "\" >" + item.name + "</option>";
                         }
                     }
@@ -453,8 +447,8 @@ const SongSettingsComponent = (() => {
                     content += "<ol class=\"preset-list\" >";
                     if (presets) {
                         const preset = presets[index];
-                        for (let i=0; i<preset.items.length; i++) {
-                            const item = preset.items[i];
+
+                        for (const item of preset.items) {
                             content += "<li class=\"ui-widget-content\" >" + item.name + "</li>";
                         }
                     }
@@ -575,8 +569,7 @@ const SongSettingsComponent = (() => {
             createHeaderComponents(i);
         }
 
-        for (let i=0; i<createdComps.length; i++) {
-            let comp = createdComps[i];
+        for (let comp of createdComps) {
             comp.alignComponents();
             addSideButtons(comp);
         }

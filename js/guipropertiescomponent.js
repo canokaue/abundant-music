@@ -155,8 +155,7 @@ class GuiPropertiesComponent extends JQueryComponent {
         this._constructorName = "GuiPropertiesComponent";
     }
     componentRemoved() {
-        for (let i = 0; i < this.children.length; i++) {
-            const c = this.children[i];
+        for (const c of this.children) {
             if (c.componentRemoved) {
                 c.componentRemoved();
             }
@@ -170,19 +169,18 @@ class GuiPropertiesComponent extends JQueryComponent {
     }
     alignComponents() {
         const info = new ComponentAlignmentInfo();
-        for (let i = 0; i < this.children.length; i++) {
-            let c = this.children[i];
+
+        for (let c of this.children) {
             //        logit(" " + c._constructorName + " <br />");
             c.gatherAlignmentInfo(info);
         }
-        for (let i = 0; i < this.children.length; i++) {
-            let c = this.children[i];
+
+        for (let c of this.children) {
             c.setAlignment(info);
         }
     }
     resetAlignment() {
-        for (let i = 0; i < this.children.length; i++) {
-            const c = this.children[i];
+        for (const c of this.children) {
             c.resetAlignment();
         }
     }
@@ -450,12 +448,12 @@ class GuiPropertyComponent extends JQueryComponent{
     resetAlignment() {
     }
     componentRemoved() {
-        for (let i = 0; i < this.children.length; i++) {
-            const c = this.children[i];
+        for (const c of this.children) {
             if (c.componentRemoved) {
                 c.componentRemoved();
             }
         }
+
         if (this.propertyInfo) {
             const componentRegisters = this.propertyInfo.componentRegisters;
             if (componentRegisters) {
@@ -503,9 +501,9 @@ class GuiPropertyComponent extends JQueryComponent{
         }
         else {
             logit("select new not supported yet...");
-            for (let i = 0; i < constructorInfos.length; i++) {
-                let constrInfo = constructorInfos[i];
-            }
+
+            for (let constrInfo of constructorInfos)
+                {}
         }
     }
     addConstructorClickListeners(constructorInfos, func, newMode) {
@@ -592,8 +590,8 @@ class GuiPropertyComponent extends JQueryComponent{
     verifyNumberConstraints(newValue) {
         let wasError = false;
         let errorText = "";
-        for (let i = 0; i < this.propertyInfo.constraints.length; i++) {
-            const c = this.propertyInfo.constraints[i];
+
+        for (const c of this.propertyInfo.constraints) {
             if (c.getMinValue) {
                 const minValue = c.getMinValue();
                 if (newValue < minValue) {
@@ -609,6 +607,7 @@ class GuiPropertyComponent extends JQueryComponent{
                 }
             }
         }
+
         this.setError(wasError, errorText);
         return wasError;
     }
@@ -626,8 +625,7 @@ class GuiPropertyComponent extends JQueryComponent{
                 }
             }
             if (wasValid && this.propertyInfo.constraints) {
-                for (let i = 0; i < this.propertyInfo.constraints.length; i++) {
-                    const c = this.propertyInfo.constraints[i];
+                for (const c of this.propertyInfo.constraints) {
                     if (c.isValid && !c.isValid(this.object, this.propertyInfo.propertyName, newValue)) {
                         const desc = c.getInvalidDescription(this.object, this.propertyInfo.propertyName, newValue);
                         errorText = desc;
@@ -899,20 +897,21 @@ class GuiPropertySingleOptionComponent extends GuiPropertyComponent {
     }
     getValuesAndNames() {
         const result = [];
-        for (let i = 0; i < this.propertyInfo.possibleValues.length; i++) {
-            const value = this.propertyInfo.possibleValues[i];
+
+        for (const value of this.propertyInfo.possibleValues) {
             let displayValue = value;
             if (this.propertyInfo.displayFunction) {
                 displayValue = this.propertyInfo.displayFunction.call(this, this.object, this.propertyInfo.propertyName, value);
             }
             result.push([value, displayValue]);
         }
+
         return result;
     }
     setOptionsFromValuesAndNames(valuesAndNames) {
         this.$input.empty();
-        for (let i = 0; i < valuesAndNames.length; i++) {
-            const valueName = valuesAndNames[i];
+
+        for (const valueName of valuesAndNames) {
             const value = valueName[0];
             const displayValue = valueName[1];
             this.addOption(value, displayValue);
@@ -1365,10 +1364,11 @@ class GuiAbstractListComponent extends GuiPropertyComponent {
     }
     clearSelection() {
         const items = this.getSelectedItems();
-        for (let i = 0; i < items.length; i++) {
-            const item = items[i];
+
+        for (const item of items) {
             delete this.selectedListItems[item.id];
         }
+
         this.selectedListItems = {};
         return this;
     }
@@ -1389,8 +1389,8 @@ class GuiAbstractListComponent extends GuiPropertyComponent {
         if (selectedItems.length > 0) {
             const list = this.getValue();
             const uiInfo = this.propertyInfo.uniqueIdInfo;
-            for (let i = 0; i < selectedItems.length; i++) {
-                const item = selectedItems[i];
+
+            for (const item of selectedItems) {
                 //            logit("item " + i + ":" + item + " <br />");
                 //            investigateObject(item);
                 const $item = $(item);
@@ -1495,14 +1495,15 @@ class GuiPropertySelectListComponent extends GuiAbstractListComponent {
     }
     getValuesAndNames() {
         const result = [];
-        for (let i = 0; i < this.propertyInfo.listInfo.possibleValues.length; i++) {
-            const value = this.propertyInfo.listInfo.possibleValues[i];
+
+        for (const value of this.propertyInfo.listInfo.possibleValues) {
             let displayValue = value;
             const resultArr = [];
             super.getListItemContentHtml(value, resultArr);
             displayValue = resultArr.join("");
             result.push([value, displayValue]);
         }
+
         return result;
     }
     getListItemContentHtml(valueItem, resultArr, itemIndex) {

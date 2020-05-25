@@ -29,8 +29,8 @@ class PianoRoll extends GuiComponent{
             let minLimit = 127;
             let maxLimit = 0;
             const events = this.renderData.getEvents();
-            for (let i = 0; i < events.length; i++) {
-                const e = events[i];
+
+            for (const e of events) {
                 if (e instanceof NoteOffEvent || e instanceof NoteOnEvent) {
                     if (!this.visibleChannels || this.visibleChannels[e.renderChannel.id]) {
                         minLimit = Math.min(e.note, minLimit);
@@ -38,6 +38,7 @@ class PianoRoll extends GuiComponent{
                     }
                 }
             }
+
             minLimit = Math.max(0, minLimit - this.noteLimitBorder);
             maxLimit = Math.min(127, maxLimit + this.noteLimitBorder);
             this.noteLimits = [minLimit, maxLimit];
@@ -61,11 +62,12 @@ class PianoRoll extends GuiComponent{
     getNoteRowsWidth() {
         const ches = this.harmony.getConstantHarmonyElements();
         let harmonyWidth = 0;
-        for (let i = 0; i < ches.length; i++) {
-            const e = ches[i];
+
+        for (const e of ches) {
             const beats = positionUnitToBeats(e.getLength(), e.getLengthUnit(), e.tsNumerator, e.tsDenominator);
             harmonyWidth += beats * this.beatWidth;
         }
+
         let dataWidth = 0;
         if (this.renderData) {
             const limits = this.renderData.getTimeLimits();
@@ -149,8 +151,8 @@ class PianoRoll extends GuiComponent{
             this.renderData.sort();
             const events = this.renderData.getEvents();
             const notesOn = {};
-            for (let i = 0; i < events.length; i++) {
-                const e = events[i];
+
+            for (const e of events) {
                 if (e instanceof NoteOnEvent) {
                     let noteArr = notesOn[e.note];
                     if (!noteArr) {
@@ -212,8 +214,8 @@ class PianoRoll extends GuiComponent{
         const totalHeight = this.noteRowHeight * range;
         if (this.highlightScales || this.highlightChords) {
             currentX = x;
-            for (let i = 0; i < ches.length; i++) {
-                let e = ches[i];
+
+            for (let e of ches) {
                 let beats = positionUnitToBeats(e.getLength(), e.getLengthUnit(), e.tsNumerator, e.tsDenominator);
                 const scalePitchClasses = e.getPitchClassesFromAbsoluteNotes(e.getScaleAbsoluteNotes());
                 const chordPitchClasses = e.getPitchClassesFromAbsoluteNotes(e.getAbsoluteNotesFromScaleIndices(e.getChordRootPositionScaleIndices()));
@@ -238,13 +240,14 @@ class PianoRoll extends GuiComponent{
         // Paint the harmony lines
         currentX = x;
         context.beginPath();
-        for (let i = 0; i < ches.length; i++) {
-            let e = ches[i];
+
+        for (let e of ches) {
             let beats = positionUnitToBeats(e.getLength(), e.getLengthUnit(), e.tsNumerator, e.tsDenominator);
             currentX += beats * this.beatWidth;
             context.moveTo(currentX, y);
             context.lineTo(currentX, y + range * this.noteRowHeight);
         }
+
         context.lineWidth = 2;
         context.strokeStyle = "#666666";
         context.stroke();

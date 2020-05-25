@@ -250,8 +250,8 @@ class HarmonyGenerator extends DfsSolver{
     }
     filterChords(fromHarmony, tempResult, possibleRoots, possibleInversions, possibleSusRoots, possibleMixtureRoots) {
         const result = [];
-        for (let i = 0; i < tempResult.length; i++) {
-            const chord = tempResult[i];
+
+        for (const chord of tempResult) {
             let ok = true;
             const chordRoot = positiveMod(chord.chordRoot, 7);
             const isSus = chord.isSus();
@@ -302,6 +302,7 @@ class HarmonyGenerator extends DfsSolver{
                 result.push(chord);
             }
         }
+
         return result;
     }
     getBassPassingChords(fromHarmony, toHarmony, absIncrement, possibleRoots, possibleInversions) {

@@ -299,17 +299,16 @@ class PropertyInfoProvider {
                 return this.rangeLengthValid(range) && this.lowerUpperValid(range);
             },
             isValid: function (object, propertyName, value) {
-                for (let i = 0; i < value.length; i++) {
-                    const range = value[i];
+                for (const range of value) {
                     if (!this.rangeValid(range)) {
                         return false;
                     }
                 }
+
                 return true;
             },
             getInvalidDescription: function (object, propertyName, value) {
-                for (let i = 0; i < value.length; i++) {
-                    const range = value[i];
+                for (const range of value) {
                     if (!this.rangeLengthValid(range)) {
                         return "Invalid range: " + range.join(",") + ". Specify a lower and an upper limit";
                     }
@@ -317,6 +316,7 @@ class PropertyInfoProvider {
                         return "Invalid range: " + range.join(",") + ". The first value must not be larger than the second";
                     }
                 }
+
                 return "";
             }
         });
@@ -603,13 +603,14 @@ class PropertyInfoProvider {
             uniqueIdInfo: uniqueIdInfo
         });
         const constructorInfos = [];
-        for (let i = 0; i < constructorTexts.length; i++) {
-            const ct = constructorTexts[i];
+
+        for (const ct of constructorTexts) {
             constructorInfos.push(new GuiConstructorInfo({
                 name: ct[0],
                 text: ct[1]
             }));
         }
+
         info.objectInfo = new GuiObjectInfo({
             constructorInfos: constructorInfos
         });
@@ -697,13 +698,14 @@ class PropertyInfoProvider {
             propertyInfoProvider: provider
         });
         const constructorInfos = [];
-        for (let i = 0; i < constructorTexts.length; i++) {
-            const ct = constructorTexts[i];
+
+        for (const ct of constructorTexts) {
             constructorInfos.push(new GuiConstructorInfo({
                 name: ct[0],
                 text: ct[1]
             }));
         }
+
         info.listInfo = new GuiListInfo({
             constructorInfos: constructorInfos
         });

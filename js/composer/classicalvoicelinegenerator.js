@@ -111,10 +111,11 @@ class ClassicalVoiceLineGenerator extends VoiceLineGenerator {
     }
     getOneStepCost(harmonyIndex, prevStateIndex, stateIndex, verbose) {
         let stepCost = 0;
-        for (let i = 0; i < this.oneStepConstraints[harmonyIndex].length; i++) {
-            const cstr = this.oneStepConstraints[harmonyIndex][i];
+
+        for (const cstr of this.oneStepConstraints[harmonyIndex]) {
             stepCost += cstr.oneStepCost(harmonyIndex, prevStateIndex, stateIndex, this);
         }
+
         const absoluteNotes = this.possibleAbsoluteNoteTuples[harmonyIndex][stateIndex];
         const prevAbsoluteNotes = this.possibleAbsoluteNoteTuples[harmonyIndex - 1][prevStateIndex];
         const scaleIndices = this.possibleScaleIndexTuples[harmonyIndex][stateIndex];
@@ -289,10 +290,11 @@ class ClassicalVoiceLineGenerator extends VoiceLineGenerator {
     getZeroStepCost(harmonyIndex, stateIndex, verbose) {
         let stepCost = 0;
         const absoluteNotes = this.possibleAbsoluteNoteTuples[harmonyIndex][stateIndex];
-        for (let i = 0; i < this.zeroStepConstraints[harmonyIndex].length; i++) {
-            const cstr = this.zeroStepConstraints[harmonyIndex][i];
+
+        for (const cstr of this.zeroStepConstraints[harmonyIndex]) {
             stepCost += cstr.zeroStepCost(harmonyIndex, stateIndex, this);
         }
+
         // Check spacing penalty
         for (let i = 0; i < absoluteNotes.length; i++) {
             if (i > 0) {
@@ -405,8 +407,8 @@ class ClassicalVoiceLineGenerator extends VoiceLineGenerator {
     }
     getPitchClassMap(absoluteNotes) {
         const pitchClassMap = {};
-        for (let i = 0; i < absoluteNotes.length; i++) {
-            const absNote = absoluteNotes[i];
+
+        for (const absNote of absoluteNotes) {
             const pitchClass = absNote % 12;
             let count = pitchClassMap[pitchClass];
             if (count) {
@@ -417,6 +419,7 @@ class ClassicalVoiceLineGenerator extends VoiceLineGenerator {
             }
             pitchClassMap[pitchClass] = count;
         }
+
         return pitchClassMap;
     }
     getStepCost(node) {
@@ -488,11 +491,11 @@ class ClassicalVoiceLineGenerator extends VoiceLineGenerator {
         }
         for (let i = 0; i < this.constraints.length; i++) {
             const constraintArr = this.constraints[i];
-            for (let j = 0; j < constraintArr.length; j++) {
-                const constraint = constraintArr[j];
+
+            for (const constraint of constraintArr) {
                 const steps = constraint.getCheckCostSteps();
-                for (let k = 0; k < steps.length; k++) {
-                    const step = steps[k];
+
+                for (const step of steps) {
                     let cArr = null;
                     switch (step) {
                         case 0:

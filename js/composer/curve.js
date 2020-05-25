@@ -616,10 +616,11 @@ class AddCurveComputation extends MultiInputCurveComputation{
     getValueReferencesOk(module, x) {
         const refs = this.theInputCurves;
         let result = 0.0;
-        for (let i = 0; i < refs.length; i++) {
-            const curve = refs[i];
+
+        for (const curve of refs) {
             result += this.getCurveOrConstantValue(module, x, curve, 0);
         }
+
         return result;
     }
 }
@@ -632,10 +633,11 @@ class MultiplyCurveComputation extends MultiInputCurveComputation {
     getValueReferencesOk(module, x) {
         const refs = this.theInputCurves;
         let result = 1.0;
-        for (let i = 0; i < refs.length; i++) {
-            const curve = refs[i];
+
+        for (const curve of refs) {
             result *= this.getCurveOrConstantValue(module, x, curve, 1);
         }
+
         return result;
     }
 }
@@ -648,8 +650,8 @@ class MinCurveComputation extends MultiInputCurveComputation {
     getValueReferencesOk(module, x) {
         const refs = this.theInputCurves;
         let result = null;
-        for (let i = 0; i < refs.length; i++) {
-            const curve = refs[i];
+
+        for (const curve of refs) {
             const temp = this.getCurveOrConstantValue(module, x, curve, 1);
             if (result === null) {
                 result = temp;
@@ -658,6 +660,7 @@ class MinCurveComputation extends MultiInputCurveComputation {
                 result = Math.min(temp, result);
             }
         }
+
         return result === null ? 0 : result;
     }
 }
@@ -670,8 +673,8 @@ class MaxCurveComputation extends MultiInputCurveComputation{
     getValueReferencesOk(module, x) {
         const refs = this.theInputCurves;
         let result = null;
-        for (let i = 0; i < refs.length; i++) {
-            const curve = refs[i];
+
+        for (const curve of refs) {
             const temp = this.getCurveOrConstantValue(module, x, curve, 1);
             if (result === null) {
                 result = temp;
@@ -680,6 +683,7 @@ class MaxCurveComputation extends MultiInputCurveComputation{
                 result = Math.max(temp, result);
             }
         }
+
         return result === null ? 0 : result;
     }
 }

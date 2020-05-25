@@ -42,8 +42,8 @@ class FrustumCullingChunks {
         const sceneObjectsToAdd = [];
         const newSceneObjects = [];
         const newNotInSceneObjects = [];
-        for (let i = 0; i < this.objectsInScene.length; i++) {
-            let index = this.objectsInScene[i];
+
+        for (let index of this.objectsInScene) {
             let object = this.objects[index];
             let sphere = this.boundingSpheres[index];
             if (!this.contains(object, sphere)) {
@@ -54,8 +54,8 @@ class FrustumCullingChunks {
                 newSceneObjects.push(index);
             }
         }
-        for (let i = 0; i < this.objectsNotInScene.length; i++) {
-            let index = this.objectsNotInScene[i];
+
+        for (let index of this.objectsNotInScene) {
             let object = this.objects[index];
             let sphere = this.boundingSpheres[index];
             if (this.contains(object, sphere)) {
@@ -66,6 +66,7 @@ class FrustumCullingChunks {
                 newNotInSceneObjects.push(index);
             }
         }
+
         this.objectsNotInScene = newNotInSceneObjects;
         this.objectsInScene = newSceneObjects;
         for (let i = 0; i < sceneObjectsToAdd.length; i++) {

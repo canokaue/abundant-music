@@ -48,13 +48,14 @@ class PercussionMotif extends AbstractPercussionMotif {
     }
     getPercussionMotifElementsFromRythmAndZones(module, noteRythmElements, harmony, harmonyBeatOffset) {
         const result = [];
+
         //    logit(this._constructorName + " gettting note rythm elements" + JSON.stringify(this.zones));
         // Should have different classes (one-of, non-overlap osv.)
-        for (let i = 0; i < this.zones.length; i++) {
-            const zone = this.zones[i];
+        for (const zone of this.zones) {
             const list = zone.getPercussionMotifElements(module, noteRythmElements, harmony, harmonyBeatOffset);
             addAll(result, list);
         }
+
         return result;
     }
     getPercussionMotifElementsFromRythmAndRenderPattern(module, noteRythmElements, harmony, harmonyBeatOffset) {
@@ -86,11 +87,11 @@ class PercussionMotif extends AbstractPercussionMotif {
                 }
                 break;
             case PercussionMotifMode.ELEMENTS:
-                for (let i = 0; i < this.elements.length; i++) {
-                    const e = this.elements[i];
+                for (const e of this.elements) {
                     const list = e.getPrimitivePercussionMotifElements(module, harmony, harmonyBeatOffset);
                     addAll(result, list);
                 }
+
                 break;
         }
         return result;

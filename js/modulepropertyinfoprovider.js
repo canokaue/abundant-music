@@ -735,13 +735,14 @@ class ModulePropertyInfoProvider {
             uniqueIdInfo: uniqueIdInfo
         });
         const constructorInfos = [];
-        for (let i = 0; i < constructorTexts.length; i++) {
-            const ct = constructorTexts[i];
+
+        for (const ct of constructorTexts) {
             constructorInfos.push(new GuiConstructorInfo({
                 name: ct[0],
                 text: ct[1]
             }));
         }
+
         info.objectInfo = new GuiObjectInfo({
             constructorInfos: constructorInfos
         });
@@ -759,13 +760,14 @@ class ModulePropertyInfoProvider {
             propertyInfoProvider: provider
         });
         const constructorInfos = [];
-        for (let i = 0; i < constructorTexts.length; i++) {
-            const ct = constructorTexts[i];
+
+        for (const ct of constructorTexts) {
             constructorInfos.push(new GuiConstructorInfo({
                 name: ct[0],
                 text: ct[1]
             }));
         }
+
         info.listInfo = new GuiListInfo({
             constructorInfos: constructorInfos
         });

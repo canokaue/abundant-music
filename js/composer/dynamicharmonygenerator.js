@@ -509,8 +509,8 @@ class DynamicHarmonyGenerator extends HarmonyGenerator{
         const appliedChordLikelihoods = isMinor ? this.minorAppliedChordLikelihoods : this.majorAppliedChordLikelihoods;
         const appliedChordCosts = isMinor ? this.minorAppliedChordCosts : this.majorAppliedChordCosts;
         const chordInfos = [];
-        for (let i = 0; i < appliedChordTypes.length; i++) {
-            const type = appliedChordTypes[i];
+
+        for (const type of appliedChordTypes) {
             switch (type) {
                 case AppliedChordType.V:
                     chordInfos.push({
@@ -571,6 +571,7 @@ class DynamicHarmonyGenerator extends HarmonyGenerator{
                     break;
             }
         }
+
         for (let i = 0; i < chordInfos.length; i++) {
             const info = chordInfos[i];
             const modulateState = copyObjectDeep(node.state);

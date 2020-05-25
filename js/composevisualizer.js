@@ -132,8 +132,8 @@ class Visualizer3D extends Visualizer {
         this.upperLight.intensity = 0;
         this.middleLight.intensity = 0;
         this.lowerLight.intensity = 0;
-        for (let i = 0; i < this.allNoteDatas.length; i++) {
-            const dat = this.allNoteDatas[i];
+
+        for (const dat of this.allNoteDatas) {
             dat.mesh.scale.set(dat.w, 1, 1);
             dat.material.emissive = new THREE.Color(dat.normalEmissive);
             dat.material.color = new THREE.Color(dat.normalColor);
@@ -169,8 +169,7 @@ class Visualizer3D extends Visualizer {
             const arr = this.noteCollisionGrid[b];
             if (arr) {
                 //            logit("Checking beat " + beat + " " + arr.length);
-                for (let i = 0; i < arr.length; i++) {
-                    const dat = arr[i];
+                for (const dat of arr) {
                     const onEvent = dat.onEvent;
                     const channel = onEvent.c;
                     //                logit(channel);
@@ -206,8 +205,8 @@ class Visualizer3D extends Visualizer {
                 }
             }
         }
-        for (let i = 0; i < lightDatas.length; i++) {
-            let lightData = lightDatas[i];
+
+        for (let lightData of lightDatas) {
             if (lightData.count > 0) {
                 lightData.pos.divideScalar(lightData.count);
                 lightData.light.position.copy(lightData.pos);
@@ -490,8 +489,8 @@ class Visualizer3D extends Visualizer {
             const playColor = getFromPrefix(channelPlayColors, realChannelName, 0xffffff)[channelIndex];
             const emissive = getFromPrefix(channelEmissiveColors, realChannelName, 0xffffff)[channelIndex];
             const z = zSeparation * getFromPrefix(channelZs, realChannelName, -4);
-            for (let j = 0; j < datas.length; j++) {
-                const dat = datas[j];
+
+            for (const dat of datas) {
                 const onEvent = dat.onEvent;
                 const offEvent = dat.offEvent;
                 if (!offEvent) {
@@ -599,10 +598,11 @@ class Visualizer3D extends Visualizer {
     }
     resetRenderData() {
         super.resetRenderData(this);
-        for (let i = 0; i < this.noteChunks.length; i++) {
-            const o = this.noteChunks[i];
+
+        for (const o of this.noteChunks) {
             this.scene.remove(o);
         }
+
         this.noteChunks = [];
         this.noteCollisionGrid = [];
         this.currentBeatTime = 0;

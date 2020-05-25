@@ -257,9 +257,9 @@ class StaticHarmonyGenerator extends HarmonyGenerator {
                 const incrementLikelihood = absLikelihoods[k];
                 const incrementCost = absCosts[k];
                 const passingChords = this.getBassPassingChords(currentHarmony.copy(), targetHarmony, absIncrement, passingChordRoots, passingChordInversions);
+
                 //            logit("Getting " + passingChords.length + " passing chords from " + currentHarmony.toRomanString() + " to " + targetHarmony.toRomanString());
-                for (let j = 0; j < passingChords.length; j++) {
-                    const pc = passingChords[j];
+                for (const pc of passingChords) {
                     harmonies.push(pc);
                     pc.note = "S, " + (towardsAux ? "PA" : "PB");
                     likelihoods.push(incrementLikelihood);
@@ -378,9 +378,9 @@ class StaticHarmonyGenerator extends HarmonyGenerator {
                     const auxHarmony = this.getAuxiliaryHarmony(increment > 0 ? auxRootUp : auxRootDown);
                     //                logit("Passing from " + this.baseRoot + " to " + auxHarmony.chordRoot);
                     const passingChords = this.getBassPassingChords(this.baseHarmony.copy(), auxHarmony, Math.abs(increment), this.majorPassingChordRoots, this.majorPassingChordInversions);
+
                     //                logit("Found " + passingChords.length + " passing chords " + increment);
-                    for (let j = 0; j < passingChords.length; j++) {
-                        const pc = passingChords[j];
+                    for (const pc of passingChords) {
                         //                    logit("  " + pc.toRomanString() + " " + (incrementLikelihood * auxLikelihood));
                         harmonies.push(pc);
                         targetHarmonies.push(auxHarmony.copy());
