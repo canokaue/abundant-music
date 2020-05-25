@@ -90,7 +90,7 @@ class SequenceHarmonyElement extends HarmonyElement {
                 for (let i = 0; i < Math.max(1, theCount); i++) {
                     tsNumerator = getItemFromArrayWithStartEndItems(4, tsNumerators, theCount, i, this.startTsNumerators, this.endTsNumerators);
                     tsDenominator = getItemFromArrayWithStartEndItems(4, tsDenominators, theCount, i, this.startTsDenominators, this.endTsDenominators);
-                    var beatLength = Math.max(1.0, tsDenominator);
+                    let beatLength = Math.max(1.0, tsDenominator);
                     if (elements.length > 0) {
                         const dummyHarmony = new ConstantHarmonicRythm([new ConstantHarmonyElement().setTimeSignature(tsNumerator, tsDenominator)]);
                         const element = elements[i % elements.length];
@@ -121,7 +121,7 @@ class SequenceHarmonyElement extends HarmonyElement {
                     tsNumerator = getItemFromArrayWithStartEndItems(4, tsNumerators, theCount, i, this.startTsNumerators, this.endTsNumerators);
                     tsDenominator = getItemFromArrayWithStartEndItems(4, tsDenominators, theCount, i, this.startTsDenominators, this.endTsDenominators);
                     const length = getItemFromArrayWithStartEndItems(1.0, theLengthPattern, theCount, i, theStartLengthPattern, theEndLengthPattern);
-                    const beatLength = positionUnitToBeats(length, this.lengthPatternUnit, tsNumerator, tsDenominator, null);
+                    let beatLength = positionUnitToBeats(length, this.lengthPatternUnit, tsNumerator, tsDenominator, null);
                     beatLength = Math.max(1.0, beatLength);
                     result.push(beatLength);
                 }
