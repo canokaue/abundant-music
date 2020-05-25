@@ -398,14 +398,14 @@ class MarkovRandomIntegerArrayEditorVariable extends IntegerArrayEditorVariable{
         }
         const stateDomainDistributions = [];
         for (let i = 0; i < this.stateDomainLikelihoods.length; i++) {
-            var lik = this.stateDomainLikelihoods[i];
-            var dist = getProbabilityDistribution(lik);
+            const lik = this.stateDomainLikelihoods[i];
+            const dist = getProbabilityDistribution(lik);
             stateDomainDistributions[i] = dist;
         }
         const stateTransitionDistributions = [];
         for (let i = 0; i < this.stateTransitionLikelihoods.length; i++) {
-            var lik = this.stateTransitionLikelihoods[i];
-            var dist = getProbabilityDistribution(lik);
+            const lik = this.stateTransitionLikelihoods[i];
+            const dist = getProbabilityDistribution(lik);
             stateTransitionDistributions[i] = dist;
         }
         const startStateDistribution = getProbabilityDistribution(createFilledPatternArray(theStartStates.length, this.startStateLikelihoods));

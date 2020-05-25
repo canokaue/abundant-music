@@ -228,11 +228,11 @@ class ClassicalAdaptiveVoiceLine extends VoiceLine {
         const fractionMultiplier = harmonyLength > 1 ? (1.0 / (harmonyLength - 1)) : 1.0;
         for (let i = 0; i < harmonyLength; i++) {
             if (this.isUndefined) {
-                var vle = new UndefinedVoiceLineElement();
+                const vle = new UndefinedVoiceLineElement();
                 result.push(vle);
             }
             else {
-                var vle = new ClassicalAdaptiveVoiceLineElement();
+                const vle = new ClassicalAdaptiveVoiceLineElement();
                 let theHintIndex = null;
                 const fraction = i * fractionMultiplier;
                 if (theCurve) {
@@ -249,15 +249,11 @@ class ClassicalAdaptiveVoiceLine extends VoiceLine {
                 const theChordRootConstraint = getItemFromArrayWithStartEndItems([], this.chordRootPitchClassConstraints, harmonyLength, i, this.startChordRootPitchClassConstraints, this.endChordRootPitchClassConstraints);
                 const maxSpacing = getItemFromArrayWithStartEndItems([], this.maxSpacings, harmonyLength, i, this.startMaxSpacings, this.endMaxSpacings);
                 const penaltyMaxSpacing = getItemFromArrayWithStartEndItems([], this.penaltyMaxSpacings, harmonyLength, i, this.startPenaltyMaxSpacings, this.endPenaltyMaxSpacings);
-                var suspend = getItemFromArrayWithStartEndItems(0, suspendPattern, harmonyLength, i, startSuspendPattern, endSuspendPattern);
+                const suspend = getItemFromArrayWithStartEndItems(0, suspendPattern, harmonyLength, i, startSuspendPattern, endSuspendPattern);
                 const anticipate = getItemFromArrayWithStartEndItems(0, this.anticipatePattern, harmonyLength, i, this.startAnticipatePattern, this.endAnticipatePattern);
                 const range = getItemFromArrayWithStartEndItems(0, this.ranges, harmonyLength, i, this.startRanges, this.endRanges);
                 const penaltyRange = getItemFromArrayWithStartEndItems(0, this.penaltyRanges, harmonyLength, i, this.startPenaltyRanges, this.endPenaltyRanges);
-                //        logit("Setting chord bass constraint to " + theChordBassConstraint + " default: " + [] +
-                //            " items: " + this.chordBassPitchClassConstraints +
-                //            " start: " + this.startChordBassPitchClassConstraints +
-                //            " end: " + this.endChordBassPitchClassConstraints +
-                //            "<br />");
+
                 vle.suspend = !!suspend;
                 vle.anticipate = !!anticipate;
                 vle.chordBassPitchClassConstraint = theChordBassConstraint;
@@ -294,12 +290,9 @@ class ClassicalAdaptiveVoiceLine extends VoiceLine {
                     //            logit("Suspend stuff " + i + " " + [JSON.stringify(suspendPattern), JSON.stringify(startSuspendPattern), JSON.stringify(endSuspendPattern)].join(";;;") + "<br />");
                     for (let j = phraseRange[0]; j <= phraseRange[1]; j++) {
                         const phraseIndex = j - phraseRange[0];
-                        var suspend = getItemFromArrayWithStartEndItems(0, suspendPattern, phraseRange[1] - phraseRange[0] + 1, phraseIndex, startSuspendPattern, endSuspendPattern);
-                        var vle = result[j];
+                        const suspend = getItemFromArrayWithStartEndItems(0, suspendPattern, phraseRange[1] - phraseRange[0] + 1, phraseIndex, startSuspendPattern, endSuspendPattern);
+                        const vle = result[j];
                         vle.suspend = !!suspend;
-                        //                if (vle.suspend) {
-                        //                    logit("Setting suspend for index " + j + "<br />");
-                        //                }
                     }
                 }
             }
