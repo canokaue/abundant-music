@@ -575,7 +575,7 @@ function copyValueDeep(value, parentObject, options) {
         const result = [];
         if (options && options.propertyInfo &&
             options.propertyInfo.dataType == GuiPropertyDataType.ID_REFERENCE_LIST) {
-            var uiInfo = options.propertyInfo.uniqueIdInfo;
+            const uiInfo = options.propertyInfo.uniqueIdInfo;
             for (let i=0; i<value.length; i++) {
                 result[i] = getValue2LevelsOrDefault(options.oldToNewIdMap, uiInfo.namespace, value[i], value[i]);
             }
@@ -593,7 +593,7 @@ function copyValueDeep(value, parentObject, options) {
         if (options && options.propertyInfo) {
             if (options.propertyInfo.dataType == GuiPropertyDataType.UNIQUE_ID ||
                 options.propertyInfo.dataType == GuiPropertyDataType.ID_REFERENCE) {
-                var uiInfo = options.propertyInfo.uniqueIdInfo;
+                const uiInfo = options.propertyInfo.uniqueIdInfo;
                 const theId = getValue2LevelsOrDefault(options.oldToNewIdMap, uiInfo.namespace, value, value);
 
                 // logit("copying id " + value + " " + theId + " " + JSON.stringify(options.oldToNewIdMap[uiInfo.namespace]) + " <br />");
@@ -673,10 +673,6 @@ function copyObjectDeep(obj, options) {
         }
     }
     copyObjectPropertiesDeep(copy, obj, options);
-    //    var arr = [];
-    //    objectToJson(options, arr);
-    //    logit(arr.join(""));
-
     return copy;
 }
 
@@ -721,36 +717,20 @@ function traverseValue(value, visitor, visited) {
     }
 }
 
-
-//var expressionData = {};
-
 function getExpressionValue(expression, module, extraVars, verbose, object, propName) {
-
-//    perfTimer3.start();
-
-    var result = null;
-
     const exprIsString = typeof(expression) === "string";
 
     if (exprIsString && !expression.match(/[a-z]/i)) {
-//        logit("Expression simple " + expression);
-        result = eval(expression);
-//        perfTimer3.pause();
-        return result;
+        return eval(expression);
     }
 
     // Checking if there are only a single variable in the expression
     if (exprIsString && !expression.match(/[^a-z]/i)) {
-//           logit("A single var expression? " + expression);
-        var variable = module.getVariable(expression);
+        const variable = module.getVariable(expression);
         if (variable) {
-            result = variable.getValue(module);
-//            perfTimer3.pause();
-            return result;
+            return variable.getValue(module);
         }
     }
-
-
     // Try to find all the variables and replace the expression with the variable values
 
     const foundVars = {};
@@ -761,8 +741,8 @@ function getExpressionValue(expression, module, extraVars, verbose, object, prop
         myArray = /([a-z][a-z0-9]*Var)/gi.exec(replacedExpression);
         if (myArray) {
             for (let i=0; i<myArray.length; i++) {
-                var varName = myArray[i];
-                var variable = module.getVariable(varName);
+                const varName = myArray[i];
+                const variable = module.getVariable(varName);
                 if (variable) {
                     foundVars[variable.id] = variable;
                     const varValue = variable.getValue(module);
@@ -781,19 +761,13 @@ function getExpressionValue(expression, module, extraVars, verbose, object, prop
             }
         }
     } while (myArray != null && replaceSuccess);
-//    logit(JSON.stringify(myArray));
     if (replaceSuccess) {
-//            logit("transformed " + expression + " to " + tempExpr);
         try {
-            var result = eval(replacedExpression);
-//            perfTimer3.pause();
-            return result;
+            return eval(replacedExpression);
         } catch (exc) {
             logit("Error when evaluating " + replacedExpression + " original: " + expression + " exc: " + exc);
         }
     }
-
-
 
     const prv={ };
     function prop(name, def) {
@@ -817,20 +791,15 @@ function getExpressionValue(expression, module, extraVars, verbose, object, prop
     pub["module"] = prop("module", module); // Make the module available
 
     for (const varId in foundVars) {
-        var v = foundVars[varId];
+        const v = foundVars[varId];
         pub[v.id] = prop(v.id, v.getValue(module));
     }
-//    var variables = module.getVariables();
-//    for (let i=0; i<variables.length; i++) {
-//        var v = variables[i];
-//        pub[v.id] = prop(v.id, v.getValue(module));
-//    }
     for (let i=0; i<module.procedures.length; i++) {
-        var v = module.procedures[i];
+        const v = module.procedures[i];
         pub[v.id] = prop(v.id, v.getProcedure(module));
     }
     if (extraVars) {
-        for (var varName in extraVars) {
+        for (const varName in extraVars) {
             pub[varName] = prop(varName, extraVars[varName]);
         }
     }
@@ -841,10 +810,7 @@ function getExpressionValue(expression, module, extraVars, verbose, object, prop
         }
     };
 
-    result = pub.getTheValue();
-//    perfTimer3.pause();
-
-    return result;
+    return pub.getTheValue();
 }
 
 function getValueOrExpressionValue(object, propName, module, extraVars, verbose) {
@@ -878,21 +844,6 @@ function strcmp(a, b) {
     }
     return a.charAt(i) > b.charAt(i) ? -1 : 1;
 }
-
-//function logit(str) {
-//    if (output) {
-//        output.innerHTML += str;
-//    }
-//}
-//
-//function logitRnd(str, prob) {
-//    if (Math.random() < prob) {
-//        if (output) {
-//            output.innerHTML += str;
-//        }
-//    }
-//}
-
 
 function createFilledArray(count, element) {
     const result = [];
@@ -978,7 +929,7 @@ function sortEnumAlphabetically(obj) {
 
     // Need to get all the properties of the object and the current value
     const valuePropNames = {};
-    for (var propName in obj) {
+    for (let propName in obj) {
         const value = obj[propName];
         if (typeof(value) === "number") {
             valuePropNames[value] = propName;
@@ -989,7 +940,7 @@ function sortEnumAlphabetically(obj) {
     const descriptionValues = [];
     for (let i=0; i<values.length; i++) {
         const desc = obj.toString(values[i]);
-        var propName = valuePropNames[values[i]];
+        const propName = valuePropNames[values[i]];
         descriptionValues.push({
             description: desc,
             value: values[i],
