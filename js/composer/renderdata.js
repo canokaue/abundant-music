@@ -12,14 +12,14 @@ class RenderData {
         for (let i = 0; i < this.events.length; i++) {
             const e = this.events[i];
             if (e.renderChannel) {
-                var index = renderChannelIndices[e.renderChannel.id];
+                const index = renderChannelIndices[e.renderChannel.id];
                 if (typeof (index) === 'undefined') {
                     renderChannelIndices[e.renderChannel.id] = renderChannelNames.length;
                     renderChannelNames.push(e.renderChannel.id);
                 }
             }
             if (e.controlChannel) {
-                var index = controlChannelIndices[e.controlChannel.id];
+                const index = controlChannelIndices[e.controlChannel.id];
                 if (typeof (index) === 'undefined') {
                     controlChannelIndices[e.controlChannel.id] = controlChannelNames.length;
                     controlChannelNames.push(e.controlChannel.id);

@@ -222,14 +222,14 @@ class SplitRythmElement extends RythmElement {
             for (let i = 0; i < possibleLengthFractions.length; i++) {
                 const targetFraction = possibleLengthFractions[i];
                 let currentFraction = beatLength;
-                var theDistance = Math.abs(currentFraction - targetFraction);
+                const theDistance = Math.abs(currentFraction - targetFraction);
                 if (theDistance < closestDistance) {
                     closestDistance = theDistance;
                     closestIndex = i;
                 }
                 while (currentFraction < targetFraction) {
                     currentFraction *= 2;
-                    var theDistance = Math.abs(currentFraction - targetFraction);
+                    const theDistance = Math.abs(currentFraction - targetFraction);
                     if (theDistance < closestDistance) {
                         closestDistance = theDistance;
                         closestIndex = i;
@@ -237,7 +237,7 @@ class SplitRythmElement extends RythmElement {
                 }
                 while (currentFraction > targetFraction) {
                     currentFraction /= 2;
-                    var theDistance = Math.abs(currentFraction - targetFraction);
+                    const theDistance = Math.abs(currentFraction - targetFraction);
                     if (theDistance < closestDistance) {
                         closestDistance = theDistance;
                         closestIndex = i;
@@ -271,16 +271,6 @@ class SplitRythmElement extends RythmElement {
             };
         }
         const rythmElements = szc.getSplitBeat(module, [startElement], theNoteCount, theCurve, harmonyElement.tsNumerator, harmonyElement.tsDenominator);
-        //    if (this.verbose) {
-        //        var beatLengths = [];
-        //        for (let i=0; i<rythmElements.length; i++) {
-        //            var e = rythmElements[i];
-        //            beatLengths[i] = positionUnitToBeats(e.length, e.lengthUnit, harmonyElement.tsNumerator, harmonyElement.tsDenominator);
-        //        }
-        //        logit("beat length " + beatLength + " resulted in " + beatLengths.join(", ") + " treated as " + NoteRythmElementLengthType.toString(startElement.lengthType));
-        //        logit("  " + harmonyElement.tsNumerator);
-        //    }
-        //    logit(JSON.stringify(rythmElements));
         return rythmElements;
     }
     setNoteCount(c) {
