@@ -120,8 +120,8 @@ class SequenceHarmonyElement extends HarmonyElement {
                 for (let i = 0; i < Math.max(1, theCount); i++) {
                     tsNumerator = getItemFromArrayWithStartEndItems(4, tsNumerators, theCount, i, this.startTsNumerators, this.endTsNumerators);
                     tsDenominator = getItemFromArrayWithStartEndItems(4, tsDenominators, theCount, i, this.startTsDenominators, this.endTsDenominators);
-                    var length = getItemFromArrayWithStartEndItems(1.0, theLengthPattern, theCount, i, theStartLengthPattern, theEndLengthPattern);
-                    var beatLength = positionUnitToBeats(length, this.lengthPatternUnit, tsNumerator, tsDenominator, null);
+                    const length = getItemFromArrayWithStartEndItems(1.0, theLengthPattern, theCount, i, theStartLengthPattern, theEndLengthPattern);
+                    const beatLength = positionUnitToBeats(length, this.lengthPatternUnit, tsNumerator, tsDenominator, null);
                     beatLength = Math.max(1.0, beatLength);
                     result.push(beatLength);
                 }
@@ -147,10 +147,9 @@ class SequenceHarmonyElement extends HarmonyElement {
             let snapCounter = 0;
 
             while (lengthCounter < result.length) {
-                var length = result[lengthCounter];
+                let length = result[lengthCounter];
                 currentBeat += length;
-                if (currentBeat < currentSnapBeat) {
-                } else {
+                if (currentBeat >= currentSnapBeat) {
                     // Snap to the current snap beat
                     let prevSnapBeat = currentSnapBeat;
                     while (currentSnapBeat < currentBeat) {
