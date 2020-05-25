@@ -505,9 +505,9 @@
     async.iterator = function (tasks) {
         const makeCallback = function (index) {
             class fn {
-                constructor() {
+                constructor(...args) {
                     if (tasks.length) {
-                        tasks[index].apply(null, arguments);
+                        tasks[index].apply(null, args);
                     }
                     return fn.next();
                 }
@@ -601,10 +601,10 @@
                     const task = q.tasks.shift();
                     if(q.empty && q.tasks.length == 0) q.empty();
                     workers += 1;
-                    worker(task.data, function () {
+                    worker(task.data, function(...args) {
                         workers -= 1;
                         if (task.callback) {
-                            task.callback.apply(task, arguments);
+                            task.callback.apply(task, args);
                         }
                         if(q.drain && q.tasks.length + workers == 0) q.drain();
                         q.process();
@@ -680,8 +680,8 @@
     };
 
     async.unmemoize = function (fn) {
-      return function () {
-        return (fn.unmemoized || fn).apply(null, arguments);
+      return function(...args) {
+        return (fn.unmemoized || fn).apply(null, args);
       };
     };
 
