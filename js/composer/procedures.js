@@ -5,7 +5,7 @@ class EditorProcedure {
         this._constructorName = "EditorProcedure";
     }
     getProcedure(module) {
-        return function () { };
+        return () => { };
     }
 }
 

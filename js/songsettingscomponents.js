@@ -1,4 +1,4 @@
-const SongSettingsComponent = (function() {
+const SongSettingsComponent = (() => {
 
     function changeComponentValue(newValue, createdComps, index, tabsId, changeListener) {
         const oldComp = createdComps[index];
@@ -40,7 +40,7 @@ const SongSettingsComponent = (function() {
     function addChangeListener(index, createdComps, changeListener) {
         const comp = createdComps[index];
         const oldValue = comp.object;
-        comp.changeListeners.push(function() {
+        comp.changeListeners.push(() => {
             oldValue.dirty = true;
         });
         if (changeListener) {
@@ -146,30 +146,30 @@ const SongSettingsComponent = (function() {
 
         function addSeedButtonsEventHandlers(child, $clearButton, $randomizeButton, $explicitButton) {
             const propInfo = child.propertyInfo;
-            $clearButton.click(function() {
+            $clearButton.click(() => {
                 clearSeed(child);
             });
-            $randomizeButton.click(function() {
+            $randomizeButton.click(() => {
                 randomizeSeed(child);
             });
             if ($explicitButton) {
-                $explicitButton.click(function() {
+                $explicitButton.click(() => {
                     explicitizeSeed(child);
                 });
             }
         }
 
         function addLikelihoodButtonsEventHandlers(child, $zeroButton, $oneButton) {
-            $zeroButton.click(function() {
+            $zeroButton.click(() => {
                 zeroInput(child);
             });
-            $oneButton.click(function() {
+            $oneButton.click(() => {
                 oneInput(child);
             });
         }
 
         function addButtonValueEventHandler(child, $button, value) {
-            $button.click(function() {
+            $button.click(() => {
                 child.$input.val("" + value);
                 child.setValueVerifyRaw();
             });
@@ -212,7 +212,7 @@ const SongSettingsComponent = (function() {
                     child.$component.append($ctrlSlider);
 
                     function refreshCtrl(toRefresh, $slider) {
-                        return function() {
+                        return () => {
                             const value = clamp((1 / divisions) * $slider.slider("value"), 0, 1);
                             toRefresh.$input.val("" + value);
                             toRefresh.setValueVerifyRaw();
@@ -234,15 +234,13 @@ const SongSettingsComponent = (function() {
                         child.$component.append($valueButton);
                         $valueButton.button();
 
-                        $valueButton.click(
-                            (function() {
-                                const $slider = $ctrlSlider;
-                                const v = value;
-                                return function() {
-                                    $slider.slider("option", "value", clamp(v * divisions, 0, divisions));
-                                }
-                            })()
-                        );
+                        $valueButton.click((() => {
+                            const $slider = $ctrlSlider;
+                            const v = value;
+                            return () => {
+                                $slider.slider("option", "value", clamp(v * divisions, 0, divisions));
+                            };
+                        })());
                     }
 
                 }
@@ -346,19 +344,19 @@ const SongSettingsComponent = (function() {
             const explicitSeedsButtonId = (tabsId + "_explicit_seeds_button_" + index);
 
             if (hasSeeds[index] && addSeeds[index]) {
-                $("#" + clearSeedsButtonId).button().click(function() {
+                $("#" + clearSeedsButtonId).button().click(() => {
                     const seedChildren = getAllSeedChildren(index, createdComps);
                     for (let i=0; i<seedChildren.length; i++) {
                         clearSeed(seedChildren[i]);
                     }
                 });
-                $("#" + randomizeSeedsButtonId).button().click(function() {
+                $("#" + randomizeSeedsButtonId).button().click(() => {
                     const seedChildren = getAllSeedChildren(index, createdComps);
                     for (let i=0; i<seedChildren.length; i++) {
                         randomizeSeed(seedChildren[i]);
                     }
                 });
-                $("#" + explicitSeedsButtonId).button().click(function() {
+                $("#" + explicitSeedsButtonId).button().click(() => {
                     const seedChildren = getAllSeedChildren(index, createdComps);
                     for (let i=0; i<seedChildren.length; i++) {
                         explicitizeSeed(seedChildren[i]);
@@ -367,7 +365,7 @@ const SongSettingsComponent = (function() {
             }
 
             if (presets) {
-                $("#" + saveButtonId).button().click(function() {
+                $("#" + saveButtonId).button().click(() => {
                     let content = "";
                     const idSuggest = uidManager.getNextUniqueId(tabsId + index, tabCaptions[index] + " Sub-Settings ");
                     content += "<div>";
@@ -405,7 +403,7 @@ const SongSettingsComponent = (function() {
                     showModalDialog("Save " + tabCaptions[index] + " Sub-Settings", content, options);
                 });
 
-                $("#" + loadButtonId).button().click(function() {
+                $("#" + loadButtonId).button().click(() => {
 
                     let content = "";
                     content += "<div>";
@@ -449,7 +447,7 @@ const SongSettingsComponent = (function() {
                     showModalDialog("Load " + tabCaptions[index] + " Sub-Settings", content, options);
                 });
 
-                $("#" + manageButtonId).button().click(function() {
+                $("#" + manageButtonId).button().click(() => {
                     let content = "";
                     content += "<div>";
                     content += "<ol class=\"preset-list\" >";
@@ -498,14 +496,14 @@ const SongSettingsComponent = (function() {
                     const $duplicateButton = $dialog.find(".preset-duplicate-button").button();
                     const $deleteButton = $dialog.find(".preset-delete-button").button();
                     $renameButton.click(
-                        function() {
+                        () => {
                             if (selectedList.length == 1) {
                                 logit("Renaming " + selectedList[0]);
                             }
                         }
                     );
                     $deleteButton.click(
-                        function() {
+                        () => {
                             if (presets) {
                                 const preset = presets[index];
                                 for (let i=0; i<selectedList.length; i++) {
@@ -522,7 +520,7 @@ const SongSettingsComponent = (function() {
                     );
                 });
 
-                $("#" + defaultButtonId).button().click(function() {
+                $("#" + defaultButtonId).button().click(() => {
                     const newValue = eval("new " + tabObjects[index]._constructorName + "()");
                     changeComponentValue(newValue, createdComps, index, tabsId, changeListener);
                 });

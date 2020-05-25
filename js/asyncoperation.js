@@ -25,15 +25,15 @@ const WorkerTaskType = {
 class AsyncOperation {
     constructor(options) {
         this.requireLogin = getValueOrDefault(options, "requireLogin", true);
-        this.onDone = getValueOrDefault(options, "onDone", function (op) {
+        this.onDone = getValueOrDefault(options, "onDone", op => {
             //        console.log("No onDone function specified...");
         });
-        this.onFail = getValueOrDefault(options, "onFail", function (op) {
+        this.onFail = getValueOrDefault(options, "onFail", op => {
             //        console.log("No onDone function specified...");
         });
-        this.onCancel = getValueOrDefault(options, "onCancel", function (op) {
+        this.onCancel = getValueOrDefault(options, "onCancel", op => {
         });
-        this.onSuccess = getValueOrDefault(options, "onSuccess", function (op) {
+        this.onSuccess = getValueOrDefault(options, "onSuccess", op => {
         });
         this.id = getValueOrDefault(options, "id", "theId");
         this.caption = getValueOrDefault(options, "caption", "Progress " + this.id + "(" + this.type + ")");
@@ -57,7 +57,7 @@ class AsyncOperation {
     }
     cancel() {
         const that = this;
-        setTimeout(function () {
+        setTimeout(() => {
             that.removeProgress();
         }, this.removeDelay);
         if (this.$progressComp) {
@@ -71,7 +71,7 @@ class AsyncOperation {
     removeProgress(fraction) {
         if (this.$progressComp) {
             const that = this;
-            this.$progressComp.hide("fast", function () {
+            this.$progressComp.hide("fast", () => {
                 that.$progressComp.remove();
             });
         }
@@ -91,7 +91,7 @@ class AsyncOperation {
     }
     success() {
         const that = this;
-        setTimeout(function () {
+        setTimeout(() => {
             that.removeProgress();
         }, that.removeDelay);
         if (that.createProgress) {
@@ -110,7 +110,7 @@ class AsyncOperation {
     }
     fail() {
         const that = this;
-        setTimeout(function () {
+        setTimeout(() => {
             that.removeProgress();
         }, this.removeDelay);
         if (this.$progressComp) {
@@ -150,7 +150,7 @@ class AsyncOperation {
             this.$cancelButton = this.$progressComp.find("#" + cancelButtonId);
             this.$cancelButton.button();
             const that = this;
-            this.$cancelButton.click(function () {
+            this.$cancelButton.click(() => {
                 that.cancel();
             });
         }
@@ -301,13 +301,13 @@ class LoadAudioBuffersAsyncOperation extends LoadSamplesAsyncOperation {
                 const request = new XMLHttpRequest();
                 request.open('GET', url, true);
                 request.responseType = 'arraybuffer';
-                request.onfail = function () {
+                request.onfail = () => {
                     that.fail();
                 };
-                request.onload = function () {
-                    that.audioContext.decodeAudioData(request.response, function (buffer) {
+                request.onload = () => {
+                    that.audioContext.decodeAudioData(request.response, buffer => {
                         addBuffer(buffer, url, index);
-                    }, function () {
+                    }, () => {
                         that.fail();
                     });
                 };
@@ -436,7 +436,7 @@ class AsyncServerChildTask extends AsyncOperation {
                                             "<button id=\"" + removeButtonId + "\">Remove</button>" +
                                             "</div>");
                                         $resultDiv.prepend($theResult);
-                                        $("#" + removeButtonId).button().click(function () {
+                                        $("#" + removeButtonId).button().click(() => {
                                             $("#" + resultDivId).detach();
                                             //                                    logit("dhflks6djf");
                                         });
@@ -561,7 +561,7 @@ class AsyncWorkerTask extends AsyncOperation{
                 padNumberString(date.getUTCSeconds(), 2) + "_" +
                 padNumberString(date.getUTCMilliseconds(), 3);
         }
-        const onWorkerMessage = function (e) {
+        const onWorkerMessage = e => {
             const msg = e.data;
             const type = msg.type;
             if (type) {
@@ -640,10 +640,10 @@ class AsyncWorkerTask extends AsyncOperation{
                                     extraHint +
                                     "</div>");
                                 $resultDiv.prepend($theResult);
-                                $("#" + removeButtonId).button().click(function () {
+                                $("#" + removeButtonId).button().click(() => {
                                     $("#" + resultDivId).detach();
                                 });
-                                $("#" + loadButtonId).button().click(function () {
+                                $("#" + loadButtonId).button().click(() => {
                                     updateSongSettingsComponent(that.content.genInfo, { name: that.content.name, seed: "" + that.content.strSeed });
                                     afterExport(that);
                                 });

@@ -323,7 +323,7 @@ class GuiConstructorInfo {
         this.name = getValueOrDefault(options, "name", "");
         this.text = getValueOrDefault(options, "text", "");
         this.nameIsConstructor = getValueOrDefault(options, "nameIsConstructor", true);
-        this.createValue = getValueOrDefault(options, "createValue", function () { return 0; });
+        this.createValue = getValueOrDefault(options, "createValue", () => { return 0; });
     }
 }
 

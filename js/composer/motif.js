@@ -16,7 +16,7 @@ class Motif {
     }
     toString(options) {
         let result = "{";
-        result += "" + $.map(this.motifElements, function (o, i) {
+        result += "" + $.map(this.motifElements, (o, i) => {
             return o.toString(options);
         });
         result += "}";

@@ -6,14 +6,14 @@
     // global on the server, window in the browser
     const root = this, previous_async = root.async;
 
-    async.noConflict = function () {
+    async.noConflict = () => {
         root.async = previous_async;
         return async;
     };
 
     //// cross-browser compatiblity functions ////
 
-    const _forEach = function (arr, iterator) {
+    const _forEach = (arr, iterator) => {
         if (arr.forEach) {
             return arr.forEach(iterator);
         }
@@ -22,28 +22,28 @@
         }
     };
 
-    const _map = function (arr, iterator) {
+    const _map = (arr, iterator) => {
         if (arr.map) {
             return arr.map(iterator);
         }
         const results = [];
-        _forEach(arr, function (x, i, a) {
+        _forEach(arr, (x, i, a) => {
             results.push(iterator(x, i, a));
         });
         return results;
     };
 
-    const _reduce = function (arr, iterator, memo) {
+    const _reduce = (arr, iterator, memo) => {
         if (arr.reduce) {
             return arr.reduce(iterator, memo);
         }
-        _forEach(arr, function (x, i, a) {
+        _forEach(arr, (x, i, a) => {
             memo = iterator(memo, x, i, a);
         });
         return memo;
     };
 
-    const _keys = function (obj) {
+    const _keys = obj => {
         if (Object.keys) {
             return Object.keys(obj);
         }
@@ -60,7 +60,7 @@
 
     //// nextTick implementation with browser-compatible fallback ////
     if (typeof process === 'undefined' || !(process.nextTick)) {
-        async.nextTick = function (fn) {
+        async.nextTick = fn => {
             setTimeout(fn, 0);
         };
     }
@@ -68,17 +68,17 @@
         async.nextTick = process.nextTick;
     }
 
-    async.forEach = function (arr, iterator, callback) {
-        callback = callback || function () {};
+    async.forEach = (arr, iterator, callback) => {
+        callback = callback || (() => {});
         if (!arr.length) {
             return callback();
         }
         let completed = 0;
-        _forEach(arr, function (x) {
-            iterator(x, function (err) {
+        _forEach(arr, x => {
+            iterator(x, err => {
                 if (err) {
                     callback(err);
-                    callback = function () {};
+                    callback = () => {};
                 }
                 else {
                     completed += 1;
@@ -90,17 +90,17 @@
         });
     };
 
-    async.forEachSeries = function (arr, iterator, callback) {
-        callback = callback || function () {};
+    async.forEachSeries = (arr, iterator, callback) => {
+        callback = callback || (() => {});
         if (!arr.length) {
             return callback();
         }
         let completed = 0;
-        const iterate = function () {
-            iterator(arr[completed], function (err) {
+        const iterate = () => {
+            iterator(arr[completed], err => {
                 if (err) {
                     callback(err);
-                    callback = function () {};
+                    callback = () => {};
                 }
                 else {
                     completed += 1;
@@ -116,8 +116,8 @@
         iterate();
     };
 
-    async.forEachLimit = function (arr, limit, iterator, callback) {
-        callback = callback || function () {};
+    async.forEachLimit = (arr, limit, iterator, callback) => {
+        callback = callback || (() => {});
         if (!arr.length || limit <= 0) {
             return callback();
         }
@@ -133,10 +133,10 @@
             while (running < limit && started < arr.length) {
                 started += 1;
                 running += 1;
-                iterator(arr[started - 1], function (err) {
+                iterator(arr[started - 1], err => {
                     if (err) {
                         callback(err);
-                        callback = function () {};
+                        callback = () => {};
                     }
                     else {
                         completed += 1;
@@ -154,13 +154,13 @@
     };
 
 
-    const doParallel = function (fn) {
+    const doParallel = fn => {
         return function () {
             const args = Array.prototype.slice.call(arguments);
             return fn.apply(null, [async.forEach].concat(args));
         };
     };
-    const doSeries = function (fn) {
+    const doSeries = fn => {
         return function () {
             const args = Array.prototype.slice.call(arguments);
             return fn.apply(null, [async.forEachSeries].concat(args));
@@ -168,17 +168,17 @@
     };
 
 
-    const _asyncMap = function (eachfn, arr, iterator, callback) {
+    const _asyncMap = (eachfn, arr, iterator, callback) => {
         const results = [];
-        arr = _map(arr, function (x, i) {
+        arr = _map(arr, (x, i) => {
             return {index: i, value: x};
         });
-        eachfn(arr, function (x, callback) {
-            iterator(x.value, function (err, v) {
+        eachfn(arr, (x, callback) => {
+            iterator(x.value, (err, v) => {
                 results[x.index] = v;
                 callback(err);
             });
-        }, function (err) {
+        }, err => {
             callback(err, results);
         });
     };
@@ -188,13 +188,13 @@
 
     // reduce only has a series version, as doing reduce in parallel won't
     // work in many situations.
-    async.reduce = function (arr, memo, iterator, callback) {
-        async.forEachSeries(arr, function (x, callback) {
-            iterator(memo, x, function (err, v) {
+    async.reduce = (arr, memo, iterator, callback) => {
+        async.forEachSeries(arr, (x, callback) => {
+            iterator(memo, x, (err, v) => {
                 memo = v;
                 callback(err);
             });
-        }, function (err) {
+        }, err => {
             callback(err, memo);
         });
     };
@@ -203,8 +203,8 @@
     // foldl alias
     async.foldl = async.reduce;
 
-    async.reduceRight = function (arr, memo, iterator, callback) {
-        const reversed = _map(arr, function (x) {
+    async.reduceRight = (arr, memo, iterator, callback) => {
+        const reversed = _map(arr, x => {
             return x;
         }).reverse();
         async.reduce(reversed, memo, iterator, callback);
@@ -212,22 +212,22 @@
     // foldr alias
     async.foldr = async.reduceRight;
 
-    const _filter = function (eachfn, arr, iterator, callback) {
+    const _filter = (eachfn, arr, iterator, callback) => {
         const results = [];
-        arr = _map(arr, function (x, i) {
+        arr = _map(arr, (x, i) => {
             return {index: i, value: x};
         });
-        eachfn(arr, function (x, callback) {
-            iterator(x.value, function (v) {
+        eachfn(arr, (x, callback) => {
+            iterator(x.value, v => {
                 if (v) {
                     results.push(x);
                 }
                 callback();
             });
-        }, function (err) {
-            callback(_map(results.sort(function (a, b) {
+        }, err => {
+            callback(_map(results.sort((a, b) => {
                 return a.index - b.index;
-            }), function (x) {
+            }), x => {
                 return x.value;
             }));
         });
@@ -238,22 +238,22 @@
     async.select = async.filter;
     async.selectSeries = async.filterSeries;
 
-    const _reject = function (eachfn, arr, iterator, callback) {
+    const _reject = (eachfn, arr, iterator, callback) => {
         const results = [];
-        arr = _map(arr, function (x, i) {
+        arr = _map(arr, (x, i) => {
             return {index: i, value: x};
         });
-        eachfn(arr, function (x, callback) {
-            iterator(x.value, function (v) {
+        eachfn(arr, (x, callback) => {
+            iterator(x.value, v => {
                 if (!v) {
                     results.push(x);
                 }
                 callback();
             });
-        }, function (err) {
-            callback(_map(results.sort(function (a, b) {
+        }, err => {
+            callback(_map(results.sort((a, b) => {
                 return a.index - b.index;
-            }), function (x) {
+            }), x => {
                 return x.value;
             }));
         });
@@ -261,59 +261,59 @@
     async.reject = doParallel(_reject);
     async.rejectSeries = doSeries(_reject);
 
-    const _detect = function (eachfn, arr, iterator, main_callback) {
-        eachfn(arr, function (x, callback) {
-            iterator(x, function (result) {
+    const _detect = (eachfn, arr, iterator, main_callback) => {
+        eachfn(arr, (x, callback) => {
+            iterator(x, result => {
                 if (result) {
                     main_callback(x);
-                    main_callback = function () {};
+                    main_callback = () => {};
                 }
                 else {
                     callback();
                 }
             });
-        }, function (err) {
+        }, err => {
             main_callback();
         });
     };
     async.detect = doParallel(_detect);
     async.detectSeries = doSeries(_detect);
 
-    async.some = function (arr, iterator, main_callback) {
-        async.forEach(arr, function (x, callback) {
-            iterator(x, function (v) {
+    async.some = (arr, iterator, main_callback) => {
+        async.forEach(arr, (x, callback) => {
+            iterator(x, v => {
                 if (v) {
                     main_callback(true);
-                    main_callback = function () {};
+                    main_callback = () => {};
                 }
                 callback();
             });
-        }, function (err) {
+        }, err => {
             main_callback(false);
         });
     };
     // any alias
     async.any = async.some;
 
-    async.every = function (arr, iterator, main_callback) {
-        async.forEach(arr, function (x, callback) {
-            iterator(x, function (v) {
+    async.every = (arr, iterator, main_callback) => {
+        async.forEach(arr, (x, callback) => {
+            iterator(x, v => {
                 if (!v) {
                     main_callback(false);
-                    main_callback = function () {};
+                    main_callback = () => {};
                 }
                 callback();
             });
-        }, function (err) {
+        }, err => {
             main_callback(true);
         });
     };
     // all alias
     async.all = async.every;
 
-    async.sortBy = function (arr, iterator, callback) {
-        async.map(arr, function (x, callback) {
-            iterator(x, function (err, criteria) {
+    async.sortBy = (arr, iterator, callback) => {
+        async.map(arr, (x, callback) => {
+            iterator(x, (err, criteria) => {
                 if (err) {
                     callback(err);
                 }
@@ -321,24 +321,24 @@
                     callback(null, {value: x, criteria: criteria});
                 }
             });
-        }, function (err, results) {
+        }, (err, results) => {
             if (err) {
                 return callback(err);
             }
             else {
-                const fn = function (left, right) {
+                const fn = (left, right) => {
                     const a = left.criteria, b = right.criteria;
                     return a < b ? -1 : a > b ? 1 : 0;
                 };
-                callback(null, _map(results.sort(fn), function (x) {
+                callback(null, _map(results.sort(fn), x => {
                     return x.value;
                 }));
             }
         });
     };
 
-    async.auto = function (tasks, callback) {
-        callback = callback || function () {};
+    async.auto = (tasks, callback) => {
+        callback = callback || (() => {});
         const keys = _keys(tasks);
         if (!keys.length) {
             return callback(null);
@@ -347,10 +347,10 @@
         const results = {};
 
         const listeners = [];
-        const addListener = function (fn) {
+        const addListener = fn => {
             listeners.unshift(fn);
         };
-        const removeListener = function (fn) {
+        const removeListener = fn => {
             for (let i = 0; i < listeners.length; i += 1) {
                 if (listeners[i] === fn) {
                     listeners.splice(i, 1);
@@ -358,26 +358,26 @@
                 }
             }
         };
-        const taskComplete = function () {
-            _forEach(listeners.slice(0), function (fn) {
+        const taskComplete = () => {
+            _forEach(listeners.slice(0), fn => {
                 fn();
             });
         };
 
-        addListener(function () {
+        addListener(() => {
             if (_keys(results).length === keys.length) {
                 callback(null, results);
-                callback = function () {};
+                callback = () => {};
             }
         });
 
-        _forEach(keys, function (k) {
+        _forEach(keys, k => {
             const task = (tasks[k] instanceof Function) ? [tasks[k]]: tasks[k];
             const taskCallback = function (err) {
                 if (err) {
                     callback(err);
                     // stop subsequent errors hitting callback multiple times
-                    callback = function () {};
+                    callback = () => {};
                 }
                 else {
                     let args = Array.prototype.slice.call(arguments, 1);
@@ -389,8 +389,8 @@
                 }
             };
             const requires = task.slice(0, Math.abs(task.length - 1)) || [];
-            const ready = function () {
-                return _reduce(requires, function (a, x) {
+            const ready = () => {
+                return _reduce(requires, (a, x) => {
                     return (a && results.hasOwnProperty(x));
                 }, true) && !results.hasOwnProperty(k);
             };
@@ -398,7 +398,7 @@
                 task[task.length - 1](taskCallback, results);
             }
             else {
-                const listener = function () {
+                const listener = () => {
                     if (ready()) {
                         removeListener(listener);
                         task[task.length - 1](taskCallback, results);
@@ -409,16 +409,16 @@
         });
     };
 
-    async.waterfall = function (tasks, callback) {
-        callback = callback || function () {};
+    async.waterfall = (tasks, callback) => {
+        callback = callback || (() => {});
         if (!tasks.length) {
             return callback();
         }
-        const wrapIterator = function (iterator) {
+        const wrapIterator = iterator => {
             return function (err) {
                 if (err) {
                     callback(err);
-                    callback = function () {};
+                    callback = () => {};
                 }
                 else {
                     const args = Array.prototype.slice.call(arguments, 1);
@@ -429,7 +429,7 @@
                     else {
                         args.push(callback);
                     }
-                    async.nextTick(function () {
+                    async.nextTick(() => {
                         iterator.apply(null, args);
                     });
                 }
@@ -438,10 +438,10 @@
         wrapIterator(async.iterator(tasks))();
     };
 
-    async.parallel = function (tasks, callback) {
-        callback = callback || function () {};
+    async.parallel = (tasks, callback) => {
+        callback = callback || (() => {});
         if (tasks.constructor === Array) {
-            async.map(tasks, function (fn, callback) {
+            async.map(tasks, (fn, callback) => {
                 if (fn) {
                     fn(function (err) {
                         let args = Array.prototype.slice.call(arguments, 1);
@@ -455,7 +455,7 @@
         }
         else {
             const results = {};
-            async.forEach(_keys(tasks), function (k, callback) {
+            async.forEach(_keys(tasks), (k, callback) => {
                 tasks[k](function (err) {
                     let args = Array.prototype.slice.call(arguments, 1);
                     if (args.length <= 1) {
@@ -464,16 +464,16 @@
                     results[k] = args;
                     callback(err);
                 });
-            }, function (err) {
+            }, err => {
                 callback(err, results);
             });
         }
     };
 
-    async.series = function (tasks, callback) {
-        callback = callback || function () {};
+    async.series = (tasks, callback) => {
+        callback = callback || (() => {});
         if (tasks.constructor === Array) {
-            async.mapSeries(tasks, function (fn, callback) {
+            async.mapSeries(tasks, (fn, callback) => {
                 if (fn) {
                     fn(function (err) {
                         let args = Array.prototype.slice.call(arguments, 1);
@@ -487,7 +487,7 @@
         }
         else {
             const results = {};
-            async.forEachSeries(_keys(tasks), function (k, callback) {
+            async.forEachSeries(_keys(tasks), (k, callback) => {
                 tasks[k](function (err) {
                     let args = Array.prototype.slice.call(arguments, 1);
                     if (args.length <= 1) {
@@ -496,14 +496,14 @@
                     results[k] = args;
                     callback(err);
                 });
-            }, function (err) {
+            }, err => {
                 callback(err, results);
             });
         }
     };
 
-    async.iterator = function (tasks) {
-        const makeCallback = function (index) {
+    async.iterator = tasks => {
+        const makeCallback = index => {
             class fn {
                 constructor(...args) {
                     if (tasks.length) {
@@ -531,23 +531,23 @@
         };
     };
 
-    const _concat = function (eachfn, arr, fn, callback) {
+    const _concat = (eachfn, arr, fn, callback) => {
         let r = [];
-        eachfn(arr, function (x, cb) {
-            fn(x, function (err, y) {
+        eachfn(arr, (x, cb) => {
+            fn(x, (err, y) => {
                 r = r.concat(y || []);
                 cb(err);
             });
-        }, function (err) {
+        }, err => {
             callback(err, r);
         });
     };
     async.concat = doParallel(_concat);
     async.concatSeries = doSeries(_concat);
 
-    async.whilst = function (test, iterator, callback) {
+    async.whilst = (test, iterator, callback) => {
         if (test()) {
-            iterator(function (err) {
+            iterator(err => {
                 if (err) {
                     return callback(err);
                 }
@@ -559,9 +559,9 @@
         }
     };
 
-    async.until = function (test, iterator, callback) {
+    async.until = (test, iterator, callback) => {
         if (!test()) {
-            iterator(function (err) {
+            iterator(err => {
                 if (err) {
                     return callback(err);
                 }
@@ -573,7 +573,7 @@
         }
     };
 
-    async.queue = function (worker, concurrency) {
+    async.queue = (worker, concurrency) => {
         let workers = 0;
         const q = {
             tasks: [],
@@ -585,7 +585,7 @@
                 if(data.constructor !== Array) {
                     data = [data];
                 }
-                _forEach(data, function(task) {
+                _forEach(data, task => {
                     q.tasks.push({
                         data: task,
                         callback: typeof callback === 'function' ? callback : null
@@ -601,7 +601,7 @@
                     const task = q.tasks.shift();
                     if(q.empty && q.tasks.length == 0) q.empty();
                     workers += 1;
-                    worker(task.data, function(...args) {
+                    worker(task.data, (...args) => {
                         workers -= 1;
                         if (task.callback) {
                             task.callback.apply(task, args);
@@ -621,7 +621,7 @@
         return q;
     };
 
-    const _console_fn = function (name) {
+    const _console_fn = name => {
         return function (fn) {
             const args = Array.prototype.slice.call(arguments, 1);
             fn.apply(null, args.concat([function (err) {
@@ -633,7 +633,7 @@
                         }
                     }
                     else if (console[name]) {
-                        _forEach(args, function (x) {
+                        _forEach(args, x => {
                             console[name](x);
                         });
                     }
@@ -647,12 +647,12 @@
     async.warn = _console_fn('warn');
     async.error = _console_fn('error');*/
 
-    async.memoize = function (fn, hasher) {
+    async.memoize = (fn, hasher) => {
         const memo = {};
         const queues = {};
-        hasher = hasher || function (x) {
+        hasher = hasher || (x => {
             return x;
-        };
+        });
         const memoized = function () {
             const args = Array.prototype.slice.call(arguments);
             const callback = args.pop();
@@ -679,15 +679,15 @@
         return memoized;
     };
 
-    async.unmemoize = function (fn) {
-      return function(...args) {
+    async.unmemoize = fn => {
+      return (...args) => {
         return (fn.unmemoized || fn).apply(null, args);
       };
     };
 
     // AMD / RequireJS
     if (typeof define !== 'undefined' && define.amd) {
-        define('async', [], function () {
+        define('async', [], () => {
             return async;
         });
     }

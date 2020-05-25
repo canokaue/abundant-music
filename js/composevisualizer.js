@@ -74,7 +74,7 @@ class Visualizer3D extends Visualizer {
             this.fractionDragVelY = 0;
             this.currentAngle = 0;
             const that = this;
-            $(document).on("mousemove", function (event) {
+            $(document).on("mousemove", event => {
                 if (that.mouseCanvasDown) {
                     const dx = event.pageX - that.mousePageX;
                     const dy = event.pageY - that.mousePageY;
@@ -84,7 +84,7 @@ class Visualizer3D extends Visualizer {
                 that.mousePageX = event.pageX;
                 that.mousePageY = event.pageY;
             });
-            $(canvas).on("mousemove", function (event) {
+            $(canvas).on("mousemove", event => {
                 if (that.mouseCanvasDown) {
                     that.mouseCanvasDragDx += event.pageX - that.mouseCanvasX;
                     that.mouseCanvasDragDy += event.pageY - that.mouseCanvasY;
@@ -92,10 +92,10 @@ class Visualizer3D extends Visualizer {
                 that.mouseCanvasX = event.pageX;
                 that.mouseCanvasY = event.pageY;
             });
-            $(canvas).on("mousedown", function (event) {
+            $(canvas).on("mousedown", event => {
                 that.mouseCanvasDown = true;
             });
-            $(document).on("mouseup", function (event) {
+            $(document).on("mouseup", event => {
                 that.mouseCanvasDown = false;
             });
             this.clearColor = 0x050510;

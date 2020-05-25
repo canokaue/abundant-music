@@ -372,7 +372,7 @@ class GuiPropertiesComponent extends JQueryComponent {
                 info.componentRegisters = this.componentRegisters;
             }
             const component = this.createComponent(info);
-            component.changeListeners.push(function (c, oldValue, newValue) {
+            component.changeListeners.push((c, oldValue, newValue) => {
                 for (let i = 0; i < that.changeListeners.length; i++) {
                     that.changeListeners[i](that, that.object, that.object);
                 }
@@ -511,7 +511,7 @@ class GuiPropertyComponent extends JQueryComponent{
     addConstructorClickListeners(constructorInfos, func, newMode) {
         const comp = this;
         if (newMode == GuiNewMode.BUTTONS) {
-            $.each(constructorInfos, function (i, constrInfo) {
+            $.each(constructorInfos, (i, constrInfo) => {
                 const $button = comp.$component.find("#" + comp.newButtonIdPrefix + "-" + i);
                 const buttonOptions = {};
                 buttonOptions.label = constrInfo.text;
@@ -519,7 +519,7 @@ class GuiPropertyComponent extends JQueryComponent{
                 buttonOptions.icons = {};
                 buttonOptions.icons["primary"] = "ui-icon-plus";
                 $button.button(buttonOptions);
-                $button.on("click", function () {
+                $button.on("click", () => {
                     func(constrInfo);
                 });
             });
@@ -677,14 +677,14 @@ class GuiPropertyComponent extends JQueryComponent{
             this.$expressionInput.hide();
         }
         const comp = this;
-        this.$expressionInput.on("keydown keypress keyup change", function () {
+        this.$expressionInput.on("keydown keypress keyup change", () => {
             // var newValue = comp.$expressionInput.val();
             // logit("Setting expression to " + newValue + "<br />");
             comp.object[comp.getExpressionPropertyName()] = comp.$expressionInput.val();
         });
         // A hack to make right click pasting work...
-        this.$expressionInput.on("paste", function () {
-            setTimeout(function () {
+        this.$expressionInput.on("paste", () => {
+            setTimeout(() => {
                 comp.object[comp.getExpressionPropertyName()] = comp.$expressionInput.val();
             }, 100);
         });
@@ -701,14 +701,14 @@ class GuiPropertyComponent extends JQueryComponent{
         const $valueRadio = this.$component.find("#" + valueRadioId);
         const $expressionRadio = this.$component.find("#" + expressionRadioId);
         const comp = this;
-        $valueRadio.click(function () {
+        $valueRadio.click(() => {
             if (comp.$expressionInput) {
                 comp.$input.show();
                 comp.$expressionInput.hide();
                 comp.object[comp.getUseExpressionPropertyName()] = false;
             }
         });
-        $expressionRadio.click(function () {
+        $expressionRadio.click(() => {
             if (comp.$expressionInput) {
                 comp.$input.hide();
                 comp.$expressionInput.show();
@@ -867,12 +867,12 @@ class GuiPropertyTextComponent extends GuiPropertyComponent {
         //    logit("label width: " + comp.$label.outerWidth() + " id: " + this.$label.get(0).id + "<br />");
         //    }, 1);
         let comp = this;
-        this.$input.on("keydown keypress keyup change", function () {
+        this.$input.on("keydown keypress keyup change", () => {
             comp.setValueVerifyRaw();
         });
         // A hack to make right click pasting work...
-        this.$input.on("paste", function () {
-            setTimeout(function () {
+        this.$input.on("paste", () => {
+            setTimeout(() => {
                 comp.setValueVerifyRaw();
             }, 100);
         });
@@ -1051,7 +1051,7 @@ class GuiPropertySelectComponent extends GuiPropertySingleOptionComponent {
         //    logit(" setting value to " + value + "<br />");
         this.$input.val("" + value);
         const comp = this;
-        this.$input.on("change", function () {
+        this.$input.on("change", () => {
             comp.setValueVerifyRaw();
             //        logit("changed to " + comp.$input.prop("value"));
         });
@@ -1273,7 +1273,7 @@ class GuiAbstractListComponent extends GuiPropertyComponent {
         this.$list = this.$component.find("#" + this.listId);
         const $listItems = this.$component.find(".object-list-item");
         const list = this.getValue();
-        $listItems.each(function (index, element) {
+        $listItems.each((index, element) => {
             const valueItem = list[index];
             if (typeof (valueItem) === 'undefined') {
                 logit("could not find value for index " + index + " in " + JSON.stringify(list) + " property: " + comp.propertyInfo.propertyName + "<br />");
@@ -1287,7 +1287,7 @@ class GuiAbstractListComponent extends GuiPropertyComponent {
         this.$list.sortable({
             handle: ".vertical-list-item-drag-handle"
         });
-        this.$list.on("sortstop", function (event, ui) {
+        this.$list.on("sortstop", (event, ui) => {
             comp.itemSortStop(event, ui);
         });
         this.$list.selectable({
@@ -1299,7 +1299,7 @@ class GuiAbstractListComponent extends GuiPropertyComponent {
             }
         });
         //    this.$list.on( "selectableunselected", );
-        this.addConstructorClickListeners(this.listInfo.constructorInfos, function (constrInfo) {
+        this.addConstructorClickListeners(this.listInfo.constructorInfos, constrInfo => {
             comp.appendNewItem(constrInfo, comp.propertyInfo);
         }, this.listInfo.newMode);
         //    if (this.listInfo.newMode == GuiNewMode.BUTTONS) {
@@ -1325,7 +1325,7 @@ class GuiAbstractListComponent extends GuiPropertyComponent {
         buttonOptions.icons["primary"] = "ui-icon-trash";
         this.$deleteButton.button(buttonOptions);
         this.$deleteButton.button("disable");
-        this.$deleteButton.click(this, function () {
+        this.$deleteButton.click(this, () => {
             comp.deleteSelectedItems();
         });
         this.$copyButton = this.$component.find("#" + this.copyButtonId);
@@ -1336,7 +1336,7 @@ class GuiAbstractListComponent extends GuiPropertyComponent {
         buttonOptions.icons["primary"] = "ui-icon-copy";
         this.$copyButton.button(buttonOptions);
         this.$copyButton.button("disable");
-        this.$copyButton.click(this, function () {
+        this.$copyButton.click(this, () => {
             comp.copySelectedItems();
         });
     }
@@ -1353,7 +1353,7 @@ class GuiAbstractListComponent extends GuiPropertyComponent {
         this.listItems[$newItem.get(0).id] = $newItem.get(0);
         list.push(newValue);
         const comp = this;
-        $newItem.on("change", function () {
+        $newItem.on("change", () => {
             comp.setValueVerifyRaw();
         });
         this.itemAppended($newItem, newValue);
@@ -1374,7 +1374,7 @@ class GuiAbstractListComponent extends GuiPropertyComponent {
     }
     getSelectedItems() {
         const result = [];
-        $.each(this.selectedListItems, function (key, value) {
+        $.each(this.selectedListItems, (key, value) => {
             if (value.id) {
                 result.push(value);
             }
@@ -1451,7 +1451,7 @@ class GuiAbstractListComponent extends GuiPropertyComponent {
     itemSortStop(event, ui) {
         const newArr = [];
         const comp = this;
-        this.$component.find(".object-list-item").each(function (index, value) {
+        this.$component.find(".object-list-item").each((index, value) => {
             const $item = $(value);
             const valueItem = $item.data("value");
             newArr.push(valueItem);
@@ -1524,7 +1524,7 @@ class GuiPropertySelectListComponent extends GuiAbstractListComponent {
             const $item = this.$component.find("#" + this.id + "-select-" + i);
             $item.val("" + list[i]);
             //        logit("Setting vlaue to " + list[i] + " " + $item.size() + "<br />");
-            $item.on("change", function () {
+            $item.on("change", () => {
                 comp.setValueVerifyRaw(i);
             });
         }
@@ -1537,7 +1537,7 @@ class GuiPropertySelectListComponent extends GuiAbstractListComponent {
         const comp = this;
         const $listItems = this.$component.find(".object-list-item");
         const $selectItems = this.$component.find("." + this.id + "-select");
-        $listItems.each(function (index, element) {
+        $listItems.each((index, element) => {
             const $selectItem = $($selectItems.get(index));
             const itemString = $selectItem.val();
             list[index] = comp.getItemValue(itemString);
@@ -1558,7 +1558,7 @@ class GuiPropertySelectListComponent extends GuiAbstractListComponent {
     changeOption(oldValue, newValue, newDisplayValue) {
         const $theOptions = this.$component.find("option").filter("[value=\"" + oldValue + "\"]");
         // logit("Changing options " + $theOptions.size() + "<br />");
-        $theOptions.each(function (index, element) {
+        $theOptions.each((index, element) => {
             element.innerHTML = newDisplayValue;
             const $theOption = $(element);
             $theOption.val(newValue);
@@ -1568,7 +1568,7 @@ class GuiPropertySelectListComponent extends GuiAbstractListComponent {
     addOption(value, displayValue) {
         const $selectItems = this.$component.find("." + this.id + "-select");
         const comp = this;
-        $selectItems.each(function (index, element) {
+        $selectItems.each((index, element) => {
             const resultArr = [];
             const $selectItem = $(element);
             const optionCount = $selectItem.find("option").size();

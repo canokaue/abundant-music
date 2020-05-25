@@ -220,7 +220,7 @@ function init() {
 
     if (contextFunc) {
         //        audioContext = new contextFunc();
-        $playButton.click(function() {
+        $playButton.click(() => {
             //            logit("Rendering...");
             render();
         });
@@ -228,7 +228,7 @@ function init() {
         logit("Unable to get audio context. This demo probably only works in Chrome and Safari.<br />");
     }
 
-    $visualizeButton.click(function() {
+    $visualizeButton.click(() => {
         visualize();
     });
 
@@ -248,7 +248,7 @@ function logitRnd(str, prob) {
     }
 }
 
-$(document).ready(function() {
+$(document).ready(() => {
     init();
 });
 

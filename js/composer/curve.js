@@ -544,7 +544,7 @@ class ExpressionCurveComputation extends MultiInputCurveComputation{
     }
     createCurveFunction(module, curve) {
         const that = this;
-        return function (input) {
+        return input => {
             return that.getCurveOrConstantValue(module, input, curve, 0);
         };
     }

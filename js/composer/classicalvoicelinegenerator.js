@@ -667,7 +667,7 @@ class ClassicalVoiceLineGenerator extends VoiceLineGenerator {
                 }
             }
             //        logit("costs for index " + i + ": " + costs.join(", ") + "<br />");
-            zeroStepIndices.sort(function (a, b) {
+            zeroStepIndices.sort((a, b) => {
                 return costs[a] - costs[b];
             });
             const maxDomainSize = this.maxDomainSize;

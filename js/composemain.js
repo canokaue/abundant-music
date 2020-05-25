@@ -215,15 +215,15 @@ function afterExport(op) {
             }
         }
 
-        $latestAudioElement.on("play", function() {
+        $latestAudioElement.on("play", () => {
             visualizer.setMode(VisualizerMode.PLAY);
             visualizer.setCurrentPlayBeatTime(0);
             updateExportPlayer();
         });
-        $latestAudioElement.on("pause", function() {
+        $latestAudioElement.on("pause", () => {
             visualizer.setMode(VisualizerMode.PAUSE);
         });
-        $latestAudioElement.on("stop", function() {
+        $latestAudioElement.on("stop", () => {
             visualizer.setMode(VisualizerMode.STOP);
             visualizer.setCurrentPlayBeatTime(0);
         });
@@ -472,7 +472,7 @@ function createExportPanel() {
 //        tabObjectPresets.push(wavClientExportSettingsPresets);
     }
     SongSettingsComponent.createTabs($("#exportDialogDiv"), "exportTab", "export-panel", tabCaptions, tabObjects,
-        function() {
+        () => {
             settingsDirty = true;
         }, tabObjectPresets);
 
@@ -650,7 +650,7 @@ function updateSongInfoPanel() {
 function deleteSong(songIndex, callback) {
 
     showConfirmDialog("Really delete?", "Do you really want to delete the song?", "Yes", "No",
-        function() {
+        () => {
             const deleteRequestData = {songIndex: songIndex};
             const task = new AsyncServerChildTask({
                 taskType: AsyncServerChildTaskType.DELETE_SONG,
@@ -664,7 +664,7 @@ function deleteSong(songIndex, callback) {
                 id: "task" + asyncOperationCounter});
             addAsyncOperation(task);
         },
-        function() {
+        () => {
         });
 }
 
@@ -776,7 +776,7 @@ function loadSong(prefix, songInfo, force) {
                             settingsDirty = true;
                             setSongSettingsDirty(false);
                             if (loggedIn) {
-                                renderSong(function() {
+                                renderSong(() => {
                                     stopSong();
                                 });
                             }
@@ -793,10 +793,10 @@ function loadSong(prefix, songInfo, force) {
 
     if (songSettingsDirty && loggedIn && !force) {
         showConfirmDialog("Load?", "Really load the song? This will overwrite the current song settings", "Yes", "No",
-            function() {
+            () => {
                 loadTheSongNow();
             },
-            function() {
+            () => {
             });
     } else {
         loadTheSongNow();
@@ -848,14 +848,14 @@ function loadMySongsList() {
         const $mySongsDiv = $("#my-songs-tab");
 
         getUserInfo(
-            function(response) {
+            response => {
                 if (response && response.songs) { // onSuccess
                     createSongList(response, $mySongsDiv, urlPrefix, "my-songs", "Song", true, true, true);
                 } else {
                     console.log("Did not get a valid UserInfo from server.");
                 }
             },
-            function(jqXhr, textStatus) { // onFail
+            (jqXhr, textStatus) => { // onFail
                 console.log("Did not get an answer for getUserInfo from server. Text status not success: " + textStatus);
             });
     }
@@ -866,22 +866,22 @@ function loadMySongsList() {
 function createLoadButton(buttonId, songInfo, $targetDiv, urlPrefix) {
     const $loadButton = $targetDiv.find("#" + buttonId);
     $loadButton.button();
-    $loadButton.click(function() {
+    $loadButton.click(() => {
         loadSong(urlPrefix, songInfo);
     });
 }
 function createOverwriteButton(buttonId, songInfo, $targetDiv, urlPrefix) {
     const $owButton = $targetDiv.find("#" + buttonId);
     $owButton.button();
-    $owButton.click(function() {
+    $owButton.click(() => {
         overwriteSong(urlPrefix, songInfo);
     });
 }
 function createDeleteButton(buttonId, songInfos, songInfoIndex, $targetDiv, urlPrefix) {
     const $button = $targetDiv.find("#" + buttonId);
     $button.button();
-    $button.click(function() {
-        deleteSong(songInfoIndex, function() {
+    $button.click(() => {
+        deleteSong(songInfoIndex, () => {
             loadMySongsList();
         });
     });
@@ -889,7 +889,7 @@ function createDeleteButton(buttonId, songInfos, songInfoIndex, $targetDiv, urlP
 function createRenameButton(buttonId, songInfos, songInfoIndex, $targetDiv, urlPrefix) {
     const $button = $targetDiv.find("#" + buttonId);
     $button.button();
-    $button.click(function() {
+    $button.click(() => {
     });
 }
 
@@ -1030,7 +1030,7 @@ function createSongsPanel() {
 
 
 
-    $("#save-song-button").button().click(function() {
+    $("#save-song-button").button().click(() => {
         const seed = getMainSeed();
         const name = songSettings.name;
         const genInfo = getGenInfo();
@@ -1138,7 +1138,7 @@ function createAccountPanel() {
         loggedIn = false;
         const userInfoComp = null;
         getUserInfo(
-            function(response) { // onSuccess
+            response => { // onSuccess
                 if (response._constructorName == "UserInfo") {
                     loggedIn = true;
                     userInfo = response;
@@ -1167,10 +1167,10 @@ function createAccountPanel() {
                     console.log(response);
                 }
             },
-            function(jqXhr, textStatus) { // onFail
+            (jqXhr, textStatus) => { // onFail
                 console.log("Failed to get user info in account panel " + textStatus);
             },
-            function() { // onDone
+            () => { // onDone
                 let html = "<p></p>";
                 if (loggedIn) {
                     html =
@@ -1183,7 +1183,7 @@ function createAccountPanel() {
                             '</form>';
 
                     let userInfoComp = new GuiPropertiesComponent({object: userInfo, propertyInfoProvider: propertyInfoProvider});
-                    userInfoComp.changeListeners.push(function() {
+                    userInfoComp.changeListeners.push(() => {
                         if ($updateUserInfoButton) {
                             $updateUserInfoButton.button("enable");
                         }
@@ -1226,13 +1226,13 @@ function createAccountPanel() {
                 $div.append($html);
 
                 $updateUserInfoButton = $("#updateUserInfoButton");
-                $updateUserInfoButton.button().click(function() {
+                $updateUserInfoButton.button().click(() => {
                     updateUserInfo(true);
                 });
                 $updateUserInfoButton.button("disable");
 
                 const $touButton = $("#touButton");
-                $touButton.button().click(function() {
+                $touButton.button().click(() => {
                     showTermsOfUse();
                 });
 
@@ -1309,7 +1309,7 @@ function createPlayerPanel() {
         const tabObjectPresets = null; // [visualizer3DSettingsPresets];
 
         const result = SongSettingsComponent.createTabs($playerDialog, "playerSettingsTab", "player-settings-panel", tabCaptions, tabObjects,
-            function(comp, oldValue, newValue) {
+            (comp, oldValue, newValue) => {
                 settingsDirty = true;
             }, tabObjectPresets);
 
@@ -1332,7 +1332,7 @@ function createVisualizerSettingsPanel() {
     const id = "visualizerSettingsTab";
     const cls = "visualizer-settings-panel";
     SongSettingsComponent.createTabs($("#visualizerSettingsDialogDiv"), id, cls, tabCaptions, tabObjects,
-        function(comp, oldValue, newValue) {
+        (comp, oldValue, newValue) => {
             settingsDirty = true;
         }, tabObjectPresets);
 
@@ -1347,7 +1347,7 @@ function createSongSettingsPanel() {
     const createSeeds = [false, true, true, true, false, false, false];
     const tabsId = "songSettingsTab";
     return SongSettingsComponent.createTabs($songSettingsDialog, tabsId, "settings-panel", tabCaptions, tabObjects,
-        function(comp, oldValue, newValue) {
+        (comp, oldValue, newValue) => {
             settingsDirty = true;
             setSongSettingsDirty(true);
             if (getFirstRunningServerTaskWithType(AsyncServerChildTaskType.RENDER)) {
@@ -1433,24 +1433,24 @@ function createDialogAndToggle(dialog, caption, width, at) {
         }
     }
 
-    $dialogWidget.on("mousedown", function() {
+    $dialogWidget.on("mousedown", () => {
         makeFullyVisible();
         $dialog.dialog("moveToTop");
         $dialog.data("dragging", true);
     });
 
-    $dialogWidget.on("mouseup", function() {
+    $dialogWidget.on("mouseup", () => {
         makeFullyVisible();
         $dialog.data("dragging", false);
     });
 
-    $dialogWidget.on("mouseenter", function() {
+    $dialogWidget.on("mouseenter", () => {
         if (visualizer && !visualizer.mouseCanvasDown) {
             makeFullyVisible();
 //            $dialog.removeClass("very-transparent");
         }
     });
-    $dialogWidget.on("mouseleave", function() {
+    $dialogWidget.on("mouseleave", () => {
         if (themeSettings.transparentDialogs && !$dialog.data("dragging")) {
             $dialogWidget.addClass("transparent");
             $dialog.addClass("very-transparent");
@@ -1458,7 +1458,7 @@ function createDialogAndToggle(dialog, caption, width, at) {
         }
     });
 
-    $dialog.on("dialogclose", function() {
+    $dialog.on("dialogclose", () => {
 //            console.log("Closing...");
         $toggle[0].checked = false;
         $toggle.button("refresh");
@@ -1476,7 +1476,7 @@ function createDialogAndToggle(dialog, caption, width, at) {
 //        $dialog.css("min-height", "500px");
 //        $dialog.dialog("option", "maxHeight", 500);
 //        $dialog.dialog("option", "minHeight", 400);
-    $dialog.on("dialogopen", function() {
+    $dialog.on("dialogopen", () => {
 //                   console.log("Opening...");
         editorSettings[dialog + "Visible"] = true;
         editorSettings.dirty = true;
@@ -1725,7 +1725,7 @@ function composeSetup1() {
 //    visualizer.render();
 
 
-    $window.on("resize", function() {
+    $window.on("resize", () => {
         setVisualizerSize();
         visualizer.render();
     });
@@ -1768,7 +1768,7 @@ function composeSetup4() {
         $feedbackDialogDiv.empty();
         $feedbackDialogDiv.append("Log in to enable feedback. Thanks!");
     } else {
-        $feedbackDialogDiv.find("#submitFeedbackButton").button().click(function() {
+        $feedbackDialogDiv.find("#submitFeedbackButton").button().click(() => {
             sendFeedback();
             $feedbackDialogDiv.find("#feedbackTextArea").val("");
         });
@@ -1802,16 +1802,16 @@ function composeSetup4() {
             }
         }
     );
-    $refreshButton.click(function() {
+    $refreshButton.click(() => {
         if (songSettingsDirty) {
             $refreshButton.button("option", "disabled", true);
             renderSong(
-                function() { // On done
+                () => { // On done
                 },
-                function() { // On cancel
+                () => { // On cancel
                     $refreshButton.button("option", "disabled", false);
                 },
-                function() { // On fail
+                () => { // On fail
                     $refreshButton.button("option", "disabled", false);
                 }
             );
@@ -1873,11 +1873,11 @@ function composeSetup4() {
             $playButton.button( "option", "icons", {primary: "ui-icon-pause"});
         }
         audioPlayer.getReadyForPlay(
-            function() {
+            () => {
                 $playButton.button("option", "disabled", false);
                 doPlay();
             },
-            function() { // cancel
+            () => { // cancel
                 $playButton.button("option", "disabled", false);
             }
         );
@@ -1905,20 +1905,20 @@ function composeSetup4() {
     }
 
 
-    $playButton.click(function() {
+    $playButton.click(() => {
         if (audioPlayer && audioPlayer.mode == AudioPlayerMode.PLAY) {
             pauseSong();
         } else {
             $playButton.button("option", "disabled", true);
             if (songSettingsDirty) {
                 renderSong(
-                    function() { // On done
+                    () => { // On done
                         playSong();
                     },
-                    function() { // On cancel
+                    () => { // On cancel
                         $playButton.button("option", "disabled", false);
                     },
-                    function() { // On fail
+                    () => { // On fail
                         logit("kljd");
                         $playButton.button("option", "disabled", false);
                     }
@@ -1930,15 +1930,15 @@ function composeSetup4() {
         }
     });
 
-    $stopButton.click(function() {
+    $stopButton.click(() => {
         stopSong();
     });
 
-    $forwardButton.click(function() {
+    $forwardButton.click(() => {
         stepForward();
     });
 
-    $rewindButton.click(function() {
+    $rewindButton.click(() => {
         rewind();
     });
 

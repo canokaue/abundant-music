@@ -70,7 +70,7 @@ class CurvePreviewComponent extends PreviewComponent{
         const $viewButton = this.$component.find("#" + this.id + "-set-view-button");
         $updateButton.button();
         $viewButton.button();
-        $updateButton.on("click", function () {
+        $updateButton.on("click", () => {
             comp.paintPreview();
         });
         this.canvas = $canvas.get(0);
@@ -159,21 +159,21 @@ class PianoRollPreviewComponent extends PreviewComponent {
         if (this.addUpdateButton) {
             const $updateButton = this.$component.find("#" + this.id + "-update-button");
             $updateButton.button();
-            $updateButton.on("click", function () {
+            $updateButton.on("click", () => {
                 comp.paintPreview();
             });
         }
         if (this.addPlayButton) {
             const $playButton = this.$component.find("#" + this.id + "-play-button");
             $playButton.button();
-            $playButton.on("click", function () {
+            $playButton.on("click", () => {
                 comp.playPreview();
             });
         }
         if (this.addStopButton) {
             const $stopButton = this.$component.find("#" + this.id + "-stop-button");
             $stopButton.button();
-            $stopButton.on("click", function () {
+            $stopButton.on("click", () => {
                 comp.stopPreview();
             });
         }

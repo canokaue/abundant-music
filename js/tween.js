@@ -10,7 +10,7 @@
  * @author egraether / http://egraether.com/
  */
 
-const TWEEN = ( function () {
+const TWEEN = (() => {
 
     let _tweens = [];
 
@@ -78,7 +78,7 @@ const TWEEN = ( function () {
 
     };
 
-} )();
+})();
 
 TWEEN.Tween = function ( object ) {
 
@@ -206,7 +206,7 @@ TWEEN.Tween = function ( object ) {
 
     };
 
-    this.update = function ( time ) {
+    this.update = time => {
 
         if ( time < _startTime ) {
 
@@ -621,11 +621,11 @@ TWEEN.Interpolation = {
 
         },
 
-        Factorial: ( function () {
+        Factorial: (() => {
 
             const a = [ 1 ];
 
-            return function ( n ) {
+            return n => {
 
                 let s = 1, i;
                 if ( a[ n ] ) return a[ n ];
@@ -634,7 +634,7 @@ TWEEN.Interpolation = {
 
             };
 
-        } )(),
+        })(),
 
         CatmullRom: function ( p0, p1, p2, p3, t ) {
 

@@ -465,7 +465,7 @@ class ProcedureButtonComponent extends GuiPropertyComponent {
         const propertyInfo = this.propertyInfo;
         const object = this.object;
         const comp = this;
-        this.$component.on("click", function () {
+        this.$component.on("click", () => {
             const procInfo = propertyInfo.procedureInfo;
             let args = [];
             let targetObject = null;
@@ -560,7 +560,7 @@ class GuiObjectComponent extends GuiPropertyComponent {
         this.$details = this.$component.find("#" + this.detailsId);
         const objectInfo = this.propertyInfo.objectInfo;
         const comp = this;
-        this.addConstructorClickListeners(objectInfo.constructorInfos, function (constrInfo) {
+        this.addConstructorClickListeners(objectInfo.constructorInfos, constrInfo => {
             //        logit("Creating " + constrInfo.text + "<br />");
             const newValue = comp.createNewValue(constrInfo, comp.propertyInfo);
             comp.setValueVerify(newValue);

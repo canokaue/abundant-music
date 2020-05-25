@@ -14,10 +14,10 @@
 
 /*! @source http://purl.eligrey.com/github/BlobBuilder.js/blob/master/BlobBuilder.js */
 
-const BlobBuilder = BlobBuilder || self.WebKitBlobBuilder || self.MozBlobBuilder || self.MSBlobBuilder || (function(view) {
+const BlobBuilder = BlobBuilder || self.WebKitBlobBuilder || self.MozBlobBuilder || self.MSBlobBuilder || (view => {
     "use strict";
 
-    const get_class = function(object) {
+    const get_class = object => {
       return Object.prototype.toString.call(object).match(/^\[object\s(.*)\]$/)[1];
   };
 
@@ -60,7 +60,7 @@ const BlobBuilder = BlobBuilder || self.WebKitBlobBuilder || self.MozBlobBuilder
     const atob = view.atob;
     let can_apply_typed_arrays = false;
 
-    const can_apply_typed_arrays_test = function(pass) {
+    const can_apply_typed_arrays_test = pass => {
             can_apply_typed_arrays = !pass;
         };
 
@@ -78,7 +78,7 @@ const BlobBuilder = BlobBuilder || self.WebKitBlobBuilder || self.MozBlobBuilder
     if (!realURL.createObjectURL) {
         URL = view.URL = {};
     }
-    URL.createObjectURL = function(blob) {
+    URL.createObjectURL = blob => {
         let type = blob.type, data_URI_header;
         if (type === null) {
             type = "application/octet-stream";
@@ -98,7 +98,7 @@ const BlobBuilder = BlobBuilder || self.WebKitBlobBuilder || self.MozBlobBuilder
             return real_create_object_url.call(realURL, blob);
         }
     };
-    URL.revokeObjectURL = function(object_url) {
+    URL.revokeObjectURL = object_url => {
         if (object_url.substring(0, 5) !== "data:" && real_revoke_object_url) {
             real_revoke_object_url.call(realURL, object_url);
         }
@@ -148,7 +148,7 @@ const BlobBuilder = BlobBuilder || self.WebKitBlobBuilder || self.MozBlobBuilder
         }
         return new FakeBlob(this.data.join(""), type, "raw");
     };
-    FBB_proto.toString = function() {
+    FBB_proto.toString = () => {
         return "[object BlobBuilder]";
     };
     FB_proto.slice = function(start, end, type) {
@@ -162,9 +162,9 @@ const BlobBuilder = BlobBuilder || self.WebKitBlobBuilder || self.MozBlobBuilder
             , this.encoding
         );
     };
-    FB_proto.toString = function() {
+    FB_proto.toString = () => {
         return "[object Blob]";
     };
     return FakeBlobBuilder;
-}(self));
+})(self);
 

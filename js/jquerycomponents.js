@@ -142,7 +142,7 @@ class JQueryButton extends JQueryComponent {
     }
     buttonClick(event) {
         const button = event.data;
-        $.each(button.clickListeners, function (key, value) {
+        $.each(button.clickListeners, (key, value) => {
             //        logit("bc data " + value.data + "<br />");
             value.clicked(value.data);
         });

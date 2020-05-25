@@ -1,5 +1,5 @@
 
-const Midi = (function() {
+const Midi = (() => {
 
 
     const MessageStatus = {

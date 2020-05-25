@@ -127,7 +127,7 @@ function render(data, progressMultiplier) {
             structure.references.length = maxSections;
         }
         const sectionTimes = [];
-        structure.renderBatch(state, function(progress) {
+        structure.renderBatch(state, progress => {
             sectionTimes.push(state.sectionTime);
             that.postMessage({type: "progressReport", progress: progress * progressMultiplier});
         });
@@ -148,7 +148,7 @@ function render(data, progressMultiplier) {
 }
 
 
-self.addEventListener('message', function(e) {
+self.addEventListener('message', e => {
 
     try {
 
@@ -203,7 +203,7 @@ self.addEventListener('message', function(e) {
                                 // Render wav and send the buffer first
                                 const options = {sampleFreq: 44100, channels: 2};
                                 const synth = new MidiSynth(options);
-                                const floatResult = synth.synthesizeBatch(result.midiData, function(progress) {
+                                const floatResult = synth.synthesizeBatch(result.midiData, progress => {
                                     that.postMessage({type: "progressReport", progress: 0.5 + 0.5 * progress});
                                 });
 

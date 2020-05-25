@@ -70,7 +70,7 @@ class GuiObjectListComponent extends GuiAbstractListComponent {
                     componentRegisters: propInfo.componentRegisters
                 });
                 const that = this;
-                newComponent.changeListeners.push(function (c, oldValue, newValue) {
+                newComponent.changeListeners.push((c, oldValue, newValue) => {
                     that.callChangeListeners();
                     const items = that.getSelectedItems();
                     for (let i = 0; i < items.length; i++) {

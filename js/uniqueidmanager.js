@@ -77,7 +77,7 @@ class UniqueIdManager {
         if (typeof idInfos.get(newId) === 'undefined') {
             idInfos.set(newId, owner);
             //        logit("addUniqueId() called in uid manager. Listeners: " + this.getListeners(namespace) + "<br />");
-            $.each(this.getListeners(namespace), function (key, value) {
+            $.each(this.getListeners(namespace), (key, value) => {
                 //            logit("Calling listener for id added in uid manager<br />");
                 value.uniqueIdAdded(owner, namespace, newId);
             });
@@ -94,7 +94,7 @@ class UniqueIdManager {
         if (idInfos) {
             idInfos.delete(oldId);
             idInfos.set(newId, owner);
-            $.each(this.getListeners(namespace), function (key, value) {
+            $.each(this.getListeners(namespace), (key, value) => {
                 value.uniqueIdChanged(owner, namespace, oldId, newId);
             });
         }
@@ -114,7 +114,7 @@ class UniqueIdManager {
             }
             else {
                 idInfos.delete(id);
-                $.each(this.getListeners(namespace), function (key, value) {
+                $.each(this.getListeners(namespace), (key, value) => {
                     value.uniqueIdRemoved(owner, namespace, id);
                 });
             }

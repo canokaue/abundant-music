@@ -74,7 +74,7 @@ class SoundManager2Player extends AudioPlayer{
         this.playingVoices.push(voice);
         const delaySeconds = Math.max(0, onTime - this.getContextTime());
         //    logit("delay " + delaySeconds);
-        voice.timeout = setTimeout(function () {
+        voice.timeout = setTimeout(() => {
             //        audioElement.stop();
             //        audioElement.currentTime = 0;
             audioElement.play({ volume: Math.round(clamp(volMult * 100, 0, 100)) });
