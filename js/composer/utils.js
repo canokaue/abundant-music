@@ -30,7 +30,7 @@ function hash(a) {
 function hashCode(str){
     let hash = 0;
     if (str.length == 0) return hash;
-    for (i = 0; i < str.length; i++) {
+    for (let i = 0; i < str.length; i++) {
         const ch = str.charCodeAt(i);
         hash = ((hash<<5)-hash)+ch;
         hash = hash & hash; // Convert to 32bit integer
@@ -40,7 +40,7 @@ function hashCode(str){
 
 function djb2Code(str){
     let hash = 5381;
-    for (i = 0; i < str.length; i++) {
+    for (let i = 0; i < str.length; i++) {
         const ch = str.charCodeAt(i);
         hash = ((hash << 5) + hash) + ch; /* hash * 33 + c */
     }
@@ -50,7 +50,7 @@ function djb2Code(str){
 
 function sdbmCode(str){
     let hash = 0;
-    for (i = 0; i < str.length; i++) {
+    for (let i = 0; i < str.length; i++) {
         const ch = str.charCodeAt(i);
         hash = ch + (hash << 6) + (hash << 16) - hash;
     }
@@ -59,7 +59,7 @@ function sdbmCode(str){
 
 function loseCode(str){
     let hash = 0;
-    for (i = 0; i < str.length; i++) {
+    for (let i = 0; i < str.length; i++) {
         const ch = str.charCodeAt(i);
         hash += ch;
     }
@@ -98,8 +98,6 @@ function setEquals(set1, set2) {
     return false;
 }
 
-
-
 function arrayCopy(arr) {
     if (arr) {
         const result = [];
@@ -134,8 +132,6 @@ function array2dCopy(arr) {
     return null;
 }
 
-
-
 function addAll(arr1, arr2) {
     if (arr2 && arr1) {
         for (let i=0; i<arr2.length; i++) {
@@ -143,7 +139,6 @@ function addAll(arr1, arr2) {
         }
     }
 }
-
 
 function positiveMod(a, b) {
     let result;
@@ -154,7 +149,6 @@ function positiveMod(a, b) {
     }
     return result;
 }
-
 
 function getObjectWithId(id, arr) {
     for (let i=0; i<arr.length; i++) {

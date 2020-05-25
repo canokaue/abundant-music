@@ -1,5 +1,7 @@
 
-function MidiSynthSource(sampleFreq, bufferLen) {
-    this.sampleFreq = sampleFreq;
-    this.bufferLen = bufferLen;
-};
+class MidiSynthSource {
+    constructor(sampleFreq, bufferLen) {
+        this.sampleFreq = sampleFreq;
+        this.bufferLen = bufferLen;
+    }
+}

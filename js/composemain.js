@@ -930,10 +930,6 @@ function createSongList(info, $targetDiv, urlPrefix, idPrefix, namePrefix, creat
             const deleteButtonId = idPrefix + "-delete-song-button-" + i;
             tableContent += '<button id="' + deleteButtonId + '" >Delete</button>';
         }
-//        if (createOverwrite) {
-//            var owButtonId = idPrefix + "-overwrite-song-button-" + i;
-//            liContent += '<button id="' + owButtonId + '" >Overwrite</button>';
-//        }
         if (createRename) {
             const renameButtonId = idPrefix + "-rename-song-button-" + i;
             tableContent += '<button id="' + renameButtonId + '" >Rename</button>';
@@ -1093,12 +1089,14 @@ function createSongsPanel() {
 
 }
 
-function UserInfo() {
-    this.name = "";
-    this.email = "";
-    this.subscribe = false;
-    this.acceptedTOU = false;
-    this._constructorName = "UserInfo";
+class UserInfo {
+    constructor() {
+        this.name = "";
+        this.email = "";
+        this.subscribe = false;
+        this.acceptedTOU = false;
+        this._constructorName = "UserInfo";
+    }
 }
 
 function sendSimpleCommand(data) {
@@ -1137,8 +1135,6 @@ let $updateUserInfoButton = null;
 function createAccountPanel() {
 
     if (lightServerMode) {
-
-    } else {
         loggedIn = false;
         const userInfoComp = null;
         getUserInfo(
@@ -1185,7 +1181,6 @@ function createAccountPanel() {
                             '</div>' +
                             '</fieldset>' +
                             '</form>';
-//                html += userInfo.name + " " + userInfo.email;
 
                     let userInfoComp = new GuiPropertiesComponent({object: userInfo, propertyInfoProvider: propertyInfoProvider});
                     userInfoComp.changeListeners.push(function() {
@@ -1236,7 +1231,7 @@ function createAccountPanel() {
                 });
                 $updateUserInfoButton.button("disable");
 
-                $touButton = $("#touButton");
+                const $touButton = $("#touButton");
                 $touButton.button().click(function() {
                     showTermsOfUse();
                 });
@@ -1670,7 +1665,7 @@ function setVisualizerSize() {
         h = $document.innerWidth();
     }
     if (first) {
-        $body = $("body");
+        const $body = $("body");
         const scaler = clamp(Math.min(w, h) / 1000, 0.5, 2);
         const fontSize = 16 * scaler;
         $body.css("font-size", fontSize + "px");
