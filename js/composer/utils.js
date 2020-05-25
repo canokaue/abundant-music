@@ -151,12 +151,12 @@ function positiveMod(a, b) {
 }
 
 function getObjectWithId(id, arr) {
-    for (let i=0; i<arr.length; i++) {
-        const obj = arr[i];
+    for (const obj of arr) {
         if (obj.id == id) {
             return obj;
         }
     }
+
     return null;
 }
 
@@ -621,7 +621,7 @@ function copyObjectPropertiesDeep(copy, source, options) {
 }
 
 
-const isValidFunctionName = function() {
+const isValidFunctionName = (() => {
     const validName = /^[$A-Z_][0-9A-Z_$]*$/i;
     const reserved = {
         'abstract':true,
@@ -629,11 +629,9 @@ const isValidFunctionName = function() {
         // ...
         'with':true
     };
-    return function(s) {
-        // Ensure a valid name and not reserved.
-        return validName.test(s) && !reserved[s];
-    };
-}();
+    return s => // Ensure a valid name and not reserved.
+    validName.test(s) && !reserved[s];
+})();
 
 
 function copyObjectDeep(obj, options) {
@@ -788,10 +786,11 @@ function getExpressionValue(expression, module, extraVars, verbose, object, prop
         const v = foundVars[varId];
         pub[v.id] = prop(v.id, v.getValue(module));
     }
-    for (let i=0; i<module.procedures.length; i++) {
-        const v = module.procedures[i];
+
+    for (const v of module.procedures) {
         pub[v.id] = prop(v.id, v.getProcedure(module));
     }
+
     if (extraVars) {
         for (const varName in extraVars) {
             pub[varName] = prop(varName, extraVars[varName]);
@@ -908,7 +907,7 @@ function snapMidiTicks(beatStep, beatTicks) {
 
 function addPossibleValuesFunction(obj, from, to) {
     obj.possibleValues = null;
-    obj.getPossibleValues = function() {
+    obj.getPossibleValues = () => {
         if (!obj.possibleValues) {
             obj.possibleValues = [];
             for (let i=from; i<=to; i++) {
@@ -941,9 +940,7 @@ function sortEnumAlphabetically(obj) {
             propName: propName
         });
     }
-    descriptionValues.sort(function(v1, v2) {
-        return strcmp(v2.description, v1.description);
-    });
+    descriptionValues.sort((v1, v2) => strcmp(v2.description, v1.description));
 
     for (let i=0; i<descriptionValues.length; i++) {
         const dv = descriptionValues[i];
@@ -966,12 +963,13 @@ function stringStartsWith(str, prefix) {
 function userToDirName(user) {
     const oldUser = user;
     const strs = ["http://www.", "https://www."];
-    for (let i=0; i<strs.length; i++) {
-        const str = strs[i];
+
+    for (const str of strs) {
         if (user.indexOf(str) == 0) {
             user = user.substring(str.length);
         }
     }
+
     const temp = user;
     const result = temp.replace(/[^a-zA-Z\d_]/g, "_");
     return result;
@@ -1044,14 +1042,13 @@ function validateValueWithSafeValue(testValue, safeValue, allowedTypes, defaultA
     const wasValid = true;
 
     if (isArray(testValue)) {
-
         if (!isArray(safeValue)) {
             return false;
         }
 
         let arrayOk = true;
-        for (let i=0; i<testValue.length; i++) {
-            const val = testValue[i];
+
+        for (const val of testValue) {
             const typeValid = validateArrayValue(val, allowedTypes, defaultAllowedArrayTypes, correct);
             if (!typeValid) {
                 logit("Type not valid in array " + val + " " + typeof(val) + " " + allowedTypes);
@@ -1059,6 +1056,7 @@ function validateValueWithSafeValue(testValue, safeValue, allowedTypes, defaultA
                 break;
             }
         }
+
         if (!arrayOk) {
             if (correct) {
                 testValue.length = 0; // Just nuke the whole array
@@ -1067,7 +1065,6 @@ function validateValueWithSafeValue(testValue, safeValue, allowedTypes, defaultA
                 return false;
             }
         }
-
     } else if (testType == 'object') {
         for (const prop in testValue) {
             const oldValue = safeValue[prop];
