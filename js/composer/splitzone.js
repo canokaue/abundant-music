@@ -365,7 +365,7 @@ class SplitZoneCollection {
         const applicable = [];
         for (let i = 0; i < this.zones.length; i++) {
             const z = this.zones[i];
-            var applications = applicationMap.get(z);
+            let applications = applicationMap.get(z);
             if (typeof (applications) === 'undefined') {
                 applications = 0;
                 applicationMap.set(z, applications);
@@ -400,20 +400,9 @@ class SplitZoneCollection {
                     // No need to sample
                     zone = applicable[0];
                 }
-                var applications = applicationMap.get(zone);
-                applications++;
-                applicationMap.set(zone, applications);
+                const applications = applicationMap.get(zone);
+                applicationMap.set(zone, applications + 1);
                 const splitStrategy = getValueOrExpressionValue(zone, "splitStrategy", module);
-                //            function getBeatLengths(arr) {
-                //                var result = [];
-                //                for (var k =0; k<arr.length; k++) {
-                //                    result[k] = arr[k].length;
-                //                }
-                //                return result;
-                //            }
-                //            if (zone.verbose) {
-                //                logit(" split zone using " + splitStrategy + " on " + getBeatLengths(input).join(", "));
-                //            }
                 result = this.split(splitStrategy, zone.dottedSplitStrategy, zone.tripletSplitStrategy, minLengthTicks, bestSplitIndex, input, zone.velocityMultipliers, zone.dottedVelocityMultipliers, zone.tripletVelocityMultipliers, numerator, denominator);
             }
             else {
