@@ -57,13 +57,13 @@ class MidiSynthADSREnvelope extends MidiSynthEnvelope{
         const releaseBufLen = this.releaseBufLen;
         const sustainLevel = this.sustainLevel;
         const ampScale = this.ampScale;
-        var value = 0;
+        let value = 0;
         if (this.releaseBufferIndex > 0) {
             const releaseBufferIndex = this.releaseBufferIndex;
             const releaseValue = this.releaseValue;
             for (let i = 0; i < len; i++) {
                 const diffT = bufferIndex - releaseBufferIndex;
-                var k = -releaseValue / releaseBufLen;
+                const k = -releaseValue / releaseBufLen;
                 value = k * diffT + releaseValue;
                 if (value < 0) {
                     value = 0;
@@ -75,12 +75,12 @@ class MidiSynthADSREnvelope extends MidiSynthEnvelope{
         }
         else {
             for (let i = 0; i < len; i++) {
-                var value = 0;
+                value = 0;
                 if (bufferIndex < attackBufLen) {
                     value = bufferIndex / attackBufLen;
                 }
                 else if (bufferIndex < attackBufLen + decayBufLen) {
-                    var k = -(1 - sustainLevel) / decayBufLen;
+                    const k = -(1 - sustainLevel) / decayBufLen;
                     value = 1 + k * (bufferIndex - attackBufLen);
                 }
                 else {

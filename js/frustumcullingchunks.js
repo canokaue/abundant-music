@@ -34,7 +34,7 @@ class FrustumCullingChunks {
         planes[3].set(me3 - me1, me7 - me5, me11 - me9, me15 - me13);
         planes[4].set(me3 - me2, me7 - me6, me11 - me10, me15 - me14);
         planes[5].set(me3 + me2, me7 + me6, me11 + me10, me15 + me14);
-        for (var i = 0; i < 6; i++) {
+        for (let i = 0; i < 6; i++) {
             plane = planes[i];
             plane.divideScalar(Math.sqrt(plane.x * plane.x + plane.y * plane.y + plane.z * plane.z));
         }

@@ -9,8 +9,6 @@ class MidiSynth {
         this.instruments = [];
     }
     synthesizeBatch(midiData, progressFunc) {
-        //    logit(midiData);
-        //    var midiEvents = midiData.tracks[0];
         const events = midiData.midiTracks[0].trackEvents;
         const midiDivisions = midiData.midiDivisions;
         const controlFreq = 200; // Hz
@@ -30,8 +28,8 @@ class MidiSynth {
         let tempTick = 0;
         let tempSeconds = 0;
         for (let i = 0; i < events.length; i++) {
-            var e = events[i];
-            var eventMessage = e.eventMessage;
+            const e = events[i];
+            const eventMessage = e.eventMessage;
             if (eventMessage.messageClass == "SetTempoMessage") {
                 if (tempTick == 0) {
                     // The initial tempo
@@ -76,7 +74,7 @@ class MidiSynth {
             let nextMicrosPerQuarter = currentMicrosPerQuarter;
             // Take care of midi messages
             for (let i = midiDataIndex; i < events.length; i++) {
-                var e = events[i];
+                const e = events[i];
                 const eventTime = e.eventTime;
                 const stepSeconds = secondsPerMidiTick * eventTime;
                 if (stepSeconds + currentMidiTickSeconds < nextBufferTimeSeconds) {
@@ -84,7 +82,7 @@ class MidiSynth {
                     currentMidiTick += eventTime;
                     currentMidiTickSeconds += stepSeconds;
                     midiDataIndex = i + 1;
-                    var eventMessage = e.eventMessage;
+                    const eventMessage = e.eventMessage;
                     // Handle midi message here
                     switch (eventMessage.messageClass) {
                         case "ChannelMessage":
@@ -118,8 +116,8 @@ class MidiSynth {
                                     let oldestVoice = null;
                                     let minTime = currentMidiTickSeconds + 100;
                                     //                                logit("Should remove note " + eventMessage.data1 + " on channel " + eventMessage.channel + " minTime " + minTime);
-                                    for (var j = 0; j < this.voices.length; j++) {
-                                        var v = this.voices[j];
+                                    for (let j = 0; j < this.voices.length; j++) {
+                                        const v = this.voices[j];
                                         if (v.mode == MidiSynthVoiceMode.ON &&
                                             v.channel == eventMessage.channel &&
                                             v.note == eventMessage.data1) {
@@ -167,7 +165,7 @@ class MidiSynth {
                 const voiceBufArr = channelBuffers[voice.channel];
                 if (!dirtyChannelBuffers[voice.channel]) {
                     // Writing for the first time this bufLength step
-                    for (var j = 0; j < this.channels; j++) {
+                    for (let j = 0; j < this.channels; j++) {
                         voiceBufArr[j] = createFilledArray(bufferLen, 0);
                     }
                 }
@@ -189,9 +187,9 @@ class MidiSynth {
             for (let i = 0; i < channelBuffers.length; i++) {
                 if (dirtyChannelBuffers[i]) {
                     const cBuf = channelBuffers[i];
-                    for (var j = 0; j < this.channels; j++) {
-                        var buf = cBuf[j];
-                        for (var k = 0; k < buf.length; k++) {
+                    for (let j = 0; j < this.channels; j++) {
+                        const buf = cBuf[j];
+                        for (let k = 0; k < buf.length; k++) {
                             mixerBuffer[j][k] += buf[k];
                         }
                     }
@@ -202,9 +200,9 @@ class MidiSynth {
             // Write to result buffer
             const toWriteLen = Math.min(bufferLen, bufferLenLeft);
             for (let i = 0; i < this.channels; i++) {
-                var buf = mixerBuffer[i];
+                const buf = mixerBuffer[i];
                 const resultBuf = result[i];
-                for (var j = 0; j < toWriteLen; j++) {
+                for (let j = 0; j < toWriteLen; j++) {
                     resultBuf[j + bufferIndex] = buf[j];
                 }
             }
@@ -224,7 +222,7 @@ class MidiSynth {
         if (this.voices.length > 0) {
             logit("Voice count after finish: " + this.voices.length);
             for (let i = 0; i < this.voices.length; i++) {
-                var v = this.voices[i];
+                const v = this.voices[i];
                 logit(" voice " + i + ": " + v.mode);
             }
         }
@@ -232,10 +230,10 @@ class MidiSynth {
         // Find the max value
         let absMax = 0;
         let maxIndex = 0;
-        for (var j = 0; j < this.channels; j++) {
-            var buf = result[j];
+        for (let j = 0; j < this.channels; j++) {
+            const buf = result[j];
             buf.length = totalBufferLen;
-            for (var k = 0; k < buf.length; k++) {
+            for (let k = 0; k < buf.length; k++) {
                 const test = Math.abs(buf[k]);
                 if (test > absMax) {
                     absMax = test;
@@ -247,31 +245,15 @@ class MidiSynth {
         const newMax = 0.95;
         const multiplier = newMax * (absMax > 0.001 ? 1 / absMax : 1);
         if (multiplier != newMax) {
-            for (var j = 0; j < this.channels; j++) {
-                var buf = result[j];
-                for (var k = 0; k < buf.length; k++) {
+            for (let j = 0; j < this.channels; j++) {
+                const buf = result[j];
+                for (let k = 0; k < buf.length; k++) {
                     buf[k] *= multiplier;
                 }
             }
         }
         logit("Normalize multiplier: " + multiplier + " max: " + absMax + " at " + maxIndex);
         logit("Final buffer lengths " + result[0].length);
-        //    var testEnv = new MidiSynthADSREnvelope(100, 100);
-        //    var testBuf = createFilledArray(100, 0);
-        //    testEnv.writeEnvelope(testBuf, 0, 100, this);
-        //
-        //    logit("Test env output: " + JSON.stringify(testBuf));
-        //    var sampleCount = this.sampleFreq;
-        //
-        //    var freqFactor = (2 * Math.PI) / this.sampleFreq;
-        //
-        //    for (var j=0; j<this.channels; j++) {
-        //        var arr = result[j];
-        //        for (let i=0; i<sampleCount; i++) {
-        //            arr[i] = Math.sin(freqFactor * i * 440 * (j + 1));
-        //        }
-        //    }
-        //    logit(result);
         return result;
     }
 }
