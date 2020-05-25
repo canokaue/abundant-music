@@ -942,6 +942,8 @@ function createPercussionMotifInfos(grooveCount, fillCount, result, genData, gen
             {data: "remove", likelihood: 1}
         ];
 
+        const defaultStrength = 0.8;
+
         const posShift = sampleData(posShiftRndInfos, rnd);
 
         const operations = sampleNData(rndInfos, pertubations, rnd);
@@ -1040,14 +1042,14 @@ function createPercussionMotifInfos(grooveCount, fillCount, result, genData, gen
         return result;
     }
 
-
     const renderAmountRangeRndInfos = [
         {data: [0.0, 0.2], likelihood: 10},
         {data: [0.2, 0.4], likelihood: 8},
         {data: [0.4, 0.7], likelihood: 3},
         {data: [0.7, 1.0], likelihood: 1}];
 
-
+    const defaultStrength = 0.8;
+    const divisorCheck = 16;
 
     function getBooleanFromPattern(pattern, index, def) {
         if (pattern.length > 0) {
@@ -1057,10 +1059,7 @@ function createPercussionMotifInfos(grooveCount, fillCount, result, genData, gen
     }
 
     for (let i=0; i<grooveCount; i++) {
-        var info = {};
-//        var infos = sampleData(typeInfos, rnd);
-//        info.predefinedType = sampleData(infos, rnd);
-
+        const info = {};
         const renderAmountRangeRndInfosCopy = copyValueDeep(renderAmountRangeRndInfos);
 
         const rideRange = sampleNDataWithoutReplacement(renderAmountRangeRndInfosCopy, 1, motifRnd, true)[0];
@@ -1107,10 +1106,6 @@ function createPercussionMotifInfos(grooveCount, fillCount, result, genData, gen
         info.densityAmplitude = 0.3 * rythmRnd.random();
         info.densityFrequency = 1 + Math.ceil(rythmRnd.random() * 3);
         info.densitySeed = rythmRnd.genrand_int31();
-
-        var defaultStrength = 0.8;
-
-        var divisorCheck = 16;
 
         function createAmountExpressionFromRange(prefix, range, rnd) {
             const amount = range[0] + rnd.random() * (range[1] - range[0]);
@@ -1196,10 +1191,7 @@ function createPercussionMotifInfos(grooveCount, fillCount, result, genData, gen
                 {data: [0, 1, 2, 0], likelihood: 1},
                 {data: [0, 1, 2, 1], likelihood: 1}
             ];
-//            rnd.random();
-
-
-            var pattern = sampleData(patternInfos, motifRnd);
+            let pattern = sampleData(patternInfos, motifRnd);
 
             pattern = assignIndices(pattern, rideNotes.length);
             zoneInfo.noteIndexPattern = [];
@@ -4163,7 +4155,7 @@ function createPhraseGroupInfo(rnd, genInfo, module) {
         let groupModulationTarget = -1;
 
         let partGroupHarmonyElementIndices = [];
-        var modifiers = [];
+        let modifiers = [];
 
         if (typeof(partInfo) == 'object') {
             strengthStr = partInfo.strength;
@@ -4429,22 +4421,11 @@ function createPhraseGroupInfo(rnd, genInfo, module) {
                         });
                     }
 
-//                        ["harmonyMajorModulationTargetVar", "" + phraseInfo.majorModulationTarget],
-//                        ["harmonyMinorModulationTargetVar", "" + phraseInfo.minorModulationTarget],
-
-
-//                    result.addPropertyInfo(this.createDefaultBooleanPropertyInfo("overrideMajorModulationTarget", "Override major modulation/tonicization target", false));
-//                    result.addPropertyInfo(this.createEnumPropertyInfo("majorModulationTarget", "Major modulation/tonicization target", DynamicHarmonyModulationTarget.DOMINANT, DynamicHarmonyModulationTarget));
-//                    result.addPropertyInfo(this.createDefaultBooleanPropertyInfo("overrideMinorModulationTarget", "Override minor modulation/tonicization target", false));
-//                    result.addPropertyInfo(this.createEnumPropertyInfo("minorModulationTarget", "Minor modulation/tonicization target", DynamicHarmonyModulationTarget.DOMINANT, DynamicHarmonyModulationTarget));
-
-
                     modifiers[j] = modArr;
                 }
             })(partInfo);
 
             if (noMelody) {
-//                logit("Adding no melody part");
                 modifiers[j].push(function(mods) {
                     setMod("melodyRenderAmountVar", "0", mods);
                 });
@@ -4541,7 +4522,7 @@ function createPhraseGroupInfo(rnd, genInfo, module) {
         const index = groupPattern[i];
         let groupType = groupTypeMap[index];
 
-        var modifiers = modifierFunctions[i];
+        let modifiers = modifierFunctions[i];
 
         const harmonyIndices = groupHarmonyElementIndices[i];
 
@@ -4942,10 +4923,6 @@ function checkConstraints(propIndex, ssInfo, pgInfo, domains, depth, groupSameAr
                           withinSameGroupIndices, withinDifferentGroupIndices) {
     let wrongCount = 0;
 
-//    var thisValue = domains[depth][0];
-
-//    logit("Current domain: " + JSON.stringify(domains[depth]) + " depth: " + depth + " groupIndex: " + ssInfo.groupIndices[depth]);
-
     const currentGroupIndex = ssInfo.groupIndices[depth];
     const currentIndicesForGroup = ssInfo.indicesForGroups[currentGroupIndex];
 
@@ -4959,18 +4936,16 @@ function checkConstraints(propIndex, ssInfo, pgInfo, domains, depth, groupSameAr
             // Only check the constraints when we are at the end of the group, then we know that all values have been set in both groups
             if (lastInGroup) {
                 for (let i=0; i<groupSames.length; i++) {
-                    var otherGroupIndex = groupSames[i];
+                    const otherGroupIndex = groupSames[i];
                     if (otherGroupIndex < currentGroupIndex) {
-                        var otherIndicesForGroup = ssInfo.indicesForGroups[otherGroupIndex];
+                        const otherIndicesForGroup = ssInfo.indicesForGroups[otherGroupIndex];
 
                         // We know that we have values for the other group since the group index is lower
 
                         for (let j=0; j<Math.min(currentIndicesForGroup.length, otherIndicesForGroup.length); j++) {
-                            var currentIndex = currentIndicesForGroup[j];
-                            var otherIndex = otherIndicesForGroup[j];
+                            const currentIndex = currentIndicesForGroup[j];
+                            const otherIndex = otherIndicesForGroup[j];
                             if (domains[currentIndex][0] != domains[otherIndex][0]) {
-//                                logit("Need to backtrack because the domains for indices " + currentIndicesForGroup.join(",") + " must be same as for " + otherIndicesForGroup.join(",") );
-//                            logit("Need to backtrack because domains[" + currentIndex + "][0] was different from domains[" + otherIndex + "][0]");
                                 wrongCount++; // We need to backtrack
                             }
                         }
@@ -4987,16 +4962,16 @@ function checkConstraints(propIndex, ssInfo, pgInfo, domains, depth, groupSameAr
             // Only check the constraints when we are at the end of the group, then we know that all values have been set in both groups
             if (lastInGroup) {
                 for (let i=0; i<groupDifferents.length; i++) {
-                    var otherGroupIndex = groupDifferents[i];
+                    const otherGroupIndex = groupDifferents[i];
                     if (otherGroupIndex < currentGroupIndex) {
-                        var otherIndicesForGroup = ssInfo.indicesForGroups[otherGroupIndex];
+                        const otherIndicesForGroup = ssInfo.indicesForGroups[otherGroupIndex];
 
                         // We know that we have values for the other group since the group index is lower
 
-                        var allSame = true;
+                        let allSame = true;
                         for (let j=0; j<Math.min(currentIndicesForGroup.length, otherIndicesForGroup.length); j++) {
-                            var currentIndex = currentIndicesForGroup[j];
-                            var otherIndex = otherIndicesForGroup[j];
+                            const currentIndex = currentIndicesForGroup[j];
+                            const otherIndex = otherIndicesForGroup[j];
                             if (domains[currentIndex][0] != domains[otherIndex][0]) {
                                 allSame = false; // At least one difference, it is OK!
                             }
@@ -5014,20 +4989,19 @@ function checkConstraints(propIndex, ssInfo, pgInfo, domains, depth, groupSameAr
     if (lastInGroup) {
         if (arrayContains(withinSameGroupIndices, currentGroupIndex)) {
             // The group should have the same
-            var startIndex = currentIndicesForGroup[0];
-            var value = domains[startIndex][0];
+            const startIndex = currentIndicesForGroup[0];
+            const value = domains[startIndex][0];
             for (let i=1; i<currentIndicesForGroup.length; i++) {
                 if (domains[currentIndicesForGroup[i]][0] != value) {
-//                    logit("Need to backtrack because not same within group " + currentIndicesForGroup.join(", "));
                     wrongCount++; // Not all same within group
                 }
             }
         }
         if (arrayContains(withinDifferentGroupIndices, currentGroupIndex)) {
             // The group should have the same
-            var startIndex = currentIndicesForGroup[0];
-            var value = domains[startIndex][0];
-            var allSame = true;
+            const startIndex = currentIndicesForGroup[0];
+            const value = domains[startIndex][0];
+            let allSame = true;
             for (let i=1; i<currentIndicesForGroup.length; i++) {
                 if (domains[currentIndicesForGroup[i]][0] != value) {
                     allSame = false; // Not all same within group
@@ -5100,7 +5074,7 @@ function assignPropertyIndexArray(propIndex, ssInfo, pgInfo, rnd) {
         const searchInfo = {expansions: 0, maxExpansions: maxExpansions, bestSolution: null, bestSolutionCost: 1, currentSolutionCost: 0};
 
         const propCount = pgInfo.propertyNameCounts[propIndex];
-        var propName = propCount[0];
+        const propName = propCount[0];
         const domainSize = propCount[1];
 
         // logit("assigning array for " + propName + " domain size: " + domainSize);
@@ -5115,7 +5089,7 @@ function assignPropertyIndexArray(propIndex, ssInfo, pgInfo, rnd) {
         const groupSames = [];
         for (let i=0; i<pgInfo.groupSameInfos.length; i++) {
             const groupSameInfo = pgInfo.groupSameInfos[i];
-            var arr = [];
+            const arr = [];
             if (arrayContains(groupSameInfo.properties, propIndex)) {
                 addAll(arr, groupSameInfo.groupIndices);
                 groupSames.push(arr);
@@ -5124,7 +5098,7 @@ function assignPropertyIndexArray(propIndex, ssInfo, pgInfo, rnd) {
         const groupDifferents = [];
         for (let i=0; i<pgInfo.groupDifferentInfos.length; i++) {
             const groupDifferentInfo = pgInfo.groupDifferentInfos[i];
-            var arr = [];
+            const arr = [];
             if (arrayContains(groupDifferentInfo.properties, propIndex)) {
                 addAll(arr, groupDifferentInfo.groupIndices);
                 groupDifferents.push(arr);
@@ -5145,13 +5119,9 @@ function assignPropertyIndexArray(propIndex, ssInfo, pgInfo, rnd) {
             }
         }
 
-//    logit("Group sames: " + JSON.stringify(groupSames));
-//    logit("Group diff: " + JSON.stringify(groupDifferents));
-
         const resultDomains = assignPropertyIndexArrayRec(propIndex, ssInfo, pgInfo, domains, 0, groupSames, groupDifferents,
             withinSameGroupIndices, withinDifferentGroupIndices, searchInfo);
         if (searchInfo.bestSolution) {
-//            logit("Found solution for " + propName + " " + searchInfo.bestSolutionCost + " expansions: " + searchInfo.expansions);
             for (let i=0; i<resultDomains.length; i++) {
                 const value = resultDomains[i][0];
                 ssInfo[propName][i] = value;
@@ -5159,8 +5129,6 @@ function assignPropertyIndexArray(propIndex, ssInfo, pgInfo, rnd) {
             found = true;
         } else {
             maxExpansions *= 2;
-            found = false;
-//            logit("Failed, testing with " + maxExpansions);
         }
     }
     if (!found) {
@@ -5191,8 +5159,8 @@ function assignPropertyIndexArrays(ssInfo, pgInfo, rnd, genInfo) {
                     for (let k=0; k<sameArr.length; k++) {
                         const otherIndex = sameArr[k];
                         if (otherIndex != i) {
-                            var propCount = pgInfo.propertyNameCounts[i];
-                            var propName = propCount[0];
+                            const propCount = pgInfo.propertyNameCounts[i];
+                            const propName = propCount[0];
                             const otherPropCount = pgInfo.propertyNameCounts[otherIndex];
                             const otherPropName = otherPropCount[0];
                             ssInfo[otherPropName] = copyValueDeep(ssInfo[propName]);
@@ -5210,8 +5178,8 @@ function assignPropertyIndexArrays(ssInfo, pgInfo, rnd, genInfo) {
 
     // Overriding indices
     for (let i=0; i<pgInfo.propertyNameCounts.length; i++) {
-        var propCount = pgInfo.propertyNameCounts[i];
-        var propName = propCount[0];
+        const propCount = pgInfo.propertyNameCounts[i];
+        const propName = propCount[0];
         const indexOverridePropName = propName.substring(0, propName.indexOf("Indices")) + "IndexOverride";
 
 //        logit("p: " + indexOverridePropName);
@@ -5265,6 +5233,8 @@ function getPhraseTypesFromGroupType(groupType, phraseTypes, custom) {
             phraseTypes.push(PhraseHarmonyElementType.COMPLETE);
             break;
         case SimpleModuleGeneratorPhraseGroupType.DOUBLE_CUSTOM_HARMONY:
+        case SimpleModuleGeneratorPhraseGroupType.COMPLETE_PLUS_PHRASE_MODULATE:
+        case SimpleModuleGeneratorPhraseGroupType.COMPLETE_PLUS_COMPLETE_DIFFERENT_SCALE_TYPE:
             phraseTypes.push(PhraseHarmonyElementType.COMPLETE);
             phraseTypes.push(PhraseHarmonyElementType.COMPLETE);
             break;
@@ -5328,11 +5298,8 @@ function getPhraseTypesFromGroupType(groupType, phraseTypes, custom) {
             phraseTypes.push(PhraseHarmonyElementType.COMPLETE_IMPERFECT);
             break;
         case SimpleModuleGeneratorPhraseGroupType.MODULATE_PLUS_COMPLETE:
-            phraseTypes.push(PhraseHarmonyElementType.COMPLETE_MODULATE);
-            phraseTypes.push(PhraseHarmonyElementType.COMPLETE);
-            break;
         case SimpleModuleGeneratorPhraseGroupType.TONICIZE_PLUS_COMPLETE:
-            phraseTypes.push(PhraseHarmonyElementType.COMPLETE_MODULATE);
+                phraseTypes.push(PhraseHarmonyElementType.COMPLETE_MODULATE);
             phraseTypes.push(PhraseHarmonyElementType.COMPLETE);
             break;
         case SimpleModuleGeneratorPhraseGroupType.TONICIZE_PLUS_TONICIZE:
@@ -5348,19 +5315,12 @@ function getPhraseTypesFromGroupType(groupType, phraseTypes, custom) {
             phraseTypes.push(PhraseHarmonyElementType.COMPLETE_IMPERFECT);
             phraseTypes.push(PhraseHarmonyElementType.COMPLETE_MODULATE);
             break;
-        case SimpleModuleGeneratorPhraseGroupType.COMPLETE_PLUS_PHRASE_MODULATE:
-            phraseTypes.push(PhraseHarmonyElementType.COMPLETE);
-            phraseTypes.push(PhraseHarmonyElementType.COMPLETE);
-            break;
         case SimpleModuleGeneratorPhraseGroupType.INCOMPLETE_PLUS_MODULATE:
             phraseTypes.push(PhraseHarmonyElementType.INCOMPLETE);
             phraseTypes.push(PhraseHarmonyElementType.COMPLETE_MODULATE);
             break;
-        case SimpleModuleGeneratorPhraseGroupType.COMPLETE_PLUS_COMPLETE_DIFFERENT_SCALE_TYPE:
-            phraseTypes.push(PhraseHarmonyElementType.COMPLETE);
-            phraseTypes.push(PhraseHarmonyElementType.COMPLETE);
-            break;
         case SimpleModuleGeneratorPhraseGroupType.ANTECEDENT_CONSEQUENT:
+        case SimpleModuleGeneratorPhraseGroupType.INCOMPLETE_PLUS_COMPLETE:
             phraseTypes.push(PhraseHarmonyElementType.INCOMPLETE);
             phraseTypes.push(PhraseHarmonyElementType.COMPLETE);
             break;
@@ -5370,10 +5330,6 @@ function getPhraseTypesFromGroupType(groupType, phraseTypes, custom) {
             break;
         case SimpleModuleGeneratorPhraseGroupType.COMPLETE_PLUS_COMPLETE:
             phraseTypes.push(PhraseHarmonyElementType.COMPLETE_IMPERFECT);
-            phraseTypes.push(PhraseHarmonyElementType.COMPLETE);
-            break;
-        case SimpleModuleGeneratorPhraseGroupType.INCOMPLETE_PLUS_COMPLETE:
-            phraseTypes.push(PhraseHarmonyElementType.INCOMPLETE);
             phraseTypes.push(PhraseHarmonyElementType.COMPLETE);
             break;
         case SimpleModuleGeneratorPhraseGroupType.INCOMPLETE_PLUS_COMPLETE_IMPERFECT:
@@ -5514,7 +5470,6 @@ function createSongStructureInfo(rnd, genInfo, module) {
         const harmonyElementIndices = phraseGroupInfo.groupHarmonyElementIndices[i];
         const majorModulationTarget = phraseGroupInfo.groupMajorModulationTargets[i];
         const minorModulationTarget = phraseGroupInfo.groupMinorModulationTargets[i];
-        const invertScaleType = phraseGroupInfo.groupModulationInvertScaleTypes[i];
         const modifierFunctionArr = phraseGroupInfo.groupModifierFunctions[i];
         const numerator = phraseGroupInfo.groupNumerators[i];
         const isConnectGroup = phraseGroupInfo.isConnectGroups[i];
@@ -5533,7 +5488,6 @@ function createSongStructureInfo(rnd, genInfo, module) {
         const renderAmounts = createFilledArray(4, renderAmount);
         const renderAmountSeeds = createFilledArray(4, renderAmountSeed);
         const numerators = createFilledArray(4, numerator);
-//        var songPartTypes = createFilledArray(4, phraseGroupInfo.songPartTypes);
 
 
         function updateScaleForModulation(modIndex, keepScale, invertModulation, phraseModulate) {
@@ -5927,7 +5881,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
 
     for (let i=0; i<genData.percussionMotifInfos.length; i++) {
 
-        var info = genData.percussionMotifInfos[i];
+        const info = genData.percussionMotifInfos[i];
 
         let percussionMotif = null;
         if (typeof(info.predefinedType) != 'undefined') {
@@ -6027,7 +5981,6 @@ function createTestModule(seed, inputGenInfo, resultObj) {
 
 
     const harmony1 = new ConstantHarmonicRythm([dhe1, che1, che2]);
-    //    var harmony1 = new ConstantHarmonicRythm([staticHarmonyElement, new DynamicSequenceHarmonyElement().setCount(4)]);
     harmony1.id = "harmony1";
 
 
@@ -6298,7 +6251,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
 
     if (genInfo.exportChordsToNewChannel) {
 //        logit("Exporting to new channel");
-        var chordsRenderChannel = new RenderChannel();
+        const chordsRenderChannel = new RenderChannel();
         chordsRenderChannel.id = "chordsRenderChannel";
         module.renderChannels.push(chordsRenderChannel);
 
@@ -6347,7 +6300,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
     createHintCurvesIfNecessary(genData.melodyShapeInfos);
     createHintCurvesIfNecessary(genData.bassShapeInfos);
 
-    var controlChannels = {};
+    const controlChannels = {};
 
     // Creates the default type of control line used for velocities, effects and tempo
     function createControlLineAndChannel(options) {
@@ -6407,14 +6360,13 @@ function createTestModule(seed, inputGenInfo, resultObj) {
 
         // Create the elements
         switch (type) {
-            case "sequential":
-
+            case "sequential": {
                 const startIndicesExpression = getValueOrDefault(desc, "startIndicesExpression", "");
                 const startIndices = getValueOrDefault(desc, "startIndices", []);
                 const endIndicesExpression = getValueOrDefault(desc, "endIndicesExpression", "");
                 const endIndices = getValueOrDefault(desc, "endIndices", []);
 
-                var msce = new MultiStepControlElement();
+                const msce = new MultiStepControlElement();
                 if (multiStepVerbose) {
                     msce.verbose = true;
                 }
@@ -6445,9 +6397,9 @@ function createTestModule(seed, inputGenInfo, resultObj) {
                     logit("Adding element " + JSON.stringify(msce))
                 }
                 break;
-            case "parallel":
-
-                var msce = new MultiParallelControlElement();
+            }
+            case "parallel": {
+                const msce = new MultiParallelControlElement();
                 if (multiStepVerbose) {
                     msce.verbose = true;
                 }
@@ -6467,6 +6419,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
                     logit("Adding element " + JSON.stringify(msce))
                 }
                 break;
+            }
             default:
                 logit("Missing type in effect description");
                 break;
@@ -6871,7 +6824,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
     }
 
 
-    var allMotifIds = [];
+    const allMotifIds = [];
 
     for (let i=0; i<genData.motifInfos.length; i++) {
         const prefix = "melody";
@@ -6880,9 +6833,6 @@ function createTestModule(seed, inputGenInfo, resultObj) {
         module.addMotif(motif);
         allMotifIds.push(motif.id);
     }
-
-    const bassStartIndex = genData.bassStartIndex;
-    const harmonyStartIndex = genData.harmonyStartIndex;
 
     const melodyPan = 20;
     const bassPan = 110;
@@ -6917,8 +6867,6 @@ function createTestModule(seed, inputGenInfo, resultObj) {
     endPercIndexMotifPatternVar.value = [0];
     module.addVariable(endPercIndexMotifPatternVar);
 
-
-
     const percMRE = new FlexiblePercussionMotifRenderElement();
     percMRE.verbose = true;
     percMRE.activatedUseExpression = true;
@@ -6929,8 +6877,6 @@ function createTestModule(seed, inputGenInfo, resultObj) {
     percMRE.endMotifIndicesUseExpression = true;
     percMRE.endMotifIndicesExpression = endPercIndexMotifPatternVar.id;
     percMRE.indexedMotifs = copyValueDeep(allPercMotifs);
-
-
 
     const percussionPsre = new PhraseStructureRenderElement();
     percussionPsre.verbose = true;
@@ -6968,13 +6914,11 @@ function createTestModule(seed, inputGenInfo, resultObj) {
     sequentialTempoChangeEndIndicesVar.id = "sequentialTempoChangeEndIndicesVar";
     module.addVariable(sequentialTempoChangeEndIndicesVar);
 
-
-
     // Tempo patterns
     const sequentialTempoElements = [];
     const sequentialTempoCurves = [];
     for (let i=0; i<genData.sequentialTempoChangeInfos.length; i++) {
-        var info = genData.sequentialTempoChangeInfos[i];
+        const info = genData.sequentialTempoChangeInfos[i];
         sequentialTempoElements.push(info.element);
         sequentialTempoCurves.push(info.curve);
     }
@@ -6986,12 +6930,8 @@ function createTestModule(seed, inputGenInfo, resultObj) {
         startIndicesExpression: sequentialTempoChangeStartIndicesVar.id,
         endIndicesExpression: sequentialTempoChangeEndIndicesVar.id
     };
-//    logit("phrase tempo desc: " + JSON.stringify(phraseTempoDesc));
     createControlLineFromDescription(sequentialTempoDesc,
         {
-//            verbose: true,
-//            multiStepVerbose: true,
-//            elementsVerbose: true,
             channelId: tempoChannel.id,
             controlWriteMode: ControlChannelControlWriteMode.NONE
         });
@@ -7000,7 +6940,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
     const parallelTempoElements = [];
     const parallelTempoCurves = [];
     for (let i=0; i<genData.parallelTempoChangeInfos.length; i++) {
-        var info = genData.parallelTempoChangeInfos[i];
+        const info = genData.parallelTempoChangeInfos[i];
         parallelTempoElements.push(info.element);
         parallelTempoCurves.push(info.curve);
         if (info.variables) {
@@ -7015,12 +6955,8 @@ function createTestModule(seed, inputGenInfo, resultObj) {
         type: "parallel",
         indicesExpression: parallelTempoChangeIndicesVar.id
     };
-//    logit("phrase tempo desc: " + JSON.stringify(phraseTempoDesc));
     const tempoControlLine = createControlLineFromDescription(parallelTempoDesc,
         {
-//            verbose: true,
-//            multiStepVerbose: true,
-//            elementsVerbose: true,
             channelId: tempoChannel.id,
             controlWriteMode: ControlChannelControlWriteMode.NONE
         });
@@ -7048,19 +6984,14 @@ function createTestModule(seed, inputGenInfo, resultObj) {
     measureVelocityCurve.xValuesExpression = "[0, 1, 2, 3, 3.99]";
     measureVelocityCurve.yValuesExpression = "[1.0, 0.9, 0.95, 0.85, 0.85]";
 
-
-
     const sectionVelocityCurve = new ComputationCurve();
     sectionVelocityCurve.id = "sectionVelocityCurve";
     module.addCurve(sectionVelocityCurve);
     const modCompute = new PeriodicCurveComputation();
-//    modCompute.verbose = true;
     modCompute.inputCurve = measureVelocityCurve.id;
     modCompute.periodUseExpression = true;
     modCompute.periodExpression = numeratorVar.id;
     sectionVelocityCurve.computation = modCompute;
-
-
 
     function createSectionModifiers(mods, arr, index) {
         for (let i=0; i<mods.length; i++) {
@@ -7071,7 +7002,6 @@ function createTestModule(seed, inputGenInfo, resultObj) {
 
             if (typeof(valueExpression) == "string") {
                 if (!valueExpression.match(/[a-z]/i)) {
-//                    logit("Value expression is simple? " + valueExpression);
                     sm.value = eval(valueExpression);
                 } else {
                     sm.valueExpression = valueExpression;
@@ -7095,7 +7025,6 @@ function createTestModule(seed, inputGenInfo, resultObj) {
                 nvsm.curveMultiplierUseExpression = true;
                 nvsm.curveMultiplierExpression = prefixes[i] + "RenderAmountVar * 0.4 + 0.6";
                 nvsm.channel = prefixes[i] + "RenderChannel" + (j+1);
-//                logit(i + " " + j);
                 arr.push(nvsm);
             }
         }
@@ -7112,13 +7041,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
 
     module.addStructure(structure);
 
-//    for (let i=0; i<module.controlChannels.length; i++) {
-//        var cch = module.controlChannels[i];
-//        logit("cch.id: " + cch.id);
-//    }
-
-
-    if (!(typeof(WebAudioRenderer) === "undefined")) {
+    if (typeof(WebAudioRenderer) !== "undefined") {
         const waRenderer = new WebAudioRenderer();
         waRenderer.id = "webAudioRenderer";
         waRenderer.structure = module.getStructures()[0].id;
@@ -7224,19 +7147,13 @@ function createTestModule(seed, inputGenInfo, resultObj) {
 
         module.addRenderer(waRenderer);
     }
-//    if (!(typeof(PianoRollRenderer) === "undefined")) {
-//        var prRenderer = new PianoRollRenderer();
-//        prRenderer.id = "pianoRollRenderer";
-//        prRenderer.structure = module.getStructures()[0].id;
-//        module.addRenderer(prRenderer);
-//    }
-    if (!(typeof(JsonAudioRenderer) === "undefined")) {
+    if (typeof(JsonAudioRenderer) !== "undefined") {
         const jsonRenderer = new JsonRenderer();
         jsonRenderer.id = "jsonRenderer";
         jsonRenderer.structure = module.getStructures()[0].id;
         module.addRenderer(jsonRenderer);
     }
-    if (!(typeof(MidiRenderer) === "undefined")) {
+    if (typeof(MidiRenderer) !== "undefined") {
         const midiRenderer = new MidiRenderer();
         midiRenderer.id = "midiRenderer";
         midiRenderer.structure = module.getStructures()[0].id;
@@ -7264,7 +7181,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
         const inner2RenderChannels = getIdsWithIdContains("inner2RenderChannel");
         const bassRenderChannels = getIdsWithIdContains("bassRenderChannel");
 
-        var controlChannels = getIdsWithIdContains("ControlChannel", module.controlChannels);
+        const controlChannels = getIdsWithIdContains("ControlChannel", module.controlChannels);
 
         const controllerTypeMap = {
             "FilterF": MidiControllerType.SOUND_CONTROLLER_2,
@@ -7273,8 +7190,8 @@ function createTestModule(seed, inputGenInfo, resultObj) {
         };
 
         if (genInfo.exportChordsToNewChannel) {
-            var chId = chordsRenderChannel.id;
-            var midiMap = new MidiChannelMap();
+            const chId = chordsRenderChannel.id;
+            const midiMap = new MidiChannelMap();
             midiMap.id = "Map for " + chId;
             midiMap.channel = 15;
             midiMap.renderChannel = chId;
@@ -7283,13 +7200,13 @@ function createTestModule(seed, inputGenInfo, resultObj) {
         }
 
         for (let i=0; i<melodyRenderChannels.length; i++) {
-            var mergeIndex = genInfo.mergeChannels ? 0 : i;
-            var chId = melodyRenderChannels[i];
-            var midiMap = new MidiChannelMap();
+            const mergeIndex = genInfo.mergeChannels ? 0 : i;
+            const chId = melodyRenderChannels[i];
+            const midiMap = new MidiChannelMap();
             midiMap.id = "Map for " + chId;
             midiMap.channel = mergeIndex;
             midiMap.renderChannel = chId;
-            var program = genData.melodyChannelInstruments[mergeIndex % genData.melodyChannelInstruments.length];
+            const program = genData.melodyChannelInstruments[mergeIndex % genData.melodyChannelInstruments.length];
             midiMap.program = program;
             if (!genInfo.mergeChannels) {
                 const melodyReverbSend = 127 * genInfo.melodyReverbSends[mergeIndex % genInfo.melodyReverbSends.length];
@@ -7307,7 +7224,7 @@ function createTestModule(seed, inputGenInfo, resultObj) {
         if (!genInfo.mergeChannels) {
 
             for (let i=0; i<controlChannels.length; i++) {
-                var chId = controlChannels[i];
+                const chId = controlChannels[i];
                 const controlMap = new MidiControlChannelMap();
                 controlMap.amplitude = 127.0;
                 controlMap.id = "Map for " + chId;
@@ -7344,25 +7261,25 @@ function createTestModule(seed, inputGenInfo, resultObj) {
         }
         const volumeHints = [];
         for (const progStr in genInfo) {
-            var program = parseInt(progStr);
+            const program = parseInt(progStr);
             if (!isNaN(program)) {
                 volumeHints[program] = 127 * genInfo[progStr];
             }
         }
 
         for (let i=0; i<inner1RenderChannels.length; i++) {
-            var mergeIndex = genInfo.mergeChannels ? 3 : i + 3;
-            var chId = inner1RenderChannels[i];
-            var midiMap = new MidiChannelMap();
+            const mergeIndex = genInfo.mergeChannels ? 3 : i + 3;
+            const chId = inner1RenderChannels[i];
+            const midiMap = new MidiChannelMap();
             midiMap.id = "Map for " + chId;
             midiMap.channel = mergeIndex;
             midiMap.renderChannel = chId;
-            var program = genData.inner1ChannelInstruments[mergeIndex % genData.inner1ChannelInstruments.length];
+            const program = genData.inner1ChannelInstruments[mergeIndex % genData.inner1ChannelInstruments.length];
             midiMap.program = program;
 
             if (!genInfo.mergeChannels) {
 
-                var volume = 127;
+                let volume = 127;
                 if (volumeHints[program]) {
                     volume = volumeHints[program];
                 }
@@ -7377,24 +7294,23 @@ function createTestModule(seed, inputGenInfo, resultObj) {
                     new InitialMidiControllerMessage().setType(chorusSendType).setValue(inner1ChorusSend)
                 ];
             }
-//            midiMap.initialControllerMessages = [new InitialMidiControllerMessage().setType(MidiControllerType.VOLUME).setValue(64)];
             midiRenderer.channelMaps.push(midiMap);
         }
 
         for (let i=0; i<inner2RenderChannels.length; i++) {
-            var mergeIndex = genInfo.mergeChannels ? 6 : i + 6;
+            const mergeIndex = genInfo.mergeChannels ? 6 : i + 6;
 
-            var chId = inner2RenderChannels[i];
-            var midiMap = new MidiChannelMap();
+            const chId = inner2RenderChannels[i];
+            const midiMap = new MidiChannelMap();
             midiMap.id = "Map for " + chId;
             midiMap.channel = mergeIndex;
             midiMap.renderChannel = chId;
-            var program = genData.inner2ChannelInstruments[mergeIndex % genData.inner2ChannelInstruments.length];
+            const program = genData.inner2ChannelInstruments[mergeIndex % genData.inner2ChannelInstruments.length];
             midiMap.program = program;
 
             if (!genInfo.mergeChannels) {
 
-                var volume = 127;
+                let volume = 127;
                 if (volumeHints[program]) {
                     volume = volumeHints[program];
                 }
@@ -7410,19 +7326,18 @@ function createTestModule(seed, inputGenInfo, resultObj) {
                     new InitialMidiControllerMessage().setType(chorusSendType).setValue(inner2ChorusSend)
                 ];
             }
-//            midiMap.initialControllerMessages = [new InitialMidiControllerMessage().setType(MidiControllerType.VOLUME).setValue(64)];
             midiRenderer.channelMaps.push(midiMap);
         }
 
         for (let i=0; i<bassRenderChannels.length; i++) {
-            var mergeIndex = genInfo.mergeChannels ? 11 : i + 11;
+            const mergeIndex = genInfo.mergeChannels ? 11 : i + 11;
 
-            var chId = bassRenderChannels[i];
-            var midiMap = new MidiChannelMap();
+            const chId = bassRenderChannels[i];
+            const midiMap = new MidiChannelMap();
             midiMap.id = "Map for " + chId;
             midiMap.channel = mergeIndex;
             midiMap.renderChannel = chId;
-            var program = genData.bassChannelInstruments[mergeIndex % genData.bassChannelInstruments.length];
+            const program = genData.bassChannelInstruments[mergeIndex % genData.bassChannelInstruments.length];
             midiMap.program = program;
 
             if (!genInfo.mergeChannels) {
@@ -7455,7 +7370,6 @@ function createTestModule(seed, inputGenInfo, resultObj) {
                 new InitialMidiControllerMessage().setType(chorusSendType).setValue(127 * genInfo.percussionChorusSend)
             ];
         }
-//        percussionMidiMap.initialControllerMessages = [new InitialMidiControllerMessage().setType(MidiControllerType.VOLUME).setValue(64)];
         midiRenderer.channelMaps.push(percussionMidiMap);
 
         module.addRenderer(midiRenderer);
@@ -7467,10 +7381,6 @@ function createTestModule(seed, inputGenInfo, resultObj) {
     // Remove expression that are unneccesary
     traverseValue(module, function(v, propName, obj) {
 
-//        if (propName.indexOf("_") >= 0) {
-//            logit(propName);
-//        }
-
         if (stringEndsWith(propName, "Expression")) {
             const valuePropName = propName.substring(0, propName.indexOf("Expression"));
             const useStr = valuePropName + "UseExpression";
@@ -7481,20 +7391,10 @@ function createTestModule(seed, inputGenInfo, resultObj) {
                     if (typeof(obj[valuePropName]) != 'undefined') {
                         obj[valuePropName] = eval(v);
                         obj[useStr] = false;
-//                        logit("Evaluated expression value " + v + " to " + JSON.stringify(obj[valuePropName]));
-                    } else {
-//                        logit("Value prop name was undefined? " + valuePropName);
                     }
-                } else {
-//                    logit("Will evaluate expression " + v + " for property " + propName + " on obj " + obj._constructorName);
-                }
-//                    logit("useStr for " + propName + " = " + useStr + " value: " + v);
+                } 
             }
         }
-
-//        if (propName.indexOf("Expression") > 0) {
-//            logit("Found expression property: " + propName + " " + v);
-//        }
     });
 
     return module;
