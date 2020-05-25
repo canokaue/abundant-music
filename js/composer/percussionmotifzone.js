@@ -42,10 +42,11 @@ class VersatilePercussionMotifZone extends PercussionMotifZone{
         const elementHarmonies = [];
         const elementStrengths = [];
         const missingBeatCondition = this.beatConditionQuotients.length == 0 && this.beatConditionRemainders.length == 0;
+        let nre;
         //    logit(" Entering " + this._constructorName);
         for (let i = 0; i < noteRythmElements.length; i++) {
-            var he = harmony.getHarmonyAt(currentBeat + harmonyBeatOffset);
-            var nre = noteRythmElements[i];
+            const he = harmony.getHarmonyAt(currentBeat + harmonyBeatOffset);
+            nre = noteRythmElements[i];
             const beatLength = positionUnitToBeats(nre.length, nre.lengthUnit, he.tsNumerator, he.tsDenominator, harmony);
             let ok = activated;
             let strength = nre.strength;
@@ -55,7 +56,7 @@ class VersatilePercussionMotifZone extends PercussionMotifZone{
                 const beatCheck = currentBeat * this.beatConditionMultiplier + this.beatConditionBias;
                 const quotient = beatCheck / beatDivisor;
                 const remainder = mod(beatCheck, beatDivisor);
-                for (var j = 0; j < this.beatConditionQuotients.length; j++) {
+                for (let j = 0; j < this.beatConditionQuotients.length; j++) {
                     const q = this.beatConditionQuotients[j];
                     if (Math.abs(q - quotient) <= this.beatConditionMaxRelativeDistance) {
                         ok = activated;
@@ -65,7 +66,7 @@ class VersatilePercussionMotifZone extends PercussionMotifZone{
                         break;
                     }
                 }
-                for (var j = 0; j < this.beatConditionRemainders.length; j++) {
+                for (let j = 0; j < this.beatConditionRemainders.length; j++) {
                     const r = this.beatConditionRemainders[j];
                     if (Math.abs(r - remainder) <= this.beatConditionMaxRelativeDistance) {
                         ok = activated;
@@ -95,9 +96,9 @@ class VersatilePercussionMotifZone extends PercussionMotifZone{
             if (positionOffsets.length == 0) {
                 positionOffsets = [0];
             }
-            var he = elementHarmonies[i];
-            for (var j = 0; j < noteIndices.length; j++) {
-                var me = new PrimitivePercussionMotifElement();
+            const he = elementHarmonies[i];
+            for (let j = 0; j < noteIndices.length; j++) {
+                const me = new PrimitivePercussionMotifElement();
                 const posOffset = positionUnitToBeats(positionOffsets[j % positionOffsets.length], this.positionOffsetUnit, he.tsNumerator, he.tsDenominator, harmony);
                 me.startTime = elementStartBeats[i] + posOffset;
                 me.startTimeUnit = PositionUnit.BEATS;
@@ -126,7 +127,7 @@ class VersatilePercussionMotifZone extends PercussionMotifZone{
             }
         }
         if (maxActiveEndTime < maxRythmEndTime) {
-            var me = new PrimitivePercussionMotifElement();
+            const me = new PrimitivePercussionMotifElement();
             me.startTime = maxActiveEndTime;
             me.startTimeUnit = PositionUnit.BEATS;
             me.length = maxRythmEndTime - maxActiveEndTime;
