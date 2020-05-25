@@ -106,7 +106,7 @@ const BlobBuilder = BlobBuilder || self.WebKitBlobBuilder || self.MozBlobBuilder
         // decode data to a binary string
         if (Uint8Array && data instanceof ArrayBuffer) {
             if (can_apply_typed_arrays) {
-                bb.push(String.fromCharCode.apply(String, new Uint8Array(data)));
+                bb.push(String.fromCharCode(...new Uint8Array(data)));
             } else {
                 let str = "";
                 const buf = new Uint8Array(data);

@@ -156,11 +156,11 @@
 
     const doParallel = fn => (function() {
         const args = Array.prototype.slice.call(arguments);
-        return fn.apply(null, [async.forEach].concat(args));
+        return fn(...[async.forEach].concat(args));
     });
     const doSeries = fn => (function() {
         const args = Array.prototype.slice.call(arguments);
-        return fn.apply(null, [async.forEachSeries].concat(args));
+        return fn(...[async.forEachSeries].concat(args));
     });
 
 
@@ -412,7 +412,7 @@
                     args.push(callback);
                 }
                 async.nextTick(() => {
-                    iterator.apply(null, args);
+                    iterator(...args);
                 });
             }
         });
@@ -506,9 +506,7 @@
     async.apply = function (fn) {
         const args = Array.prototype.slice.call(arguments, 1);
         return function () {
-            return fn.apply(
-                null, args.concat(Array.prototype.slice.call(arguments))
-            );
+            return fn(...args.concat(Array.prototype.slice.call(arguments)));
         };
     };
 
@@ -585,7 +583,7 @@
                     worker(task.data, (...args) => {
                         workers -= 1;
                         if (task.callback) {
-                            task.callback.apply(task, args);
+                            task.callback(...args);
                         }
                         if(q.drain && q.tasks.length + workers == 0) q.drain();
                         q.process();
@@ -604,7 +602,7 @@
 
     const _console_fn = name => (function(fn) {
         const args = Array.prototype.slice.call(arguments, 1);
-        fn.apply(null, args.concat([function (err) {
+        fn(...args.concat([function (err) {
             const args = Array.prototype.slice.call(arguments, 1);
             if (typeof console !== 'undefined') {
                 if (err) {
@@ -633,16 +631,16 @@
         const memoized = function () {
             const args = Array.prototype.slice.call(arguments);
             const callback = args.pop();
-            const key = hasher.apply(null, args);
+            const key = hasher(...args);
             if (key in memo) {
-                callback.apply(null, memo[key]);
+                callback(...memo[key]);
             }
             else if (key in queues) {
                 queues[key].push(callback);
             }
             else {
                 queues[key] = [callback];
-                fn.apply(null, args.concat([function () {
+                fn(...args.concat([function () {
                     memo[key] = arguments;
                     const q = queues[key];
                     delete queues[key];
