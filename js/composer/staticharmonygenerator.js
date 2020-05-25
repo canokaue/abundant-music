@@ -163,13 +163,10 @@ class StaticHarmonyGenerator extends HarmonyGenerator {
                         for (let i = 0; i < this.possibleAuxiliaryEndRoots.length; i++) {
                             const pitchClass = state.harmony.getAbsoluteNoteFromScaleIndex(this.possibleAuxiliaryEndRoots[i]) % 12;
                             if (pitchClass == rootPitchClass) {
-                                result = true;
                                 break;
                             }
                         }
-                        result = false;
                     }
-                    result = true;
                 }
                 else {
                     result = false;
@@ -179,9 +176,6 @@ class StaticHarmonyGenerator extends HarmonyGenerator {
                 result = false;
                 break;
         }
-        //    if (result) {
-        //        logit("__ found goal state " + state + "<br />");
-        //    }
         return result;
     }
     isInvalidState(state) {
@@ -238,7 +232,7 @@ class StaticHarmonyGenerator extends HarmonyGenerator {
         let canMoveToTarget = false;
         let moveToTargetLikelihood = 0;
         let moveToTargetCost = 0;
-        for (var k = 0; k < absIncrements.length; k++) {
+        for (let k = 0; k < absIncrements.length; k++) {
             if (absIncrements[k] == absDiff) {
                 canMoveToTarget = true;
                 moveToTargetLikelihood = Math.max(moveToTargetLikelihood, absLikelihoods[k]);
@@ -254,11 +248,10 @@ class StaticHarmonyGenerator extends HarmonyGenerator {
             likelihoods.push(moveToTargetLikelihood);
             costs.push(moveToTargetCost);
         }
-        const isMinor = false;
-        const passingChordRoots = isMinor ? this.majorPassingChordRoots : this.minorPassingChordRoots;
-        const passingChordInversions = isMinor ? this.majorPassingChordInversions : this.minorPassingChordInversions;
+        const passingChordRoots = this.minorPassingChordRoots;
+        const passingChordInversions = this.minorPassingChordInversions;
         // Continue passing motion for valid increments
-        for (var k = 0; k < absIncrements.length; k++) {
+        for (let k = 0; k < absIncrements.length; k++) {
             const absIncrement = absIncrements[k];
             if (absIncrement < absDiff) {
                 const incrementLikelihood = absLikelihoods[k];
@@ -290,14 +283,14 @@ class StaticHarmonyGenerator extends HarmonyGenerator {
         const currentHarmony = node.state.harmony;
         const isMinor = this.scaleType == ScaleType.MAJOR ? false : true;
         if (this.baseToBaseLikelihood > 0) {
-            var baseState = this.getBaseState();
+            const baseState = this.getBaseState();
             nextStates.push(baseState);
             baseState.harmony.note = "S";
             nextLikelihoods.push(this.baseToBaseLikelihood);
             nextCosts.push(this.baseToBaseCost);
         }
         if (this.baseExpandedLikelihood > 0 && currentHarmony.chordInversions == 0) {
-            var baseState = this.getBaseState();
+            const baseState = this.getBaseState();
             baseState.harmony.chordInversions = 1;
             nextStates.push(baseState);
             baseState.harmony.note = "S, BE";
@@ -310,9 +303,9 @@ class StaticHarmonyGenerator extends HarmonyGenerator {
             const auxCosts = [];
             const auxStates = [];
             for (let i = 0; i < this.auxiliaryChordRoots.length; i++) {
-                var auxRoot = this.auxiliaryChordRoots[i];
-                var auxLikelihood = this.auxiliaryChordRootLikelihoods[i % this.auxiliaryChordRootLikelihoods.length];
-                var auxCost = this.auxiliaryChordRootCosts[i % this.auxiliaryChordRootCosts.length];
+                const auxRoot = this.auxiliaryChordRoots[i];
+                const auxLikelihood = this.auxiliaryChordRootLikelihoods[i % this.auxiliaryChordRootLikelihoods.length];
+                const auxCost = this.auxiliaryChordRootCosts[i % this.auxiliaryChordRootCosts.length];
                 const auxState = this.getAuxiliaryState(auxRoot);
                 this.getChordsStuff(depth, auxState, auxLikelihood, auxCost, this.auxiliarySeventhLikelihoods, this.auxiliaryTriadLikelihoods, this.auxiliarySeventhCosts, this.auxiliaryTriadCosts, auxStates, auxLikelihoods, auxCosts);
             }
@@ -326,10 +319,7 @@ class StaticHarmonyGenerator extends HarmonyGenerator {
             }
         }
         if (this.baseToNeighbourLikelihood > 0 && currentHarmony.chordInversions == 0) {
-            var likelihoods = [];
-            var costs = [];
-            var harmonies = [];
-            //        var baseChordRoot = this.baseHarmony.chordRoot;
+            const harmonies = [];
             let likelihood = this.baseToNeighbourLikelihood;
             const neighbourChordRoots = isMinor ? this.minorNeighbourChordRoots : this.majorNeighbourChordRoots;
             const neighbourChordInversions = isMinor ? this.minorNeighbourChordInversions : this.majorNeighbourChordInversions;
@@ -341,15 +331,13 @@ class StaticHarmonyGenerator extends HarmonyGenerator {
             const neighbourChords = this.getBassNeighbourChords(this.baseHarmony, neighbourChordRoots, neighbourChordInversions, neighbourSusChordRoots, neighbourMixtureChordRoots);
             for (let i = 0; i < neighbourChords.length; i++) {
                 harmonies.push(neighbourChords[i]);
-                likelihoods.push(1);
-                costs.push(0);
             }
             for (let i = 0; i < harmonies.length; i++) {
                 let neighbourSeventhLikelihoods = this.neighbourSeventhLikelihoods;
                 let neighbourTriadLikelihoods = this.neighbourTriadLikelihoods;
                 let neighbourSeventhCosts = this.neighbourSeventhCosts;
                 let neighbourTriadCosts = this.neighbourTriadCosts;
-                var state = new StaticHarmonyState();
+                const state = new StaticHarmonyState();
                 state.harmony = harmonies[i];
                 state.harmony.note = "S, BN";
                 if (this.baseHarmony.scaleType != state.harmony.scaleType) {
@@ -368,15 +356,15 @@ class StaticHarmonyGenerator extends HarmonyGenerator {
         }
         if (this.baseToPassingLikelihood > 0) {
             // For generate all passing chords from all possible auxiliary chords
-            var likelihoods = [];
-            var costs = [];
-            var harmonies = [];
+            const likelihoods = [];
+            const costs = [];
+            const harmonies = [];
             const targetHarmonies = [];
             const scale = node.state.harmony.getScale();
             for (let i = 0; i < this.auxiliaryChordRoots.length; i++) {
-                var auxRoot = this.auxiliaryChordRoots[i];
-                var auxLikelihood = this.auxiliaryChordRootLikelihoods[i % this.auxiliaryChordRootLikelihoods.length];
-                var auxCost = this.auxiliaryChordRootCosts[i % this.auxiliaryChordRootCosts.length];
+                const auxRoot = this.auxiliaryChordRoots[i];
+                const auxLikelihood = this.auxiliaryChordRootLikelihoods[i % this.auxiliaryChordRootLikelihoods.length];
+                const auxCost = this.auxiliaryChordRootCosts[i % this.auxiliaryChordRootCosts.length];
                 const increments = this.passingIncrements;
                 for (let k = 0; k < increments.length; k++) {
                     const incrementLikelihood = this.passingIncrementLikelihoods[k % this.passingIncrementLikelihoods.length];
@@ -401,23 +389,20 @@ class StaticHarmonyGenerator extends HarmonyGenerator {
                     }
                 }
             }
-            const sizeBefore = nextStates.length;
             for (let i = 0; i < harmonies.length; i++) {
-                var state = new StaticHarmonyState();
+                const state = new StaticHarmonyState();
                 state.harmony = harmonies[i];
                 state.harmony.note = "S, PA";
                 state.targetHarmony = targetHarmonies[i];
                 state.mode = StaticHarmonyMode.PASSING_TOWARDS_AUXILIARY;
-                //            logit("Testing " + state.harmony.toRomanString() + " " + (this.baseToPassingLikelihood * likelihoods[i]));
                 this.getChordsStuff(depth, state, this.baseToPassingLikelihood * likelihoods[i], this.baseToPassingCost + costs[i], this.passingSeventhLikelihoods, this.passingTriadLikelihoods, this.passingSeventhCosts, this.passingTriadCosts, nextStates, nextLikelihoods, nextCosts);
             }
-            //        logit("  Added " + (nextStates.length - sizeBefore) + " states");
         }
     }
     getAuxiliaryStatesAndLikelihoods(node, nextStates, nextLikelihoods, nextCosts) {
         const currentHarmony = node.state.harmony;
         if (this.auxiliaryToAuxiliaryLikelihood > 0) {
-            var nextState = new StaticHarmonyState();
+            const nextState = new StaticHarmonyState();
             nextState.harmony = node.state.harmony.copy();
             nextState.harmony.note = "S, A";
             nextState.mode = StaticHarmonyMode.AUXILIARY;
@@ -426,7 +411,7 @@ class StaticHarmonyGenerator extends HarmonyGenerator {
             nextCosts.push(this.auxiliaryToAuxiliaryCost);
         }
         if (this.auxiliaryExpandedLikelihood > 0 && currentHarmony.chordInversions == 0) {
-            var nextState = new StaticHarmonyState();
+            const nextState = new StaticHarmonyState();
             nextState.harmony = currentHarmony.copy();
             nextState.harmony.note = "S, AE";
             nextState.harmony.chordInversions = 1;
@@ -436,7 +421,7 @@ class StaticHarmonyGenerator extends HarmonyGenerator {
             nextCosts.push(this.auxiliaryExpandedCost);
         }
         if (this.auxiliaryToBaseLikelihood > 0) {
-            var nextState = new StaticHarmonyState();
+            const nextState = new StaticHarmonyState();
             nextState.harmony = this.baseHarmony.copy();
             nextState.harmony.note = "S";
             nextState.mode = StaticHarmonyMode.BASE;
@@ -479,14 +464,13 @@ class StaticHarmonyGenerator extends HarmonyGenerator {
         }
     }
     getSuccessorIterator(node) {
-        var state = node.state;
+        const state = node.state;
         const possibleNextStates = [];
         const possibleNextStateLikelihoods = [];
         const possibleNextStateCosts = [];
-        const chordsLeft = this.count - node.depth;
         switch (state.mode) {
             case StaticHarmonyMode.ACCENTED_64_BASE:
-                var state = new StaticHarmonyState();
+                const state = new StaticHarmonyState();
                 state.harmony = this.baseHarmony.copy();
                 state.mode = StaticHarmonyMode.BASE;
                 possibleNextStates.push(state);
