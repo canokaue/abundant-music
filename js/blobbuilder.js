@@ -17,9 +17,7 @@
 const BlobBuilder = BlobBuilder || self.WebKitBlobBuilder || self.MozBlobBuilder || self.MSBlobBuilder || (view => {
     "use strict";
 
-    const get_class = object => {
-      return Object.prototype.toString.call(object).match(/^\[object\s(.*)\]$/)[1];
-  };
+    const get_class = object => Object.prototype.toString.call(object).match(/^\[object\s(.*)\]$/)[1];
 
     class FakeBlobBuilder {
         constructor() {
@@ -148,9 +146,7 @@ const BlobBuilder = BlobBuilder || self.WebKitBlobBuilder || self.MozBlobBuilder
         }
         return new FakeBlob(this.data.join(""), type, "raw");
     };
-    FBB_proto.toString = () => {
-        return "[object BlobBuilder]";
-    };
+    FBB_proto.toString = () => "[object BlobBuilder]";
     FB_proto.slice = function(start, end, type) {
         const args = arguments.length;
         if (args < 3) {
@@ -162,9 +158,7 @@ const BlobBuilder = BlobBuilder || self.WebKitBlobBuilder || self.MozBlobBuilder
             , this.encoding
         );
     };
-    FB_proto.toString = () => {
-        return "[object Blob]";
-    };
+    FB_proto.toString = () => "[object Blob]";
     return FakeBlobBuilder;
 })(self);
 

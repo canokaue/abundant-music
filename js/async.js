@@ -154,25 +154,22 @@
     };
 
 
-    const doParallel = fn => {
-        return function () {
-            const args = Array.prototype.slice.call(arguments);
-            return fn.apply(null, [async.forEach].concat(args));
-        };
-    };
-    const doSeries = fn => {
-        return function () {
-            const args = Array.prototype.slice.call(arguments);
-            return fn.apply(null, [async.forEachSeries].concat(args));
-        };
-    };
+    const doParallel = fn => (function() {
+        const args = Array.prototype.slice.call(arguments);
+        return fn.apply(null, [async.forEach].concat(args));
+    });
+    const doSeries = fn => (function() {
+        const args = Array.prototype.slice.call(arguments);
+        return fn.apply(null, [async.forEachSeries].concat(args));
+    });
 
 
     const _asyncMap = (eachfn, arr, iterator, callback) => {
         const results = [];
-        arr = _map(arr, (x, i) => {
-            return {index: i, value: x};
-        });
+        arr = _map(arr, (x, i) => ({
+            index: i,
+            value: x
+        }));
         eachfn(arr, (x, callback) => {
             iterator(x.value, (err, v) => {
                 results[x.index] = v;
@@ -204,9 +201,7 @@
     async.foldl = async.reduce;
 
     async.reduceRight = (arr, memo, iterator, callback) => {
-        const reversed = _map(arr, x => {
-            return x;
-        }).reverse();
+        const reversed = _map(arr, x => x).reverse();
         async.reduce(reversed, memo, iterator, callback);
     };
     // foldr alias
@@ -214,9 +209,10 @@
 
     const _filter = (eachfn, arr, iterator, callback) => {
         const results = [];
-        arr = _map(arr, (x, i) => {
-            return {index: i, value: x};
-        });
+        arr = _map(arr, (x, i) => ({
+            index: i,
+            value: x
+        }));
         eachfn(arr, (x, callback) => {
             iterator(x.value, v => {
                 if (v) {
@@ -225,11 +221,7 @@
                 callback();
             });
         }, err => {
-            callback(_map(results.sort((a, b) => {
-                return a.index - b.index;
-            }), x => {
-                return x.value;
-            }));
+            callback(_map(results.sort((a, b) => a.index - b.index), x => x.value));
         });
     };
     async.filter = doParallel(_filter);
@@ -240,9 +232,10 @@
 
     const _reject = (eachfn, arr, iterator, callback) => {
         const results = [];
-        arr = _map(arr, (x, i) => {
-            return {index: i, value: x};
-        });
+        arr = _map(arr, (x, i) => ({
+            index: i,
+            value: x
+        }));
         eachfn(arr, (x, callback) => {
             iterator(x.value, v => {
                 if (!v) {
@@ -251,11 +244,7 @@
                 callback();
             });
         }, err => {
-            callback(_map(results.sort((a, b) => {
-                return a.index - b.index;
-            }), x => {
-                return x.value;
-            }));
+            callback(_map(results.sort((a, b) => a.index - b.index), x => x.value));
         });
     };
     async.reject = doParallel(_reject);
@@ -330,9 +319,7 @@
                     const a = left.criteria, b = right.criteria;
                     return a < b ? -1 : a > b ? 1 : 0;
                 };
-                callback(null, _map(results.sort(fn), x => {
-                    return x.value;
-                }));
+                callback(null, _map(results.sort(fn), x => x.value));
             }
         });
     };
@@ -389,11 +376,7 @@
                 }
             };
             const requires = task.slice(0, Math.abs(task.length - 1)) || [];
-            const ready = () => {
-                return _reduce(requires, (a, x) => {
-                    return (a && results.hasOwnProperty(x));
-                }, true) && !results.hasOwnProperty(k);
-            };
+            const ready = () => _reduce(requires, (a, x) => a && results.hasOwnProperty(x), true) && !results.hasOwnProperty(k);
             if (ready()) {
                 task[task.length - 1](taskCallback, results);
             }
@@ -414,27 +397,25 @@
         if (!tasks.length) {
             return callback();
         }
-        const wrapIterator = iterator => {
-            return function (err) {
-                if (err) {
-                    callback(err);
-                    callback = () => {};
+        const wrapIterator = iterator => (function(err) {
+            if (err) {
+                callback(err);
+                callback = () => {};
+            }
+            else {
+                const args = Array.prototype.slice.call(arguments, 1);
+                const next = iterator.next();
+                if (next) {
+                    args.push(wrapIterator(next));
                 }
                 else {
-                    const args = Array.prototype.slice.call(arguments, 1);
-                    const next = iterator.next();
-                    if (next) {
-                        args.push(wrapIterator(next));
-                    }
-                    else {
-                        args.push(callback);
-                    }
-                    async.nextTick(() => {
-                        iterator.apply(null, args);
-                    });
+                    args.push(callback);
                 }
-            };
-        };
+                async.nextTick(() => {
+                    iterator.apply(null, args);
+                });
+            }
+        });
         wrapIterator(async.iterator(tasks))();
     };
 
@@ -621,26 +602,24 @@
         return q;
     };
 
-    const _console_fn = name => {
-        return function (fn) {
+    const _console_fn = name => (function(fn) {
+        const args = Array.prototype.slice.call(arguments, 1);
+        fn.apply(null, args.concat([function (err) {
             const args = Array.prototype.slice.call(arguments, 1);
-            fn.apply(null, args.concat([function (err) {
-                const args = Array.prototype.slice.call(arguments, 1);
-                if (typeof console !== 'undefined') {
-                    if (err) {
-                        if (console.error) {
-                            console.error(err);
-                        }
-                    }
-                    else if (console[name]) {
-                        _forEach(args, x => {
-                            console[name](x);
-                        });
+            if (typeof console !== 'undefined') {
+                if (err) {
+                    if (console.error) {
+                        console.error(err);
                     }
                 }
-            }]));
-        };
-    };
+                else if (console[name]) {
+                    _forEach(args, x => {
+                        console[name](x);
+                    });
+                }
+            }
+        }]));
+    });
     async.log = _console_fn('log');
     async.dir = _console_fn('dir');
     /*async.info = _console_fn('info');
@@ -650,9 +629,7 @@
     async.memoize = (fn, hasher) => {
         const memo = {};
         const queues = {};
-        hasher = hasher || (x => {
-            return x;
-        });
+        hasher = hasher || (x => x);
         const memoized = function () {
             const args = Array.prototype.slice.call(arguments);
             const callback = args.pop();
@@ -679,17 +656,11 @@
         return memoized;
     };
 
-    async.unmemoize = fn => {
-      return (...args) => {
-        return (fn.unmemoized || fn).apply(null, args);
-      };
-    };
+    async.unmemoize = fn => (...args) => (fn.unmemoized || fn).apply(null, args);
 
     // AMD / RequireJS
     if (typeof define !== 'undefined' && define.amd) {
-        define('async', [], () => {
-            return async;
-        });
+        define('async', [], () => async);
     }
     // Node.js
     else if (typeof module !== 'undefined' && module.exports) {

@@ -633,72 +633,56 @@ class PropertyInfoProvider {
         const info = this.createObjectListPropertyInfo(propertyName, caption, uidInfo, [
             ["SongPartStructureInfo", "Song Part Structure"]
         ]);
-        info.listInfo.itemsDisplayFunction = valueItem => {
-            return SongPartType.toString(valueItem.partType);
-        };
+        info.listInfo.itemsDisplayFunction = valueItem => SongPartType.toString(valueItem.partType);
         return info;
     }
     createPhraseGroupTypeDataSampleListPropertyInfo(propertyName, caption, uidInfo) {
         const info = this.createObjectListPropertyInfo(propertyName, caption, uidInfo, [
             ["PhraseGroupTypeDataSample", "Phrase group likelihood"]
         ]);
-        info.listInfo.itemsDisplayFunction = valueItem => {
-            return SimpleModuleGeneratorPhraseGroupType.toString(valueItem.data) + ", Likelihood: " + valueItem.likelihood;
-        };
+        info.listInfo.itemsDisplayFunction = valueItem => SimpleModuleGeneratorPhraseGroupType.toString(valueItem.data) + ", Likelihood: " + valueItem.likelihood;
         return info;
     }
     createMidiProgramDataSampleListPropertyInfo(propertyName, caption, uidInfo) {
         const info = this.createObjectListPropertyInfo(propertyName, caption, uidInfo, [
             ["MidiProgramDataSample", "Instrument Likelihood"]
         ]);
-        info.listInfo.itemsDisplayFunction = valueItem => {
-            return MidiProgram.toString(valueItem.data) + ", Likelihood: " + valueItem.likelihood;
-        };
+        info.listInfo.itemsDisplayFunction = valueItem => MidiProgram.toString(valueItem.data) + ", Likelihood: " + valueItem.likelihood;
         return info;
     }
     createMidiDrumDataSampleListPropertyInfo(propertyName, caption, uidInfo) {
         const info = this.createObjectListPropertyInfo(propertyName, caption, uidInfo, [
             ["MidiDrumDataSample", "Drum Likelihood"]
         ]);
-        info.listInfo.itemsDisplayFunction = valueItem => {
-            return MidiDrum.toString(valueItem.data) + ", Likelihood: " + valueItem.likelihood;
-        };
+        info.listInfo.itemsDisplayFunction = valueItem => MidiDrum.toString(valueItem.data) + ", Likelihood: " + valueItem.likelihood;
         return info;
     }
     createIntDataSampleListPropertyInfo(propertyName, caption, uidInfo) {
         const info = this.createObjectListPropertyInfo(propertyName, caption, uidInfo, [
             ["IntDataSample", "Int Likelihood"]
         ]);
-        info.listInfo.itemsDisplayFunction = valueItem => {
-            return "Value: " + valueItem.data + ", Likelihood: " + valueItem.likelihood;
-        };
+        info.listInfo.itemsDisplayFunction = valueItem => "Value: " + valueItem.data + ", Likelihood: " + valueItem.likelihood;
         return info;
     }
     createIntListDataSampleListPropertyInfo(propertyName, caption, uidInfo) {
         const info = this.createObjectListPropertyInfo(propertyName, caption, uidInfo, [
             ["IntListDataSample", "Int List Likelihood"]
         ]);
-        info.listInfo.itemsDisplayFunction = valueItem => {
-            return "Value: " + valueItem.data.join(", ") + ", Likelihood: " + valueItem.likelihood;
-        };
+        info.listInfo.itemsDisplayFunction = valueItem => "Value: " + valueItem.data.join(", ") + ", Likelihood: " + valueItem.likelihood;
         return info;
     }
     createFloatDataSampleListPropertyInfo(propertyName, caption, uidInfo) {
         const info = this.createObjectListPropertyInfo(propertyName, caption, uidInfo, [
             ["FloatDataSample", "Float Likelihood"]
         ]);
-        info.listInfo.itemsDisplayFunction = valueItem => {
-            return "Value: " + valueItem.data + ", Likelihood: " + valueItem.likelihood;
-        };
+        info.listInfo.itemsDisplayFunction = valueItem => "Value: " + valueItem.data + ", Likelihood: " + valueItem.likelihood;
         return info;
     }
     createFloatListDataSampleListPropertyInfo(propertyName, caption, uidInfo) {
         const info = this.createObjectListPropertyInfo(propertyName, caption, uidInfo, [
             ["FloatListDataSample", "Float List Likelihood"]
         ]);
-        info.listInfo.itemsDisplayFunction = valueItem => {
-            return "Value: " + valueItem.data.join(", ") + ", Likelihood: " + valueItem.likelihood;
-        };
+        info.listInfo.itemsDisplayFunction = valueItem => "Value: " + valueItem.data.join(", ") + ", Likelihood: " + valueItem.likelihood;
         return info;
     }
     createObjectListPropertyInfo(propertyName, caption, uniqueIdInfo, constructorTexts) {
@@ -995,30 +979,22 @@ class PropertyInfoProvider {
                 info = this.createObjectListPropertyInfo("melodyInstruments", "Melody instruments", this.phraseGroupTypesUidInfo, [
                     ["PrimitiveWebAudioPlayerInstrument", "Primitive"]
                 ]);
-                info.listInfo.itemsDisplayFunction = valueItem => {
-                    return "Instrument (" + valueItem._constructorName + ")";
-                };
+                info.listInfo.itemsDisplayFunction = valueItem => "Instrument (" + valueItem._constructorName + ")";
                 result.addPropertyInfo(info);
                 info = this.createObjectListPropertyInfo("inner1Instruments", "Inner 1 instruments", this.phraseGroupTypesUidInfo, [
                     ["PrimitiveWebAudioPlayerInstrument", "Primitive"]
                 ]);
-                info.listInfo.itemsDisplayFunction = valueItem => {
-                    return "Instrument (" + valueItem._constructorName + ")";
-                };
+                info.listInfo.itemsDisplayFunction = valueItem => "Instrument (" + valueItem._constructorName + ")";
                 result.addPropertyInfo(info);
                 info = this.createObjectListPropertyInfo("inner2Instruments", "Inner 2 instruments", this.phraseGroupTypesUidInfo, [
                     ["PrimitiveWebAudioPlayerInstrument", "Primitive"]
                 ]);
-                info.listInfo.itemsDisplayFunction = valueItem => {
-                    return "Instrument (" + valueItem._constructorName + ")";
-                };
+                info.listInfo.itemsDisplayFunction = valueItem => "Instrument (" + valueItem._constructorName + ")";
                 result.addPropertyInfo(info);
                 info = this.createObjectListPropertyInfo("bassInstruments", "Bass instruments", this.phraseGroupTypesUidInfo, [
                     ["PrimitiveWebAudioPlayerInstrument", "Primitive"]
                 ]);
-                info.listInfo.itemsDisplayFunction = valueItem => {
-                    return "Instrument (" + valueItem._constructorName + ")";
-                };
+                info.listInfo.itemsDisplayFunction = valueItem => "Instrument (" + valueItem._constructorName + ")";
                 result.addPropertyInfo(info);
                 this.getMixableExportPropertyInfos(result);
                 break;
@@ -1283,9 +1259,7 @@ class PropertyInfoProvider {
                 info = this.createObjectListPropertyInfo("songPartTypeOverrideInfos", "Song part type override infos", this.phraseGroupTypesUidInfo, [
                     ["SongPartTypeOverrideInfo", "Song part type override info"]
                 ]);
-                info.listInfo.itemsDisplayFunction = valueItem => {
-                    return SongPartType.toString(valueItem.partType);
-                };
+                info.listInfo.itemsDisplayFunction = valueItem => SongPartType.toString(valueItem.partType);
                 result.addPropertyInfo(info);
                 result.addPropertyInfo(this.createDefaultIntListPropertyInfo("harmonyRythmMeasureCountOverrides", "Harmony Rythm Measure Count overrides", [], [new ArrayElementConstraint(new RangePropertyConstraint([1, 32]))]));
                 result.addPropertyInfo(this.createDefaultIntListPropertyInfo("harmonyRythmNoteCountOverrides", "Harmony Rythm note count overrides", [], [new ArrayElementConstraint(new RangePropertyConstraint([0.125, 32]))]));
@@ -1358,16 +1332,12 @@ class PropertyInfoProvider {
                 info = this.createObjectListPropertyInfo("majorModulationTargetInfos", "Major modulation/tonicization targets", this.phraseGroupTypesUidInfo, [
                     ["ModulationTargetDataSample", "Major modulation/tonicization target likelihood"]
                 ]);
-                info.listInfo.itemsDisplayFunction = valueItem => {
-                    return DynamicHarmonyModulationTarget.toString(valueItem.data) + ", Likelihood: " + valueItem.likelihood;
-                };
+                info.listInfo.itemsDisplayFunction = valueItem => DynamicHarmonyModulationTarget.toString(valueItem.data) + ", Likelihood: " + valueItem.likelihood;
                 result.addPropertyInfo(info);
                 info = this.createObjectListPropertyInfo("minorModulationTargetInfos", "Minor modulation/tonicization targets", this.phraseGroupTypesUidInfo, [
                     ["ModulationTargetDataSample", "Minor modulation/tonicization target likelihood"]
                 ]);
-                info.listInfo.itemsDisplayFunction = valueItem => {
-                    return DynamicHarmonyModulationTarget.toString(valueItem.data) + ", Likelihood: " + valueItem.likelihood;
-                };
+                info.listInfo.itemsDisplayFunction = valueItem => DynamicHarmonyModulationTarget.toString(valueItem.data) + ", Likelihood: " + valueItem.likelihood;
                 result.addPropertyInfo(info);
                 result.addPropertyInfo(this.createMidiProgramDataSampleListPropertyInfo("electronicMelodyInstrInfos", "Electronic Melody Instrument Distribution", this.eomUidInfo));
                 result.addPropertyInfo(this.createMidiProgramDataSampleListPropertyInfo("electronicInnerFastInstrInfos", "Electronic Inner 1 Instrument Distribution", this.eoi1UidInfo));
