@@ -2537,12 +2537,8 @@ function getEffectInfo(options, rnd) {
     info.curve = cce.theCurve;
     info.variables = variables;
 
-//    logit(JSON.stringify(info));
-
     return info;
 }
-
-
 
 function getNoChangeEffectDescription(options) {
     const prefixId = getValueOrDefault(options, "prefixId", "prefix");
